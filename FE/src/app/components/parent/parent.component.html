@@ -5,13 +5,13 @@
     <input matInput placeholder="message to child" #messageFromParent>
   </mat-form-field>
   <button mat-flat-button color="primary" (click)="sendToChild(messageFromParent.value)">Send to Child</button>
-  <div *ngIf="messageFromService">
-    <h1>Message From service:</h1>
-    <h1>{{messageFromService}}</h1>
-  </div>
   <div *ngIf="messageFromChild">
     <h1>Message From Child:</h1>
     <h1>{{messageFromChild}}</h1>
+  </div>
+  <div *ngIf="messageFromService">
+    <h1>Message From service:</h1>
+    <h1>{{messageFromService}}</h1>
   </div>
 </div>
 <app-child [messageFromParent]="messageToChild" (messageToParent)="getMessage($event)"></app-child>

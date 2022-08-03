@@ -29,24 +29,37 @@ steps:
   displayName: 'npm install and build'
   workingDirectory: ./FE
 
-
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: './FE/dist/fe'
-    ArtifactName: 'drop'
+    ArtifactName: 'production'
     publishLocation: 'Container'
 
+# - script: |
+#     CI=false
+#     npm install
+#     npm run build
+#   displayName: 'npm install and build'
+#   workingDirectory: ./FE
 
-- script: |
-    CI=false
-    npm install
-    npm run build:staging
-  displayName: 'npm install and build'
-  workingDirectory: ./FE
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     PathtoPublish: './FE/dist/fe'
+#     ArtifactName: 'drop'
+#     publishLocation: 'Container'
 
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: './FE/dist/fe'
-    ArtifactName: 'staging'
-    publishLocation: 'Container'
+#For Staging later on VVV
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     PathtoPublish: './FE/dist/fe'
+#     ArtifactName: 'drop'
+#     publishLocation: 'Container'
+
+
+# - script: |
+#     CI=false
+#     npm install
+#     npm run build
+#   displayName: 'npm install and build'
+#   workingDirectory: ./FE
