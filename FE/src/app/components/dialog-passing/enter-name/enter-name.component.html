@@ -1,0 +1,13 @@
+<div class="center">
+
+  <form class="example-form" class="columns">
+    <h1>{{data.question}}</h1>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>First name</mat-label>
+      <input matInput [(ngModel)]="data.name" name="name">
+    </mat-form-field>
+    <div mat-dialog-actions>
+      <button mat-raised-button color="primary" [mat-dialog-close]="data.name">Submit</button>
+    </div>
+  </form>
+</div>

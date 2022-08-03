@@ -1,0 +1,7 @@
+cd Diploma-Challenge-Sem1\CICD
+
+The command below will create a sql server and database
+
+Main Site Branch Resources
+
+az deployment group create --name fe-deploy --resource-group admin-edable --template-file admin-edable-fe-deploy.json
