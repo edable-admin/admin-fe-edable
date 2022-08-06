@@ -24,7 +24,7 @@ steps:
 
 - task: replacetokens@5
   inputs:
-    rootDirectory: './FE/src/app'
+    rootDirectory: './FE/src/app/'
     targetFiles: '**/environments/*.ts'
     encoding: 'auto'
     tokenPattern: 'default'
@@ -37,30 +37,30 @@ steps:
     useLegacyPattern: false
     enableTelemetry: true
 
-- script: |
-    CI=false
-    npm install
-    #npm run build --configuration production
-    #below need to test
-    npm run build::prod --configuration production
-  displayName: 'npm install and build'
-  workingDirectory: ./FE
+# - script: |
+#     CI=false
+#     npm install
+#     #npm run build --configuration production
+#     #below need to test
+#     npm run build::prod --configuration production
+#   displayName: 'npm install and build'
+#   workingDirectory: ./FE
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: './FE/dist/FE'
-    ArtifactName: 'production'
-    publishLocation: 'Container'
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     PathtoPublish: './FE/dist/FE'
+#     ArtifactName: 'production'
+#     publishLocation: 'Container'
 
-- script: |
-    CI=false
-    npm install
-    npm run build::staging
-  displayName: 'npm install and build'
-  workingDirectory: ./FE
+# - script: |
+#     CI=false
+#     npm install
+#     npm run build::staging
+#   displayName: 'npm install and build'
+#   workingDirectory: ./FE
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: './FE/dist/FE'
-    ArtifactName: 'staging'
-    publishLocation: 'Container'
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     PathtoPublish: './FE/dist/FE'
+#     ArtifactName: 'staging'
+#     publishLocation: 'Container'
