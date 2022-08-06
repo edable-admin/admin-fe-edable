@@ -41,7 +41,7 @@ steps:
 - script: |
     CI=false
     npm install
-    npm run build::prod --configuration production
+    npm run build::prod
   displayName: 'npm install and build'
   workingDirectory: ./FE
 
