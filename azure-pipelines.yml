@@ -25,7 +25,7 @@ steps:
 - task: replacetokens@5
   inputs:
     rootDirectory: './FE/src/app/'
-    targetFiles: '**/environments/*.ts'
+    targetFiles: 'environments/*.ts'
     encoding: 'auto'
     tokenPattern: 'default'
     writeBOM: true
