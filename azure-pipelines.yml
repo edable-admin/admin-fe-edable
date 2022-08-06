@@ -1,4 +1,4 @@
-# Node.js with React
+# Node.js with Angular
 # Build a Node.js project that uses React.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
@@ -22,44 +22,45 @@ steps:
     versionSpec: '16.x'
   displayName: 'Install Node.js'
 
+- task: replacetokens@5
+  inputs:
+    rootDirectory: './FE/src/app'
+    targetFiles: '**/environments/*.ts'
+    encoding: 'auto'
+    tokenPattern: 'default'
+    writeBOM: true
+    actionOnMissing: 'fail'
+    keepToken: false
+    actionOnNoFiles: 'continue'
+    enableTransforms: false
+    enableRecursion: false
+    useLegacyPattern: false
+    enableTelemetry: true
+
 - script: |
     CI=false
     npm install
-    npm run build
+    #npm run build --configuration production
+    #below need to test
+    ng build --configuration production
   displayName: 'npm install and build'
   workingDirectory: ./FE
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: './FE/dist/fe'
+    PathtoPublish: './FE/dist/FE'
     ArtifactName: 'production'
     publishLocation: 'Container'
 
-# - script: |
-#     CI=false
-#     npm install
-#     npm run build
-#   displayName: 'npm install and build'
-#   workingDirectory: ./FE
+- script: |
+    CI=false
+    npm install
+    ng build --configuration staging
+  displayName: 'npm install and build'
+  workingDirectory: ./FE
 
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     PathtoPublish: './FE/dist/fe'
-#     ArtifactName: 'stageing'
-#     publishLocation: 'Container'
-
-
-#For Staging later on VVV
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     PathtoPublish: './FE/dist/fe'
-#     ArtifactName: 'drop'
-#     publishLocation: 'Container'
-
-
-# - script: |
-#     CI=false
-#     npm install
-#     npm run build
-#   displayName: 'npm install and build'
-#   workingDirectory: ./FE
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: './FE/dist/FE'
+    ArtifactName: 'staging'
+    publishLocation: 'Container'

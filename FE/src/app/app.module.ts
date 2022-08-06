@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DialogPassingPageComponent } from './components/dialog-passing/dialog-passing-page/dialog-passing-page.component';
 import { ParentComponent } from './components/parent/parent.component';
 import { ChildComponent } from './components/parent/child/child.component';
+import { DisplayEnvironmentComponent } from './components/display-environment/display-environment.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ChildComponent } from './components/parent/child/child.component';
     EnterNameComponent,
     DialogPassingPageComponent,
     ParentComponent,
-    ChildComponent
+    ChildComponent,
+    DisplayEnvironmentComponent
   ],
   imports: [
     BrowserModule,
