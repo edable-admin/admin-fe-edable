@@ -42,7 +42,7 @@ steps:
     npm install
     #npm run build --configuration production
     #below need to test
-    ng build --configuration production
+    npm run build::prod --configuration production
   displayName: 'npm install and build'
   workingDirectory: ./FE
 
@@ -55,7 +55,7 @@ steps:
 - script: |
     CI=false
     npm install
-    ng build --configuration staging
+    npm run build::staging
   displayName: 'npm install and build'
   workingDirectory: ./FE
 
