@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -22,20 +23,10 @@ export class UploadImageComponent implements OnInit {
   image!: any;
   //meta: Observable<any>;
 
-  constructor(private storage: AngularFireStorage) {
-    //const ref = this.storage.ref(`${this.organisationID}/istockphoto-493621192-612x612.jpg`);
-    // this.storage.ref(`${this.organisationID}/`).listAll().subscribe({
-    //   next: (resp: any) => { this.imageName = resp._delegate.items[0].name },
-    //   error: (err: any) => { console.log(err) },
-    //   complete: () => {
-    //     this.storage.ref(`${this.organisationID}/${this.imageName}`).delete().subscribe({
-    //       next: (resp: any) => console.log(resp),
-    //       error:(err:any) => console.log(err)
-    //     })
-    //   }
-    // });
-    //this.meta = ref.getDownloadURL();
-  }
+  constructor(
+    private storage: AngularFireStorage,
+    private firestore: AngularFirestore
+  ) {}
 
   ngOnInit(): void {
 
@@ -49,6 +40,9 @@ export class UploadImageComponent implements OnInit {
     //todo validate that this is actually an image file
     const file = event.target.files[0]
 
+    //todo the upload should be done on the create organisation level
+    this.storage.upload(`${this.organisationID}/orgLogo`,file)
+
     if (file) {
       let reader = new FileReader();
       reader.readAsDataURL(file);
@@ -60,6 +54,11 @@ export class UploadImageComponent implements OnInit {
 
   sendImageToParent(file: any) {
     if (file) {
+
+      //todo the upload should be done on the create organisation level
+      this.storage.upload(`${this.organisationID}/orgLogo`,file[0])
+
+
       let reader = new FileReader();
       reader.readAsDataURL(file[0]);
 
@@ -69,4 +68,5 @@ export class UploadImageComponent implements OnInit {
     }
     this.uploadedImage.emit(file)
   }
+
 }
