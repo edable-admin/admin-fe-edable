@@ -12,4 +12,10 @@ export class UploadImageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  uploadImage() {
+  }
+
+  sendImageToParent(image: any) {
+    console.log(image)
+  }
 }

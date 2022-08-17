@@ -8,11 +8,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OrganisationComponent } from './components/organisation/organisation.component';
 import { UploadImageComponent } from './components/upload-image/upload-image.component';
+import { DragDropDirectiveDirective } from './components/upload-image/drag-drop-directive/drag-drop-directive.directive';
 @NgModule({
   declarations: [
     AppComponent,
     OrganisationComponent,
     UploadImageComponent,
+    DragDropDirectiveDirective,
   ],
   imports: [
     BrowserModule,
