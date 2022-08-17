@@ -21,19 +21,22 @@ export class UploadImageComponent implements OnInit {
   imageName!: any;
 
   image!: any;
-  //meta: Observable<any>;
+  meta!: Observable<any>;
 
   constructor(
     private storage: AngularFireStorage,
     private firestore: AngularFirestore
-  ) {}
+  ) {
+    const ref = this.storage.ref(`${this.organisationID}/orgLogo`);
+    this.meta = ref.getDownloadURL();
+
+  }
 
   ngOnInit(): void {
-
-    // this.meta.subscribe({
-    //   next: (test) => this.image = test,
-    //   error:(err) => console.log(err)
-    //  });
+    this.meta.subscribe({
+      next: (test) => this.image = test,
+      error:(err) => console.log(err)
+     });
   }
 
   onFileSelected(event: any) {
