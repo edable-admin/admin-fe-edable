@@ -1,8 +1,12 @@
 <div class="container">
   <div class="image-frame" appDragDropDirective (uploadedFile)="sendImageToParent($event)">
-    <span *ngIf="true">Drag here to upload</span>
+    <!-- {{ false || "Drag here to upload image" }} -->
+    <img [src]="image" height="100" alt="">
   </div>
   <div>
-    <button mat-raised-button color="primary" (click)="uploadImage()"> Upload Image</button>
+    <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+    <div class="file-upload">
+      <button mat-raised-button color="primary" (click)="fileUpload.click()"> Upload Image</button>
+    </div>
   </div>
 </div>

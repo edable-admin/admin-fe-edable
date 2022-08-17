@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-upload-image',
@@ -7,15 +7,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UploadImageComponent implements OnInit {
 
+  @Output() uploadedImage: EventEmitter<any> = new EventEmitter();
+
+  image!: any;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  uploadImage() {
+  onFileSelected(event: any) {
+    //todo validate that this is actually an image file
+    const file = event.target.files[0]
+
+    if (file) {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event: any) => {
+        this.image = event.target.result;
+      }
+    }
   }
 
-  sendImageToParent(image: any) {
-    console.log(image)
+  sendImageToParent(file: any) {
+    this.uploadedImage.emit(file)
   }
 }
