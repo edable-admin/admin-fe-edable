@@ -7,10 +7,12 @@ import { MaterialsModule } from './modules/materials.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OrganisationComponent } from './components/organisation/organisation.component';
+import { UploadImageComponent } from './components/upload-image/upload-image.component';
 @NgModule({
   declarations: [
     AppComponent,
     OrganisationComponent,
+    UploadImageComponent,
   ],
   imports: [
     BrowserModule,
