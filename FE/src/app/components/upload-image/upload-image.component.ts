@@ -41,35 +41,44 @@ export class UploadImageComponent implements OnInit {
 
   onFileSelected(event: any) {
     //todo validate that this is actually an image file
-    const file = event.target.files[0]
+    const file = "target" in event ? event.target.files as FileList : event;
 
-    //todo the upload should be done on the create organisation level
-    this.storage.upload(`${this.organisationID}/orgLogo`,file)
+    const regImageType = /image\/.*/g
+    console.log()
 
     if (file) {
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (event: any) => {
-        this.image = event.target.result;
+      if (!regImageType.test(file[0].type)) {
+        alert("invalid input")
+        return;
       }
-    }
-  }
-
-  sendImageToParent(file: any) {
-    if (file) {
-
-      //todo the upload should be done on the create organisation level
-      this.storage.upload(`${this.organisationID}/orgLogo`,file[0])
-
+    //todo the upload should be done on the create organisation level
+      this.storage.upload(`${this.organisationID}/orgLogo`, file[0])
+      this.uploadedImage.emit(file)
 
       let reader = new FileReader();
       reader.readAsDataURL(file[0]);
-
       reader.onload = (event: any) => {
         this.image = event.target.result;
       }
     }
-    this.uploadedImage.emit(file)
   }
+
+  // sendImageToParent(file: any) {
+  //   if (file) {
+  //     console.log(file)
+
+  //     //todo the upload should be done on the create organisation level
+  //     this.storage.upload(`${this.organisationID}/orgLogo`,file[0])
+
+
+  //     let reader = new FileReader();
+  //     reader.readAsDataURL(file[0]);
+
+  //     reader.onload = (event: any) => {
+  //       this.image = event.target.result;
+  //     }
+  //   }
+  //   this.uploadedImage.emit(file)
+  // }
 
 }

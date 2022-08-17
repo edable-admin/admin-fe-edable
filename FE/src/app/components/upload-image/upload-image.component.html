@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="image-frame" appDragDropDirective (uploadedFile)="sendImageToParent($event)">
+  <div class="image-frame" appDragDropDirective (uploadedFile)="onFileSelected($event)">
 
     <img *ngIf="image" [src]="image" height="100" width="100" alt="">
     <span *ngIf="!image">Drag to Upload Image</span>
