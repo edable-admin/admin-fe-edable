@@ -1,4 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-upload-image',
@@ -10,10 +12,18 @@ export class UploadImageComponent implements OnInit {
   @Output() uploadedImage: EventEmitter<any> = new EventEmitter();
 
   image!: any;
+  meta: Observable<any>;
 
-  constructor() { }
+  constructor(private storage: AngularFireStorage) {
+    const ref = this.storage.ref('users/istockphoto-493621192-612x612.jpg');
+    this.meta = ref.getDownloadURL();
+  }
 
   ngOnInit(): void {
+    this.meta.subscribe({
+      next: (test) => console.log(test),
+      error:(err) => console.log(err)
+     });
   }
 
   onFileSelected(event: any) {
