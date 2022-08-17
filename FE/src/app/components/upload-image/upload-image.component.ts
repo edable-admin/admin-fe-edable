@@ -30,6 +30,14 @@ export class UploadImageComponent implements OnInit {
   }
 
   sendImageToParent(file: any) {
+    if (file) {
+      let reader = new FileReader();
+      reader.readAsDataURL(file[0]);
+
+      reader.onload = (event: any) => {
+        this.image = event.target.result;
+      }
+    }
     this.uploadedImage.emit(file)
   }
 }

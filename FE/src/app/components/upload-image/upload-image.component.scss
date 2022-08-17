@@ -16,10 +16,18 @@
 
     span{
       cursor:default;
+      font-size: 10px;
     }
 
   }
   .file-input{
     display: none;
+  }
+
+  .file-upload{
+    button{
+      font-size: 10px;
+      padding: 10px auto;
+    }
   }
 }
