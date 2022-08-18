@@ -63,3 +63,38 @@ const config = environment.firebaseConfig;
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+// rules_version = '1';
+// service cloud.firestore {
+//   match /databases/{database}/documents {
+//     match /{document=**} {
+//       allow read: 
+//       if true;
+// 		}
+  
+//     match /databases/{database}/documents {
+//     match /{Organisations}/{document=**} {
+//       allow create, update: 
+//       if
+//       request.resource.data.name is string ||
+//       request.resource.data.name == null &&
+//       request.resource.data.description is string ||
+//       request.resource.data.description == null &&
+//       request.resource.data.summary is string ||
+//       request.resource.data.summary == null &&
+//       request.resource.data.ABN is number ||
+//       request.resource.data.ABN == null &&
+//       request.resource.data.phone is string ||
+//       request.resource.data.phone == null &&
+//       request.resource.data.website is string ||
+//       request.resource.data.website == null &&
+//       request.resource.data.img is string ||
+//       request.resource.data.img == null &&
+//       request.resource.data.activeStatus is bool &&
+//       request.resource.data.createdAt != null &&
+//       request.resource.data.updatedAt is timestamp ||
+//       request.resource.data.updatedAt == null;
+//     	}
+// 		}
+// 	}
+// }

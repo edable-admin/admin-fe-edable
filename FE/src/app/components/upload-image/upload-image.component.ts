@@ -24,37 +24,54 @@ export class UploadImageComponent implements OnInit {
   image!: any;
   meta!: Observable<any>;
 
-  //items!:Observable<any[]>;
+  items!:Observable<any[]>;
 
   //private itemsCollection: AngularFirestoreCollection<item[]>;
+
+  //private itemsCollection: AngularFirestoreCollection<any>;
   
 
   constructor(
     private storage: AngularFireStorage,
-    private firestore: AngularFirestore
+    public firestore: AngularFirestore
   ) {
     const ref = this.storage.ref(`${this.organisationID}/orgLogo`);
     this.meta = ref.getDownloadURL();
 
-    // //example of getting all items
-
-    // this.itemsCollection = firestore.collection<item[]>('Items')
+  //-----------------------example of getting all items ----------------------//
+    // this.itemsCollection = firestore.collection<item[]>('Organisations')
     // this.items = this.itemsCollection.snapshotChanges()
     // .pipe(
-    //   map( actions => actions.map( a => {
+    //   map( (actions:any) => actions.map( (a:any) => {
     //     const data = a.payload.doc.data() as any;
-    //     console.log(data)
     //     const ID = a.payload.doc.id;
     //     return { ID, ...data}
     //   }))
     // );
     // this.items.subscribe(item => console.log(item))
-//--------------------------------------------------------//
-
-
+  //--------------------------------------------------------//
   }
 
   ngOnInit(): void {
+
+//   let dateStamp = new Date();
+
+//   let object = {
+//     name:null,
+//     description:"string",
+//     summary:"summary",
+//     ABN:1111111111,
+//     phone:"0411327261",
+//     website:"http://www.google.com.au",
+//     img:"thisisaurl",
+//     activeStatus:true,
+//     createdAt: dateStamp,
+//     updatedAt:null
+// }
+//   //example of adding an item
+//   this.itemsCollection = this.firestore.collection('/Organisations')
+//   let test = this.itemsCollection.add(object).catch(err => console.log(`Error:${err.message}`))
+
     this.meta.subscribe({
       next: (test) => this.image = test,
       error:(err) => console.log(err)
