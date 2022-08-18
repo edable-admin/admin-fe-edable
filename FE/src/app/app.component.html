@@ -1,7 +1,7 @@
-<app-layout>
+<div>
   <mat-sidenav-container>
     <mat-sidenav #sidenav role="navigation">
-      <app-sidenav-list (sidenavClose)="sidenav.close()"></app-sidenav-list>
+      <app-sidebar (sidenavClose)="sidenav.close()"></app-sidebar>
     </mat-sidenav>
     <mat-sidenav-content>
       <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
@@ -10,4 +10,4 @@
       </main>
     </mat-sidenav-content>
   </mat-sidenav-container>
-</app-layout>
+</div>

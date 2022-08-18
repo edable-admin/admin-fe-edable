@@ -2,23 +2,42 @@ a {
     text-decoration: none;
     color: white;
 }
- 
+
 a:hover, a:active{
     color: lightgray;
 }
- 
+
 .navigation-items{
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
- 
+
 mat-toolbar{
     border-radius: 3px;
 }
- 
+
 @media(max-width: 959px){
     mat-toolbar{
         border-radius: 0px;
     }
+}
+.nav-item {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-right: solid white;
+    border-width: 1px;
+}
+.user-button {
+    vertical-align: middle;
+    
+}
+h1 {
+    margin-top: 3px;
+    
+}
+.spacer {
+    flex: 0.375 0.375 auto;
 }
