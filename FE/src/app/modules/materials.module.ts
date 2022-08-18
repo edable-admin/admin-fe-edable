@@ -6,15 +6,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 
-const modules:any = [
+const modules: any = [
   MatToolbarModule,
   MatButtonModule,
   MatInputModule,
   MatIconModule,
   MatDialogModule,
-  FormsModule
+  FormsModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule
 ]
 
 @NgModule({
