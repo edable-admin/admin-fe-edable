@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
