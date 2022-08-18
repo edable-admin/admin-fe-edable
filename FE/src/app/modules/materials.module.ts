@@ -9,9 +9,6 @@ import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
-
 
 
 const modules: any = [
@@ -23,9 +20,7 @@ const modules: any = [
   FormsModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSortModule,
-  MatSidenavModule,
-  MatListModule,
+  MatSortModule
 ]
 
 @NgModule({
