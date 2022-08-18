@@ -1,25 +1,56 @@
-table {
-    width: 100%;
-}
-
 .mat-form-field {
     font-size: 14px;
 }
 
-td, th {
-    // width: 25%;
+td,
+th {
+    // width: 100px;
 }
-td, tr {
+
+td,
+tr {
     height: 65px;
 }
-.container {
-    // margin: 0% 5% 0% 5%;
-    margin-left: 15px;
-    width: 50%;
+td, tr:hover {
+    cursor: pointer;
 }
-.table-header, button {
+
+.container {
+    margin: 0px 20px 0px 20px;
+}
+.table-header,
+button {
     margin-right: 10px;
 }
-.table-header, div {
-    // width: 100%;
+
+.row-selected {
+    background: rgb(185, 185, 185);
+}
+.flex-container {
+    display: flex;
+}
+.mat-elevation-z8 {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.graph-placeholder {
+    flex: 1;
+    background: rgb(194, 194, 194);
+    min-width: 50px;
+    min-height: 50px;
+    text-align: center;
+}
+table {
+    width: 100%;
+}
+.item-container {
+    margin-top: 20px;
+    display: flex;
+}
+.item-card {
+    background: rgb(255, 255, 255);
+    max-width: 150px;
+    margin-right: 20px;
+    border: 1px solid #333;
 }

@@ -9,21 +9,24 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./organisation.component.scss']
 })
 export class OrganisationComponent {
-  // displayedColumns: string[] = ['id', 'name', 'summary', 'activeStatus', 'abn', 'phone', 'website'];
   displayedColumns: string[] = ['name', 'activeItems', 'donations'];
   dataSource: MatTableDataSource<Organisation>;
-  // orgs: Organisation[] = [
-  //   { id: 'abc123', name: 'EdAble', summary: 'EdAble summary', activeStatus: true, abn: 123456, phone: '0444 444 444', website: 'www.edable.com', img: 'www.edable.com/img.png' },
-  //   { id: 'def456', name: 'Social Moments', summary: 'Social Moments summary', activeStatus: false, abn: 11223344, phone: '0411 111 111', website: 'www.socialmoments.com', img: 'www.socialmoments.com/img.png' },
-  //   { id: 'ghi789', name: 'Thrift Shop', summary: 'Thrift summary', activeStatus: true, abn: 44556677, phone: '0431 222 222', website: 'www.thriftshop.com', img: 'www.thriftshop.com/img.png' },
-  //   { id: 'jkl123', name: 'Glen\'s Organic Produce', summary: 'Glen\'s summary', activeStatus: false, abn: 987654, phone: '0414 444 444', website: 'www.glens.com', img: 'www.glens.com/img.png' },
-  //   { id: 'mno456', name: 'Robert\'s Shoe Store', summary: 'Robert\'s summary', activeStatus: true, abn: 123456, phone: '0414 333 333', website: 'www.roberts.com', img: 'www.roberts.com/img.png' },
-  // ];
+  selectedRowIndex = "";
+
   orgs: Organisation[] = [
     { id: 'abc123', name: 'Glen\'s Organic Produce', activeItems: 12, inactiveItems: 0, donations: 10000 },
     { id: 'def456', name: 'Social Moments', activeItems: 4, inactiveItems: 0, donations: 600 },
     { id: 'ghi789', name: 'Robert\'s Shoe Store', activeItems: 8, inactiveItems: 0, donations: 900 },
   ];
+  items: Item[] = [
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'abc123' },
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'abc123' },
+    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'def456' },
+    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'def456' },
+    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'ghi789' },
+    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'ghi789' },
+  ]
+  activeItems: Item[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -46,27 +49,31 @@ export class OrganisationComponent {
   }
   addOrg() {
     console.log("add new org");
-
   }
-  rowClicked(id: number) {
-    console.log(id);
+
+  selectRow(row: Organisation) {
+    if (this.selectedRowIndex === row.id) {
+      this.selectedRowIndex = "";
+      this.activeItems = [];
+      return;
+    }
+    this.selectedRowIndex = row.id;
+    this.activeItems = this.items.filter(item => { return item.orgID === row.id });
+    console.log(this.activeItems);
     
   }
 }
-// export interface Organisation {
-//   id: string;
-//   name: string;
-//   summary: string;
-//   activeStatus: boolean;
-//   abn: number;
-//   phone: string;
-//   website: string;
-//   img: string;
-// }
 export interface Organisation {
   id: string;
   name: string;
   activeItems: number;
   inactiveItems: number;
   donations: number;
+}
+export interface Item {
+  name: string;
+  initialPrice: number;
+  totalDonations: number;
+  activeStatus: boolean;
+  orgID: string;
 }
