@@ -7,9 +7,11 @@ import { OrganisationComponent } from './components/organisation/organisation.co
 import { UploadImageComponent } from './components/upload-image/upload-image.component';
 import { AuthGuard } from './shared/guard/auth.guard';
 
+  // User canActivate with [AuthGuard] to secure endpoints and ensure user is logged in
+  // { path: 'dashboard', component: OrganisationComponent,  canActivate: [AuthGuard]},
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: TempPageComponent,  canActivate: [AuthGuard]},
+  { path: 'dashboard', component: OrganisationComponent},
   { path: 'sign-in', component: SignInComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
 ];
