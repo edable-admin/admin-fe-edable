@@ -1,7 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { map, Observable } from 'rxjs';
+import { item } from 'src/app/models/no-sql-models';
 
 @Component({
   selector: 'app-upload-image',
@@ -23,12 +24,33 @@ export class UploadImageComponent implements OnInit {
   image!: any;
   meta!: Observable<any>;
 
+  //items!:Observable<any[]>;
+
+  //private itemsCollection: AngularFirestoreCollection<item[]>;
+  
+
   constructor(
     private storage: AngularFireStorage,
     private firestore: AngularFirestore
   ) {
     const ref = this.storage.ref(`${this.organisationID}/orgLogo`);
     this.meta = ref.getDownloadURL();
+
+    // //example of getting all items
+
+    // this.itemsCollection = firestore.collection<item[]>('Items')
+    // this.items = this.itemsCollection.snapshotChanges()
+    // .pipe(
+    //   map( actions => actions.map( a => {
+    //     const data = a.payload.doc.data() as any;
+    //     console.log(data)
+    //     const ID = a.payload.doc.id;
+    //     return { ID, ...data}
+    //   }))
+    // );
+    // this.items.subscribe(item => console.log(item))
+//--------------------------------------------------------//
+
 
   }
 

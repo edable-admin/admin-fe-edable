@@ -20,6 +20,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
 //---------------------------------------------------------------------------//
 import { environment } from '../environments/environment';
+import { provideStorage,getStorage } from '@angular/fire/storage';
 
 const config = environment.firebaseConfig;
 
@@ -40,7 +41,8 @@ const config = environment.firebaseConfig;
     BrowserAnimationsModule,
     MaterialsModule,
     FlexLayoutModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    provideStorage(() => getStorage())
   ],
   providers: [
     { provide: BUCKET, useValue: environment.firebaseConfig.storageBucket }
