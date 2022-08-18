@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class OrganisationComponent {
   // displayedColumns: string[] = ['id', 'name', 'summary', 'activeStatus', 'abn', 'phone', 'website'];
-  displayedColumns: string[] = ['name', 'donationItems', 'donations'];
+  displayedColumns: string[] = ['name', 'activeItems', 'donations'];
   dataSource: MatTableDataSource<Organisation>;
   // orgs: Organisation[] = [
   //   { id: 'abc123', name: 'EdAble', summary: 'EdAble summary', activeStatus: true, abn: 123456, phone: '0444 444 444', website: 'www.edable.com', img: 'www.edable.com/img.png' },
@@ -20,9 +20,9 @@ export class OrganisationComponent {
   //   { id: 'mno456', name: 'Robert\'s Shoe Store', summary: 'Robert\'s summary', activeStatus: true, abn: 123456, phone: '0414 333 333', website: 'www.roberts.com', img: 'www.roberts.com/img.png' },
   // ];
   orgs: Organisation[] = [
-    { id: 'abc123', name: 'Glen\'s Organic Produce', donationItems: 12, donations: 10000 },
-    { id: 'abc123', name: 'Social Moments', donationItems: 4, donations: 600 },
-    { id: 'abc123', name: 'Robert\'s Shoe Store', donationItems: 8, donations: 900 },
+    { id: 'abc123', name: 'Glen\'s Organic Produce', activeItems: 12, inactiveItems: 0, donations: 10000 },
+    { id: 'def456', name: 'Social Moments', activeItems: 4, inactiveItems: 0, donations: 600 },
+    { id: 'ghi789', name: 'Robert\'s Shoe Store', activeItems: 8, inactiveItems: 0, donations: 900 },
   ];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -48,6 +48,10 @@ export class OrganisationComponent {
     console.log("add new org");
 
   }
+  rowClicked(id: number) {
+    console.log(id);
+    
+  }
 }
 // export interface Organisation {
 //   id: string;
@@ -62,6 +66,7 @@ export class OrganisationComponent {
 export interface Organisation {
   id: string;
   name: string;
-  donationItems: number;
+  activeItems: number;
+  inactiveItems: number;
   donations: number;
 }
