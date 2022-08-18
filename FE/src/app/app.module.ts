@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { OrganisationComponent } from './components/organisation/organisation.component';
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { SidebarComponent } from './components/navigation/sidebar/sidebar.component';
+import { TransactionsComponent } from './components/transactions/transactions.component';
 
 
 
@@ -18,6 +19,7 @@ import { SidebarComponent } from './components/navigation/sidebar/sidebar.compon
     OrganisationComponent,
     HeaderComponent,
     SidebarComponent,
+    TransactionsComponent,
     
     
   ],
