@@ -1,7 +1,9 @@
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+
 
 @Component({
   selector: 'app-organisation',
@@ -25,10 +27,12 @@ export class OrganisationComponent {
     { id: 'abc123', name: 'Robert\'s Shoe Store', donationItems: 8, donations: 900 },
   ];
 
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor() {
+
+  constructor(public authService: AuthService) {
     this.dataSource = new MatTableDataSource(this.orgs);
   }
   ngAfterViewInit() {
