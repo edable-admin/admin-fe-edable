@@ -1,9 +1,67 @@
 rules_version = '2';
 service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if
-          request.time < timestamp.date(2022, 9, 16);
-    }
+match /databases/{database}/documents {
+  match /{document=**} {
+    allow read:
+		if
+		true;
+    //once auth is implemented this should be activated
+    //signedIn()
   }
+}
+
+  match /databases/{database}/documents {
+    match /Organisations/{document=**} {
+      allow create, update:
+      if
+      isValidName() &&
+      isValidDescription() &&
+      isValidSummary() &&
+      isValidABN() &&
+      isValidPhone() &&
+      isValidWebsite() &&
+      isValidImage() &&
+      request.resource.data.activeStatus is bool &&
+      request.resource.data.createdAt != null &&
+      isUpdatedAt();
+      //once auth is implemented this should be activated
+      //signedIn();
+      }
+    }
+}
+
+function signedIn() {
+  return request.auth != null;
+}
+
+function isValidName(){
+	return request.resource.data.name is string || request.resource.data.name == null;
+}
+
+function isValidDescription(){
+	return request.resource.data.description is string || request.resource.data.description == null;
+}
+
+function isValidSummary(){
+	return request.resource.data.summary is string || request.resource.data.summary == null;
+}
+
+function isValidABN(){
+  return request.resource.data.ABN is string || request.resource.data.ABN == null;
+}
+
+function isValidPhone(){
+	return request.resource.data.phone is string || request.resource.data.phone == null;
+}
+
+function isValidWebsite(){
+	return request.resource.data.website is string || request.resource.data.website == null;
+}
+
+function isValidImage(){
+	return request.resource.data.img is string || request.resource.data.img == null;
+}
+
+function isUpdatedAt(){
+	return request.resource.data.updatedAt is timestamp || request.resource.data.updatedAt == null;
 }
