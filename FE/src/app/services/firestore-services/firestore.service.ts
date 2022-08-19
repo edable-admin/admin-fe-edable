@@ -12,6 +12,7 @@ export class FirestoreService {
     public firestore: AngularFirestore
   ) { }
 
+  //This function gets all organisations
   getOrganisations =  () => {
     const organisationsCollection = this.firestore.collection('Organisations')
       .valueChanges({idField:"ID"})
@@ -19,6 +20,7 @@ export class FirestoreService {
     return organisationsCollection
   }
 
+  //This function gets a list of all donation items
   getDonationItems = () => {
     const itemsCollection = this.firestore.collection('Items')
       .valueChanges({ idField: "ID" })
@@ -26,6 +28,7 @@ export class FirestoreService {
     return itemsCollection
   }
 
+  //This function gets a list of the donation items associated with an organisation
   getOrganisationsDonationItems = () => {
 
     //todo add parameters
@@ -40,6 +43,7 @@ export class FirestoreService {
     return itemsCollection
   }
 
+  //This function will add organisations to the firestore database
   generateMockDate = () => {
     let orgsToAdd =
       [
