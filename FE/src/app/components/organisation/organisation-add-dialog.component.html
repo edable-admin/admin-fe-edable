@@ -1,0 +1,58 @@
+<div style="text-align:center;">
+<div class="bigHeader">Add an Organisation</div>
+</div>
+<hr size="2" width="90%" color="grey">
+
+<div class="centerAlign">
+  <mat-form-field [style.width.px]=327 appearance="fill">
+    <mat-label>Organisation Name</mat-label>
+    <input matInput [(ngModel)]="data.organisationName">
+  </mat-form-field>
+</div>
+<div class="centerAlign">
+  <mat-form-field [style.width.px]=327 appearance="fill">
+    <mat-label>Summary</mat-label>
+    <input matInput [(ngModel)]="data.summary">
+  </mat-form-field>
+</div>
+<div class="centerAlign">
+  <mat-form-field [style.width.px]=327 appearance="fill">
+    <mat-label>Website</mat-label>
+    <input matInput [(ngModel)]="data.website">
+  </mat-form-field>
+</div>
+  <div class="centerAlign">
+  <mat-form-field [style.width.px]=327 appearance="fill">
+    <mat-label>ABN</mat-label>
+    <input matInput [(ngModel)]="data.abn">
+  </mat-form-field>
+</div>
+  <div class="centerAlign">
+  <mat-form-field [style.width.px]=327 appearance="fill">
+    <mat-label>Phone</mat-label>
+    <input matInput [(ngModel)]="data.phone">
+  </mat-form-field>
+  </div>
+
+  <h2>*ADD IMAGE UPLOAD COMPONENT*</h2>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Create</button>
+</div>
+
+
+<!-- <div style="text-align:center;">
+<div>
+  <label for="name">Name</label>
+  <input type="text" id="name" placeholder="Enter your name" />
+</div>
+<div>
+  <label for="age">Your Age</label>
+  <input type="text" id="age" name="age" placeholder="Enter your age" />
+</div>
+<div>
+  <label for="country">Enter Your Country</label>
+  <input type="text" id="country" name="country" placeholder="Country" />
+</div>
+</div> -->

@@ -1,1 +1,8 @@
-<p>organisation works!</p>
+<ol>
+  <li>
+    <button mat-raised-button (click)="openDialog()">Add Organisation</button>
+  </li>
+  <li *ngIf="passedvalues">
+      <p>{{ passedvalues | json }}</p>
+  </li>
+</ol>
