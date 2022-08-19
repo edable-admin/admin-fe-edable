@@ -29,6 +29,7 @@ import { environment } from '../environments/environment';
 import { SignInComponent } from './components/authentication/sign-in/sign-in.component';
 import { ForgotPasswordComponent } from './components/authentication/forgot-password/forgot-password.component';
 import { TempPageComponent } from './components/authentication/temp-page/temp-page.component';
+import { MainComponent } from './components/main/main.component';
 
 const config = environment.firebaseConfig;
 
@@ -44,6 +45,7 @@ const config = environment.firebaseConfig;
     HeaderComponent,
     SidebarComponent,
     TransactionsComponent,
+    MainComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,8 +59,8 @@ const config = environment.firebaseConfig;
     MaterialsModule,
     FlexLayoutModule,
     ReactiveFormsModule,
-    
-   
+
+
   ],
   exports: [
     AngularFireStorageModule,
