@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { serverTimestamp } from 'firebase/firestore';
-import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -34,7 +33,9 @@ export class FirestoreService {
 
     const itemsCollection = this.firestore
     .collection('Items', ref => ref.where('orgID', '==', organisation))
-    .valueChanges({idField:"ID"})
+      .valueChanges({
+        idField: "ID"
+      })
 
     return itemsCollection
   }

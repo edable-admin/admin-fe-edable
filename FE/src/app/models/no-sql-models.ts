@@ -1,4 +1,4 @@
-interface item {
+interface Item {
     ID:string,
     name:string,
     summary?:string,
@@ -9,10 +9,10 @@ interface item {
     createdAt:Date,
     dateCompleted?:Date,
     activeStatus:boolean,
-    orgID:string,   
+    orgID:string,
 }
 
-interface organisation {
+interface Organisation {
     ID:string,
     name:string,
     summary?:string,
@@ -23,4 +23,4 @@ interface organisation {
     img?:string,
 }
 
-export {item, organisation}
+export {Item, Organisation}

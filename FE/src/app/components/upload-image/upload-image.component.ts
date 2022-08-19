@@ -1,9 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { map, Observable } from 'rxjs';
-import { item } from 'src/app/models/no-sql-models';
-import { serverTimestamp, where } from 'firebase/firestore';
+import {  Observable } from 'rxjs';
 import { FirestoreService } from 'src/app/services/firestore-services/firestore.service';
 
 @Component({
@@ -20,8 +18,6 @@ export class UploadImageComponent implements OnInit {
   //create will be interesting maybe when the api returns a success with the unique id
   //fire storage will create a file with the unique id and the file can be stored there in fire storage
   organisationID = "uid";
-
-  woo!: any;
 
   imageName!: any;
 
