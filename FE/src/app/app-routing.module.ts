@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialsModule} from './modules/materials.module';
-import {DialogOverviewExampleDialog} from './components/organisation/organisation.component';
+import {AddOrganisationDialog} from './components/organisation/organisation.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatNativeDateModule} from '@angular/material/core';
 import {HttpClientModule} from '@angular/common/http';

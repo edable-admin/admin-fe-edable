@@ -19,9 +19,9 @@ export interface DialogData {
   templateUrl: 'organisation-add-dialog.component.html',
   styleUrls: ['./organisation.component.scss']
 })
-export class DialogOverviewExampleDialog {
+export class AddOrganisationDialog {
   constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    public dialogRef: MatDialogRef<AddOrganisationDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {}
 
@@ -53,7 +53,7 @@ export class OrganisationComponent {
   }
 
   addOrg(): void {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+    const dialogRef = this.dialog.open(AddOrganisationDialog, {
       width: '400px',
       data: {organisationName: this.organisationName, summary: this.summary, website: this.website, abn: this.abn, phone: this.phone},
     });
