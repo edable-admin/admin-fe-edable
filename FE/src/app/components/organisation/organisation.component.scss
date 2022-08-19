@@ -14,3 +14,61 @@ label {
   display: inline-block;
   width: 150px;
 }
+
+.mat-form-field {
+    font-size: 14px;
+}
+
+td,
+th {
+    // width: 100px;
+}
+
+td,
+tr {
+    height: 65px;
+}
+td, tr:hover {
+    cursor: pointer;
+}
+
+.container {
+    margin: 0px 20px 0px 20px;
+}
+.table-header,
+button {
+    margin-right: 10px;
+}
+
+.row-selected {
+    background: rgb(185, 185, 185);
+}
+.flex-container {
+    display: flex;
+}
+.mat-elevation-z8 {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.graph-placeholder {
+    flex: 1;
+    background: rgb(194, 194, 194);
+    min-width: 50px;
+    min-height: 50px;
+    text-align: center;
+}
+table {
+    width: 100%;
+}
+.item-container {
+    margin-top: 20px;
+    display: flex;
+}
+.item-card {
+    background: rgb(255, 255, 255);
+    max-width: 150px;
+    margin-right: 20px;
+    border: 1px solid #333;
+}
+

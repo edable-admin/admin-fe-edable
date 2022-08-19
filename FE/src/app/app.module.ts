@@ -7,7 +7,7 @@ import { MaterialsModule } from './modules/materials.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { OrganisationComponent } from './components/organisation/organisation.component';
-import {DialogOverviewExample, DialogOverviewExampleDialog} from './components/organisation/organisation.component';
+import {DialogOverviewExampleDialog} from './components/organisation/organisation.component';
 import {MatNativeDateModule} from '@angular/material/core';
 import {HttpClientModule} from '@angular/common/http';
 
@@ -15,7 +15,6 @@ import {HttpClientModule} from '@angular/common/http';
   declarations: [
     AppComponent,
     OrganisationComponent,
-    DialogOverviewExample,
     DialogOverviewExampleDialog,
   ],
   imports: [
@@ -31,6 +30,6 @@ import {HttpClientModule} from '@angular/common/http';
     ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent, DialogOverviewExample]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
