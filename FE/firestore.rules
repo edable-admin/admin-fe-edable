@@ -12,56 +12,114 @@ match /databases/{database}/documents {
 
   match /databases/{database}/documents {
     match /Organisations/{document=**} {
-      allow create, update:
+      allow create, delete:
       if
-      isValidName() &&
-      isValidDescription() &&
-      isValidSummary() &&
-      isValidABN() &&
-      isValidPhone() &&
-      isValidWebsite() &&
-      isValidImage() &&
+      IsValidStringField(request.resource.data.name) &&
+      IsValidStringField(request.resource.data.description) &&
+      IsValidStringField(request.resource.data.summary) &&
+      IsValidStringField(request.resource.data.ABN) &&
+      IsValidStringField(request.resource.data.website) &&
+      IsValidStringField(request.resource.data.phone) &&
+      IsValidStringField(request.resource.data.img) &&
       request.resource.data.activeStatus is bool &&
-      request.resource.data.createdAt != null &&
-      isUpdatedAt();
+      IsValidCreatedAtField(request.resource.data.createdAt) &&
+      IsValidTimestampField(request.resource.data.updatedAt) &&
+      IsValidPositiveNumber(request.resource.data.totalDonationItems) &&
+      IsValidPositiveNumber(request.resource.data.totalDonations);
       //once auth is implemented this should be activated
       //signedIn();
-      }
+
+      allow update:
+      if
+      ValidateOrganisationUpdate(request.resource.data) &&
+      IsNotChangedOnUpdate(request.resource.data.createdAt,resource.data.createdAt);
+      // //once auth is implemented this should be activated
+      // //signedIn();
     }
+
+  }
+
+  match /databases/{database}/documents {
+    match /Items/{document=**} {
+      allow create:
+      if
+      request.resource.data.activeStatus is bool &&
+      IsValidCreatedAtField(request.resource.data.createdAt) &&
+      IsValidStringField(request.resource.data.description) &&
+      IsValidStringField(request.resource.data.img) &&
+      IsValidPositiveNumber(request.resource.data.initialPrice)&&
+      IsValidStringField(request.resource.data.name) &&
+      IsValidStringField(request.resource.data.summary);
+      //once auth is implemented this should be activated
+      //signedIn();
+
+      allow update:
+      if
+      ValidateItemsUpdate(request.resource.data); //&&
+      //IsNotChangedOnUpdate(request.resource.createdAt,resource.data.createdAt)
+      //once auth is implemented this should be activated
+      //signedIn();
+    }
+  }
 }
 
+//---------------- Checks if the User is Authenticated ----------//
 function signedIn() {
   return request.auth != null;
 }
 
-function isValidName(){
-	return request.resource.data.name is string || request.resource.data.name == null;
+//----------- Validation when updating a document ---------//
+function ValidateOrganisationUpdate(docData){
+  return docData.get('name','') is string &&
+  (docData.get('description','') is string || docData.get('description','') == null) &&
+  (docData.get('summary','') is string || docData.get('summary','') == null) &&
+  (docData.get('ABN','') is string || docData.get('ABN','') == null) &&
+  (docData.get('website','') is string || docData.get('website','') == null) &&
+  (docData.get('phone','') is string || docData.get('phone','') == null) &&
+  (docData.get('img','') is string || docData.get('img','') == null) &&
+  (docData.get('updatedAt','') is timestamp || docData.get('updatedAt','') == null) &&
+  docData.get('activeStatus','') is bool &&
+  docData.get('totalDonations',0) >= 0 &&
+  docData.get('totalDonationItems',0) >= 0;
 }
 
-function isValidDescription(){
-	return request.resource.data.description is string || request.resource.data.description == null;
+function IsNotChangedOnUpdate(dataField, resourceField){
+	let IsValidField = dataField == resourceField;
+  let IsFieldRequestExists = dataField.exists();
+
+  return IsValidField || !IsFieldRequestExists;
 }
 
-function isValidSummary(){
-	return request.resource.data.summary is string || request.resource.data.summary == null;
+function ValidateItemsUpdate(docData){
+  return docData.get('activeStatus','') is bool &&
+  (docData.get('description','') is string || docData.get('description','') == null) &&
+  (docData.get('name','') is string || docData.get('name','') == null) &&
+  (docData.get('summary','') is string || docData.get('summary','') == null) &&
+  (docData.get('img','') is string || docData.get('img','') == null) &&
+  docData.get('initialPrice',0) >= 0 &&
+  docData.get('totalDonation',0) >= 0;
 }
 
-function isValidABN(){
-  return request.resource.data.ABN is string || request.resource.data.ABN == null;
+
+//---------------------------------------------//
+
+
+//----------------------- Create Rules ----------------------//
+
+function IsValidCreatedAtField(dataField){
+	return dataField is timestamp && dataField != null;
 }
 
-function isValidPhone(){
-	return request.resource.data.phone is string || request.resource.data.phone == null;
+function IsValidStringField(dataField){
+	return dataField is string || dataField == null;
 }
 
-function isValidWebsite(){
-	return request.resource.data.website is string || request.resource.data.website == null;
+function IsValidPositiveNumber(dataField){
+	return dataField is number && dataField >= 0;
 }
 
-function isValidImage(){
-	return request.resource.data.img is string || request.resource.data.img == null;
+function IsValidTimestampField(dataField){
+	return dataField is timestamp || dataField == null;
 }
 
-function isUpdatedAt(){
-	return request.resource.data.updatedAt is timestamp || request.resource.data.updatedAt == null;
-}
+//-------------------------------------------------------------//

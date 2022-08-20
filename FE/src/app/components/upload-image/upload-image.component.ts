@@ -46,7 +46,6 @@ export class UploadImageComponent implements OnInit {
       next: (resp) => this.image = resp,
       error:(err) => console.log(err)
     });
-
   }
 
   onFileSelected(event: any) {
