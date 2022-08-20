@@ -233,11 +233,30 @@ export class FirestoreService {
       .update({ name: "bob's burgers", description: "a good burger joint" })
   }
 
-//---------------------- Example Calls -------------------------------//
-     //this.FirestoreService.getOrganisationsDonationItems("10nnl0uiNsnF5uyyaDYN").subscribe(resp => console.log(resp))
-    //this.FirestoreService.createItem("DXrAVUA8QZ4d1hNYbdJC")
-    //this.FirestoreService.createOrganisation()
-    //this.FirestoreService.generateMockDate();
-    //this.FirestoreService.updateOrganisation();
-    //this.FirestoreService.updateItem();
+  getItemsSubCollection = () => {
+    const org = this.fs.collection('Organisations')
+      .doc('2IzLosiLPMRC6nRDF23c')
+      .collection('Donations').valueChanges()
+
+    return org;
+  }
+
+  //---------------------- Example Calls -------------------------------//
+  //this.FirestoreService.getOrganisationsDonationItems("10nnl0uiNsnF5uyyaDYN").subscribe(resp => console.log(resp))
+  //this.FirestoreService.createItem("DXrAVUA8QZ4d1hNYbdJC")
+  //this.FirestoreService.createOrganisation()
+  //this.FirestoreService.generateMockDate();
+  //this.FirestoreService.updateOrganisation();
+  //this.FirestoreService.updateItem();
+  // this.FirestoreService.getItemsSubCollection()
+  // .subscribe((resp:any) => {
+  //   resp[0].ref.get().then(resp => console.log(resp.data()))
+  // })
+  // this.FirestoreService.getItemsSubCollection()
+  // .subscribe((resp:any) => {
+  //   resp.forEach((doc: any) => {
+  //    doc.ref.get().then((item:any) => console.log(item.data()))
+  //  })
+  // })
+
 }

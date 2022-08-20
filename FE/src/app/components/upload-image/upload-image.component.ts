@@ -3,6 +3,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import {  Observable } from 'rxjs';
 import { FirestoreService } from 'src/app/services/firestore-services/firestore.service';
+import { DocumentReference } from 'firebase/firestore';
 
 @Component({
   selector: 'app-upload-image',
@@ -46,6 +47,7 @@ export class UploadImageComponent implements OnInit {
       next: (resp) => this.image = resp,
       error:(err) => console.log(err)
     });
+
   }
 
   onFileSelected(event: any) {
