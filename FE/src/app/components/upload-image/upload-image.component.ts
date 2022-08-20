@@ -54,7 +54,6 @@ export class UploadImageComponent implements OnInit {
     const file = "target" in event ? event.target.files as FileList : event;
 
     const regImageType = /image\/.*/g
-    console.log()
 
     if (file) {
       if (!regImageType.test(file[0].type)) {
