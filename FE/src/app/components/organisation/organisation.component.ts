@@ -1,16 +1,23 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Inject, ViewChild } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Data } from '@angular/router';
+import { TaskService } from 'src/app/task.service';
 
+//MAKE THIS ABLE TO CONVERT TO JSON SOMEHOW OR MAKE IT JSONSTRINGIFY
 
 export interface DialogData {
-  organisationName: string;
-  summary: string;
-  website: string;
-  abn: number;
-  phone: number;
+  name: string | undefined;
+  summary: string | undefined;
+  activeStatus: boolean;
+  ABN: string | undefined;
+  phone: string | undefined;
+  website: string | undefined;
+  img: string | undefined;
+  description: string | undefined;
 }
 
 
@@ -20,10 +27,27 @@ export interface DialogData {
   styleUrls: ['./organisation.component.scss']
 })
 export class AddOrganisationDialog {
+  // passedvalues: object | undefined;
+  // name: string | undefined;
+  // description: string | undefined;
+  // summary: string | undefined;
+  // activeStatus: boolean = true;
+  // ABN: string | undefined;
+  // phone: string | undefined;
+  // website: string | undefined;
+  // img: string = "INSERT Image URL";
+
   constructor(
     public dialogRef: MatDialogRef<AddOrganisationDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    @Inject(MAT_DIALOG_DATA) public data : DialogData,
+    private taskService: TaskService,
   ) {}
+
+  // createNewOrganisation(passedvalues) {
+  //   this.taskService.createOrganisation(passedvalues).subscribe((response: any) => {
+  //     console.log(passedvalues);
+  //   });
+  // }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -37,47 +61,59 @@ export class AddOrganisationDialog {
   styleUrls: ['./organisation.component.scss']
 })
 export class OrganisationComponent {
-  passedvalues: object | undefined;
-  organisationName: string | undefined;
+  passedvalues: JSON | undefined;
+  name: string | undefined;
+  description: string | undefined;
   summary: string | undefined;
+  activeStatus: boolean = true;
+  ABN: string | undefined;
+  phone: string | undefined;
   website: string | undefined;
-  abn: number | undefined;
-  phone: number | undefined;
+  img: string = "INSERT Image URL";
   displayedColumns: string[] = ['name', 'activeItems', 'donations'];
-  dataSource: MatTableDataSource<Organisation>;
+  dataSource: any;
   selectedRowIndex = "";
 
 
-  constructor(public dialog: MatDialog) {
-    this.dataSource = new MatTableDataSource(this.orgs);
+  constructor(public dialog: MatDialog, private taskService: TaskService, public http: HttpClient) {
   }
 
-  addOrg(): void {
+
+  addOrgDialog(): void {
     const dialogRef = this.dialog.open(AddOrganisationDialog, {
       width: '400px',
-      data: {organisationName: this.organisationName, summary: this.summary, website: this.website, abn: this.abn, phone: this.phone},
+      data: {name: this.name, summary: this.summary, activeStatus: this.activeStatus, ABN: this.ABN, phone: this.phone, website: this.website, img: this.img, description: this.description},
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.passedvalues = result;
+      this.http.post('https://dip-challenge.azurewebsites.net/organisation', JSON.parse(JSON.stringify(result))).subscribe(
+        response => {
+          console.log(response);
+      });
     });
   }
 
-  orgs: Organisation[] = [
-    { id: 'abc123', name: 'Glen\'s Organic Produce', activeItems: 12, inactiveItems: 0, donations: 10000 },
-    { id: 'def456', name: 'Social Moments', activeItems: 4, inactiveItems: 0, donations: 600 },
-    { id: 'ghi789', name: 'Robert\'s Shoe Store', activeItems: 8, inactiveItems: 0, donations: 900 },
-  ];
-  items: Item[] = [
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'abc123' },
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'abc123' },
-    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'def456' },
-    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'def456' },
-    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'ghi789' },
-    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'ghi789' },
-  ]
+
+
+  orgs: Organisation[];
+  items: Item[];
   activeItems: Item[];
+
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    this.getOrgs();
+  }
+
+
+  getOrgs(){
+    this.http.get<any>('https://dip-challenge.azurewebsites.net/organisation/dashboard').subscribe(
+      response => {
+        console.log(response);
+        this.orgs = response;
+    });
+    }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -123,3 +159,7 @@ export interface Item {
   activeStatus: boolean;
   orgID: string;
 }
+function createNewOrganisation(passedvalues: any) {
+  throw new Error('Function not implemented.');
+}
+

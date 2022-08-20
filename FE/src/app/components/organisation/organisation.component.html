@@ -3,7 +3,7 @@
     <div class="container">
 
         <div class="table-header">
-            <button (click)="addOrg()" mat-raised-button color="primary">
+            <button (click)="addOrgDialog()" mat-raised-button color="primary">
                 <mat-icon>add</mat-icon>Organisation
             </button>
             <mat-form-field appearance="standard">
@@ -70,6 +70,8 @@
                 </mat-card-content>
             </mat-card>
               <p *ngIf="passedvalues">{{ passedvalues | json }}</p>
+              <!-- <button mat-button (click)="createNewOrganisation(passedvalues)"  cdkFocusInitial>Add</button> -->
+
         </div>
     </div>
 
