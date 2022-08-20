@@ -233,6 +233,7 @@ export class FirestoreService {
       .update({ name: "bob's burgers", description: "a good burger joint" })
   }
 
+  //Example if Items where in subcollection of each organisation
   getItemsSubCollection = () => {
     const org = this.fs.collection('Organisations')
       .doc('2IzLosiLPMRC6nRDF23c')
@@ -252,6 +253,8 @@ export class FirestoreService {
   // .subscribe((resp:any) => {
   //   resp[0].ref.get().then(resp => console.log(resp.data()))
   // })
+
+  //Example of getting documents subCollections Reference
   // this.FirestoreService.getItemsSubCollection()
   // .subscribe((resp:any) => {
   //   resp.forEach((doc: any) => {
