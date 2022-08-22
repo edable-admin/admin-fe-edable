@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, ViewChild } from '@angular/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import {
   MatDialog,
   MatDialogRef,
@@ -30,6 +31,7 @@ export class AddOrganisationDialog {
 
   constructor(
     public dialogRef: MatDialogRef<AddOrganisationDialog>,
+    public authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
 
@@ -109,7 +111,7 @@ export class OrganisationComponent {
     });
   }
 
-  @ViewChild(MatPaginator,{static:true}) paginator: MatPaginator;;
+  @ViewChild(MatPaginator,{static:true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit(): void {
