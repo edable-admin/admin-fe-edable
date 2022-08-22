@@ -1,18 +1,18 @@
-.bigHeader{
-  font-size: 30px;
+.bigHeader {
+    font-size: 30px;
 }
 
 .centerAlign {
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 label {
-  display: inline-block;
-  width: 150px;
+    display: inline-block;
+    width: 150px;
 }
 
 .mat-form-field {
@@ -20,21 +20,19 @@ label {
 }
 
 td,
-th {
-    // width: 100px;
-}
-
-td,
 tr {
     height: 65px;
 }
-td, tr:hover {
+
+td,
+tr:hover {
     cursor: pointer;
 }
 
 .container {
     margin: 0px 20px 0px 20px;
 }
+
 .table-header,
 button {
     margin-right: 10px;
@@ -43,9 +41,11 @@ button {
 .row-selected {
     background: rgb(185, 185, 185);
 }
+
 .flex-container {
     display: flex;
 }
+
 .mat-elevation-z8 {
     flex: 1;
     margin-right: 10px;
@@ -58,17 +58,48 @@ button {
     min-height: 50px;
     text-align: center;
 }
+
 table {
     width: 100%;
 }
+
 .item-container {
     margin-top: 20px;
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 .item-card {
-    background: rgb(255, 255, 255);
-    max-width: 150px;
-    margin-right: 20px;
-    border: 1px solid #333;
+    height: 0%;
+    min-width: 150px;
+    max-width: 200px;
+    margin: 0px 15px 15px 0px;
 }
-
+.item-card img {
+    height: 200px;
+    width: 200px;
+    object-fit: contain;
+}
+.add-item-card {
+    height: 0%;
+    min-width: 150px;
+    max-width: 200px;
+    margin: 0px 15px 15px 0px;
+    background-color: #3f51b5;
+    color: white;
+}
+.add-icon {
+    width: 168px;
+    height: 168px;
+    font-size: 168px;
+}
+.add-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 268px;
+}
+.mat-card-header {
+    text-align: center;
+    display: block;
+}

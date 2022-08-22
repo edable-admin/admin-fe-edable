@@ -30,7 +30,7 @@ export class AddOrganisationDialog {
   constructor(
     public dialogRef: MatDialogRef<AddOrganisationDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) {}
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -171,5 +171,6 @@ export interface Item {
   totalDonations: number;
   activeStatus: boolean;
   orgID: string;
+  img: string;
 }
 
