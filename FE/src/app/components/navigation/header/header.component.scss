@@ -15,10 +15,6 @@ a:hover, a:active{
 
 mat-toolbar{
     border-radius: 3px;
-    
-}
-.main-toolbar {
-    
 }
 
 @media(max-width: 850px){
@@ -32,21 +28,16 @@ mat-toolbar{
     .nav-header {
         
         text-align: center;
-        width: 100%;
-        
-        
-    }
-    
-
-    
+        width: 100%;      
+    }  
 }
 
 @media screen and (min-width: 850px) {
     .spacer {
         flex: 0.475 0.475 auto;
-    }
-    
+    }    
   }
+
 .nav-item {
     padding-left: 10px;
     padding-right: 10px;
@@ -55,13 +46,13 @@ mat-toolbar{
     border-right: solid white;
     border-width: 1px;
 }
+
 .user-button {
-    vertical-align: middle;
-    
+    vertical-align: middle;   
 }
+
 h1 {
     margin-top: 3px;
-    
 }
 
 .main-toolbar {

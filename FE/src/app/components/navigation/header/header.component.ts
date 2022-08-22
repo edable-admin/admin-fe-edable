@@ -11,6 +11,7 @@ export class HeaderComponent implements OnInit {
 
   constructor() { }
 
+  //Toggle hamburger menu
   public onToggleSidenav = () => { 
     this.sidenavToggle.emit();
   }
