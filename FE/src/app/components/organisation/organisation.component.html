@@ -1,5 +1,4 @@
 <html>
-
 <body>
     <div class="container">
         <h1 *ngFor="let item of cleanOrgData">{{item.ABN}}</h1>
@@ -10,7 +9,7 @@
             </button>
             <mat-form-field appearance="standard">
                 <mat-label>Search Organisations</mat-label>
-                <input matInput (keyup)="applyFilter($event)" placeholder="EdAble" #input>
+                <input matInput (keyup)="applyFilter($event)"  #input>
             </mat-form-field>
         </div>
 
