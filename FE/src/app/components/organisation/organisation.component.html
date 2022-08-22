@@ -2,9 +2,10 @@
 
 <body>
     <div class="container">
+        <h1 *ngFor="let item of cleanOrgData">{{item.ABN}}</h1>
 
         <div class="table-header">
-            <button (click)="addOrg()" mat-raised-button color="primary">
+            <button (click)="addOrgDialog()" mat-raised-button color="primary">
                 <mat-icon>add</mat-icon>Organisation
             </button>
             <mat-form-field appearance="standard">
@@ -15,7 +16,7 @@
 
         <div class="flex-container">
             <div class="mat-elevation-z8">
-                <table mat-table [dataSource]="dataSource" matSort>
+                <table mat-table [dataSource]="cleanOrgData" matSort>
 
                     <ng-container matColumnDef="name">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
@@ -75,7 +76,6 @@
                     <p>Raised: ${{item.totalDonations}}</p>
                 </mat-card-content>
             </mat-card>
-            <p *ngIf="passedvalues">{{ passedvalues | json }}</p>
         </div>
     </div>
 

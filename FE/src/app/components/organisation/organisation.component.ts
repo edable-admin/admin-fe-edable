@@ -1,25 +1,32 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Inject, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 
 
 export interface DialogData {
-  organisationName: string;
-  summary: string;
-  website: string;
-  abn: number;
-  phone: number;
+  name: string | undefined;
+  summary: string | undefined;
+  activeStatus: boolean;
+  ABN: string | undefined;
+  phone: string | undefined;
+  website: string | undefined;
+  img: string | undefined;
+  description: string | undefined;
 }
-
 
 @Component({
   selector: 'organisation-add-dialog.component',
   templateUrl: 'organisation-add-dialog.component.html',
-  styleUrls: ['./organisation.component.scss']
+  styleUrls: ['./organisation.component.scss'],
 })
 export class AddOrganisationDialog {
+
   constructor(
     public dialogRef: MatDialogRef<AddOrganisationDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -34,58 +41,95 @@ export class AddOrganisationDialog {
 @Component({
   selector: 'app-organisation',
   templateUrl: './organisation.component.html',
-  styleUrls: ['./organisation.component.scss']
+  styleUrls: ['./organisation.component.scss'],
 })
 export class OrganisationComponent {
-  passedvalues: object | undefined;
-  organisationName: string | undefined;
+  passedvalues: JSON | undefined;
+  name: string | undefined;
+  description: string | undefined;
   summary: string | undefined;
+  activeStatus: boolean = true;
+  ABN: string | undefined;
+  phone: string | undefined;
   website: string | undefined;
-  abn: number | undefined;
-  phone: number | undefined;
+  img: string = 'INSERT Image URL';
   displayedColumns: string[] = ['name', 'activeItems', 'donations'];
-  dataSource: MatTableDataSource<Organisation>;
-  selectedRowIndex = "";
+  dataSource: any;
+  selectedRowIndex = '';
+  orgs: Organisation[];
+  items: Item[];
+  activeItems: Item[];
+  orgData: any;
+  cleanOrgData: any;
 
+  constructor(
+    public dialog: MatDialog,
+    public http: HttpClient,
+  ) {}
 
-  constructor(public dialog: MatDialog) {
-    this.dataSource = new MatTableDataSource(this.orgs);
-  }
-
-  addOrg(): void {
+  addOrgDialog(): void {
     const dialogRef = this.dialog.open(AddOrganisationDialog, {
       width: '400px',
-      data: { organisationName: this.organisationName, summary: this.summary, website: this.website, abn: this.abn, phone: this.phone },
+      data: {
+        name: this.name,
+        summary: this.summary,
+        activeStatus: this.activeStatus,
+        ABN: this.ABN,
+        phone: this.phone,
+        website: this.website,
+        img: this.img,
+        description: this.description,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
-      this.passedvalues = result;
+      this.http
+        .post(
+          'https://dip-challenge.azurewebsites.net/organisation',
+          JSON.parse(JSON.stringify(result))
+        )
+        .subscribe((response) => {
+          console.log(response);
+          this.getOrgs();
+        });
     });
   }
 
-  orgs: Organisation[] = [
-    { id: 'abc123', name: 'Glen\'s Organic Produce', activeItems: 12, inactiveItems: 0, donations: 10000 },
-    { id: 'def456', name: 'Social Moments', activeItems: 4, inactiveItems: 0, donations: 600 },
-    { id: 'ghi789', name: 'Robert\'s Shoe Store', activeItems: 8, inactiveItems: 0, donations: 900 },
-  ];
-  items: Item[] = [
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'abc123', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'abc123', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'abc123', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'abc123', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'abc123', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'abc123', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'def456', img:  'https://i.imgur.com/IJ3ehgi.jpeg'},
-    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'def456', img:  'https://i.imgur.com/BTV0RRM.png'},
-    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'ghi789', img: 'https://i.imgur.com/4TmqOIi.jpeg' },
-    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'ghi789', img:  'https://i.imgur.com/Cwtpkj4.jpeg'},
-  ]
-  activeItems: Item[];
+  ngOnInit(): void {
+    this.getOrgs();
+  }
+
+  getOrgs() {
+    this.http
+      .get<any>(
+        'https://dip-challenge.azurewebsites.net/organisation/dashboard'
+      )
+      .subscribe({
+        next: (resp) => {
+          (this.orgData = resp), console.log(resp);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {
+          this.cleanOrgData = this.orgData.map((item: any) => {
+            let org = {
+              name: item._fieldsProto.name.stringValue,
+              activeItems: 0,
+              donations: 0,
+            };
+
+            return org;
+          });
+
+          console.log(this.cleanOrgData);
+        },
+      });
+  }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -103,22 +147,23 @@ export class OrganisationComponent {
 
   selectRow(row: Organisation) {
     if (this.selectedRowIndex === row.id) {
-      this.selectedRowIndex = "";
+      this.selectedRowIndex = '';
       this.activeItems = [];
       return;
     }
     this.selectedRowIndex = row.id;
-    this.activeItems = this.items.filter(item => { return item.orgID === row.id });
+    this.activeItems = this.items.filter((item) => {
+      return item.orgID === row.id;
+    });
     console.log(this.activeItems);
-
   }
 }
 export interface Organisation {
   id: string;
   name: string;
-  activeItems: number;
+  activeItems?: number;
   inactiveItems: number;
-  donations: number;
+  donations?: number;
 }
 export interface Item {
   name: string;
@@ -128,3 +173,4 @@ export interface Item {
   orgID: string;
   img: string;
 }
+
