@@ -1,5 +1,5 @@
 import { Component, Inject, ViewChild } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,7 +23,7 @@ export class AddOrganisationDialog {
   constructor(
     public dialogRef: MatDialogRef<AddOrganisationDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) {}
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -55,7 +55,7 @@ export class OrganisationComponent {
   addOrg(): void {
     const dialogRef = this.dialog.open(AddOrganisationDialog, {
       width: '400px',
-      data: {organisationName: this.organisationName, summary: this.summary, website: this.website, abn: this.abn, phone: this.phone},
+      data: { organisationName: this.organisationName, summary: this.summary, website: this.website, abn: this.abn, phone: this.phone },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -70,12 +70,16 @@ export class OrganisationComponent {
     { id: 'ghi789', name: 'Robert\'s Shoe Store', activeItems: 8, inactiveItems: 0, donations: 900 },
   ];
   items: Item[] = [
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'abc123' },
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'abc123' },
-    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'def456' },
-    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'def456' },
-    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'ghi789' },
-    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'ghi789' },
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'abc123', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'abc123', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'abc123', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'abc123', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'abc123', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'abc123', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'def456', img:  'https://i.imgur.com/IJ3ehgi.jpeg'},
+    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'def456', img:  'https://i.imgur.com/BTV0RRM.png'},
+    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'ghi789', img: 'https://i.imgur.com/4TmqOIi.jpeg' },
+    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'ghi789', img:  'https://i.imgur.com/Cwtpkj4.jpeg'},
   ]
   activeItems: Item[];
 
@@ -122,4 +126,5 @@ export interface Item {
   totalDonations: number;
   activeStatus: boolean;
   orgID: string;
+  img: string;
 }
