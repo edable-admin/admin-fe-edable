@@ -7,11 +7,7 @@ import {
 } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Data } from '@angular/router';
-import { TaskService } from 'src/app/task.service';
 
-//MAKE THIS ABLE TO CONVERT TO JSON SOMEHOW OR MAKE IT JSONSTRINGIFY
 
 export interface DialogData {
   name: string | undefined;
@@ -30,32 +26,17 @@ export interface DialogData {
   styleUrls: ['./organisation.component.scss'],
 })
 export class AddOrganisationDialog {
-  // passedvalues: object | undefined;
-  // name: string | undefined;
-  // description: string | undefined;
-  // summary: string | undefined;
-  // activeStatus: boolean = true;
-  // ABN: string | undefined;
-  // phone: string | undefined;
-  // website: string | undefined;
-  // img: string = "INSERT Image URL";
 
   constructor(
     public dialogRef: MatDialogRef<AddOrganisationDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private taskService: TaskService
   ) {}
-
-  // createNewOrganisation(passedvalues) {
-  //   this.taskService.createOrganisation(passedvalues).subscribe((response: any) => {
-  //     console.log(passedvalues);
-  //   });
-  // }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 }
+
 
 @Component({
   selector: 'app-organisation',
@@ -75,11 +56,15 @@ export class OrganisationComponent {
   displayedColumns: string[] = ['name', 'activeItems', 'donations'];
   dataSource: any;
   selectedRowIndex = '';
+  orgs: Organisation[];
+  items: Item[];
+  activeItems: Item[];
+  orgData: any;
+  cleanOrgData: any;
 
   constructor(
     public dialog: MatDialog,
-    private taskService: TaskService,
-    public http: HttpClient
+    public http: HttpClient,
   ) {}
 
   addOrgDialog(): void {
@@ -111,20 +96,8 @@ export class OrganisationComponent {
     });
   }
 
-  orgs: Organisation[];
-  items: Item[];
-  activeItems: Item[];
-  orgData: any;
-  cleanOrgData: any;
-
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    // this.getOrgs().then( resp => console.log(resp));
     this.getOrgs();
-    // console.log(this.orgData);
-    // console.log(this.cleanOrgData);
-    // this.getOrganisations();
   }
 
   getOrgs() {
@@ -154,15 +127,6 @@ export class OrganisationComponent {
         },
       });
   }
-
-  // getOrganisations(){
-  // this.http.get<any>('https://dip-challenge.azurewebsites.net/organisation/dashboard').subscribe(
-  //   response => {
-  //     console.log(response[0]._fieldsProto);
-  //     this.orgs = response;
-  //     console.log(this.orgs);
-  // });
-  // }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
