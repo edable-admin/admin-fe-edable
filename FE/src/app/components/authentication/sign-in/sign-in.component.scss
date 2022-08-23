@@ -1,7 +1,9 @@
 body{
   background-color: #3F51B5;
   padding: 40px;
+  min-height: 100%;
 }
+
 .authBlock{
   display: flex;
   flex-direction: column;
@@ -12,13 +14,16 @@ body{
   padding: 40px;
   background-color: white;
   border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
+  
 
 .formControl{
   margin: 20px;
   height: 30px;
-  border: 1px solid rgb(99, 99, 99);
+  border: 2px solid rgb(99, 99, 99);
   padding: 5px;
+  border-radius: 10px;
 }
 
 .forgotPassword{
@@ -34,8 +39,19 @@ h3{
   font-weight: bold;
   font-size: 30px;
   margin-bottom: 70px;
+  text-align: center;
 }
 
 .max-width{
   width: 300px;
 }
+
+.redirect{
+  cursor: pointer;
+}
+
+@media(max-width: 400px){
+  .authBlock{
+    width: 200px;
+  }
+  }
