@@ -7,6 +7,10 @@ import { MaterialsModule } from './modules/materials.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { OrganisationComponent } from './components/organisation/organisation.component';
+import { HeaderComponent } from './components/navigation/header/header.component';
+import { SidebarComponent } from './components/navigation/sidebar/sidebar.component';
+import { TransactionsComponent } from './components/transactions/transactions.component';
+
 import { AuthService } from "./shared/services/auth.service";
 
 //------------- Upload Image Component ----------------------------//
@@ -25,6 +29,7 @@ import { environment } from '../environments/environment';
 import { SignInComponent } from './components/authentication/sign-in/sign-in.component';
 import { ForgotPasswordComponent } from './components/authentication/forgot-password/forgot-password.component';
 import { TempPageComponent } from './components/authentication/temp-page/temp-page.component';
+import { MainComponent } from './components/main/main.component';
 
 const config = environment.firebaseConfig;
 
@@ -42,6 +47,10 @@ import {HttpClientModule} from '@angular/common/http';
     SignInComponent,
     ForgotPasswordComponent,
     TempPageComponent,
+    HeaderComponent,
+    SidebarComponent,
+    TransactionsComponent,
+    MainComponent,
     AddOrganisationDialog,
     EditOrganisationDialog,
   ],

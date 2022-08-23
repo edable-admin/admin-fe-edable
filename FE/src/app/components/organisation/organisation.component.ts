@@ -81,7 +81,6 @@ export class OrganisationComponent {
   activeItems: Item[];
   orgData: any;
   cleanOrgData: any;
-  // dataSource: any;
 
   items: Item[] = [
     { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/ioUzxDC.jpeg'},

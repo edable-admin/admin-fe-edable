@@ -6,6 +6,8 @@ import { TempPageComponent } from './components/authentication/temp-page/temp-pa
 import { OrganisationComponent } from './components/organisation/organisation.component';
 import { UploadImageComponent } from './components/upload-image/upload-image.component';
 import { AuthGuard } from './shared/guard/auth.guard';
+import {TransactionsComponent} from './components/transactions/transactions.component'
+import { MainComponent } from './components/main/main.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialsModule} from './modules/materials.module';
@@ -16,10 +18,19 @@ import {HttpClientModule} from '@angular/common/http';
   // User canActivate with [AuthGuard] to secure endpoints and ensure user is logged in
   // { path: 'dashboard', component: OrganisationComponent,  canActivate: [AuthGuard]},
 const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: OrganisationComponent},
+  // open routes
+  { path: '', redirectTo: 'main', pathMatch: 'full' },
   { path: 'sign-in', component: SignInComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  // protected routes. routes in main/... are protected by AuthGuard.
+  {path:'main',component:MainComponent,canActivate:[AuthGuard],
+    children:[
+      { path: '', component: OrganisationComponent},
+      { path: 'transaction', component: TransactionsComponent},
+    ]
+  }
+
+
 ];
 
 @NgModule({
