@@ -90,19 +90,20 @@ export class OrganisationComponent {
   activeItems: Item[];
   orgData: any;
   cleanOrgData: any;
+  selectedOrgData: any;
 
 
   items: Item[] = [
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img:  'https://i.imgur.com/IJ3ehgi.jpeg'},
-    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img:  'https://i.imgur.com/BTV0RRM.png'},
-    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/4TmqOIi.jpeg' },
-    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img:  'https://i.imgur.com/Cwtpkj4.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img:  'https://i.imgur.com/IJ3ehgi.jpeg'},
+    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img:  'https://i.imgur.com/BTV0RRM.png'},
+    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/4TmqOIi.jpeg' },
+    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img:  'https://i.imgur.com/Cwtpkj4.jpeg'},
   ]
 
 
@@ -130,7 +131,6 @@ export class OrganisationComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      // console.log('The dialog was closed');
       this.http
         .post(
           'https://dip-challenge.azurewebsites.net/organisation',
@@ -161,25 +161,26 @@ export class OrganisationComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      // console.log('The dialog was closed');
-      console.log(result);
-      
       this.http
         .put(
           `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
           JSON.parse(JSON.stringify(result))
         )
         .subscribe((response) => {
-          
           this.getOrgs();
           this.selectedOrgName = result.name;
-          this.selectedRowIndex = result.id;
+          this.selectedOrgSummary = result.summary;
+          this.selectedOrgDescription = result.description;
+          this.selectedOrgActiveStatus = result.activeStatus;
           this.selectedOrgABN = result.ABN;
-
+          this.selectedOrgPhone = result.phone;
+          this.selectedOrgWebsite = result.website;
+          this.selectedOrgImg = result.img;
+          this.selectedOrgTotalDonationItems = result.activeItems;
+          this.selectedOrgTotalDonations = result.donations;
         });
     });
   }
-
 
   @ViewChild(MatPaginator,{static:true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -191,7 +192,7 @@ export class OrganisationComponent {
       getOrgs(){
         this.http.get<any>('https://dip-challenge.azurewebsites.net/organisation/dashboard').subscribe(
           response => {
-            console.log(response)
+            console.log(response);
             this.orgData = response.map((item: any) => {
               let org = {
               id: item.id,
@@ -211,20 +212,11 @@ export class OrganisationComponent {
               return org;
             }
             )
-            console.log(this.orgData);
-
           this.orgData = new MatTableDataSource(this.orgData);
           this.orgData.paginator = this.paginator;
           this.orgData.sort = this.sort;
-          console.log(this.orgData);
-
         });
         }
-
-  // ngAfterViewInit() {
-  //   this.dataSource.paginator = this.paginator;
-  //   this.dataSource.sort = this.sort;
-  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -236,8 +228,6 @@ export class OrganisationComponent {
   }
 
   selectRow(orgData) {
-    console.log(orgData);
-    
     if (this.selectedRowIndex === orgData.id) {
       this.selectedRowIndex = '';
       this.activeItems = [];
@@ -257,7 +247,6 @@ export class OrganisationComponent {
     this.activeItems = this.items.filter((item) => {
       return item.orgID === orgData.id;
     });
-    // console.log(this.activeItems);
   }
 }
 export interface Item {
