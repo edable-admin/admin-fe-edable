@@ -77,10 +77,21 @@ export class OrganisationComponent {
   totalDonations: number;
   displayedColumns: string[] = ['name', 'activeItems', 'donations'];
   selectedRowIndex = '';
+  selectedOrgName='';
+  selectedOrgSummary = '';
+  selectedOrgDescription='';
+  selectedOrgActiveStatus='';
+  selectedOrgABN='';
+  selectedOrgPhone='';
+  selectedOrgWebsite='';
+  selectedOrgImg='';
+  selectedOrgTotalDonationItems='';
+  selectedOrgTotalDonations='';
   orgs: Organisation[];
   activeItems: Item[];
   orgData: any;
   cleanOrgData: any;
+
 
   items: Item[] = [
     { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
@@ -137,16 +148,16 @@ export class OrganisationComponent {
       width: '400px',
       data: {
         id: this.selectedRowIndex,
-        name: this.name,
-        summary: this.summary,
-        description: this.description,
-        activeStatus: this.activeStatus,
-        ABN: this.ABN,
-        phone: this.phone,
-        website: this.website,
-        img: this.img,
-        totalDonationItems: 0,
-        totalDonations: 0,
+        name: this.selectedOrgName,
+        summary: this.selectedOrgSummary,
+        description: this.selectedOrgDescription,
+        activeStatus: this.selectedOrgActiveStatus,
+        ABN: this.selectedOrgABN,
+        phone: this.selectedOrgPhone,
+        website: this.selectedOrgWebsite,
+        img: this.selectedOrgImg,
+        totalDonationItems: this.selectedOrgTotalDonationItems,
+        totalDonations: this.selectedOrgTotalDonations,
       },
     });
 
@@ -181,6 +192,15 @@ export class OrganisationComponent {
               name: item.orgs.newOrg.name,
               activeItems: item.orgs.newOrg.totalDonationItems,
               donations: item.orgs.newOrg.totalDonations,
+              summary: item.orgs.newOrg.summary,
+              description: item.orgs.newOrg.description,
+              activeStatus: item.orgs.newOrg.activeStatus,
+              ABN:item.orgs.newOrg.ABN,
+              phone: item.orgs.newOrg.phone,
+              website: item.orgs.newOrg.website,
+              img: item.orgs.newOrg.img,
+              totalDonationItems: item.orgs.newOrg.totalDonationItems,
+              totalDonations: item.orgs.newOrg.totalDonations,
               };
               return org;
             }
@@ -216,6 +236,16 @@ export class OrganisationComponent {
       return;
     }
     this.selectedRowIndex = orgData.id;
+    this.selectedOrgName=orgData.name;
+    this.selectedOrgSummary = orgData.summary;
+    this.selectedOrgDescription=orgData.description;
+    this.selectedOrgActiveStatus=orgData.activeStatus;
+    this.selectedOrgABN=orgData.ABN;
+    this.selectedOrgPhone=orgData.phone;
+    this.selectedOrgWebsite=orgData.website;
+    this.selectedOrgImg=orgData.img;
+    this.selectedOrgTotalDonationItems=orgData.activeItems;
+    this.selectedOrgTotalDonations=orgData.donations;
     this.activeItems = this.items.filter((item) => {
       return item.orgID === orgData.id;
     });
