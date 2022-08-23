@@ -31,7 +31,6 @@ export class AddOrganisationDialog {
 
   constructor(
     public dialogRef: MatDialogRef<AddOrganisationDialog>,
-    public authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
 
@@ -79,6 +78,7 @@ export class OrganisationComponent {
 
 
   constructor(
+    public authService: AuthService,
     public dialog: MatDialog,
     public http: HttpClient,
   ) {}
