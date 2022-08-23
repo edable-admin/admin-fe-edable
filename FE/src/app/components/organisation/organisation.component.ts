@@ -21,6 +21,9 @@ export interface DialogData {
   website: string | undefined;
   img: string | undefined;
   description: string | undefined;
+  totalDonationItems: number;
+  totalDonations: number;
+
 }
 
 @Component({
@@ -115,7 +118,7 @@ export class OrganisationComponent {
 
   addOrgDialog(): void {
     const dialogRef = this.dialog.open(AddOrganisationDialog, {
-      width: '400px',
+      width: '730px',
       data: {
         name: this.name,
         summary: this.summary,
@@ -144,7 +147,7 @@ export class OrganisationComponent {
 
   editOrgDialog(): void {
     const dialogRef = this.dialog.open(EditOrganisationDialog, {
-      width: '400px',
+      width: '730px',
       data: {
         id: this.selectedRowIndex,
         name: this.selectedOrgName,
@@ -176,8 +179,8 @@ export class OrganisationComponent {
           this.selectedOrgPhone = result.phone;
           this.selectedOrgWebsite = result.website;
           this.selectedOrgImg = result.img;
-          this.selectedOrgTotalDonationItems = result.activeItems;
-          this.selectedOrgTotalDonations = result.donations;
+          this.selectedOrgTotalDonationItems = result.totalDonationItems;
+          this.selectedOrgTotalDonations = result.totalDonations;
         });
     });
   }
