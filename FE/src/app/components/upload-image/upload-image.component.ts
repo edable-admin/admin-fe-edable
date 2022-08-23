@@ -34,7 +34,7 @@ export class UploadImageComponent implements OnInit {
 
   ngOnInit(): void {
     this.meta.subscribe({
-      next: (test) => this.image = test,
+      next: (img) => this.image = img,
       error:(err) => console.log(err)
      });
   }
@@ -51,9 +51,12 @@ export class UploadImageComponent implements OnInit {
         alert("invalid input")
         return;
       }
-    //todo the upload should be done on the create organisation level
-      this.storage.upload(`${this.organisationID}/orgLogo`, file[0])
+
       this.uploadedImage.emit(file)
+
+    //todo the upload should be done on the create organisation level
+      // this.storage.upload(`${this.organisationID}/orgLogo`, file[0])
+      // this.uploadedImage.emit(file)
 
       let reader = new FileReader();
       reader.readAsDataURL(file[0]);

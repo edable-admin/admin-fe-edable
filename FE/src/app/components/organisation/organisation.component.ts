@@ -9,6 +9,7 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 
 export interface DialogData {
@@ -34,6 +35,12 @@ export class AddOrganisationDialog {
     public dialogRef: MatDialogRef<AddOrganisationDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
+
+    //---------- Function to get image from image dialogBox --------------//
+    getImageFromChild(file:any){
+      this.data.img = file;
+    }
+    //-------------------------------------------------------------------//
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -93,6 +100,8 @@ export class OrganisationComponent {
   selectedOrgData: any;
 
 
+
+
   items: Item[] = [
     { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
     { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
@@ -110,6 +119,7 @@ export class OrganisationComponent {
   constructor(
     public authService: AuthService,
     public dialog: MatDialog,
+    private storage: AngularFireStorage,
     public http: HttpClient,
   ) {}
 
@@ -132,13 +142,21 @@ export class OrganisationComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result)
+      
       this.http
         .post(
           'https://dip-challenge.azurewebsites.net/organisation',
           JSON.parse(JSON.stringify(result))
         )
-        .subscribe((response) => {
+        .subscribe((response:any) => {
+
+//--------------- Uploads new org image to org --------------------//
+          const docRef = response._path.segments[1];
+          const collectionRef = response._path.segments[1];
+          const image = result.img[0]
+          this.storage.upload(`${collectionRef}/${docRef}`,image)
+//-----------------------------------------------------------------//
+
           this.getOrgs();
         });
     });
