@@ -183,6 +183,8 @@ export class OrganisationComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+
+      //todo fix console error
       this.http
         .put(
           `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
