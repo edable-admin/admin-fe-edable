@@ -12,7 +12,9 @@ export class HeaderComponent implements OnInit {
 
   constructor(public authService: AuthService) { }
 
-  public onToggleSidenav = () => {
+
+  //Toggle hamburger menu
+  public onToggleSidenav = () => { 
     this.sidenavToggle.emit();
   }
   ngOnInit(): void {
