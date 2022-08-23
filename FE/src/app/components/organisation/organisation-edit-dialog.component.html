@@ -40,9 +40,9 @@
   </mat-form-field>
 </div>
 
-<app-upload-image [orgnisationRef]="data.id"></app-upload-image>
+<app-upload-image [orgnisationRef]="data.id" (imageObj)="getImageFromChild($event)"></app-upload-image>
 
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button  [mat-dialog-close]="data" cdkFocusInitial color="warn">Edit</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial color="warn">Edit</button>
 </div>

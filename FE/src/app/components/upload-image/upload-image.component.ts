@@ -10,10 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class UploadImageComponent implements OnInit {
 
-  @Output() uploadedImage: EventEmitter<any> = new EventEmitter();
-
-  //----------------- todo get image url ------------------------//
-  @Output() imageUrl: EventEmitter<any> = new EventEmitter();
+  @Output() imageObj: EventEmitter<any> = new EventEmitter();
 
   //string organisation/orgref
   @Input() orgnisationRef = '';
@@ -27,6 +24,7 @@ export class UploadImageComponent implements OnInit {
   imageName!: any;
 
   image!: any;
+  imageURL: any;
   meta!: Observable<any>;
 
   constructor(
@@ -35,11 +33,15 @@ export class UploadImageComponent implements OnInit {
   ) {
   }
 
+  getImageURL() {
+    const ref = this.storage.ref(`Organisations/${this.orgnisationRef}/orgLogo`);
+    return ref.getDownloadURL();
+  }
+
   ngOnInit(): void {
 
-    const ref = this.storage.ref(`Organisations/${this.orgnisationRef}/orgLogo`);
-    this.meta = ref.getDownloadURL();
-    
+    this.meta = this.getImageURL();
+
     this.meta.subscribe({
       next: (img) => this.image = img,
       error:(err) => console.log(err)
@@ -47,11 +49,9 @@ export class UploadImageComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
-    //todo validate that this is actually an image file
     const file = "target" in event ? event.target.files as FileList : event;
 
     const regImageType = /image\/.*/g
-    console.log()
 
     if (file) {
       if (!regImageType.test(file[0].type)) {
@@ -59,7 +59,10 @@ export class UploadImageComponent implements OnInit {
         return;
       }
 
-      this.uploadedImage.emit(file)
+      let imageURLSub = this.getImageURL()
+          this.imageObj.emit({ fileList:file, imageUrl:imageURLSub})
+
+
 
     //todo the upload should be done on the create organisation level
       // this.storage.upload(`${this.organisationID}/orgLogo`, file[0])

@@ -21,6 +21,7 @@ export interface DialogData {
   phone: string | undefined;
   website: string | undefined;
   img: string | undefined;
+  imgURL: any | undefined;
   description: string | undefined;
 }
 
@@ -37,8 +38,9 @@ export class AddOrganisationDialog {
   ) { }
 
     //---------- Function to get image from image dialogBox --------------//
-    getImageFromChild(file:any){
-      this.data.img = file;
+  getImageFromChild(file: any) {
+      console.log(file)
+      this.data.imgURL = file;
     }
     //-------------------------------------------------------------------//
 
@@ -58,6 +60,12 @@ export class EditOrganisationDialog {
     public dialogRef: MatDialogRef<EditOrganisationDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
+
+  //---------- Function to get image from image dialogBox --------------//
+  getImageFromChild(file:any){
+    this.data.img = file;
+  }
+  //-------------------------------------------------------------------//
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -80,6 +88,7 @@ export class OrganisationComponent {
   phone: string | undefined;
   website: string | undefined;
   img: string = 'INSERT Image URL';
+  imgURL: any = '';
   totalDonationItems: number;
   totalDonations: number;
   displayedColumns: string[] = ['name', 'activeItems', 'donations'];
@@ -136,13 +145,20 @@ export class OrganisationComponent {
         phone: this.phone,
         website: this.website,
         img: this.img,
+        imgURL:this.imgURL,
         totalDonationItems: 0,
         totalDonations: 0,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      
+      console.log(result)
+
+      result.imageURL.subscribe({
+        next:(resp:any) => console.log(resp)
+      })
+
+
       this.http
         .post(
           'https://dip-challenge.azurewebsites.net/organisation',
