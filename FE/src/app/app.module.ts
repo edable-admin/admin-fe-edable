@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialsModule } from './modules/materials.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { OrganisationComponent } from './components/organisation/organisation.component';
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { SidebarComponent } from './components/navigation/sidebar/sidebar.component';
@@ -33,6 +33,10 @@ import { MainComponent } from './components/main/main.component';
 
 const config = environment.firebaseConfig;
 
+import {AddOrganisationDialog} from './components/organisation/organisation.component';
+import {MatNativeDateModule} from '@angular/material/core';
+import {HttpClientModule} from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +50,7 @@ const config = environment.firebaseConfig;
     SidebarComponent,
     TransactionsComponent,
     MainComponent,
+    AddOrganisationDialog,
   ],
   imports: [
     BrowserModule,
@@ -59,12 +64,10 @@ const config = environment.firebaseConfig;
     MaterialsModule,
     FlexLayoutModule,
     ReactiveFormsModule,
-
-
-  ],
-  exports: [
-    AngularFireStorageModule,
-
+    FormsModule,
+    HttpClientModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
   ],
   providers: [
     { provide: BUCKET, useValue: environment.firebaseConfig.storageBucket },AuthService

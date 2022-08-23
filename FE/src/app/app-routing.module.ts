@@ -8,6 +8,12 @@ import { UploadImageComponent } from './components/upload-image/upload-image.com
 import { AuthGuard } from './shared/guard/auth.guard';
 import {TransactionsComponent} from './components/transactions/transactions.component'
 import { MainComponent } from './components/main/main.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MaterialsModule} from './modules/materials.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatNativeDateModule} from '@angular/material/core';
+import {HttpClientModule} from '@angular/common/http';
 
   // User canActivate with [AuthGuard] to secure endpoints and ensure user is logged in
   // { path: 'dashboard', component: OrganisationComponent,  canActivate: [AuthGuard]},
@@ -28,7 +34,19 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  declarations: [],
+  imports: [
+    RouterModule.forRoot(routes),
+    BrowserAnimationsModule,
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    MatNativeDateModule,
+    MaterialsModule,
+    ReactiveFormsModule,
+  ],
+  exports: [RouterModule],
+  providers: [],
+  bootstrap: [],
 })
 export class AppRoutingModule { }

@@ -1,71 +1,185 @@
+import { HttpClient } from '@angular/common/http';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 
+export interface DialogData {
+  name: string | undefined;
+  summary: string | undefined;
+  activeStatus: boolean;
+  ABN: string | undefined;
+  phone: string | undefined;
+  website: string | undefined;
+  img: string | undefined;
+  description: string | undefined;
+}
+
+@Component({
+  selector: 'organisation-add-dialog.component',
+  templateUrl: 'organisation-add-dialog.component.html',
+  styleUrls: ['./organisation.component.scss'],
+})
+export class AddOrganisationDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<AddOrganisationDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+
 @Component({
   selector: 'app-organisation',
   templateUrl: './organisation.component.html',
-  styleUrls: ['./organisation.component.scss']
+  styleUrls: ['./organisation.component.scss'],
 })
 export class OrganisationComponent {
-  // displayedColumns: string[] = ['id', 'name', 'summary', 'activeStatus', 'abn', 'phone', 'website'];
-  displayedColumns: string[] = ['name', 'donationItems', 'donations'];
-  dataSource: MatTableDataSource<Organisation>;
-  // orgs: Organisation[] = [
-  //   { id: 'abc123', name: 'EdAble', summary: 'EdAble summary', activeStatus: true, abn: 123456, phone: '0444 444 444', website: 'www.edable.com', img: 'www.edable.com/img.png' },
-  //   { id: 'def456', name: 'Social Moments', summary: 'Social Moments summary', activeStatus: false, abn: 11223344, phone: '0411 111 111', website: 'www.socialmoments.com', img: 'www.socialmoments.com/img.png' },
-  //   { id: 'ghi789', name: 'Thrift Shop', summary: 'Thrift summary', activeStatus: true, abn: 44556677, phone: '0431 222 222', website: 'www.thriftshop.com', img: 'www.thriftshop.com/img.png' },
-  //   { id: 'jkl123', name: 'Glen\'s Organic Produce', summary: 'Glen\'s summary', activeStatus: false, abn: 987654, phone: '0414 444 444', website: 'www.glens.com', img: 'www.glens.com/img.png' },
-  //   { id: 'mno456', name: 'Robert\'s Shoe Store', summary: 'Robert\'s summary', activeStatus: true, abn: 123456, phone: '0414 333 333', website: 'www.roberts.com', img: 'www.roberts.com/img.png' },
-  // ];
-  orgs: Organisation[] = [
-    { id: 'abc123', name: 'Glen\'s Organic Produce', donationItems: 12, donations: 10000 },
-    { id: 'abc123', name: 'Social Moments', donationItems: 4, donations: 600 },
-    { id: 'abc123', name: 'Robert\'s Shoe Store', donationItems: 8, donations: 900 },
-  ];
+  passedvalues: JSON | undefined;
+  name: string | undefined;
+  description: string | undefined;
+  summary: string | undefined;
+  activeStatus: boolean = true;
+  ABN: string | undefined;
+  phone: string | undefined;
+  website: string | undefined;
+  img: string = 'INSERT Image URL';
+  totalDonationItems: number;
+  totalDonations: number;
+  displayedColumns: string[] = ['name', 'activeItems', 'donations'];
+  selectedRowIndex = '';
+  orgs: Organisation[];
+  activeItems: Item[];
+  orgData: any;
+  cleanOrgData: any;
+
+  items: Item[] = [
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Barry\'s Bakehouse', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Barry\'s Bakehouse', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Barry\'s Bakehouse', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Barry\'s Bakehouse', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Social Moments', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Social Moments', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'Tree\'s R US', img:  'https://i.imgur.com/IJ3ehgi.jpeg'},
+    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'Tree\'s R US', img:  'https://i.imgur.com/BTV0RRM.png'},
+    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'Tree\'s R US', img: 'https://i.imgur.com/4TmqOIi.jpeg' },
+    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Tree\'s R US', img:  'https://i.imgur.com/Cwtpkj4.jpeg'},
+  ]
 
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  constructor(
+    public authService: AuthService,
+    public dialog: MatDialog,
+    public http: HttpClient,
+  ) {}
+
+  addOrgDialog(): void {
+    const dialogRef = this.dialog.open(AddOrganisationDialog, {
+      width: '400px',
+      data: {
+        name: this.name,
+        summary: this.summary,
+        description: this.description,
+        activeStatus: this.activeStatus,
+        ABN: this.ABN,
+        phone: this.phone,
+        website: this.website,
+        img: this.img,
+        totalDonationItems: 0,
+        totalDonations: 0
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // console.log('The dialog was closed');
+      this.http
+        .post(
+          'https://dip-challenge.azurewebsites.net/organisation',
+          JSON.parse(JSON.stringify(result))
+        )
+        .subscribe((response) => {
+          this.getOrgs();
+        });
+    });
+  }
+
+  @ViewChild(MatPaginator,{static:true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  ngOnInit(): void {
+    this.getOrgs();
+  }
 
-  constructor(public authService: AuthService) {
-    this.dataSource = new MatTableDataSource(this.orgs);
-  }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+      getOrgs(){
+        this.http.get<any>('https://dip-challenge.azurewebsites.net/organisation/dashboard').subscribe(
+          response => {
+            this.orgData = response.map((item: any) => {
+              let org = {
+              name: item.orgs.newOrg.name,
+              activeItems: 0,
+              donations: 0,
+              };
+              return org;
+            })
+            console.log(this.orgData)
+          this.orgData = new MatTableDataSource(this.orgData);
+          this.orgData.paginator = this.paginator;
+          this.orgData.sort = this.sort;
+        });
+        }
+
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.orgData.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    if (this.orgData.paginator) {
+      this.orgData.paginator.firstPage();
     }
   }
-  addOrg() {
-    console.log("add new org");
 
+  selectRow(orgData) {
+    if (this.selectedRowIndex === orgData.name) {
+      this.selectedRowIndex = '';
+      this.activeItems = [];
+      return;
+    }
+    this.selectedRowIndex = orgData.name;
+    this.activeItems = this.items.filter((item) => {
+      return item.orgID === orgData.name;
+    });
+    // console.log(this.activeItems);
   }
 }
-// export interface Organisation {
-//   id: string;
-//   name: string;
-//   summary: string;
-//   activeStatus: boolean;
-//   abn: number;
-//   phone: string;
-//   website: string;
-//   img: string;
-// }
+
 export interface Organisation {
   id: string;
   name: string;
-  donationItems: number;
-  donations: number;
+  activeItems?: number;
+  inactiveItems: number;
+  donations?: number;
 }
+export interface Item {
+  name: string;
+  initialPrice: number;
+  totalDonations: number;
+  activeStatus: boolean;
+  orgID: string;
+  img: string;
+}
+
