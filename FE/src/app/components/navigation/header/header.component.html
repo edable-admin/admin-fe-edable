@@ -1,13 +1,13 @@
 <!-- Toolbar -->
 
 <mat-toolbar class="main-toolbar" color="primary">
-    <div fxHide.gt-xs>
+    <div class="hide-sidebar">
         <button mat-icon-button (click)="onToggleSidenav()">
             <mat-icon>menu</mat-icon>
         </button>
     </div>
 
-    <div fxHide.xs>
+    <div class="hide">
         <a class="nav-item" routerLink="/main">Dashboard</a>
         <a class="nav-item" routerLink="transaction">Transactions</a>
         <a class="nav-item" routerLink="/home">Reports</a>

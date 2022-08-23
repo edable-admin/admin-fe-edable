@@ -11,4 +11,7 @@
     <a mat-list-item routerLink="/report" (click)="onSidenavClose()">
         <mat-icon>account_balance</mat-icon><span class="nav-caption">Reports</span>
     </a>
+    <a mat-list-item (click)="onSidenavClose()">
+        <mat-icon>power_settings_new</mat-icon><span class="nav-caption" (click)="authService.SignOut()">Log Out</span>
+    </a>
   </mat-nav-list>
