@@ -151,10 +151,11 @@ export class OrganisationComponent {
         .subscribe((response:any) => {
 
 //--------------- Uploads new org image to org --------------------//
+          console.log(response)
           const docRef = response._path.segments[1];
-          const collectionRef = response._path.segments[1];
+          const collectionRef = response._path.segments[0];
           const image = result.img[0]
-          this.storage.upload(`${collectionRef}/${docRef}`,image)
+          this.storage.upload(`${collectionRef}/${docRef}/orgLogo`,image)
 //-----------------------------------------------------------------//
 
           this.getOrgs();

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
@@ -11,6 +11,9 @@ import { Observable } from 'rxjs';
 export class UploadImageComponent implements OnInit {
 
   @Output() uploadedImage: EventEmitter<any> = new EventEmitter();
+
+  //string organisation/orgref
+  @Input() orgnisationRef = '';
 
   //todo make organisationID an input which will be received from the api
   //when say the edit popup is opened
