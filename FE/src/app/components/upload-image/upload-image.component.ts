@@ -30,12 +30,13 @@ export class UploadImageComponent implements OnInit {
     private storage: AngularFireStorage,
     private firestore: AngularFirestore
   ) {
-    const ref = this.storage.ref(`${this.organisationID}/orgLogo`);
-    this.meta = ref.getDownloadURL();
-
   }
 
   ngOnInit(): void {
+
+    const ref = this.storage.ref(`Organisations/${this.orgnisationRef}/orgLogo`);
+    this.meta = ref.getDownloadURL();
+    
     this.meta.subscribe({
       next: (img) => this.image = img,
       error:(err) => console.log(err)
