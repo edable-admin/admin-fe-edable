@@ -37,6 +37,12 @@ mat-toolbar{
         flex: 0.475 0.475 auto;
     }    
   }
+  @media screen and (max-width: 300px) {
+    .nav-title {
+        font-size: medium;
+    }
+  }
+
 
 .nav-item {
     padding-left: 10px;
