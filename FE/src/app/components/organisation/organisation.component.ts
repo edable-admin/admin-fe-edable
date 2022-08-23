@@ -184,8 +184,8 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
 
-      //todo fix console error
-      this.http
+      if(result){
+        this.http
         .put(
           `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
           JSON.parse(JSON.stringify(result))
@@ -203,6 +203,8 @@ export class OrganisationComponent {
           this.selectedOrgTotalDonationItems = result.activeItems;
           this.selectedOrgTotalDonations = result.donations;
         });
+      }
+
     });
   }
 
