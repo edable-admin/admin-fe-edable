@@ -1,11 +1,8 @@
-<input type="button" class="btn btnPrimary" value="Log Out" (click)="authService.SignOut()">
 
 <html>
 
 <body>
     <div class="container">
-        <h1 *ngFor="let item of orgData">{{item.ABN}}</h1>
-
         <div class="table-header">
             <button (click)="addOrgDialog()" mat-raised-button color="primary">
                 <mat-icon>add</mat-icon>Organisation
@@ -94,8 +91,6 @@
             </mat-card>
         </div>
     </div>
-
-
 </body>
 
 </html>
