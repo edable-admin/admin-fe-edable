@@ -4,7 +4,7 @@
 
 <body>
     <div class="container">
-        <h1 *ngFor="let item of cleanOrgData">{{item.ABN}}</h1>
+        <h1 *ngFor="let item of orgData">{{item.ABN}}</h1>
 
         <div class="table-header">
             <button (click)="addOrgDialog()" mat-raised-button color="primary">
@@ -18,7 +18,7 @@
 
         <div class="flex-container">
             <div class="mat-elevation-z8">
-                <table mat-table [dataSource]="cleanOrgData" matSort>
+                <table mat-table [dataSource]="orgData" matSort>
 
                     <ng-container matColumnDef="name">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
