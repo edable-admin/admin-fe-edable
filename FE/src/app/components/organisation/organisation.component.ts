@@ -118,33 +118,23 @@ export class OrganisationComponent {
     this.getOrgs();
   }
 
-  getOrgs() {
-    this.http
-      .get<any>(
-        'https://dip-challenge.azurewebsites.net/organisation/dashboard'
-      )
-      .subscribe({
-        next: (resp) => {
-          (this.orgData = resp)
-        },
-        error: (err) => {
-          console.log(err);
-        },
-        complete: () => {
-          this.cleanOrgData = this.orgData.map((item: any) => {
-            let org = {
+      getOrgs(){
+        this.http.get<any>('https://dip-challenge.azurewebsites.net/organisation/dashboard').subscribe(
+          response => {
+            this.orgData = response.map((item: any) => {
+              let org = {
               name: item._fieldsProto.name.stringValue,
               activeItems: 0,
               donations: 0,
-            };
-            return org;
-          });
-          this.cleanOrgData = new MatTableDataSource(this.cleanOrgData);
-          this.cleanOrgData.paginator = this.paginator;
-          this.cleanOrgData.sort = this.sort;
-        },
-      });
-  }
+              };
+              return org;
+            })
+            console.log(this.orgData)
+          this.orgData = new MatTableDataSource(this.orgData);
+          this.orgData.paginator = this.paginator;
+          this.orgData.sort = this.sort;
+        });
+        }
 
   // ngAfterViewInit() {
   //   this.dataSource.paginator = this.paginator;
@@ -153,22 +143,22 @@ export class OrganisationComponent {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.cleanOrgData.filter = filterValue.trim().toLowerCase();
+    this.orgData.filter = filterValue.trim().toLowerCase();
 
-    if (this.cleanOrgData.paginator) {
-      this.cleanOrgData.paginator.firstPage();
+    if (this.orgData.paginator) {
+      this.orgData.paginator.firstPage();
     }
   }
 
-  selectRow(cleanOrgData) {
-    if (this.selectedRowIndex === cleanOrgData.name) {
+  selectRow(orgData) {
+    if (this.selectedRowIndex === orgData.name) {
       this.selectedRowIndex = '';
       this.activeItems = [];
       return;
     }
-    this.selectedRowIndex = cleanOrgData.name;
+    this.selectedRowIndex = orgData.name;
     this.activeItems = this.items.filter((item) => {
-      return item.orgID === cleanOrgData.name;
+      return item.orgID === orgData.name;
     });
     // console.log(this.activeItems);
   }
