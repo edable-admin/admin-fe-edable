@@ -262,4 +262,23 @@ export class FirestoreService {
   //  })
   // })
 
+  //Example call to get collection and reference to another collection
+  // getDonationDetails() {
+  //   this.fs.collection('donations').get()
+  //     .forEach(snapshot => {
+  //       snapshot.docs.forEach((doc: any) => {
+
+  //         doc.data()['donorID'].get()
+  //         .then((donor:any) => console.log(donor.data()))
+
+  //         // get item details
+  //         doc.data()['itemID'].get()
+  //           .then((item: any) => console.log(item.data()))
+
+  //       }
+  //       )
+  //   })
+
+  // }
+
 }
