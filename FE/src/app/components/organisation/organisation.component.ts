@@ -116,6 +116,7 @@ export class OrganisationComponent {
   addOrgDialog(): void {
     const dialogRef = this.dialog.open(AddOrganisationDialog, {
       width: '400px',
+      maxHeight:'100vh',
       data: {
         name: this.name,
         summary: this.summary,
@@ -131,6 +132,7 @@ export class OrganisationComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      console.log(result)
       this.http
         .post(
           'https://dip-challenge.azurewebsites.net/organisation',
@@ -145,6 +147,7 @@ export class OrganisationComponent {
   editOrgDialog(): void {
     const dialogRef = this.dialog.open(EditOrganisationDialog, {
       width: '400px',
+      maxHeight:'100vh',
       data: {
         id: this.selectedRowIndex,
         name: this.selectedOrgName,
