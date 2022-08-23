@@ -199,7 +199,7 @@ export class OrganisationComponent {
           this.selectedOrgABN = result.ABN;
           this.selectedOrgPhone = result.phone;
           this.selectedOrgWebsite = result.website;
-          this.selectedOrgImg = result.img;
+          this.selectedOrgImg = result.imgUrl;
           this.selectedOrgTotalDonationItems = result.activeItems;
           this.selectedOrgTotalDonations = result.donations;
         });

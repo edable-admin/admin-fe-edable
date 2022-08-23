@@ -12,6 +12,9 @@ export class UploadImageComponent implements OnInit {
 
   @Output() uploadedImage: EventEmitter<any> = new EventEmitter();
 
+  //----------------- todo get image url ------------------------//
+  @Output() imageUrl: EventEmitter<any> = new EventEmitter();
+
   //string organisation/orgref
   @Input() orgnisationRef = '';
 
