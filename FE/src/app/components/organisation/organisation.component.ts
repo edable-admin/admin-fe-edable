@@ -55,25 +55,26 @@ export class OrganisationComponent {
   phone: string | undefined;
   website: string | undefined;
   img: string = 'INSERT Image URL';
+  totalDonationItems: number;
+  totalDonations: number;
   displayedColumns: string[] = ['name', 'activeItems', 'donations'];
   selectedRowIndex = '';
   orgs: Organisation[];
   activeItems: Item[];
   orgData: any;
   cleanOrgData: any;
-  // dataSource: any;
 
   items: Item[] = [
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'EdAble Flowers', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'EdAble Flowers', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'EdAble Flowers', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'helloooooooo', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: '2', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: '2', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'Doin Doughies', img:  'https://i.imgur.com/IJ3ehgi.jpeg'},
-    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'Windy', img:  'https://i.imgur.com/BTV0RRM.png'},
-    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'Windy', img: 'https://i.imgur.com/4TmqOIi.jpeg' },
-    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Windy', img:  'https://i.imgur.com/Cwtpkj4.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Barry\'s Bakehouse', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Barry\'s Bakehouse', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Barry\'s Bakehouse', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Barry\'s Bakehouse', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Social Moments', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Social Moments', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'Tree\'s R US', img:  'https://i.imgur.com/IJ3ehgi.jpeg'},
+    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'Tree\'s R US', img:  'https://i.imgur.com/BTV0RRM.png'},
+    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'Tree\'s R US', img: 'https://i.imgur.com/4TmqOIi.jpeg' },
+    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Tree\'s R US', img:  'https://i.imgur.com/Cwtpkj4.jpeg'},
   ]
 
 
@@ -89,12 +90,14 @@ export class OrganisationComponent {
       data: {
         name: this.name,
         summary: this.summary,
+        description: this.description,
         activeStatus: this.activeStatus,
         ABN: this.ABN,
         phone: this.phone,
         website: this.website,
         img: this.img,
-        description: this.description,
+        totalDonationItems: 0,
+        totalDonations: 0
       },
     });
 
@@ -123,7 +126,7 @@ export class OrganisationComponent {
           response => {
             this.orgData = response.map((item: any) => {
               let org = {
-              name: item._fieldsProto.name.stringValue,
+              name: item.orgs.newOrg.name,
               activeItems: 0,
               donations: 0,
               };
