@@ -51,12 +51,14 @@ button {
     margin-right: 10px;
 }
 
-.graph-placeholder {
+.big-graph-placeholder {
     flex: 1;
     background: rgb(194, 194, 194);
     min-width: 50px;
     min-height: 50px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 table {
@@ -64,22 +66,25 @@ table {
 }
 
 .item-container {
-    margin-top: 20px;
+    margin-top: 15px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
+
 .item-card {
     height: 0%;
     min-width: 150px;
     max-width: 200px;
     margin: 0px 15px 15px 0px;
 }
+
 .item-card img {
     height: 200px;
     width: 200px;
     object-fit: contain;
 }
+
 .add-item-card {
     height: 0%;
     min-width: 150px;
@@ -88,18 +93,54 @@ table {
     background-color: #3f51b5;
     color: white;
 }
+
 .add-icon {
     width: 168px;
     height: 168px;
     font-size: 168px;
 }
+
 .add-icon-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 268px;
 }
+
 .mat-card-header {
     text-align: center;
     display: block;
+}
+
+.graph-expansion {
+    display: none;
+}
+
+@media screen and (max-width:700px) {
+    .graph-expansion {
+        display: block;
+        margin-top: 15px;
+    }
+
+    .flex-container {
+        flex-direction: column;
+    }
+
+    .big-graph-placeholder {
+        display: none;
+    }
+
+    .mat-elevation-z8 {
+        flex: 1;
+        margin-right: 0px;
+    }
+
+    .small-graph-placeholder {
+        background: rgb(194, 194, 194);
+        min-height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
 }

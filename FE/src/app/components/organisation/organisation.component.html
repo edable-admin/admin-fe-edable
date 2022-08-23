@@ -1,6 +1,7 @@
 <input type="button" class="btn btnPrimary" value="Log Out" (click)="authService.SignOut()">
 
 <html>
+
 <body>
     <div class="container">
         <h1 *ngFor="let item of cleanOrgData">{{item.ABN}}</h1>
@@ -11,7 +12,7 @@
             </button>
             <mat-form-field appearance="standard">
                 <mat-label>Search Organisations</mat-label>
-                <input matInput (keyup)="applyFilter($event)"  #input>
+                <input matInput (keyup)="applyFilter($event)" #input>
             </mat-form-field>
         </div>
 
@@ -48,8 +49,22 @@
                 </mat-paginator>
             </div>
 
-            <div class="graph-placeholder">
+            <div class="big-graph-placeholder">
                 <h2>Graph Placeholder</h2>
+            </div>
+            <div class="graph-expansion">
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Graph Placeholder
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="small-graph-placeholder">
+                            <h2>Graph Placeholder</h2>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
             </div>
         </div>
         <div class="item-container">
@@ -60,7 +75,7 @@
                     <mat-card-title>
                         Add Item
                     </mat-card-title>
-                </mat-card-header>
+                </mat-card-header>  
                 <div class="add-icon-container">
                     <mat-icon class="add-icon">add</mat-icon>
                 </div>
