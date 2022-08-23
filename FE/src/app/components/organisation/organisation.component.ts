@@ -87,7 +87,6 @@ export class OrganisationComponent {
   selectedOrgImg='';
   selectedOrgTotalDonationItems='';
   selectedOrgTotalDonations='';
-  orgs: Organisation[];
   activeItems: Item[];
   orgData: any;
   cleanOrgData: any;
@@ -163,13 +162,20 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       // console.log('The dialog was closed');
+      console.log(result);
+      
       this.http
         .put(
           `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
           JSON.parse(JSON.stringify(result))
         )
         .subscribe((response) => {
+          
           this.getOrgs();
+          this.selectedOrgName = result.name;
+          this.selectedRowIndex = result.id;
+          this.selectedOrgABN = result.ABN;
+
         });
     });
   }
@@ -189,18 +195,18 @@ export class OrganisationComponent {
             this.orgData = response.map((item: any) => {
               let org = {
               id: item.id,
-              name: item.orgs.newOrg.name,
-              activeItems: item.orgs.newOrg.totalDonationItems,
-              donations: item.orgs.newOrg.totalDonations,
-              summary: item.orgs.newOrg.summary,
-              description: item.orgs.newOrg.description,
-              activeStatus: item.orgs.newOrg.activeStatus,
-              ABN:item.orgs.newOrg.ABN,
-              phone: item.orgs.newOrg.phone,
-              website: item.orgs.newOrg.website,
-              img: item.orgs.newOrg.img,
-              totalDonationItems: item.orgs.newOrg.totalDonationItems,
-              totalDonations: item.orgs.newOrg.totalDonations,
+              name: item.org.name,
+              activeItems: item.org.totalDonationItems,
+              donations: item.org.totalDonations,
+              summary: item.org.summary,
+              description: item.org.description,
+              activeStatus: item.org.activeStatus,
+              ABN:item.org.ABN,
+              phone: item.org.phone,
+              website: item.org.website,
+              img: item.org.img,
+              totalDonationItems: item.org.totalDonationItems,
+              totalDonations: item.org.totalDonations,
               };
               return org;
             }
@@ -230,6 +236,8 @@ export class OrganisationComponent {
   }
 
   selectRow(orgData) {
+    console.log(orgData);
+    
     if (this.selectedRowIndex === orgData.id) {
       this.selectedRowIndex = '';
       this.activeItems = [];
@@ -252,14 +260,6 @@ export class OrganisationComponent {
     // console.log(this.activeItems);
   }
 }
-
-export interface Organisation {
-  id: string;
-  name: string;
-  activeItems?: number;
-  inactiveItems: number;
-  donations?: number;
-}
 export interface Item {
   name: string;
   initialPrice: number;
@@ -268,4 +268,3 @@ export interface Item {
   orgID: string;
   img: string;
 }
-
