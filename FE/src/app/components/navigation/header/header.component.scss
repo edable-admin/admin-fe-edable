@@ -6,7 +6,10 @@ a {
 a:hover, a:active{
     color: lightgray;
 }
-
+.nav-title {
+    vertical-align: middle;
+    
+}
 .navigation-items{
     list-style-type: none;
     padding: 0;
@@ -25,18 +28,10 @@ mat-toolbar{
     .spacer  {
         flex: 0.6 0.6 auto;
     }
-    .nav-header {
-        
-        text-align: center;
-        width: 100%;      
-    }  
+    
 }
 
-@media screen and (min-width: 850px) {
-    .spacer {
-        flex: 0.475 0.475 auto;
-    }    
-  }
+
   @media screen and (max-width: 300px) {
     .nav-title {
         font-size: medium;
@@ -47,23 +42,33 @@ mat-toolbar{
     .btn {
         display: none;
     }
+    .hide span {
+        display: contents !important;
+    }
     .hide {
         display: none;
     }
+    
     .hide-sidebar {
         display: contents !important;
     }
+    
   }
  
 
-.nav-item {
+.nav-item{
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 5px;
     padding-bottom: 5px;
     border-right: solid white;
+    
     border-width: 1px;
+    &:first-child {
+        border-left: 1px solid white;
+    }
 }
+
 
 .user-button {
     vertical-align: middle;   
@@ -77,9 +82,25 @@ h1 {
     border-radius: 0;
     min-width: fit-content;
     width: 100%;
+    
 }
 .hide-sidebar {
     display: none;
 }
- 
+
+.nav-header {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    
+     
+    
+} 
+.nav-header .nav-title {
+    
+    display: table-cell;
+    vertical-align:middle;
+    font-weight: 750;
+}
  
