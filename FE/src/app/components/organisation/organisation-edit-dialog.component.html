@@ -1,0 +1,48 @@
+<div style="text-align: center">
+  <div class="bigHeader">Edit an Organisation</div>
+</div>
+<hr size="2" width="90%" color="grey" />
+
+<div class="centerAlign">
+  <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-label>Organisation Name</mat-label>
+    <input matInput [(ngModel)]="data.name" />
+  </mat-form-field>
+</div>
+<div class="centerAlign">
+  <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-label>Description</mat-label>
+    <input matInput [(ngModel)]="data.description" />
+  </mat-form-field>
+</div>
+<div class="centerAlign">
+  <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-label>Summary</mat-label>
+    <input matInput [(ngModel)]="data.summary" />
+  </mat-form-field>
+</div>
+<div class="centerAlign">
+  <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-label>ABN</mat-label>
+    <input matInput [(ngModel)]="data.ABN" />
+  </mat-form-field>
+</div>
+<div class="centerAlign">
+  <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-label>Phone</mat-label>
+    <input matInput [(ngModel)]="data.phone" />
+  </mat-form-field>
+</div>
+<div class="centerAlign">
+  <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-label>Website</mat-label>
+    <input matInput [(ngModel)]="data.website" />
+  </mat-form-field>
+</div>
+
+<app-upload-image></app-upload-image>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button  [mat-dialog-close]="data" cdkFocusInitial>Edit</button>
+</div>

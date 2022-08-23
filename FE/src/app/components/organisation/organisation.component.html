@@ -4,12 +4,14 @@
 
 <body>
     <div class="container">
-        <h1 *ngFor="let item of orgData">{{item.ABN}}</h1>
 
         <div class="table-header">
             <button (click)="addOrgDialog()" mat-raised-button color="primary">
                 <mat-icon>add</mat-icon>Organisation
             </button>
+            <button (click)="editOrgDialog()" mat-raised-button color="warn">
+              <mat-icon>edit</mat-icon>Organisation
+          </button>
             <mat-form-field appearance="standard">
                 <mat-label>Search Organisations</mat-label>
                 <input matInput (keyup)="applyFilter($event)" #input>
@@ -37,7 +39,7 @@
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-                        [ngClass]="{'row-selected': selectedRowIndex == row.name}" (click)="selectRow(row)"></tr>
+                        [ngClass]="{'row-selected': selectedRowIndex == row.id}" (click)="selectRow(row)"></tr>
 
                     <!-- Row shown when there is no matching data. -->
                     <tr class="mat-row" *matNoDataRow>
@@ -75,7 +77,7 @@
                     <mat-card-title>
                         Add Item
                     </mat-card-title>
-                </mat-card-header>  
+                </mat-card-header>
                 <div class="add-icon-container">
                     <mat-icon class="add-icon">add</mat-icon>
                 </div>

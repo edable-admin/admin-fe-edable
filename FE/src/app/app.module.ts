@@ -29,6 +29,7 @@ import { TempPageComponent } from './components/authentication/temp-page/temp-pa
 const config = environment.firebaseConfig;
 
 import {AddOrganisationDialog} from './components/organisation/organisation.component';
+import { EditOrganisationDialog } from './components/organisation/organisation.component';
 import {MatNativeDateModule} from '@angular/material/core';
 import {HttpClientModule} from '@angular/common/http';
 
@@ -42,6 +43,7 @@ import {HttpClientModule} from '@angular/common/http';
     ForgotPasswordComponent,
     TempPageComponent,
     AddOrganisationDialog,
+    EditOrganisationDialog,
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 
 export interface DialogData {
+  id: string | undefined;
   name: string | undefined;
   summary: string | undefined;
   activeStatus: boolean;
@@ -39,6 +40,22 @@ export class AddOrganisationDialog {
   }
 }
 
+@Component({
+  selector: 'organisation-edit-dialog.component',
+  templateUrl: 'organisation-edit-dialog.component.html',
+  styleUrls: ['./organisation.component.scss'],
+})
+export class EditOrganisationDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<EditOrganisationDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
 
 @Component({
   selector: 'app-organisation',
@@ -47,6 +64,7 @@ export class AddOrganisationDialog {
 })
 export class OrganisationComponent {
   passedvalues: JSON | undefined;
+  id : string | undefined;
   name: string | undefined;
   description: string | undefined;
   summary: string | undefined;
@@ -55,6 +73,8 @@ export class OrganisationComponent {
   phone: string | undefined;
   website: string | undefined;
   img: string = 'INSERT Image URL';
+  totalDonationItems: number;
+  totalDonations: number;
   displayedColumns: string[] = ['name', 'activeItems', 'donations'];
   selectedRowIndex = '';
   orgs: Organisation[];
@@ -64,16 +84,16 @@ export class OrganisationComponent {
   // dataSource: any;
 
   items: Item[] = [
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'EdAble Flowers', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'EdAble Flowers', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'EdAble Flowers', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'helloooooooo', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: '2', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: '2', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'Doin Doughies', img:  'https://i.imgur.com/IJ3ehgi.jpeg'},
-    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'Windy', img:  'https://i.imgur.com/BTV0RRM.png'},
-    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'Windy', img: 'https://i.imgur.com/4TmqOIi.jpeg' },
-    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Windy', img:  'https://i.imgur.com/Cwtpkj4.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
+    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
+    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img:  'https://i.imgur.com/IJ3ehgi.jpeg'},
+    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img:  'https://i.imgur.com/BTV0RRM.png'},
+    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img: 'https://i.imgur.com/4TmqOIi.jpeg' },
+    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'DFutOMg3pPQ18PNS4S7n', img:  'https://i.imgur.com/Cwtpkj4.jpeg'},
   ]
 
 
@@ -89,12 +109,14 @@ export class OrganisationComponent {
       data: {
         name: this.name,
         summary: this.summary,
+        description: this.description,
         activeStatus: this.activeStatus,
         ABN: this.ABN,
         phone: this.phone,
         website: this.website,
         img: this.img,
-        description: this.description,
+        totalDonationItems: 0,
+        totalDonations: 0,
       },
     });
 
@@ -111,6 +133,38 @@ export class OrganisationComponent {
     });
   }
 
+  editOrgDialog(): void {
+    const dialogRef = this.dialog.open(EditOrganisationDialog, {
+      width: '400px',
+      data: {
+        id: this.selectedRowIndex,
+        name: this.name,
+        summary: this.summary,
+        description: this.description,
+        activeStatus: this.activeStatus,
+        ABN: this.ABN,
+        phone: this.phone,
+        website: this.website,
+        img: this.img,
+        totalDonationItems: 0,
+        totalDonations: 0,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // console.log('The dialog was closed');
+      this.http
+        .put(
+          `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
+          JSON.parse(JSON.stringify(result))
+        )
+        .subscribe((response) => {
+          this.getOrgs();
+        });
+    });
+  }
+
+
   @ViewChild(MatPaginator,{static:true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -121,18 +175,24 @@ export class OrganisationComponent {
       getOrgs(){
         this.http.get<any>('https://dip-challenge.azurewebsites.net/organisation/dashboard').subscribe(
           response => {
+            console.log(response)
             this.orgData = response.map((item: any) => {
               let org = {
-              name: item._fieldsProto.name.stringValue,
-              activeItems: 0,
-              donations: 0,
+              id: item.id,
+              name: item.orgs.newOrg.name,
+              activeItems: item.orgs.newOrg.totalDonationItems,
+              donations: item.orgs.newOrg.totalDonations,
               };
               return org;
-            })
-            console.log(this.orgData)
+            }
+            )
+            console.log(this.orgData);
+
           this.orgData = new MatTableDataSource(this.orgData);
           this.orgData.paginator = this.paginator;
           this.orgData.sort = this.sort;
+          console.log(this.orgData);
+
         });
         }
 
@@ -151,14 +211,14 @@ export class OrganisationComponent {
   }
 
   selectRow(orgData) {
-    if (this.selectedRowIndex === orgData.name) {
+    if (this.selectedRowIndex === orgData.id) {
       this.selectedRowIndex = '';
       this.activeItems = [];
       return;
     }
-    this.selectedRowIndex = orgData.name;
+    this.selectedRowIndex = orgData.id;
     this.activeItems = this.items.filter((item) => {
-      return item.orgID === orgData.name;
+      return item.orgID === orgData.id;
     });
     // console.log(this.activeItems);
   }
