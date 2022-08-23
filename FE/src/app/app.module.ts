@@ -7,6 +7,10 @@ import { MaterialsModule } from './modules/materials.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OrganisationComponent } from './components/organisation/organisation.component';
+import { HeaderComponent } from './components/navigation/header/header.component';
+import { SidebarComponent } from './components/navigation/sidebar/sidebar.component';
+import { TransactionsComponent } from './components/transactions/transactions.component';
+
 import { AuthService } from "./shared/services/auth.service";
 
 //------------- Upload Image Component ----------------------------//
@@ -37,6 +41,9 @@ const config = environment.firebaseConfig;
     SignInComponent,
     ForgotPasswordComponent,
     TempPageComponent,
+    HeaderComponent,
+    SidebarComponent,
+    TransactionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,7 +56,13 @@ const config = environment.firebaseConfig;
     BrowserAnimationsModule,
     MaterialsModule,
     FlexLayoutModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    
+   
+  ],
+  exports: [
+    AngularFireStorageModule,
+
   ],
   providers: [
     { provide: BUCKET, useValue: environment.firebaseConfig.storageBucket },AuthService
