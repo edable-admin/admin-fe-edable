@@ -150,120 +150,67 @@ export class OrganisationComponent {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result:any) => {
 
-      const reqOrgBody = {
-        name: result.name,
-        summary: result.summary,
-        description: result.description,
-        activeStatus: result.activeStatus,
-        ABN: result.ABN,
-        phone: result.phone,
-        website: result.website,
-        img: result.img,
-        file:result.file,
+      const reqOrgBody:any = {
+        name: result?.name,
+        summary: result?.summary,
+        description: result?.description,
+        activeStatus: result?.activeStatus,
+        ABN: result?.ABN,
+        phone: result?.phone,
+        website: result?.website,
+        img: result?.img,
+        file:result?.file,
         totalDonationItems: 0,
         totalDonations: 0,
       }
 //----------------------------- Create an Org --------------------------//
-      this.http
-        .post(
-          'https://dip-challenge.azurewebsites.net/organisation',
-          JSON.parse(JSON.stringify(reqOrgBody))
-        )
-        .subscribe({
-          next:(createOrgResp:any) => {
-              //--------------- Uploads new org image to org --------------------//
-            const docRef = createOrgResp._path.segments[1];
-            const collectionRef = createOrgResp._path.segments[0];
-            const image = result.file[0]
-            this.storage.upload(`${collectionRef}/${docRef}/orgLogo`,image)
-            .then(
-              resp => {
-//-------------------------- Update Image URL -----------------------//            
-              let imgRef = this.storage.ref(`Organisations/${docRef}/orgLogo`)
+      if (result) {
 
-              imgRef.getDownloadURL()
-              .forEach(
-                (imgResp) => {
+        this.http
+          .post(
+            'https://dip-challenge.azurewebsites.net/organisation',
+            JSON.parse(JSON.stringify(reqOrgBody))
+          )
+          .subscribe({
+            next:(createOrgResp:any) => {
+  //--------------- Uploads new org image to org --------------------//
+              const docRef = createOrgResp._path.segments[1];
+              const collectionRef = createOrgResp._path.segments[0];
+              const image = result.file[0]
+              this.storage.upload(`${collectionRef}/${docRef}/orgLogo`,image)
+              .then(
+                (resp) => {
+  //-------------------------- Update Image URL -----------------------//
+                let imgRef = this.storage.ref(`Organisations/${docRef}/orgLogo`)
 
-                  reqOrgBody.img = imgResp;
+                imgRef.getDownloadURL()
+                .forEach(
+                  (imgResp) => {
 
-                    this.http
-                    .put(
-                      `https://dip-challenge.azurewebsites.net/organisation/${docRef}`,
-                      reqOrgBody
-                    ).subscribe({
-                      error:(err) => console.log(err),
-                      complete:() => {}
-                    })
-                    
+                    reqOrgBody.img = imgResp;
+
+                      this.http
+                      .put(
+                        `https://dip-challenge.azurewebsites.net/organisation/${docRef}`,
+                        reqOrgBody
+                      ).subscribe({
+                        error:(err) => console.log(err),
+                        complete:() => {}
+                      })
+
+                  }
+                )
+  //------------------------------------------------------------------//
                 }
-              )
-              // .subscribe({
-              //   next:(imgResp:any) => {
-              //     let img = {img:imgResp};
-              //     console.log(img)
+              ).then(() => {
+                this.getOrgs();
+              })
 
-              //     this.http
-              //       .put(
-              //         `https://dip-challenge.azurewebsites.net/organisations/${docRef}`,
-              //         JSON.parse(img.img)
-              //       ).subscribe({
-              //         error:(err) => console.log(img),
-              //         complete:() => {console.log(img)}
-              //       })
-              //       console.log(JSON.parse(img.img))
-              //   },
-              // })
-            
-//------------------------------------------------------------------//
-              }
-            )
-
-          }
-        })
-          
-//           (response:any) => {
-
-// // //--------------- Uploads new org image to org --------------------//
-// //           const docRef = response._path.segments[1];
-// //           const collectionRef = response._path.segments[0];
-// //           const image = result.img[0]
-// //           this.storage.upload(`${collectionRef}/${docRef}/orgLogo`,image)
-// //           .then((resp:any) => {
-// //             console.log(resp)
-
-// // // //-------------------------- Update Image URL -----------------------//
-// // //             console.log(docRef)
-// // //     let imgRef = this.storage.ref(`Organisations/${docRef}/orgLogo`)
-
-// // //     imgRef.getDownloadURL()    
-// // //     .subscribe({
-// // //       next:(imgResp:any) => {
-// // //         let img = {img:imgResp};
-// // //         console.log(img)
-
-// // //         this.http
-// // //           .put(
-// // //             `https://dip-challenge.azurewebsites.net/organisations/${docRef}`,
-// // //             JSON.parse(JSON.stringify(img))
-// // //           ).subscribe({
-// // //             error:(err) => console.log(img),
-// // //             complete:() => {console.log(img)}
-// // //           })
-
-// // //       }
-// // //     })
-// // //------------------------------------------------------------------//
-
-// //           })
-// //-------------------------------------------------------------------//
-
-
-
-//           this.getOrgs();
-//         });
+            }
+          })
+      }
     });
   }
 
@@ -290,24 +237,68 @@ export class OrganisationComponent {
 
       if(result){
         this.http
-        .put(
-          `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
-          JSON.parse(JSON.stringify(result))
-        )
-        .subscribe((response) => {
-          this.getOrgs();
-          this.selectedOrgName = result.name;
-          this.selectedOrgSummary = result.summary;
-          this.selectedOrgDescription = result.description;
-          this.selectedOrgActiveStatus = result.activeStatus;
-          this.selectedOrgABN = result.ABN;
-          this.selectedOrgPhone = result.phone;
-          this.selectedOrgWebsite = result.website;
-          this.selectedOrgImg = result.imgUrl;
-          this.selectedOrgTotalDonationItems = result.activeItems;
-          this.selectedOrgTotalDonations = result.donations;
-        });
+          .put(
+            `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
+            JSON.parse(JSON.stringify(result))
+          )
+          .subscribe((response) => {
+            this.getOrgs();
+            this.selectedOrgName = result.name;
+            this.selectedOrgSummary = result.summary;
+            this.selectedOrgDescription = result.description;
+            this.selectedOrgActiveStatus = result.activeStatus;
+            this.selectedOrgABN = result.ABN;
+            this.selectedOrgPhone = result.phone;
+            this.selectedOrgWebsite = result.website;
+            this.selectedOrgImg = result.imgUrl;
+            this.selectedOrgTotalDonationItems = result.activeItems;
+            this.selectedOrgTotalDonations = result.donations;
+          });
       }
+//------------------------------ todo make an image service ---------------------//
+//---------------------------- Update Image -------------------------------------//
+      const image = result?.file[0];
+
+      if (image) {
+        this.storage.upload(`Organisations/${this.selectedRowIndex}/orgLogo`, image)
+          .then((resp) => {
+            //-------------------------- Update Image URL -----------------------------------//
+            let imgRef = this.storage.ref(`Organisations/${this.selectedRowIndex}/orgLogo`)
+
+            let orgReqBody: any = {
+              name: result.name,
+              summary: result.summary,
+              description: result.description,
+              activeStatus: result.activeStatus,
+              ABN: result.ABN,
+              phone: result.phone,
+              website: result.website,
+              //img: imgResp,
+              file: result.file,
+              totalDonationItems: 0,
+              totalDonations: 0,
+            }
+
+            imgRef.getDownloadURL()
+              .forEach(
+                (imgResp) => {
+                  orgReqBody.img = imgResp;
+
+                }).then(() => {
+                  this.http
+                    .put(
+                      `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
+                      orgReqBody
+                    ).subscribe({
+                      error: (err) => console.log(err),
+                      complete: () => { }
+                    })
+
+                })
+
+
+          })
+        }
 
     });
   }

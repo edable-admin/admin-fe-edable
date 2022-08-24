@@ -41,12 +41,14 @@ export class UploadImageComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.meta = this.getImageURL();
+    if (this.orgnisationRef !== '') {
+      this.meta = this.getImageURL();
 
-    this.meta.subscribe({
-      next: (img) => this.image = img,
-      error:(err) => console.log(err)
-     });
+      this.meta.subscribe({
+        next: (img) => this.image = img,
+        error:(err) => console.log(err)
+       });
+    }
   }
 
   onFileSelected(event: any) {
@@ -68,38 +70,16 @@ export class UploadImageComponent implements OnInit {
         alert("please only select one image")
         return;
       }
-      
+
       //send image to parent
       this.imageOut.emit(file)
 
-    //todo the upload should be done on the create organisation level
-      // this.storage.upload(`${this.organisationID}/orgLogo`, file[0])
-      // this.uploadedImage.emit(file)
-
+      //display preview in html
       let reader = new FileReader();
       reader.readAsDataURL(file[0]);
       reader.onload = (event: any) => {
-        this.image = event.target.result;
+      this.image = event.target.result;
       }
     }
   }
-    
-  // sendImageToParent(file: any) {
-  //   if (file) {
-  //     console.log(file)
-
-  //     //todo the upload should be done on the create organisation level
-  //     this.storage.upload(`${this.organisationID}/orgLogo`,file[0])
-
-
-  //     let reader = new FileReader();
-  //     reader.readAsDataURL(file[0]);
-
-  //     reader.onload = (event: any) => {
-  //       this.image = event.target.result;
-  //     }
-  //   }
-  //   this.uploadedImage.emit(file)
-  // }
-
 }
