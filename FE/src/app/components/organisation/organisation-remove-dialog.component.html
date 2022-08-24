@@ -8,6 +8,6 @@
 </div>
 
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button  [mat-dialog-close]="data" cdkFocusInitial color="accent">Confirm</button>
+  <button mat-button mat-dialog-close >Cancel</button>
+  <button mat-button (click)="removeOrg()" cdkFocusInitial color="accent">Confirm</button>
 </div>

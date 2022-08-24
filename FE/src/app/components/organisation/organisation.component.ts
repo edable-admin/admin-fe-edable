@@ -69,13 +69,14 @@ export class RemoveOrganisationDialog {
 
   ) {}
 
-  removeOrg(){
+  removeOrg(): void {
     this.http
       .delete<any>(
-        `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`
+        `https://dip-challenge.azurewebsites.net/organisation/${this.data.id}`
       )
       .subscribe((response) => {
       });
+      this.dialogRef.close();
   }
 
   onNoClick(): void {
@@ -286,14 +287,14 @@ export class OrganisationComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.http
-        .delete<any>(
-          `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`
-        )
-        .subscribe((response) => {
+      // this.http
+      //   .delete<any>(
+      //     `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`
+      //   )
+      //   .subscribe((response) => {
           this.getOrgs();
         });
-    });
+    // });
   }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
