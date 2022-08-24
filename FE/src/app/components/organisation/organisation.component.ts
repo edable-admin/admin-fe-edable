@@ -11,6 +11,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 
+
 export interface DialogData {
   id: string | undefined;
   name: string | undefined;
@@ -130,7 +131,6 @@ export class OrganisationComponent {
   cleanOrgData: any;
   selectedOrgData: any;
 
-
   items: Item[] = [
     {
       name: 'Shovel',
@@ -218,7 +218,7 @@ export class OrganisationComponent {
     public authService: AuthService,
     public dialog: MatDialog,
     public http: HttpClient,
-    private storage: AngularFireStorage,
+    public storage: AngularFireStorage,
   ) { }
 
   addOrgDialog(): void {
@@ -263,11 +263,13 @@ export class OrganisationComponent {
             JSON.parse(JSON.stringify(reqOrgBody))
           )
           .subscribe({
-            next:(createOrgResp:any) => {
-  //--------------- Uploads new org image to org --------------------//
+            next: (createOrgResp: any) => {
+                const image = typeof(result.file) != "undefined" ? result?.file[0] : undefined
+
+              if (image) {
+                  //--------------- Uploads new org image to org --------------------//
               const docRef = createOrgResp._path.segments[1];
               const collectionRef = createOrgResp._path.segments[0];
-              const image = result.file[0]
               this.storage.upload(`${collectionRef}/${docRef}/orgLogo`,image)
               .then(
                 (resp) => {
@@ -297,6 +299,11 @@ export class OrganisationComponent {
                 this.getOrgs();
               })
 
+              } else {
+                this.getOrgs();
+
+              }
+
             }
           })
       }
@@ -322,70 +329,24 @@ export class OrganisationComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-
-      if (result) {
-        this.http
-          .put(
-            `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
-            JSON.parse(JSON.stringify(result))
-          )
-          .subscribe((response) => {
-            this.getOrgs();
-            this.selectedOrgName = result.name;
-            this.selectedOrgSummary = result.summary;
-            this.selectedOrgDescription = result.description;
-            this.selectedOrgActiveStatus = result.activeStatus;
-            this.selectedOrgABN = result.ABN;
-            this.selectedOrgPhone = result.phone;
-            this.selectedOrgWebsite = result.website;
-            this.selectedOrgImg = result.img;
-            this.selectedOrgTotalDonationItems = result.totalDonationItems;
-            this.selectedOrgTotalDonations = result.totalDonations;
-          });
-      }
-
-      const image = result?.file[0];
-
-      if (image) {
-        this.storage.upload(`Organisations/${this.selectedRowIndex}/orgLogo`, image)
-          .then((resp) => {
-            //-------------------------- Update Image URL -----------------------------------//
-            let imgRef = this.storage.ref(`Organisations/${this.selectedRowIndex}/orgLogo`)
-
-            let orgReqBody: any = {
-              name: result.name,
-              summary: result.summary,
-              description: result.description,
-              activeStatus: result.activeStatus,
-              ABN: result.ABN,
-              phone: result.phone,
-              website: result.website,
-              file: result.file,
-              totalDonationItems: 0,
-              totalDonations: 0,
-            }
-
-            imgRef.getDownloadURL()
-              .forEach((imgResp) => {
-                orgReqBody.img = imgResp;
-              }).then(() => {
-
-                this.http
-                    .put(
-                      `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
-                      orgReqBody
-                    ).subscribe({
-                      error: (err) => console.log(err),
-                      complete: () => { }
-                    })
-
-            })
-
-        })
-
-      }
-
-
+      this.http
+        .put(
+          `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
+          result
+        )
+        .subscribe((response) => {
+          this.getOrgs();
+          this.selectedOrgName = result.name;
+          this.selectedOrgSummary = result.summary;
+          this.selectedOrgDescription = result.description;
+          this.selectedOrgActiveStatus = result.activeStatus;
+          this.selectedOrgABN = result.ABN;
+          this.selectedOrgPhone = result.phone;
+          this.selectedOrgWebsite = result.website;
+          this.selectedOrgImg = result.img;
+          this.selectedOrgTotalDonationItems = result.totalDonationItems;
+          this.selectedOrgTotalDonations = result.totalDonations;
+        });
     });
   }
 
