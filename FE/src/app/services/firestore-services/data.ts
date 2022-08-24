@@ -3,6 +3,40 @@ import { serverTimestamp } from "firebase/firestore";
 export const data =
 {
   optionOne: {
+    donors: [
+      {
+        agreeToContact: false,
+        email: "test@example.com",
+        isAnon: false,
+        mailingAddress: "16 test st testville",
+        name: "Mary Smith",
+        phone:"0411342781"
+      },
+      {
+        agreeToContact: true,
+        email: "test@example.com",
+        isAnon: false,
+        mailingAddress: "16 test st testville",
+        name: "James Smith",
+        phone:"0411342781"
+      },
+      {
+        agreeToContact: true,
+        email: "test@example.com",
+        isAnon: true,
+        mailingAddress: "16 test st testville",
+        name: "Bart Smith",
+        phone:"0411342781"
+      },
+      {
+        agreeToContact: false,
+        email: "test@example.com",
+        isAnon: false,
+        mailingAddress: "16 test st testville",
+        name: "Greg Smith",
+        phone:"0411342781"
+      },
+    ],
     orgs:[
       {
         ABN: "12345678910",

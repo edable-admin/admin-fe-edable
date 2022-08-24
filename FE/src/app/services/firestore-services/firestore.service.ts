@@ -1,7 +1,9 @@
+import { transition } from '@angular/animations';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { AngularFireStorageReference } from '@angular/fire/compat/storage';
-import { collection, DocumentReference, serverTimestamp, where } from 'firebase/firestore';
+import { collection, DocumentReference, serverTimestamp, Transaction, where } from 'firebase/firestore';
+import { map } from 'rxjs';
 import { Item, Organisation } from 'src/app/models/models';
 import { data } from './data';
 
@@ -151,6 +153,123 @@ export class FirestoreService {
     //   .then(resp => console.log(resp))
     //   .catch(err => console.log(err))
   }
+
+  addDonorsForOptiontionOne() {
+
+    data.optionOne.donors
+      .forEach(donor => {
+        this.fs.collection('optionOne')
+        .doc('donors')
+        .collection('donorsCollection')
+        .add(donor)
+    })
+  }
+
+  getAllOrganisations() {
+
+    return this.fs
+      .collection('optionOne')
+      .doc('organisations')
+      .collection('organisationsCollections')
+  }
+
+  getOrganisationItems(docID:string) {
+    return this.fs
+    .collection('optionOne')
+    .doc('organisations')
+    .collection('organisationsCollections')
+    .doc(docID)
+    .collection('itemsCollection')
+  }
+
+  async getAllItems() {
+    return await this.fs.firestore
+    .collectionGroup('itemsCollection')
+      .get().then(snapshot => snapshot.docs
+      .forEach(item => console.log(item.data())))
+  }
+
+  async getAllActiveItems() {
+    return await this.fs.firestore
+      .collectionGroup('itemsCollection')
+      .where('activeStatus','==',true)
+      .get().then(snapshot => snapshot.docs
+      .forEach(item => console.log(item.data())))
+  }
+
+  addItemDonation(orgID: string, itemID: string, donationReq: any) {
+
+    let donorRef = this.fs
+      .collection('optionOne')
+      .doc('donors')
+      .collection('donorsCollection', query =>
+        query.where('email', '==', donationReq.email))
+      .doc()
+      .ref
+
+    let org = this.fs
+    .collection('optionOne')
+    .doc('organisations')
+    .collection('organisationsCollections')
+    .doc(orgID)
+
+    let orgRef = org.ref
+
+    let item = org
+      .collection('itemsCollection')
+      .doc(itemID)
+
+    let itemRef = item.ref;
+
+    let itemDonationRef =
+      item
+      .collection('itemDonations')
+      .doc().ref;
+
+    let batch = this.fs.firestore.batch()
+
+    orgRef.get()
+      .then((org) => {
+        const newTotalDOnations = org.data()['totalDonations'] + donationReq.paidAMT;
+
+        batch.update(orgRef, { totalDonations: newTotalDOnations });
+
+      }).then(() => {
+
+        batch.set(itemDonationRef,donationReq)
+      }).then(() => {
+
+        itemRef.get()
+          .then((item) => {
+            const newItemTotalDonations = item.data()['totalDonations'] + donationReq.paidAMT;
+
+            batch.update(itemRef, { totalDonations: newItemTotalDonations })
+            batch.commit()
+        })
+    })
+
+
+    // this.fs.firestore.runTransaction(transaction =>
+    //   transaction.get(orgRef).then(
+    //     (orgData: any) => {
+    //       transaction.get(donorRef).then((donor: any) => {
+    //         transaction.get(itemRef).then((item: any) => {
+    //           const newTotalDonations = item.data().totalDonations + donationReq.paidAMT
+    //           const newDonationAmount = orgData.data().totalDonations + donationReq.paidAMT
+    //           transaction.update(orgRef, { totalDonations: newDonationAmount })
+    //           transaction.update(itemRef, newTotalDonations)
+    //           transaction.set(itemRef, donationReq)
+
+    //         })
+
+    //       })
+    //     }))
+    //   .then(resp => console.log(resp))
+    //   .catch(err => console.log(err))
+
+  }
+
+
 
 
   // //This function gets all organisations
