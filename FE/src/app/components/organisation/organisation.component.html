@@ -8,8 +8,11 @@
                 <mat-icon>add</mat-icon>Organisation
             </button>
             <button *ngIf="selectedRowIndex" (click)="editOrgDialog()" mat-raised-button color="warn">
-              <mat-icon>edit</mat-icon>Organisation
+              <mat-icon>edit</mat-icon>Edit
           </button>
+          <button *ngIf="selectedRowIndex" (click)="removeOrgDialog()" mat-raised-button color="accent">
+            <mat-icon>remove</mat-icon>Remove
+        </button>
             <mat-form-field appearance="standard">
                 <mat-label>Search Organisations</mat-label>
                 <input matInput (keyup)="applyFilter($event)" #input>
