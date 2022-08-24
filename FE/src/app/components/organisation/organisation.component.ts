@@ -11,7 +11,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 
-
 export interface DialogData {
   id: string | undefined;
   name: string | undefined;
@@ -23,6 +22,8 @@ export interface DialogData {
   img: string | undefined;
   file:any;
   description: string | undefined;
+  totalDonationItems: number;
+  totalDonations: number;
 }
 
 @Component({
@@ -31,10 +32,9 @@ export interface DialogData {
   styleUrls: ['./organisation.component.scss'],
 })
 export class AddOrganisationDialog {
-
   constructor(
     public dialogRef: MatDialogRef<AddOrganisationDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) { }
 
     //---------- Function to get image from image dialogBox --------------//
@@ -54,20 +54,43 @@ export class AddOrganisationDialog {
   styleUrls: ['./organisation.component.scss'],
 })
 export class EditOrganisationDialog {
-
   constructor(
     public dialogRef: MatDialogRef<EditOrganisationDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) { }
-
-  //---------- Function to get image from image dialogBox --------------//
-  getImageFromChild(file:any){
-    this.data.file = file;
-  }
-  //-------------------------------------------------------------------//
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  //---------- Function to get image from image dialogBox --------------//
+  getImageFromChild(file: any) {
+    this.data.file = file;
+  }
+  //-------------------------------------------------------------------//
+}
+
+@Component({
+  selector: 'organisation-remove-dialog.component',
+  templateUrl: 'organisation-remove-dialog.component.html',
+  styleUrls: ['./organisation.component.scss'],
+})
+export class RemoveOrganisationDialog {
+  constructor(
+    public dialogRef: MatDialogRef<RemoveOrganisationDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    public http: HttpClient
+
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+  cancelDelete() {
+    this.dialogRef.close(false);
+  }
+  confirmDelete() {
+    this.dialogRef.close(true);
   }
 }
 
@@ -78,7 +101,7 @@ export class EditOrganisationDialog {
 })
 export class OrganisationComponent {
   passedvalues: JSON | undefined;
-  id : string | undefined;
+  id: string | undefined;
   name: string | undefined;
   description: string | undefined;
   summary: string | undefined;
@@ -92,49 +115,115 @@ export class OrganisationComponent {
   totalDonations: number;
   displayedColumns: string[] = ['name', 'activeItems', 'donations'];
   selectedRowIndex = '';
-  selectedOrgName='';
+  selectedOrgName = '';
   selectedOrgSummary = '';
-  selectedOrgDescription='';
-  selectedOrgActiveStatus='';
-  selectedOrgABN='';
-  selectedOrgPhone='';
-  selectedOrgWebsite='';
-  selectedOrgImg='';
-  selectedOrgTotalDonationItems='';
-  selectedOrgTotalDonations='';
+  selectedOrgDescription = '';
+  selectedOrgActiveStatus = '';
+  selectedOrgABN = '';
+  selectedOrgPhone = '';
+  selectedOrgWebsite = '';
+  selectedOrgImg = '';
+  selectedOrgTotalDonationItems = '';
+  selectedOrgTotalDonations = '';
   activeItems: Item[];
   orgData: any;
   cleanOrgData: any;
   selectedOrgData: any;
 
 
-
-
   items: Item[] = [
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Shovel", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/ioUzxDC.jpeg'},
-    { name: "Hose", initialPrice: 60, totalDonations: 5, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/PFuUHCi.jpeg'},
-    { name: "Oven", initialPrice: 800, totalDonations: 100, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img:  'https://i.imgur.com/IJ3ehgi.jpeg'},
-    { name: "Mixer", initialPrice: 300, totalDonations: 60, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img:  'https://i.imgur.com/BTV0RRM.png'},
-    { name: "Polish", initialPrice: 40, totalDonations: 8, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img: 'https://i.imgur.com/4TmqOIi.jpeg' },
-    { name: "Shoe laces", initialPrice: 50, totalDonations: 10, activeStatus: true, orgID: 'Q1bCdql930HAUejaTStk', img:  'https://i.imgur.com/Cwtpkj4.jpeg'},
-  ]
-
+    {
+      name: 'Shovel',
+      initialPrice: 50,
+      totalDonations: 10,
+      activeStatus: true,
+      orgID: 'Q1bCdql930HAUejaTStk',
+      img: 'https://i.imgur.com/ioUzxDC.jpeg',
+    },
+    {
+      name: 'Hose',
+      initialPrice: 60,
+      totalDonations: 5,
+      activeStatus: true,
+      orgID: 'Q1bCdql930HAUejaTStk',
+      img: 'https://i.imgur.com/PFuUHCi.jpeg',
+    },
+    {
+      name: 'Shovel',
+      initialPrice: 50,
+      totalDonations: 10,
+      activeStatus: true,
+      orgID: 'Q1bCdql930HAUejaTStk',
+      img: 'https://i.imgur.com/ioUzxDC.jpeg',
+    },
+    {
+      name: 'Hose',
+      initialPrice: 60,
+      totalDonations: 5,
+      activeStatus: true,
+      orgID: 'Q1bCdql930HAUejaTStk',
+      img: 'https://i.imgur.com/PFuUHCi.jpeg',
+    },
+    {
+      name: 'Shovel',
+      initialPrice: 50,
+      totalDonations: 10,
+      activeStatus: true,
+      orgID: 'Q1bCdql930HAUejaTStk',
+      img: 'https://i.imgur.com/ioUzxDC.jpeg',
+    },
+    {
+      name: 'Hose',
+      initialPrice: 60,
+      totalDonations: 5,
+      activeStatus: true,
+      orgID: 'Q1bCdql930HAUejaTStk',
+      img: 'https://i.imgur.com/PFuUHCi.jpeg',
+    },
+    {
+      name: 'Oven',
+      initialPrice: 800,
+      totalDonations: 100,
+      activeStatus: true,
+      orgID: 'Q1bCdql930HAUejaTStk',
+      img: 'https://i.imgur.com/IJ3ehgi.jpeg',
+    },
+    {
+      name: 'Mixer',
+      initialPrice: 300,
+      totalDonations: 60,
+      activeStatus: true,
+      orgID: 'Q1bCdql930HAUejaTStk',
+      img: 'https://i.imgur.com/BTV0RRM.png',
+    },
+    {
+      name: 'Polish',
+      initialPrice: 40,
+      totalDonations: 8,
+      activeStatus: true,
+      orgID: 'Q1bCdql930HAUejaTStk',
+      img: 'https://i.imgur.com/4TmqOIi.jpeg',
+    },
+    {
+      name: 'Shoe laces',
+      initialPrice: 50,
+      totalDonations: 10,
+      activeStatus: true,
+      orgID: 'Q1bCdql930HAUejaTStk',
+      img: 'https://i.imgur.com/Cwtpkj4.jpeg',
+    },
+  ];
 
   constructor(
     public authService: AuthService,
     public dialog: MatDialog,
-    private storage: AngularFireStorage,
     public http: HttpClient,
-  ) {}
+    private storage: AngularFireStorage,
+  ) { }
 
   addOrgDialog(): void {
     const dialogRef = this.dialog.open(AddOrganisationDialog, {
-      width: '400px',
-      maxHeight:'100vh',
+      width: '730px',
       data: {
         name: this.name,
         summary: this.summary,
@@ -216,8 +305,7 @@ export class OrganisationComponent {
 
   editOrgDialog(): void {
     const dialogRef = this.dialog.open(EditOrganisationDialog, {
-      width: '400px',
-      maxHeight:'100vh',
+      width: '730px',
       data: {
         id: this.selectedRowIndex,
         name: this.selectedOrgName,
@@ -235,7 +323,7 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
 
-      if(result){
+      if (result) {
         this.http
           .put(
             `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
@@ -250,13 +338,12 @@ export class OrganisationComponent {
             this.selectedOrgABN = result.ABN;
             this.selectedOrgPhone = result.phone;
             this.selectedOrgWebsite = result.website;
-            this.selectedOrgImg = result.imgUrl;
-            this.selectedOrgTotalDonationItems = result.activeItems;
-            this.selectedOrgTotalDonations = result.donations;
+            this.selectedOrgImg = result.img;
+            this.selectedOrgTotalDonationItems = result.totalDonationItems;
+            this.selectedOrgTotalDonations = result.totalDonations;
           });
       }
-//------------------------------ todo make an image service ---------------------//
-//---------------------------- Update Image -------------------------------------//
+
       const image = result?.file[0];
 
       if (image) {
@@ -273,19 +360,17 @@ export class OrganisationComponent {
               ABN: result.ABN,
               phone: result.phone,
               website: result.website,
-              //img: imgResp,
               file: result.file,
               totalDonationItems: 0,
               totalDonations: 0,
             }
 
             imgRef.getDownloadURL()
-              .forEach(
-                (imgResp) => {
-                  orgReqBody.img = imgResp;
+              .forEach((imgResp) => {
+                orgReqBody.img = imgResp;
+              }).then(() => {
 
-                }).then(() => {
-                  this.http
+                this.http
                     .put(
                       `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
                       orgReqBody
@@ -294,49 +379,75 @@ export class OrganisationComponent {
                       complete: () => { }
                     })
 
-                })
+            })
 
+        })
 
-          })
-        }
+      }
+
 
     });
   }
 
-  @ViewChild(MatPaginator,{static:true}) paginator: MatPaginator;
+  removeOrgDialog(): void {
+    const dialogRef = this.dialog.open(RemoveOrganisationDialog, {
+      width: '730px',
+      data: {
+        id: this.selectedRowIndex,
+        name: this.selectedOrgName,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.http
+          .delete<any>(
+            `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`
+          )
+          .subscribe((response) => {
+            this.getOrgs();
+            this.selectedRowIndex = '';
+          });
+      }
+    });
+  }
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit(): void {
     this.getOrgs();
   }
 
-      getOrgs(){
-        this.http.get<any>('https://dip-challenge.azurewebsites.net/organisation/dashboard').subscribe(
-          response => {
-            this.orgData = response.map((item: any) => {
-              let org = {
-              id: item.id,
-              name: item.org.name,
-              activeItems: item.org.totalDonationItems,
-              donations: item.org.totalDonations,
-              summary: item.org.summary,
-              description: item.org.description,
-              activeStatus: item.org.activeStatus,
-              ABN:item.org.ABN,
-              phone: item.org.phone,
-              website: item.org.website,
-              img: item.org.img,
-              totalDonationItems: item.org.totalDonationItems,
-              totalDonations: item.org.totalDonations,
-              };
-              return org;
-            }
-            )
-          this.orgData = new MatTableDataSource(this.orgData);
-          this.orgData.paginator = this.paginator;
-          this.orgData.sort = this.sort;
+  getOrgs() {
+    this.http
+      .get<any>(
+        'https://dip-challenge.azurewebsites.net/organisation/dashboard'
+      )
+      .subscribe((response) => {
+        this.orgData = response.map((item: any) => {
+          let org = {
+            id: item.id,
+            name: item.org.name,
+            activeItems: item.org.totalDonationItems,
+            donations: item.org.totalDonations,
+            summary: item.org.summary,
+            description: item.org.description,
+            activeStatus: item.org.activeStatus,
+            ABN: item.org.ABN,
+            phone: item.org.phone,
+            website: item.org.website,
+            img: item.org.img,
+            totalDonationItems: item.org.totalDonationItems,
+            totalDonations: item.org.totalDonations,
+          };
+          return org;
         });
-        }
+        this.orgData = new MatTableDataSource(this.orgData);
+        this.orgData.paginator = this.paginator;
+        this.orgData.sort = this.sort;
+      });
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -354,16 +465,16 @@ export class OrganisationComponent {
       return;
     }
     this.selectedRowIndex = orgData.id;
-    this.selectedOrgName=orgData.name;
+    this.selectedOrgName = orgData.name;
     this.selectedOrgSummary = orgData.summary;
-    this.selectedOrgDescription=orgData.description;
-    this.selectedOrgActiveStatus=orgData.activeStatus;
-    this.selectedOrgABN=orgData.ABN;
-    this.selectedOrgPhone=orgData.phone;
-    this.selectedOrgWebsite=orgData.website;
-    this.selectedOrgImg=orgData.img;
-    this.selectedOrgTotalDonationItems=orgData.activeItems;
-    this.selectedOrgTotalDonations=orgData.donations;
+    this.selectedOrgDescription = orgData.description;
+    this.selectedOrgActiveStatus = orgData.activeStatus;
+    this.selectedOrgABN = orgData.ABN;
+    this.selectedOrgPhone = orgData.phone;
+    this.selectedOrgWebsite = orgData.website;
+    this.selectedOrgImg = orgData.img;
+    this.selectedOrgTotalDonationItems = orgData.activeItems;
+    this.selectedOrgTotalDonations = orgData.donations;
     this.activeItems = this.items.filter((item) => {
       return item.orgID === orgData.id;
     });

@@ -50,6 +50,14 @@ button {
     display: flex;
 }
 
+.leftContainer {
+  float:left;
+}
+
+.rightContainer {
+  float:right;
+}
+
 .mat-elevation-z8 {
     flex: 1;
     margin-right: 10px;
