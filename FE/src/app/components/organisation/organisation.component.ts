@@ -21,7 +21,7 @@ export interface DialogData {
   phone: string | undefined;
   website: string | undefined;
   img: string | undefined;
-  imgURL: any | undefined;
+  file:any;
   description: string | undefined;
 }
 
@@ -39,8 +39,7 @@ export class AddOrganisationDialog {
 
     //---------- Function to get image from image dialogBox --------------//
   getImageFromChild(file: any) {
-      console.log(file)
-      this.data.imgURL = file;
+      this.data.file = file;
     }
     //-------------------------------------------------------------------//
 
@@ -63,7 +62,7 @@ export class EditOrganisationDialog {
 
   //---------- Function to get image from image dialogBox --------------//
   getImageFromChild(file:any){
-    this.data.img = file;
+    this.data.file = file;
   }
   //-------------------------------------------------------------------//
 
@@ -87,8 +86,8 @@ export class OrganisationComponent {
   ABN: string | undefined;
   phone: string | undefined;
   website: string | undefined;
-  img: string = 'INSERT Image URL';
-  imgURL: any = '';
+  img: string = '';
+  file: any;
   totalDonationItems: number;
   totalDonations: number;
   displayedColumns: string[] = ['name', 'activeItems', 'donations'];
@@ -145,37 +144,126 @@ export class OrganisationComponent {
         phone: this.phone,
         website: this.website,
         img: this.img,
-        imgURL:this.imgURL,
+        file:this.file,
         totalDonationItems: 0,
         totalDonations: 0,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result)
 
-      result.imageURL.subscribe({
-        next:(resp:any) => console.log(resp)
-      })
-
-
+      const reqOrgBody = {
+        name: result.name,
+        summary: result.summary,
+        description: result.description,
+        activeStatus: result.activeStatus,
+        ABN: result.ABN,
+        phone: result.phone,
+        website: result.website,
+        img: result.img,
+        file:result.file,
+        totalDonationItems: 0,
+        totalDonations: 0,
+      }
+//----------------------------- Create an Org --------------------------//
       this.http
         .post(
           'https://dip-challenge.azurewebsites.net/organisation',
-          JSON.parse(JSON.stringify(result))
+          JSON.parse(JSON.stringify(reqOrgBody))
         )
-        .subscribe((response:any) => {
+        .subscribe({
+          next:(createOrgResp:any) => {
+              //--------------- Uploads new org image to org --------------------//
+            const docRef = createOrgResp._path.segments[1];
+            const collectionRef = createOrgResp._path.segments[0];
+            const image = result.file[0]
+            this.storage.upload(`${collectionRef}/${docRef}/orgLogo`,image)
+            .then(
+              resp => {
+//-------------------------- Update Image URL -----------------------//            
+              let imgRef = this.storage.ref(`Organisations/${docRef}/orgLogo`)
 
-//--------------- Uploads new org image to org --------------------//
-          console.log(response)
-          const docRef = response._path.segments[1];
-          const collectionRef = response._path.segments[0];
-          const image = result.img[0]
-          this.storage.upload(`${collectionRef}/${docRef}/orgLogo`,image)
-//-----------------------------------------------------------------//
+              imgRef.getDownloadURL()
+              .forEach(
+                (imgResp) => {
 
-          this.getOrgs();
-        });
+                  reqOrgBody.img = imgResp;
+
+                    this.http
+                    .put(
+                      `https://dip-challenge.azurewebsites.net/organisation/${docRef}`,
+                      reqOrgBody
+                    ).subscribe({
+                      error:(err) => console.log(err),
+                      complete:() => {}
+                    })
+                    
+                }
+              )
+              // .subscribe({
+              //   next:(imgResp:any) => {
+              //     let img = {img:imgResp};
+              //     console.log(img)
+
+              //     this.http
+              //       .put(
+              //         `https://dip-challenge.azurewebsites.net/organisations/${docRef}`,
+              //         JSON.parse(img.img)
+              //       ).subscribe({
+              //         error:(err) => console.log(img),
+              //         complete:() => {console.log(img)}
+              //       })
+              //       console.log(JSON.parse(img.img))
+              //   },
+              // })
+            
+//------------------------------------------------------------------//
+              }
+            )
+
+          }
+        })
+          
+//           (response:any) => {
+
+// // //--------------- Uploads new org image to org --------------------//
+// //           const docRef = response._path.segments[1];
+// //           const collectionRef = response._path.segments[0];
+// //           const image = result.img[0]
+// //           this.storage.upload(`${collectionRef}/${docRef}/orgLogo`,image)
+// //           .then((resp:any) => {
+// //             console.log(resp)
+
+// // // //-------------------------- Update Image URL -----------------------//
+// // //             console.log(docRef)
+// // //     let imgRef = this.storage.ref(`Organisations/${docRef}/orgLogo`)
+
+// // //     imgRef.getDownloadURL()    
+// // //     .subscribe({
+// // //       next:(imgResp:any) => {
+// // //         let img = {img:imgResp};
+// // //         console.log(img)
+
+// // //         this.http
+// // //           .put(
+// // //             `https://dip-challenge.azurewebsites.net/organisations/${docRef}`,
+// // //             JSON.parse(JSON.stringify(img))
+// // //           ).subscribe({
+// // //             error:(err) => console.log(img),
+// // //             complete:() => {console.log(img)}
+// // //           })
+
+// // //       }
+// // //     })
+// // //------------------------------------------------------------------//
+
+// //           })
+// //-------------------------------------------------------------------//
+
+
+
+//           this.getOrgs();
+//         });
     });
   }
 
@@ -192,7 +280,7 @@ export class OrganisationComponent {
         ABN: this.selectedOrgABN,
         phone: this.selectedOrgPhone,
         website: this.selectedOrgWebsite,
-        img: this.selectedOrgImg,
+        img: this.img,
         totalDonationItems: this.selectedOrgTotalDonationItems,
         totalDonations: this.selectedOrgTotalDonations,
       },
@@ -234,7 +322,6 @@ export class OrganisationComponent {
       getOrgs(){
         this.http.get<any>('https://dip-challenge.azurewebsites.net/organisation/dashboard').subscribe(
           response => {
-            console.log(response);
             this.orgData = response.map((item: any) => {
               let org = {
               id: item.id,

@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class UploadImageComponent implements OnInit {
 
-  @Output() imageObj: EventEmitter<any> = new EventEmitter();
+  @Output() imageOut: EventEmitter<any> = new EventEmitter();
 
   //string organisation/orgref
   @Input() orgnisationRef = '';
@@ -29,12 +29,13 @@ export class UploadImageComponent implements OnInit {
 
   constructor(
     private storage: AngularFireStorage,
-    private firestore: AngularFirestore
+    private fs: AngularFirestore
   ) {
   }
 
   getImageURL() {
     const ref = this.storage.ref(`Organisations/${this.orgnisationRef}/orgLogo`);
+
     return ref.getDownloadURL();
   }
 
@@ -53,16 +54,23 @@ export class UploadImageComponent implements OnInit {
 
     const regImageType = /image\/.*/g
 
+
+    //check file exists
     if (file) {
+
+      //check that file is an image
       if (!regImageType.test(file[0].type)) {
         alert("invalid input")
         return;
       }
 
-      let imageURLSub = this.getImageURL()
-          this.imageObj.emit({ fileList:file, imageUrl:imageURLSub})
-
-
+      if(file.length >= 2 ){
+        alert("please only select one image")
+        return;
+      }
+      
+      //send image to parent
+      this.imageOut.emit(file)
 
     //todo the upload should be done on the create organisation level
       // this.storage.upload(`${this.organisationID}/orgLogo`, file[0])
@@ -75,7 +83,7 @@ export class UploadImageComponent implements OnInit {
       }
     }
   }
-
+    
   // sendImageToParent(file: any) {
   //   if (file) {
   //     console.log(file)
