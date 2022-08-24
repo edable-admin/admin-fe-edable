@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { AngularFireStorageReference } from '@angular/fire/compat/storage';
-import { DocumentReference, serverTimestamp } from 'firebase/firestore';
+import { collection, DocumentReference, serverTimestamp, where } from 'firebase/firestore';
 import { Item, Organisation } from 'src/app/models/models';
 import { data } from './data';
 
@@ -15,9 +15,9 @@ export class FirestoreService {
     public fs: AngularFirestore
   ) { }
 
-//----------------------- Option 1 ---------------------------------//
+  //----------------------- Option 1 ---------------------------------//
   createOptionOneOrgs() {
-    data.optionOne
+    data.optionOne.orgs
       .forEach(
         (resp: any) => {
           this.fs
@@ -28,6 +28,128 @@ export class FirestoreService {
             .set(resp)
         }
       )
+  }
+
+  addItemsForOptionOne() {
+
+    const orgOne = this.fs
+      .collection('optionOne')
+      .doc('organisations')
+      .collection('organisationsCollections', query =>
+        query.limit(1))
+      .get()
+      .subscribe({
+        next: (snapshot) => {
+          snapshot.forEach(org => {
+            data.optionOne.itemsOrgOne
+              .forEach((item) => {
+                let ItemRef =
+                  this.fs
+                    .collection('optionOne')
+                    .doc('organisations')
+                    .collection('organisationsCollections')
+                    .doc(org.id)
+                    .collection('itemsCollection')
+                    .doc().ref;
+
+                let orgRef =
+                  this.fs
+                    .collection('optionOne')
+                    .doc('organisations')
+                    .collection('organisationsCollections')
+                    .doc(org.id).ref;
+
+                this.fs.firestore
+                  .runTransaction(transaction =>
+                    transaction.get(orgRef).then(
+                      (orgDoc:any) => {
+                        const newItemCount = orgDoc.data().totalDonationItems + 1;
+                        transaction.update(orgRef, { totalDonationItems: newItemCount });
+                        transaction.set(ItemRef,item)
+                      }))
+                .then(resp => console.log(resp))
+                .catch(err => console.log(err))
+              })
+
+
+
+          })
+        }
+      })
+
+
+    // let batch = this.fs.firestore.batch();
+
+    // this.fs
+    //   .collection('optionOne')
+    //   .doc('organisations')
+    //   .collection('organisationsCollections')
+    //   .doc()
+    //   .set()
+    //   .then(resp => console.log(resp))
+    //   .catch(err => console.log(err))
+  }
+
+
+  addItemsForOptionTwo() {
+
+    const orgOne = this.fs
+      .collection('optionOne')
+      .doc('organisations')
+      .collection('organisationsCollections', query =>
+        query.limitToLast(1)
+        .orderBy('phone'))
+      .get()
+      .subscribe({
+        next: (snapshot) => {
+          snapshot.forEach(org => {
+            data.optionOne.itemsOrgOne
+              .forEach((item) => {
+                let ItemRef =
+                  this.fs
+                    .collection('optionOne')
+                    .doc('organisations')
+                    .collection('organisationsCollections')
+                    .doc(org.id)
+                    .collection('itemsCollection')
+                    .doc().ref;
+
+                let orgRef =
+                  this.fs
+                    .collection('optionOne')
+                    .doc('organisations')
+                    .collection('organisationsCollections')
+                    .doc(org.id).ref;
+
+                this.fs.firestore
+                  .runTransaction(transaction =>
+                    transaction.get(orgRef).then(
+                      (orgDoc:any) => {
+                        const newItemCount = orgDoc.data().totalDonationItems + 1;
+                        transaction.update(orgRef, { totalDonationItems: newItemCount });
+                        transaction.set(ItemRef,item)
+                      }))
+                .then(resp => console.log(resp))
+                .catch(err => console.log(err))
+              })
+
+
+
+          })
+        }
+      })
+
+
+    // let batch = this.fs.firestore.batch();
+
+    // this.fs
+    //   .collection('optionOne')
+    //   .doc('organisations')
+    //   .collection('organisationsCollections')
+    //   .doc()
+    //   .set()
+    //   .then(resp => console.log(resp))
+    //   .catch(err => console.log(err))
   }
 
 

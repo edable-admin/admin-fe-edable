@@ -11,7 +11,9 @@ export class ApiCallsComponent implements OnInit {
   constructor(public fs: FirestoreService) { }
 
   ngOnInit(): void {
-    this.fs.createOptionOneOrgs();
+    //this.fs.createOptionOneOrgs();
+    //this.fs.addItemsForOptionOne();
+    this.fs.addItemsForOptionTwo();
   }
 
 }
