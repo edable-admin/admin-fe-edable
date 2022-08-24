@@ -33,7 +33,7 @@ export class AddOrganisationDialog {
   constructor(
     public dialogRef: MatDialogRef<AddOrganisationDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -49,7 +49,7 @@ export class EditOrganisationDialog {
   constructor(
     public dialogRef: MatDialogRef<EditOrganisationDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -67,20 +67,16 @@ export class RemoveOrganisationDialog {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     public http: HttpClient
 
-  ) {}
-
-  removeOrg(): void {
-    this.http
-      .delete<any>(
-        `https://dip-challenge.azurewebsites.net/organisation/${this.data.id}`
-      )
-      .subscribe((response) => {
-      });
-      this.dialogRef.close();
-  }
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+  cancelDelete() {
+    this.dialogRef.close(false);
+  }
+  confirmDelete() {
+    this.dialogRef.close(true);
   }
 }
 
@@ -206,7 +202,7 @@ export class OrganisationComponent {
     public authService: AuthService,
     public dialog: MatDialog,
     public http: HttpClient
-  ) {}
+  ) { }
 
   addOrgDialog(): void {
     const dialogRef = this.dialog.open(AddOrganisationDialog, {
@@ -287,14 +283,17 @@ export class OrganisationComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      // this.http
-      //   .delete<any>(
-      //     `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`
-      //   )
-      //   .subscribe((response) => {
-          this.getOrgs();
-        });
-    // });
+      if (result === true) {
+        this.http
+          .delete<any>(
+            `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`
+          )
+          .subscribe((response) => {
+            this.getOrgs();
+            this.selectedRowIndex = '';
+          });
+      }
+    });
   }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
