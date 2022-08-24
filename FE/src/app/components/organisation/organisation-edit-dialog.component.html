@@ -1,5 +1,5 @@
 <div style="text-align: center">
-  <div class="bigHeader">Add an Organisation</div>
+  <div class="bigHeader">Edit an Organisation</div>
 </div>
 <hr size="2" width="90%" color="grey" />
 
@@ -23,7 +23,6 @@
   </mat-form-field>
 </div>
 </div>
-
 <div class="rightContainer">
 <div class="centerAlign">
   <mat-form-field [style.width.px]="327" appearance="fill">
@@ -34,11 +33,20 @@
     <mat-label>Website</mat-label>
     <input matInput [(ngModel)]="data.website" />
   </mat-form-field>
-  <app-upload-image></app-upload-image>
+  <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-label>Active Donation Items</mat-label>
+    <input matInput [(ngModel)]="data.totalDonationItems" />
+  </mat-form-field>
+  <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-label>Donations</mat-label>
+    <input matInput [(ngModel)]="data.totalDonations" />
+  </mat-form-field>
 </div>
 </div>
 
-<div class="rightContainer" mat-dialog-actions>
+<app-upload-image></app-upload-image>
+
+<div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button  [mat-dialog-close]="data" cdkFocusInitial color="primary">Add</button>
+  <button mat-button  [mat-dialog-close]="data" cdkFocusInitial color="warn">Edit</button>
 </div>

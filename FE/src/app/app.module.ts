@@ -34,6 +34,8 @@ import { MainComponent } from './components/main/main.component';
 const config = environment.firebaseConfig;
 
 import {AddOrganisationDialog} from './components/organisation/organisation.component';
+import { EditOrganisationDialog } from './components/organisation/organisation.component';
+import { RemoveOrganisationDialog } from './components/organisation/organisation.component';
 import {MatNativeDateModule} from '@angular/material/core';
 import {HttpClientModule} from '@angular/common/http';
 
@@ -51,6 +53,8 @@ import {HttpClientModule} from '@angular/common/http';
     TransactionsComponent,
     MainComponent,
     AddOrganisationDialog,
+    EditOrganisationDialog,
+    RemoveOrganisationDialog,
   ],
   imports: [
     BrowserModule,
