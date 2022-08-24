@@ -30,6 +30,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 //---------------------------------------------------------------------------//
 import { environment } from '../environments/environment';
+import { ApiCallsComponent } from './components/api-calls/api-calls.component';
 
 const config = environment.firebaseConfig;
 
@@ -42,6 +43,7 @@ const config = environment.firebaseConfig;
     SignInComponent,
     ForgotPasswordComponent,
     TempPageComponent,
+    ApiCallsComponent,
   ],
   imports: [
     BrowserModule,
