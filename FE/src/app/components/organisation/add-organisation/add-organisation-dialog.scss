@@ -73,20 +73,13 @@ label {
         flex-direction: column;
         justify-content: center;
         margin-left: 10%;
-        margin-right: 10%;
-        
-    }
-
-    
+        margin-right: 10%;        
+    }  
 
 }
 @media screen and (max-width: 430px) {
     .dialog-actions {
-        
         float: none;
-        width: 150px;
-        
-        
-    }
-    
+        width: 150px;              
+    }    
   }
