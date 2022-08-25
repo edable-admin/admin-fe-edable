@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
@@ -10,7 +10,10 @@ import { Observable } from 'rxjs';
 })
 export class UploadImageComponent implements OnInit {
 
-  @Output() uploadedImage: EventEmitter<any> = new EventEmitter();
+  @Output() imageOut: EventEmitter<any> = new EventEmitter();
+
+  //string organisation/orgref
+  @Input() orgnisationRef = '';
 
   //todo make organisationID an input which will be received from the api
   //when say the edit popup is opened
@@ -21,64 +24,62 @@ export class UploadImageComponent implements OnInit {
   imageName!: any;
 
   image!: any;
+  imageURL: any;
   meta!: Observable<any>;
 
   constructor(
     private storage: AngularFireStorage,
-    private firestore: AngularFirestore
+    private fs: AngularFirestore
   ) {
-    const ref = this.storage.ref(`${this.organisationID}/orgLogo`);
-    this.meta = ref.getDownloadURL();
+  }
 
+  getImageURL() {
+    const ref = this.storage.ref(`Organisations/${this.orgnisationRef}/orgLogo`);
+
+    return ref.getDownloadURL();
   }
 
   ngOnInit(): void {
-    this.meta.subscribe({
-      next: (test) => this.image = test,
-      error:(err) => console.log(err)
-     });
+
+    if (this.orgnisationRef !== '') {
+      this.meta = this.getImageURL();
+
+      this.meta.subscribe({
+        next: (img) => this.image = img,
+        error:(err) => console.log(err)
+       });
+    }
   }
 
   onFileSelected(event: any) {
-    //todo validate that this is actually an image file
     const file = "target" in event ? event.target.files as FileList : event;
 
     const regImageType = /image\/.*/g
-    console.log()
 
+
+    //check file exists
     if (file) {
+
+      //check that file is an image
       if (!regImageType.test(file[0].type)) {
         alert("invalid input")
         return;
       }
-    //todo the upload should be done on the create organisation level
-      this.storage.upload(`${this.organisationID}/orgLogo`, file[0])
-      this.uploadedImage.emit(file)
 
+      if(file.length >= 2 ){
+        alert("please only select one image")
+        return;
+      }
+
+      //send image to parent
+      this.imageOut.emit(file)
+
+      //display preview in html
       let reader = new FileReader();
       reader.readAsDataURL(file[0]);
       reader.onload = (event: any) => {
-        this.image = event.target.result;
+      this.image = event.target.result;
       }
     }
   }
-
-  // sendImageToParent(file: any) {
-  //   if (file) {
-  //     console.log(file)
-
-  //     //todo the upload should be done on the create organisation level
-  //     this.storage.upload(`${this.organisationID}/orgLogo`,file[0])
-
-
-  //     let reader = new FileReader();
-  //     reader.readAsDataURL(file[0]);
-
-  //     reader.onload = (event: any) => {
-  //       this.image = event.target.result;
-  //     }
-  //   }
-  //   this.uploadedImage.emit(file)
-  // }
-
 }

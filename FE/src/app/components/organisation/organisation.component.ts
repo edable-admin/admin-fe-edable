@@ -1,84 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-
-export interface DialogData {
-  id: string | undefined;
-  name: string | undefined;
-  summary: string | undefined;
-  activeStatus: boolean;
-  ABN: string | undefined;
-  phone: string | undefined;
-  website: string | undefined;
-  img: string | undefined;
-  description: string | undefined;
-  totalDonationItems: number;
-  totalDonations: number;
-}
-
-@Component({
-  selector: 'organisation-add-dialog.component',
-  templateUrl: 'organisation-add-dialog.component.html',
-  styleUrls: ['./organisation.component.scss'],
-})
-export class AddOrganisationDialog {
-  constructor(
-    public dialogRef: MatDialogRef<AddOrganisationDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'organisation-edit-dialog.component',
-  templateUrl: 'organisation-edit-dialog.component.html',
-  styleUrls: ['./organisation.component.scss'],
-})
-export class EditOrganisationDialog {
-  constructor(
-    public dialogRef: MatDialogRef<EditOrganisationDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'organisation-remove-dialog.component',
-  templateUrl: 'organisation-remove-dialog.component.html',
-  styleUrls: ['./organisation.component.scss'],
-})
-export class RemoveOrganisationDialog {
-  constructor(
-    public dialogRef: MatDialogRef<RemoveOrganisationDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    public http: HttpClient
-
-  ) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-  cancelDelete() {
-    this.dialogRef.close(false);
-  }
-  confirmDelete() {
-    this.dialogRef.close(true);
-  }
-}
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AddOrganisationDialog } from './add-organisation/add-organisation-dialog';
+import { EditOrganisationDialog } from './edit-organisation/edit-organisation-dialog';
+import { RemoveOrganisationDialog } from './remove-organisation/remove-organisation-dialog';
+import { Item } from 'src/app/models/Item';
 
 @Component({
   selector: 'app-organisation',
@@ -95,7 +26,8 @@ export class OrganisationComponent {
   ABN: string | undefined;
   phone: string | undefined;
   website: string | undefined;
-  img: string = 'INSERT Image URL';
+  img: string = '';
+  file: any;
   totalDonationItems: number;
   totalDonations: number;
   displayedColumns: string[] = ['name', 'activeItems', 'donations'];
@@ -114,95 +46,23 @@ export class OrganisationComponent {
   orgData: any;
   cleanOrgData: any;
   selectedOrgData: any;
+  items: Item[] = [];
 
-  items: Item[] = [
-    {
-      name: 'Shovel',
-      initialPrice: 50,
-      totalDonations: 10,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/ioUzxDC.jpeg',
-    },
-    {
-      name: 'Hose',
-      initialPrice: 60,
-      totalDonations: 5,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/PFuUHCi.jpeg',
-    },
-    {
-      name: 'Shovel',
-      initialPrice: 50,
-      totalDonations: 10,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/ioUzxDC.jpeg',
-    },
-    {
-      name: 'Hose',
-      initialPrice: 60,
-      totalDonations: 5,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/PFuUHCi.jpeg',
-    },
-    {
-      name: 'Shovel',
-      initialPrice: 50,
-      totalDonations: 10,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/ioUzxDC.jpeg',
-    },
-    {
-      name: 'Hose',
-      initialPrice: 60,
-      totalDonations: 5,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/PFuUHCi.jpeg',
-    },
-    {
-      name: 'Oven',
-      initialPrice: 800,
-      totalDonations: 100,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/IJ3ehgi.jpeg',
-    },
-    {
-      name: 'Mixer',
-      initialPrice: 300,
-      totalDonations: 60,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/BTV0RRM.png',
-    },
-    {
-      name: 'Polish',
-      initialPrice: 40,
-      totalDonations: 8,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/4TmqOIi.jpeg',
-    },
-    {
-      name: 'Shoe laces',
-      initialPrice: 50,
-      totalDonations: 10,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/Cwtpkj4.jpeg',
-    },
-  ];
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     public authService: AuthService,
     public dialog: MatDialog,
-    public http: HttpClient
+    public http: HttpClient,
+    public storage: AngularFireStorage,
   ) { }
+
+  ngOnInit(): void {
+    this.getOrgs();
+    console.log(this.items);
+    
+  }
 
   addOrgDialog(): void {
     const dialogRef = this.dialog.open(AddOrganisationDialog, {
@@ -216,20 +76,82 @@ export class OrganisationComponent {
         phone: this.phone,
         website: this.website,
         img: this.img,
+        file: this.file,
         totalDonationItems: 0,
         totalDonations: 0,
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      this.http
-        .post(
-          'https://dip-challenge.azurewebsites.net/organisation',
-          JSON.parse(JSON.stringify(result))
-        )
-        .subscribe((response) => {
-          this.getOrgs();
-        });
+    dialogRef.afterClosed().subscribe((result: any) => {
+
+      const reqOrgBody: any = {
+        name: result?.name,
+        summary: result?.summary,
+        description: result?.description,
+        activeStatus: result?.activeStatus,
+        ABN: result?.ABN,
+        phone: result?.phone,
+        website: result?.website,
+        img: result?.img,
+        file: result?.file,
+        totalDonationItems: 0,
+        totalDonations: 0,
+      }
+      //----------------------------- Create an Org --------------------------//
+      if (result) {
+
+        this.http
+          .post(
+            'https://dip-challenge.azurewebsites.net/organisation',
+            JSON.parse(JSON.stringify(reqOrgBody))
+          )
+          .subscribe({
+            next: (createOrgResp: any) => {
+              const image = typeof (result.file) != "undefined" ? result?.file[0] : undefined
+              console.log(result.file);
+
+
+              if (image) {
+                //--------------- Uploads new org image to org --------------------//
+                const docRef = createOrgResp._path.segments[1];
+                const collectionRef = createOrgResp._path.segments[0];
+                this.storage.upload(`${collectionRef}/${docRef}/orgLogo`, image)
+                  .then(
+                    (resp) => {
+                      //-------------------------- Update Image URL -----------------------//
+                      let imgRef = this.storage.ref(`Organisations/${docRef}/orgLogo`)
+
+                      imgRef.getDownloadURL()
+                        .forEach(
+                          (imgResp) => {
+
+                            reqOrgBody.img = imgResp;
+
+                            this.http
+                              .put(
+                                `https://dip-challenge.azurewebsites.net/organisation/${docRef}`,
+                                reqOrgBody
+                              ).subscribe({
+                                error: (err) => console.log(err),
+                                complete: () => { }
+                              })
+
+                          }
+                        )
+                      //------------------------------------------------------------------//
+                    }
+                  ).then(() => {
+                    this.getOrgs();
+                  })
+
+              } else {
+                this.getOrgs();
+
+              }
+
+            }
+          })
+      }
     });
   }
 
@@ -245,31 +167,72 @@ export class OrganisationComponent {
         ABN: this.selectedOrgABN,
         phone: this.selectedOrgPhone,
         website: this.selectedOrgWebsite,
-        img: this.selectedOrgImg,
+        img: this.img,
         totalDonationItems: this.selectedOrgTotalDonationItems,
         totalDonations: this.selectedOrgTotalDonations,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.http
-        .put(
-          `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
-          JSON.parse(JSON.stringify(result))
-        )
-        .subscribe((response) => {
-          this.getOrgs();
-          this.selectedOrgName = result.name;
-          this.selectedOrgSummary = result.summary;
-          this.selectedOrgDescription = result.description;
-          this.selectedOrgActiveStatus = result.activeStatus;
-          this.selectedOrgABN = result.ABN;
-          this.selectedOrgPhone = result.phone;
-          this.selectedOrgWebsite = result.website;
-          this.selectedOrgImg = result.img;
-          this.selectedOrgTotalDonationItems = result.totalDonationItems;
-          this.selectedOrgTotalDonations = result.totalDonations;
-        });
+      if (result) {
+
+        this.http
+          .put(
+            `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
+            JSON.parse(JSON.stringify(result))
+          )
+          .subscribe((response) => {
+            this.getOrgs();
+            this.selectedOrgName = result.name;
+            this.selectedOrgSummary = result.summary;
+            this.selectedOrgDescription = result.description;
+            this.selectedOrgActiveStatus = result.activeStatus;
+            this.selectedOrgABN = result.ABN;
+            this.selectedOrgPhone = result.phone;
+            this.selectedOrgWebsite = result.website;
+            this.selectedOrgImg = result.img;
+            this.selectedOrgTotalDonationItems = result.totalDonationItems;
+            this.selectedOrgTotalDonations = result.totalDonations;
+          });
+      }
+
+      const image = result?.file[0];
+
+      if (image) {
+        this.storage.upload(`Organisations/${this.selectedRowIndex}/orgLogo`, image)
+          .then((resp) => {
+            //-------------------------- Update Image URL -----------------------------------//
+            let imgRef = this.storage.ref(`Organisations/${this.selectedRowIndex}/orgLogo`)
+
+            let orgReqBody: any = {
+              name: result.name,
+              summary: result.summary,
+              description: result.description,
+              activeStatus: result.activeStatus,
+              ABN: result.ABN,
+              phone: result.phone,
+              website: result.website,
+              file: result.file,
+              totalDonationItems: 0,
+              totalDonations: 0,
+            }
+
+            imgRef.getDownloadURL()
+              .forEach((imgResp) => {
+                orgReqBody.img = imgResp;
+              }).then(() => {
+
+                this.http
+                  .put(
+                    `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
+                    orgReqBody
+                  ).subscribe({
+                    error: (err) => console.log(err),
+                    complete: () => { }
+                  })
+              })
+          })
+      }
     });
   }
 
@@ -294,13 +257,6 @@ export class OrganisationComponent {
           });
       }
     });
-  }
-
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-
-  ngOnInit(): void {
-    this.getOrgs();
   }
 
   getOrgs() {
@@ -363,12 +319,4 @@ export class OrganisationComponent {
       return item.orgID === orgData.id;
     });
   }
-}
-export interface Item {
-  name: string;
-  initialPrice: number;
-  totalDonations: number;
-  activeStatus: boolean;
-  orgID: string;
-  img: string;
 }

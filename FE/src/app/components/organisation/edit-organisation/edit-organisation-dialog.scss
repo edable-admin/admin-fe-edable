@@ -1,0 +1,28 @@
+.bigHeader {
+    font-size: 30px;
+}
+
+.leftContainer {
+    float: left;
+}
+
+.centerAlign {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.rightContainer {
+    float: right;
+}
+
+label {
+    display: inline-block;
+    width: 150px;
+}
+
+.overflow-height {
+    max-height: 100vh;
+}

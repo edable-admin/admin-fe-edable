@@ -33,11 +33,11 @@ import { MainComponent } from './components/main/main.component';
 
 const config = environment.firebaseConfig;
 
-import {AddOrganisationDialog} from './components/organisation/organisation.component';
-import { EditOrganisationDialog } from './components/organisation/organisation.component';
-import { RemoveOrganisationDialog } from './components/organisation/organisation.component';
-import {MatNativeDateModule} from '@angular/material/core';
-import {HttpClientModule} from '@angular/common/http';
+import { AddOrganisationDialog } from './components/organisation/add-organisation/add-organisation-dialog';
+import { EditOrganisationDialog } from './components/organisation/edit-organisation/edit-organisation-dialog';
+import { RemoveOrganisationDialog } from './components/organisation/remove-organisation/remove-organisation-dialog';
+import { MatNativeDateModule } from '@angular/material/core';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -74,7 +74,7 @@ import {HttpClientModule} from '@angular/common/http';
     ReactiveFormsModule,
   ],
   providers: [
-    { provide: BUCKET, useValue: environment.firebaseConfig.storageBucket },AuthService
+    { provide: BUCKET, useValue: environment.firebaseConfig.storageBucket }, AuthService
   ],
   bootstrap: [AppComponent]
 })
