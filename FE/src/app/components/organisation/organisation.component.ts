@@ -249,17 +249,11 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
 
-
+      console.log(this.selectedRowIndex)
       if (result === true) {
-        this.http
-          .delete<any>(
-            `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`
-          )
-          .subscribe((response) => {
-            console.log(response)
-            this.getOrgs();
-            this.selectedRowIndex = '';
-          });
+
+        this.fs
+          .removeOrganisation(this.selectedRowIndex)
       }
     });
   }
