@@ -10,6 +10,7 @@ import { AddOrganisationDialog } from './add-organisation/add-organisation-dialo
 import { EditOrganisationDialog } from './edit-organisation/edit-organisation-dialog';
 import { RemoveOrganisationDialog } from './remove-organisation/remove-organisation-dialog';
 import { Item } from 'src/app/models/Item';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 
 @Component({
   selector: 'app-organisation',
@@ -56,6 +57,7 @@ export class OrganisationComponent {
     public dialog: MatDialog,
     public http: HttpClient,
     public storage: AngularFireStorage,
+    public fs:FirebaseService
   ) { }
 
   ngOnInit(): void {
@@ -246,12 +248,15 @@ export class OrganisationComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+
+      
       if (result === true) {
         this.http
           .delete<any>(
             `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`
           )
           .subscribe((response) => {
+            console.log(response)
             this.getOrgs();
             this.selectedRowIndex = '';
           });
