@@ -254,7 +254,8 @@ export class OrganisationComponent {
 
         this.fs
           .removeOrganisation(this.selectedRowIndex)
-          //todo alert org cannot be deleted
+          //todo popup alert org cannot be deleted
+          //todo popup alert org succesfully deleted
         .then(resp => console.log(resp))
       }
     });
@@ -266,6 +267,7 @@ export class OrganisationComponent {
         'https://dip-challenge.azurewebsites.net/organisation/dashboard'
       )
       .subscribe((response) => {
+        console.log(response)
         this.orgData = response.map((item: any) => {
           let org = {
             id: item.id,
