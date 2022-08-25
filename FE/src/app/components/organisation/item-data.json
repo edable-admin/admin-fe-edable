@@ -1,0 +1,52 @@
+{
+    "items": [
+        {
+            "name": "Shovel",
+            "initialPrice": 50,
+            "totalDonations": 10,
+            "activeStatus": true,
+            "orgID": "Q1bCdql930HAUejaTStk",
+            "img": "https://i.imgur.com/ioUzxDC.jpeg"
+        },
+        {
+            "name": "Hose",
+            "initialPrice": 60,
+            "totalDonations": 5,
+            "activeStatus": true,
+            "orgID": "Q1bCdql930HAUejaTStk",
+            "img": "https://i.imgur.com/PFuUHCi.jpeg"
+        },
+        {
+            "name": "Oven",
+            "initialPrice": 800,
+            "totalDonations": 100,
+            "activeStatus": true,
+            "orgID": "Q1bCdql930HAUejaTStk",
+            "img": "https://i.imgur.com/IJ3ehgi.jpeg"
+        },
+        {
+            "name": "Mixer",
+            "initialPrice": 300,
+            "totalDonations": 60,
+            "activeStatus": true,
+            "orgID": "Q1bCdql930HAUejaTStk",
+            "img": "https://i.imgur.com/BTV0RRM.png"
+        },
+        {
+            "name": "Polish",
+            "initialPrice": 40,
+            "totalDonations": 8,
+            "activeStatus": true,
+            "orgID": "Q1bCdql930HAUejaTStk",
+            "img": "https://i.imgur.com/4TmqOIi.jpeg"
+        },
+        {
+            "name": "Shoe laces",
+            "initialPrice": 50,
+            "totalDonations": 10,
+            "activeStatus": true,
+            "orgID": "Q1bCdql930HAUejaTStk",
+            "img": "https://i.imgur.com/Cwtpkj4.jpeg"
+        }
+    ]
+}
