@@ -1,0 +1,14 @@
+<div style="text-align: center">
+    <div class="bigHeader">Are you sure?</div>
+  </div>
+  <hr size="2" width="90%" color="grey" />
+  
+  <div class="centerAlign">
+  <h2>This will remove {{data.name}} from Organisations</h2>
+  </div>
+  
+  <div mat-dialog-actions>
+    <button mat-button (click)="cancelDelete()">Cancel</button>
+    <button mat-button (click)="confirmDelete()" cdkFocusInitial color="accent">Confirm</button>
+  </div>
+  

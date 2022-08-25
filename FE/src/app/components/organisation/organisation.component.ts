@@ -1,99 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-
-
-export interface DialogData {
-  id: string | undefined;
-  name: string | undefined;
-  summary: string | undefined;
-  activeStatus: boolean;
-  ABN: string | undefined;
-  phone: string | undefined;
-  website: string | undefined;
-  img: string | undefined;
-  file: any;
-  description: string | undefined;
-  totalDonationItems: number;
-  totalDonations: number;
-}
-
-@Component({
-  selector: 'organisation-add-dialog.component',
-  templateUrl: 'organisation-add-dialog.component.html',
-  styleUrls: ['./organisation.component.scss'],
-})
-export class AddOrganisationDialog {
-  constructor(
-    public dialogRef: MatDialogRef<AddOrganisationDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) { }
-
-  //---------- Function to get image from image dialogBox --------------//
-  getImageFromChild(file: any) {
-    this.data.file = file;
-  }
-  //-------------------------------------------------------------------//
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'organisation-edit-dialog.component',
-  templateUrl: 'organisation-edit-dialog.component.html',
-  styleUrls: ['./organisation.component.scss'],
-})
-export class EditOrganisationDialog {
-  constructor(
-    public dialogRef: MatDialogRef<EditOrganisationDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  //---------- Function to get image from image dialogBox --------------//
-  getImageFromChild(file: any) {
-    this.data.file = file;
-  }
-  //-------------------------------------------------------------------//
-}
-
-@Component({
-  selector: 'organisation-remove-dialog.component',
-  templateUrl: 'organisation-remove-dialog.component.html',
-  styleUrls: ['./organisation.component.scss'],
-})
-export class RemoveOrganisationDialog {
-  constructor(
-    public dialogRef: MatDialogRef<RemoveOrganisationDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    public http: HttpClient
-
-  ) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-  cancelDelete() {
-    this.dialogRef.close(false);
-  }
-  confirmDelete() {
-    this.dialogRef.close(true);
-  }
-}
+import { AddOrganisationDialog } from './add-organisation/add-organisation-dialog';
+import { EditOrganisationDialog } from './edit-organisation/edit-organisation-dialog';
+import { RemoveOrganisationDialog } from './remove-organisation/remove-organisation-dialog';
+import { Item } from 'src/app/models/Item';
 
 @Component({
   selector: 'app-organisation',
@@ -130,89 +46,10 @@ export class OrganisationComponent {
   orgData: any;
   cleanOrgData: any;
   selectedOrgData: any;
+  items: Item[] = [];
 
-  items: Item[] = [
-    {
-      name: 'Shovel',
-      initialPrice: 50,
-      totalDonations: 10,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/ioUzxDC.jpeg',
-    },
-    {
-      name: 'Hose',
-      initialPrice: 60,
-      totalDonations: 5,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/PFuUHCi.jpeg',
-    },
-    {
-      name: 'Shovel',
-      initialPrice: 50,
-      totalDonations: 10,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/ioUzxDC.jpeg',
-    },
-    {
-      name: 'Hose',
-      initialPrice: 60,
-      totalDonations: 5,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/PFuUHCi.jpeg',
-    },
-    {
-      name: 'Shovel',
-      initialPrice: 50,
-      totalDonations: 10,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/ioUzxDC.jpeg',
-    },
-    {
-      name: 'Hose',
-      initialPrice: 60,
-      totalDonations: 5,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/PFuUHCi.jpeg',
-    },
-    {
-      name: 'Oven',
-      initialPrice: 800,
-      totalDonations: 100,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/IJ3ehgi.jpeg',
-    },
-    {
-      name: 'Mixer',
-      initialPrice: 300,
-      totalDonations: 60,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/BTV0RRM.png',
-    },
-    {
-      name: 'Polish',
-      initialPrice: 40,
-      totalDonations: 8,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/4TmqOIi.jpeg',
-    },
-    {
-      name: 'Shoe laces',
-      initialPrice: 50,
-      totalDonations: 10,
-      activeStatus: true,
-      orgID: 'Q1bCdql930HAUejaTStk',
-      img: 'https://i.imgur.com/Cwtpkj4.jpeg',
-    },
-  ];
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     public authService: AuthService,
@@ -220,6 +57,12 @@ export class OrganisationComponent {
     public http: HttpClient,
     public storage: AngularFireStorage,
   ) { }
+
+  ngOnInit(): void {
+    this.getOrgs();
+    console.log(this.items);
+    
+  }
 
   addOrgDialog(): void {
     const dialogRef = this.dialog.open(AddOrganisationDialog, {
@@ -416,13 +259,6 @@ export class OrganisationComponent {
     });
   }
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-
-  ngOnInit(): void {
-    this.getOrgs();
-  }
-
   getOrgs() {
     this.http
       .get<any>(
@@ -483,12 +319,4 @@ export class OrganisationComponent {
       return item.orgID === orgData.id;
     });
   }
-}
-export interface Item {
-  name: string;
-  initialPrice: number;
-  totalDonations: number;
-  activeStatus: boolean;
-  orgID: string;
-  img: string;
 }
