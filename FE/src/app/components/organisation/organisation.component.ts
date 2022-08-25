@@ -61,9 +61,9 @@ export class OrganisationComponent {
   ) { }
 
   ngOnInit(): void {
+    //this.fs.generateNoSQLStructure()
+
     this.getOrgs();
-    console.log(this.items);
-    
   }
 
   addOrgDialog(): void {
@@ -249,7 +249,7 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
 
-      
+
       if (result === true) {
         this.http
           .delete<any>(
