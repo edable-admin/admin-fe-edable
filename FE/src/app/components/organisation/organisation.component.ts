@@ -254,6 +254,8 @@ export class OrganisationComponent {
 
         this.fs
           .removeOrganisation(this.selectedRowIndex)
+          //todo alert org cannot be deleted
+        .then(resp => console.log(resp))
       }
     });
   }

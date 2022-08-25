@@ -5,6 +5,7 @@ import { noSQLData } from './no-sql-data';
 import { limit, QueryDocumentSnapshot } from 'firebase/firestore';
 import { getType } from '@angular/flex-layout/extended/style/style-transforms';
 import { EventType } from '@angular/router';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -63,8 +64,6 @@ export class FirebaseService {
 
   async removeOrganisation(orgID: string) {
 
-    let IsCanDelete: boolean = true;
-
     const org = this.fs
       .collection('Organisations')
       .doc(orgID)
@@ -75,47 +74,55 @@ export class FirebaseService {
       .collection('GeneralDonations')
       .doc('Summary')
       .collection('Donations', query =>
-      query.limit(1))
-      .ref
+      query.limit(1)).ref
 
 
-    const ItemsRef = org
+    const itemsRef = org
       .collection('Items', query =>
       query.limit(1))
       .ref
 
-    return generalDonationsRef
+    //todo models
+    let generalDonations: any;
+    let orgName: any;
+
+    await orgRef
       .get()
-      .then((resp: any) => {
-        if (resp.docs.length > 0) {
-          IsCanDelete = false
-        }
+      .then((org) => orgName = org.data()['name'])
 
-        if (IsCanDelete) {
-          ItemsRef.get().then((resp: any) => {
-            if (IsCanDelete && resp.docs.length === 0) {
-
-              org.delete().then(resp => console.log(resp))
-
-              this.storage.ref(`Organisations/${orgID}/orgLogo`)
-              .delete()
-              console.log(orgID)
-            } else {
-              throw(console.error("You can't delete an organisation that has items please delete the items first"))
-            }
-          }
-          )
-        }
+    await generalDonationsRef
+      .get()
+      .then((donation: any) => {
+        generalDonations = donation.docs[0]//.docs[0].data()
       })
-    //todo
-    //check org does not have items
-    //check org does not have generalDonations
-    //remove image
-    // if remove image is successfull
-    //then remove org
-  }
 
-  addItem(){
-    //todo
+    //todo response interface
+    let response: any;
+
+    if (generalDonations) {
+      response = { message: `${orgName} cannot be deleted as it has general donations`}
+      return response;
+    }
+
+    let items: any;
+
+    await itemsRef
+      .get()
+      .then((item: any) => {
+        items = item.docs[0]
+      })
+
+    if (items) {
+      response = { message: `${orgName} cannot be deleted as it has donation items`}
+      return response;
+    }
+
+    org.delete()
+    this.storage.ref(`Organisations/${orgID}/orgLogo`)
+      .delete()
+
+    response = {message: `${orgName} deleted`}
+
+    return response;
   }
 }
