@@ -43,14 +43,18 @@ label {
         max-height: 90vh;
         display: flex;
         flex-direction: column;
-         
+        
+        .rightContainer {
+            margin-top: -10px;
+        }
         
     }
     .bigHeader {
         margin-top: 5px;
+        
     }
     .leftContainer {
-        
+        padding-top: 10px;
         float: none;
         width: 75%;
         height: 20%;
