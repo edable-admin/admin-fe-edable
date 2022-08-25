@@ -3,7 +3,10 @@
 }
 
 .leftContainer {
-    float: left;
+    float:left;
+    width: 40%;
+    margin-left: 50px;
+     
 }
 
 .centerAlign {
@@ -15,7 +18,10 @@
 }
 
 .rightContainer {
-    float: right;
+    
+    float:right;
+    width: 40%;
+    margin-right: 50px;
 }
 
 label {
@@ -26,3 +32,57 @@ label {
 .overflow-height {
     max-height: 100vh;
 }
+.form-field {
+    width: 100%; 
+    max-width: 500px; 
+    min-width: 100px
+}
+@media screen and (max-width:900px) {
+    #container {
+        overflow: auto;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+         
+        
+    }
+    .bigHeader {
+        margin-top: 5px;
+    }
+    .leftContainer {
+        
+        float: none;
+        width: 75%;
+        height: 20%;
+        
+        
+        margin-left: 10%;
+        margin-right: 10%;
+        
+    }
+
+    .rightContainer {
+        float: none;
+        width: 75%;
+        height: 20%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 10%;
+        margin-right: 10%;
+        
+    }
+
+    
+
+}
+@media screen and (max-width: 430px) {
+    .dialog-actions {
+        
+        float: none;
+        width: 150px;
+        
+        
+    }
+    
+  }

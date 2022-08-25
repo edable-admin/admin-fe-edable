@@ -31,3 +31,10 @@
     }
   }
 }
+@media screen and (max-width: 430px) {
+  .container {
+      display: flex !important;
+      flex-direction: column !important;
+      row-gap: 5px;
+  }
+}
