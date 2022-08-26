@@ -61,8 +61,6 @@ export class OrganisationComponent {
   ) { }
 
   ngOnInit(): void {
-    //this.fs.addOrganisation("hi")
-
     this.getOrgs();
   }
 
@@ -102,57 +100,59 @@ export class OrganisationComponent {
       //----------------------------- Create an Org --------------------------//
       if (result) {
 
-        this.http
-          .post(
-            'https://dip-challenge.azurewebsites.net/organisation',
-            JSON.parse(JSON.stringify(reqOrgBody))
-          )
-          .subscribe({
-            next: (createOrgResp: any) => {
-              const image = typeof (result.file) != "undefined" ? result?.file[0] : undefined
-              console.log(result.file);
+        this.fs.addOrganisation(result)
+
+        // this.http
+        //   .post(
+        //     'https://dip-challenge.azurewebsites.net/organisation',
+        //     JSON.parse(JSON.stringify(reqOrgBody))
+        //   )
+        //   .subscribe({
+        //     next: (createOrgResp: any) => {
+        //       const image = typeof (result.file) != "undefined" ? result?.file[0] : undefined
+        //       console.log(result.file);
 
 
-              if (image) {
-                //--------------- Uploads new org image to org --------------------//
-                const docRef = createOrgResp._path.segments[1];
-                const collectionRef = createOrgResp._path.segments[0];
-                this.storage.upload(`${collectionRef}/${docRef}/orgLogo`, image)
-                  .then(
-                    (resp) => {
-                      //-------------------------- Update Image URL -----------------------//
-                      let imgRef = this.storage.ref(`Organisations/${docRef}/orgLogo`)
+        //       if (image) {
+        //         //--------------- Uploads new org image to org --------------------//
+        //         const docRef = createOrgResp._path.segments[1];
+        //         const collectionRef = createOrgResp._path.segments[0];
+        //         this.storage.upload(`${collectionRef}/${docRef}/orgLogo`, image)
+        //           .then(
+        //             (resp) => {
+        //               //-------------------------- Update Image URL -----------------------//
+        //               let imgRef = this.storage.ref(`Organisations/${docRef}/orgLogo`)
 
-                      imgRef.getDownloadURL()
-                        .forEach(
-                          (imgResp) => {
+        //               imgRef.getDownloadURL()
+        //                 .forEach(
+        //                   (imgResp) => {
 
-                            reqOrgBody.img = imgResp;
+        //                     reqOrgBody.img = imgResp;
 
-                            this.http
-                              .put(
-                                `https://dip-challenge.azurewebsites.net/organisation/${docRef}`,
-                                reqOrgBody
-                              ).subscribe({
-                                error: (err) => console.log(err),
-                                complete: () => { }
-                              })
+        //                     this.http
+        //                       .put(
+        //                         `https://dip-challenge.azurewebsites.net/organisation/${docRef}`,
+        //                         reqOrgBody
+        //                       ).subscribe({
+        //                         error: (err) => console.log(err),
+        //                         complete: () => { }
+        //                       })
 
-                          }
-                        )
-                      //------------------------------------------------------------------//
-                    }
-                  ).then(() => {
-                    this.getOrgs();
-                  })
+        //                   }
+        //                 )
+        //               //------------------------------------------------------------------//
+        //             }
+        //           ).then(() => {
+        //             this.getOrgs();
+        //           })
 
-              } else {
-                this.getOrgs();
+        //       } else {
+        //         this.getOrgs();
 
-              }
+        //       }
 
-            }
-          })
+        //     }
+        //   })
       }
     });
   }

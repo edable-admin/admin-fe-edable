@@ -136,26 +136,64 @@ export class FirebaseService {
     return response;
   }
 
+  checkImageType(img: FileList) {
+    if (!img) {
+      return false;
+    }
+
+    const regImage = /image\/.*/g
+
+    if (img.length === 1 && regImage.test(img[0].type)) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
   //todo models
-  async addOrganisation(org: any) {
+  async addOrganisation(orgData: any) {
+
+    const orgReq = {
+      name: orgData.name,
+      summary: orgData.summary,
+      description: orgData.description,
+      activeStatus: orgData.activeStatus,
+      ABN: orgData.ABN,
+      phone: orgData.phone,
+      website: orgData.website,
+      img: orgData.img,
+      totalDonationItems: 0,
+      totalDonations:0
+    }
+
+    const img = orgData.file
+
+    console.log(this.checkImageType(img))
 
     //todo get data from parameter later on.
-    let orgReq = noSQLData.Organisations[0];
-    let generalDOnationReq = noSQLData.GeneralDonationsSummary[0];
+    // let orgReq = noSQLData.Organisations[0];
+    // let generalDOnationReq = noSQLData.GeneralDonationsSummary[0];
 
-    let orgRef = this.fs
-      .collection('Organisations')
-      .doc().ref
+    // let orgRef = this.fs
+    //   .collection('Organisations')
+    //   .doc().ref
 
-    let generalDonationsRef = orgRef
-      .collection('GeneralDonations')
-      .doc('Summary')
+    // let generalDonationsRef = orgRef
+    //   .collection('GeneralDonations')
+    //   .doc('Summary')
 
-    let batch = this.fs.firestore.batch()
+    // let batch = this.fs.firestore.batch()
 
-    batch.set(orgRef, orgReq)
-    batch.set(generalDonationsRef, generalDOnationReq)
-    batch.commit()
+    // batch.set(orgRef, orgReq)
+    // batch.set(generalDonationsRef, generalDOnationReq)
+    // batch.commit()
+
+    if (this.checkImageType(img)) {
+      // this.storage.upload(`Organisations/${orgRef.id}/orgLogo`)
+
+    }
+
 
   }
 }
