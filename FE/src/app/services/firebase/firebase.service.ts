@@ -151,6 +151,18 @@ export class FirebaseService {
 
   }
 
+  async getOrgs() {
+    let orgs: any = [];
+
+    await this.fs
+      .collection('Organisations')
+      .ref.get()
+      .then(resp => resp.docs.forEach((org: any) => orgs.push({ id: org.id, ...org.data() })))
+
+    return orgs
+
+  }
+
   //todo models
   async addOrganisation(orgData: any) {
 
@@ -187,10 +199,7 @@ export class FirebaseService {
 
     let orgs: any = [];
 
-    await this.fs
-      .collection('Organisations')
-      .ref.get()
-      .then(resp => resp.docs.forEach((org:any) => orgs.push({ id: org.id,...org.data() })))
+    orgs = await this.getOrgs();
 
     if (this.checkImageType(img)) {
       this.storage.upload(`Organisations/${orgRef.id}/orgLogo`, img[0])
