@@ -131,7 +131,11 @@ export class FirebaseService {
     this.storage.ref(`Organisations/${orgID}/orgLogo`)
       .delete()
 
-    response = {message: `${orgName} deleted`}
+    let orgs: any = [];
+
+    orgs = await this.getOrgs()
+
+    response = {orgs:orgs, message: `${orgName} deleted`}
 
     return response;
   }

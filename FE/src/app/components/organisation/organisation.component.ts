@@ -260,7 +260,13 @@ export class OrganisationComponent {
           .removeOrganisation(this.selectedRowIndex)
           //todo popup alert org cannot be deleted
           //todo popup alert org succesfully deleted
-        .then(resp => console.log(resp))
+          .then(resp => {
+            if (resp.orgs) {
+              this.orgData = new MatTableDataSource(resp.orgs);
+              this.orgData.paginator = this.paginator;
+              this.orgData.sort = this.sort;
+            }
+        })
       }
     });
   }
