@@ -64,12 +64,15 @@ export class FirebaseService {
 
   async removeOrganisation(orgID: string) {
 
+    //gets the organisation
     const org = this.fs
       .collection('Organisations')
       .doc(orgID)
 
+    //gets the reference
     const orgRef = org.ref
 
+    //gets the general donation limited to 1
     const generalDonationsRef = org
       .collection('GeneralDonations')
       .doc('Summary')
@@ -77,6 +80,7 @@ export class FirebaseService {
       query.limit(1)).ref
 
 
+    //gets the item limited to 1
     const itemsRef = org
       .collection('Items', query =>
       query.limit(1))
@@ -86,10 +90,12 @@ export class FirebaseService {
     let generalDonations: any;
     let orgName: any;
 
+    //gets org data and assigns it to orgName
     await orgRef
       .get()
       .then((org) => orgName = org.data()['name'])
 
+    //gets the general donation query
     await generalDonationsRef
       .get()
       .then((donation: any) => {
@@ -99,6 +105,7 @@ export class FirebaseService {
     //todo response interface
     let response: any;
 
+    //if there is a general donation in an organisation
     if (generalDonations) {
       response = { message: `${orgName} cannot be deleted as it has general donations`}
       return response;
@@ -106,17 +113,20 @@ export class FirebaseService {
 
     let items: any;
 
+    //gets the item query
     await itemsRef
       .get()
       .then((item: any) => {
         items = item.docs[0]
       })
 
+    // if there is an item in the organisation return message
     if (items) {
       response = { message: `${orgName} cannot be deleted as it has donation items`}
       return response;
     }
 
+    //If organisation doesn not have items or donations delete organisations
     org.delete()
     this.storage.ref(`Organisations/${orgID}/orgLogo`)
       .delete()
@@ -124,5 +134,28 @@ export class FirebaseService {
     response = {message: `${orgName} deleted`}
 
     return response;
+  }
+
+  //todo models
+  async addOrganisation(org: any) {
+
+    //todo get data from parameter later on.
+    let orgReq = noSQLData.Organisations[0];
+    let generalDOnationReq = noSQLData.GeneralDonationsSummary[0];
+
+    let orgRef = this.fs
+      .collection('Organisations')
+      .doc().ref
+
+    let generalDonationsRef = orgRef
+      .collection('GeneralDonations')
+      .doc('Summary')
+
+    let batch = this.fs.firestore.batch()
+
+    batch.set(orgRef, orgReq)
+    batch.set(generalDonationsRef, generalDOnationReq)
+    batch.commit()
+
   }
 }

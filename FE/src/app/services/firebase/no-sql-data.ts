@@ -3,7 +3,7 @@ import { serverTimestamp } from "firebase/firestore";
 export const noSQLData = {
   Organisations: [
     {
-      name: "Flowers",
+      name: "test create org",
       summary: "we sell flowers",
       description: "our flowers are amazing.",
       activeStatus: true,
@@ -28,7 +28,7 @@ export const noSQLData = {
       IsError: false,
       IsErrorMessage:"",
       IsRefunded: false,
-      refundMessage: "",
+      refundMessage: "test create org",
       donor: {
         name:"Jane Smith",
         email: "flowers@example.com",

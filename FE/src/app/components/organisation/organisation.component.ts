@@ -61,7 +61,7 @@ export class OrganisationComponent {
   ) { }
 
   ngOnInit(): void {
-    //this.fs.generateNoSQLStructure()
+    //this.fs.addOrganisation("hi")
 
     this.getOrgs();
   }
