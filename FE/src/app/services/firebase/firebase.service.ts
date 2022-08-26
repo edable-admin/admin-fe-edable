@@ -155,44 +155,50 @@ export class FirebaseService {
   async addOrganisation(orgData: any) {
 
     const orgReq = {
-      name: orgData.name,
-      summary: orgData.summary,
-      description: orgData.description,
-      activeStatus: orgData.activeStatus,
-      ABN: orgData.ABN,
-      phone: orgData.phone,
-      website: orgData.website,
-      img: orgData.img,
+      name: orgData.name ? orgData.name : null,
+      summary: orgData.summary ? orgData.summary: null,
+      description: orgData.description ? orgData.description: null,
+      activeStatus: orgData.activeStatus ? orgData.activeStatus: null,
+      ABN: orgData.ABN ? orgData.ABN: null,
+      phone: orgData.phone ? orgData.phone: null,
+      website: orgData.website ? orgData.website: null,
+      img: orgData.img ? orgData.img: null,
       totalDonationItems: 0,
       totalDonations:0
     }
 
     const img = orgData.file
 
-    console.log(this.checkImageType(img))
+    let generalDOnationReq = noSQLData.GeneralDonationsSummary[0];
 
-    //todo get data from parameter later on.
-    // let orgReq = noSQLData.Organisations[0];
-    // let generalDOnationReq = noSQLData.GeneralDonationsSummary[0];
+    let orgRef = this.fs
+      .collection('Organisations')
+      .doc().ref
 
-    // let orgRef = this.fs
-    //   .collection('Organisations')
-    //   .doc().ref
+    let generalDonationsRef = orgRef
+      .collection('GeneralDonations')
+      .doc('Summary')
 
-    // let generalDonationsRef = orgRef
-    //   .collection('GeneralDonations')
-    //   .doc('Summary')
+    let batch = this.fs.firestore.batch()
 
-    // let batch = this.fs.firestore.batch()
+    batch.set(orgRef, orgReq)
+    batch.set(generalDonationsRef, generalDOnationReq)
+    batch.commit()
 
-    // batch.set(orgRef, orgReq)
-    // batch.set(generalDonationsRef, generalDOnationReq)
-    // batch.commit()
+    let orgs: any = [];
+
+    await this.fs
+      .collection('Organisations')
+      .ref.get()
+      .then(resp => resp.docs.forEach((org:any) => orgs.push({ id: org.id,...org.data() })))
 
     if (this.checkImageType(img)) {
-      // this.storage.upload(`Organisations/${orgRef.id}/orgLogo`)
+      this.storage.upload(`Organisations/${orgRef.id}/orgLogo`, img[0])
 
+      return {orgs:orgs,message:`${orgReq.name} and image successfully added`}
     }
+
+    return {orgs:orgs, message:`${orgReq.name} successfully added no image was uploaded`}
 
 
   }

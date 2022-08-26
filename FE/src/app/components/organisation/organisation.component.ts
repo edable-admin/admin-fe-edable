@@ -82,7 +82,7 @@ export class OrganisationComponent {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result: any) => {
+    dialogRef.afterClosed().subscribe(async (result: any) => {
 
       const reqOrgBody: any = {
         name: result?.name,
@@ -100,7 +100,11 @@ export class OrganisationComponent {
       //----------------------------- Create an Org --------------------------//
       if (result) {
 
-        this.fs.addOrganisation(result)
+        await this.fs.addOrganisation(result).then((resp) => {
+          this.orgData = new MatTableDataSource(resp.orgs)
+          this.orgData.paginator = this.paginator;
+          this.orgData.sort = this.sort;
+        })
 
         // this.http
         //   .post(
