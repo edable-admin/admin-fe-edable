@@ -29,12 +29,12 @@
 
           <ng-container matColumnDef="activeItems">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Active Donation Items </th>
-            <td mat-cell *matCellDef="let row"> {{row.activeItems}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.totalDonationItems}} </td>
           </ng-container>
 
           <ng-container matColumnDef="donations">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Donations </th>
-            <td mat-cell *matCellDef="let row"> ${{row.donations}} </td>
+            <td mat-cell *matCellDef="let row"> ${{row.totalDonations}} </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

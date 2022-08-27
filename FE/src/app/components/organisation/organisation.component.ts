@@ -77,8 +77,8 @@ export class OrganisationComponent {
         website: this.website,
         img: this.img,
         file: this.file,
-        totalDonationItems: 0,
-        totalDonations: 0,
+        totalDonationItems: this.totalDonationItems,
+        totalDonations: this.totalDonations,
       },
     });
 

@@ -2,7 +2,7 @@ import { Injectable, Type } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { noSQLData } from './no-sql-data';
-import { limit, QueryDocumentSnapshot } from 'firebase/firestore';
+import { doc, limit, QueryDocumentSnapshot } from 'firebase/firestore';
 import { getType } from '@angular/flex-layout/extended/style/style-transforms';
 import { EventType } from '@angular/router';
 import { throwError } from 'rxjs';
@@ -72,18 +72,22 @@ export class FirebaseService {
     //gets the reference
     const orgRef = org.ref
 
-    //gets the general donation limited to 1
-    const generalDonationsRef = org
+    const generalDonationsSummary = org
       .collection('GeneralDonations')
       .doc('Summary')
-      .collection('Donations', query =>
-      query.limit(1)).ref
+
+    const generalDonationsSummaryRef = generalDonationsSummary.ref
+
+    //gets the general donation limited to 1
+    const generalDonationsColl = generalDonationsSummary
+      .collection('Donations')
+
+    const generalDonationsRef = generalDonationsColl.ref
 
 
     //gets the item limited to 1
     const itemsRef = org
-      .collection('Items', query =>
-      query.limit(1))
+      .collection('Items')
       .ref
 
     //todo models
@@ -126,10 +130,11 @@ export class FirebaseService {
       return response;
     }
 
-    //If organisation doesn not have items or donations delete organisations
+    //If organisation does not have items or donations delete organisations
+    generalDonationsSummary.delete();
     org.delete()
     this.storage.ref(`Organisations/${orgID}/orgLogo`)
-      .delete()
+    .delete()
 
     let orgs: any = [];
 
@@ -197,20 +202,29 @@ export class FirebaseService {
 
     let batch = this.fs.firestore.batch()
 
-    batch.set(orgRef, orgReq)
-    batch.set(generalDonationsRef, generalDOnationReq)
-    batch.commit()
-
     let orgs: any = [];
 
-    orgs = await this.getOrgs();
-
     if (this.checkImageType(img)) {
-      this.storage.upload(`Organisations/${orgRef.id}/orgLogo`, img[0])
+      await (await this.storage.upload(`Organisations/${orgRef.id}/orgLogo`, img[0])).ref
+        .getDownloadURL()
+        .then(async (url) => {
+          orgReq.img = url
+        });
+
+        batch.set(orgRef, orgReq)
+        batch.set(generalDonationsRef, generalDOnationReq)
+        batch.commit()
+        orgs = await this.getOrgs();
+
+
 
       return {orgs:orgs,message:`${orgReq.name} and image successfully added`}
     }
 
+    batch.set(orgRef, orgReq)
+    batch.set(generalDonationsRef, generalDOnationReq)
+    batch.commit()
+    orgs = await this.getOrgs();
     return {orgs:orgs, message:`${orgReq.name} successfully added no image was uploaded`}
 
 
