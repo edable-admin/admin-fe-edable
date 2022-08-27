@@ -253,7 +253,6 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
 
-      console.log(this.selectedRowIndex)
       if (result === true) {
 
         this.fs
@@ -277,7 +276,6 @@ export class OrganisationComponent {
         'https://dip-challenge.azurewebsites.net/organisation/dashboard'
       )
       .subscribe((response) => {
-        console.log(response)
         this.orgData = response.map((item: any) => {
           let org = {
             id: item.id,
