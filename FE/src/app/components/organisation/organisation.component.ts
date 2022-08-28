@@ -99,64 +99,12 @@ export class OrganisationComponent {
       }
       //----------------------------- Create an Org --------------------------//
       if (result) {
-
-        await this.fs.addOrganisation(result).then((resp) => {
-          this.orgData = new MatTableDataSource(resp.orgs)
-          this.orgData.paginator = this.paginator;
-          this.orgData.sort = this.sort;
+        this.fs.addOrganisation(result)
+          .then((resp) => {
+            if (result?.file) {
+              this.fs.uploadImage(resp.orgRef,result.file)
+            }
         })
-
-        // this.http
-        //   .post(
-        //     'https://dip-challenge.azurewebsites.net/organisation',
-        //     JSON.parse(JSON.stringify(reqOrgBody))
-        //   )
-        //   .subscribe({
-        //     next: (createOrgResp: any) => {
-        //       const image = typeof (result.file) != "undefined" ? result?.file[0] : undefined
-        //       console.log(result.file);
-
-
-        //       if (image) {
-        //         //--------------- Uploads new org image to org --------------------//
-        //         const docRef = createOrgResp._path.segments[1];
-        //         const collectionRef = createOrgResp._path.segments[0];
-        //         this.storage.upload(`${collectionRef}/${docRef}/orgLogo`, image)
-        //           .then(
-        //             (resp) => {
-        //               //-------------------------- Update Image URL -----------------------//
-        //               let imgRef = this.storage.ref(`Organisations/${docRef}/orgLogo`)
-
-        //               imgRef.getDownloadURL()
-        //                 .forEach(
-        //                   (imgResp) => {
-
-        //                     reqOrgBody.img = imgResp;
-
-        //                     this.http
-        //                       .put(
-        //                         `https://dip-challenge.azurewebsites.net/organisation/${docRef}`,
-        //                         reqOrgBody
-        //                       ).subscribe({
-        //                         error: (err) => console.log(err),
-        //                         complete: () => { }
-        //                       })
-
-        //                   }
-        //                 )
-        //               //------------------------------------------------------------------//
-        //             }
-        //           ).then(() => {
-        //             this.getOrgs();
-        //           })
-
-        //       } else {
-        //         this.getOrgs();
-
-        //       }
-
-        //     }
-        //   })
       }
     });
   }
@@ -181,6 +129,7 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        console.log(result)
 
         this.http
           .put(
@@ -188,7 +137,6 @@ export class OrganisationComponent {
             JSON.parse(JSON.stringify(result))
           )
           .subscribe((response) => {
-            this.getOrgs();
             this.selectedOrgName = result.name;
             this.selectedOrgSummary = result.summary;
             this.selectedOrgDescription = result.description;
@@ -197,14 +145,17 @@ export class OrganisationComponent {
             this.selectedOrgPhone = result.phone;
             this.selectedOrgWebsite = result.website;
             this.selectedOrgImg = result.img;
-            this.selectedOrgTotalDonationItems = result.totalDonationItems;
-            this.selectedOrgTotalDonations = result.totalDonations;
+            this.selectedOrgTotalDonationItems = "0";
+            this.selectedOrgTotalDonations = "0";
           });
       }
 
-      const image = result?.file[0];
 
-      if (image) {
+
+      if (result?.file) {
+
+        const image = result?.file[0];
+
         this.storage.upload(`Organisations/${this.selectedRowIndex}/orgLogo`, image)
           .then((resp) => {
             //-------------------------- Update Image URL -----------------------------------//
@@ -255,49 +206,20 @@ export class OrganisationComponent {
 
       if (result === true) {
 
-        this.fs
-          .removeOrganisation(this.selectedRowIndex)
-          //todo popup alert org cannot be deleted
-          //todo popup alert org succesfully deleted
-          .then(resp => {
-            if (resp.orgs) {
-              this.orgData = new MatTableDataSource(resp.orgs);
-              this.orgData.paginator = this.paginator;
-              this.orgData.sort = this.sort;
-            }
-        })
+        this.fs.removeOrganisation(this.selectedRowIndex)
       }
     });
   }
 
   getOrgs() {
-    this.http
-      .get<any>(
-        'https://dip-challenge.azurewebsites.net/organisation/dashboard'
-      )
-      .subscribe((response) => {
-        this.orgData = response.map((item: any) => {
-          let org = {
-            id: item.id,
-            name: item.org.name,
-            activeItems: item.org.totalDonationItems,
-            donations: item.org.totalDonations,
-            summary: item.org.summary,
-            description: item.org.description,
-            activeStatus: item.org.activeStatus,
-            ABN: item.org.ABN,
-            phone: item.org.phone,
-            website: item.org.website,
-            img: item.org.img,
-            totalDonationItems: item.org.totalDonationItems,
-            totalDonations: item.org.totalDonations,
-          };
-          return org;
-        });
-        this.orgData = new MatTableDataSource(this.orgData);
-        this.orgData.paginator = this.paginator;
-        this.orgData.sort = this.sort;
-      });
+
+    //todo look at ngondestroy to stop performance issues
+    this.fs.getOrgs()
+      .subscribe(orgs => {
+            this.orgData = new MatTableDataSource(orgs);
+            this.orgData.paginator = this.paginator;
+            this.orgData.sort = this.sort;
+    })
   }
 
   applyFilter(event: Event) {

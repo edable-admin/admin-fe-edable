@@ -76,8 +76,6 @@ export class FirebaseService {
       .collection('GeneralDonations')
       .doc('Summary')
 
-    const generalDonationsSummaryRef = generalDonationsSummary.ref
-
     //gets the general donation limited to 1
     const generalDonationsColl = generalDonationsSummary
       .collection('Donations')
@@ -133,16 +131,53 @@ export class FirebaseService {
     //If organisation does not have items or donations delete organisations
     generalDonationsSummary.delete();
     org.delete()
-    this.storage.ref(`Organisations/${orgID}/orgLogo`)
-    .delete()
+    this.storage.ref(`Organisations/${orgID}/orgLogo`).delete()
 
-    let orgs: any = [];
-
-    orgs = await this.getOrgs()
-
-    response = {orgs:orgs, message: `${orgName} deleted`}
+    response = {message: `${orgName} deleted`}
 
     return response;
+  }
+
+  getOrgs() {
+    let orgs = this.fs
+      .collection('Organisations')
+      .valueChanges({idField:"id"})
+    return orgs
+
+  }
+
+  //todo models
+  async addOrganisation(orgData: any) {
+
+    const orgReq = {
+      name: orgData.name ? orgData.name : null,
+      summary: orgData.summary ? orgData.summary: null,
+      description: orgData.description ? orgData.description: null,
+      activeStatus: orgData.activeStatus ? orgData.activeStatus: null,
+      ABN: orgData.ABN ? orgData.ABN: null,
+      phone: orgData.phone ? orgData.phone: null,
+      website: orgData.website ? orgData.website: null,
+      img: null,
+      totalDonationItems: 0,
+      totalDonations:0
+    }
+
+    let generalDOnationReq = noSQLData.GeneralDonationsSummary[0];
+
+    let orgRef = this.fs
+      .collection('Organisations')
+      .doc().ref
+
+    let generalDonationsRef = orgRef
+      .collection('GeneralDonations')
+      .doc('Summary')
+
+    let batch = this.fs.firestore.batch()
+
+    batch.set(orgRef, orgReq)
+    batch.set(generalDonationsRef, generalDOnationReq)
+    batch.commit()
+    return {orgRef:orgRef.id,message:`${orgReq.name} successfully added`}
   }
 
   checkImageType(img: FileList) {
@@ -160,73 +195,18 @@ export class FirebaseService {
 
   }
 
-  async getOrgs() {
-    let orgs: any = [];
+  async uploadImage(orgRef: string, file: FileList) {
 
-    await this.fs
-      .collection('Organisations')
-      .ref.get()
-      .then(resp => resp.docs.forEach((org: any) => orgs.push({ id: org.id, ...org.data() })))
+    if (this.checkImageType(file)) {
 
-    return orgs
+      const org = this.fs.collection('Organisations')
+      .doc(orgRef).ref
 
-  }
-
-  //todo models
-  async addOrganisation(orgData: any) {
-
-    const orgReq = {
-      name: orgData.name ? orgData.name : null,
-      summary: orgData.summary ? orgData.summary: null,
-      description: orgData.description ? orgData.description: null,
-      activeStatus: orgData.activeStatus ? orgData.activeStatus: null,
-      ABN: orgData.ABN ? orgData.ABN: null,
-      phone: orgData.phone ? orgData.phone: null,
-      website: orgData.website ? orgData.website: null,
-      img: orgData.img ? orgData.img: null,
-      totalDonationItems: 0,
-      totalDonations:0
-    }
-
-    const img = orgData.file
-
-    let generalDOnationReq = noSQLData.GeneralDonationsSummary[0];
-
-    let orgRef = this.fs
-      .collection('Organisations')
-      .doc().ref
-
-    let generalDonationsRef = orgRef
-      .collection('GeneralDonations')
-      .doc('Summary')
-
-    let batch = this.fs.firestore.batch()
-
-    let orgs: any = [];
-
-    if (this.checkImageType(img)) {
-      await (await this.storage.upload(`Organisations/${orgRef.id}/orgLogo`, img[0])).ref
+       await (await this.storage.upload(`Organisations/${orgRef}/orgLogo`, file[0])).ref
         .getDownloadURL()
         .then(async (url) => {
-          orgReq.img = url
-        });
-
-        batch.set(orgRef, orgReq)
-        batch.set(generalDonationsRef, generalDOnationReq)
-        batch.commit()
-        orgs = await this.getOrgs();
-
-
-
-      return {orgs:orgs,message:`${orgReq.name} and image successfully added`}
+          await org.update({img:url})
+        }).catch(err => console.log(err))
     }
-
-    batch.set(orgRef, orgReq)
-    batch.set(generalDonationsRef, generalDOnationReq)
-    batch.commit()
-    orgs = await this.getOrgs();
-    return {orgs:orgs, message:`${orgReq.name} successfully added no image was uploaded`}
-
-
   }
 }
