@@ -234,6 +234,7 @@ export class OrganisationComponent {
   selectRow(orgData) {
     if (this.selectedRowIndex === orgData.id) {
       this.selectedRowIndex = '';
+      this.selectedOrgImg = '';
       this.activeItems = [];
       return;
     }
