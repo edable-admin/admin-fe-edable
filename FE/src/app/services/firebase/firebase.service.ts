@@ -5,7 +5,7 @@ import { noSQLData } from './no-sql-data';
 import { doc, limit, QueryDocumentSnapshot } from 'firebase/firestore';
 import { getType } from '@angular/flex-layout/extended/style/style-transforms';
 import { EventType } from '@angular/router';
-import { throwError } from 'rxjs';
+import { throwError, timeout } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -131,7 +131,11 @@ export class FirebaseService {
     //If organisation does not have items or donations delete organisations
     generalDonationsSummary.delete();
     org.delete()
-    this.storage.ref(`Organisations/${orgID}/orgLogo`).delete()
+
+    setTimeout(() => {
+      this.storage.ref(`Organisations/${orgID}/orgLogo`).delete()
+    }, 10000);
+
 
     response = {message: `${orgName} deleted`}
 
