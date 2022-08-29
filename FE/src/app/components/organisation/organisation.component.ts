@@ -121,15 +121,18 @@ export class OrganisationComponent {
       if (result) {
 
         const orgReq: Organisation = {
-          description: result.description,
+          description: result.description ? result.description : "",
           name: result.name ? result.name : "",
           phone: result.phone ? result.phone : "",
           summary: result.summary ? result.summary : "",
           website: result.website ? result.website : "",
+          img: result.img ? result.imgs : "",
           totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
           totalDonations:result.totalDonations ? result.totalDonations : 0,
           activeStatus:true
         }
+
+        console.log(orgReq)
 
         this.fs.editOrganisation(this.selectedRowIndex, orgReq)
           .then((resp) => {

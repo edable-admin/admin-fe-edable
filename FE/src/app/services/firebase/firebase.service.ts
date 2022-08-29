@@ -149,7 +149,6 @@ export class FirebaseService {
 
   }
 
-  //todo models
   async addOrganisation(orgData: any) {
 
     const orgReq:Organisation = {
@@ -159,12 +158,11 @@ export class FirebaseService {
       activeStatus: orgData.activeStatus ? orgData.activeStatus: null,
       ABN: orgData.ABN ? orgData.ABN: null,
       phone: orgData.phone ? orgData.phone: null,
-      website: orgData.website ? orgData.website: null,
+      website: orgData.website ? orgData.website : null,
+      img: orgData.img ? orgData.img : null,
       totalDonationItems: 0,
       totalDonations:0
     }
-
-
 
     let generalDOnationReq = noSQLData.GeneralDonationsSummary[0];
 
