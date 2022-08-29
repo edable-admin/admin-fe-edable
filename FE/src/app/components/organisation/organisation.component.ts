@@ -11,6 +11,7 @@ import { EditOrganisationDialog } from './edit-organisation/edit-organisation-di
 import { RemoveOrganisationDialog } from './remove-organisation/remove-organisation-dialog';
 import { Item } from 'src/app/models/Item';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { Organisation } from 'src/app/models/Organisation/Organisation';
 
 @Component({
   selector: 'app-organisation',
@@ -36,7 +37,7 @@ export class OrganisationComponent {
   selectedOrgName = '';
   selectedOrgSummary = '';
   selectedOrgDescription = '';
-  selectedOrgActiveStatus = '';
+  selectedOrgActiveStatus = null;
   selectedOrgABN = '';
   selectedOrgPhone = '';
   selectedOrgWebsite = '';
@@ -129,66 +130,32 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result)
 
-        this.http
-          .put(
-            `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
-            JSON.parse(JSON.stringify(result))
-          )
-          .subscribe((response) => {
-            this.selectedOrgName = result.name;
-            this.selectedOrgSummary = result.summary;
-            this.selectedOrgDescription = result.description;
-            this.selectedOrgActiveStatus = result.activeStatus;
-            this.selectedOrgABN = result.ABN;
-            this.selectedOrgPhone = result.phone;
-            this.selectedOrgWebsite = result.website;
-            this.selectedOrgImg = result.img;
-            this.selectedOrgTotalDonationItems = "0";
-            this.selectedOrgTotalDonations = "0";
-          });
-      }
+        const orgReq: Organisation = {
+          description: result.description,
+          name: result.name,
+          phone: result.phone,
+          summary: result.summary,
+          website: result.website,
+          activeStatus:true
+        }
 
-
-
-      if (result?.file) {
-
-        const image = result?.file[0];
-
-        this.storage.upload(`Organisations/${this.selectedRowIndex}/orgLogo`, image)
+        this.fs.editOrganisation(this.selectedRowIndex, orgReq)
           .then((resp) => {
-            //-------------------------- Update Image URL -----------------------------------//
-            let imgRef = this.storage.ref(`Organisations/${this.selectedRowIndex}/orgLogo`)
 
-            let orgReqBody: any = {
-              name: result.name,
-              summary: result.summary,
-              description: result.description,
-              activeStatus: result.activeStatus,
-              ABN: result.ABN,
-              phone: result.phone,
-              website: result.website,
-              file: result.file,
-              totalDonationItems: 0,
-              totalDonations: 0,
+            this.selectedOrgName = resp.name;
+            this.selectedOrgSummary = resp.summary;
+            this.selectedOrgDescription = resp.description;
+            this.selectedOrgActiveStatus = resp.activeStatus;
+            this.selectedOrgABN = resp.ABN;
+            this.selectedOrgPhone = resp.phone;
+            this.selectedOrgWebsite = resp.website;
+            this.selectedOrgImg = resp.img;
+
+            if (result?.file) {
+              this.fs.uploadImage(this.selectedRowIndex,result.file)
             }
-
-            imgRef.getDownloadURL()
-              .forEach((imgResp) => {
-                orgReqBody.img = imgResp;
-              }).then(() => {
-
-                this.http
-                  .put(
-                    `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
-                    orgReqBody
-                  ).subscribe({
-                    error: (err) => console.log(err),
-                    complete: () => { }
-                  })
-              })
-          })
+        })
       }
     });
   }
@@ -247,8 +214,8 @@ export class OrganisationComponent {
     this.selectedOrgPhone = orgData.phone;
     this.selectedOrgWebsite = orgData.website;
     this.selectedOrgImg = orgData.img;
-    this.selectedOrgTotalDonationItems = orgData.activeItems;
-    this.selectedOrgTotalDonations = orgData.donations;
+    this.selectedOrgTotalDonationItems = orgData.totalDonationItems;
+    this.selectedOrgTotalDonations = orgData.totalDonations;
     this.activeItems = this.items.filter((item) => {
       return item.orgID === orgData.id;
     });

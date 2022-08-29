@@ -6,6 +6,7 @@ import { doc, limit, QueryDocumentSnapshot } from 'firebase/firestore';
 import { getType } from '@angular/flex-layout/extended/style/style-transforms';
 import { EventType } from '@angular/router';
 import { throwError, timeout } from 'rxjs';
+import { Organisation } from 'src/app/models/Organisation/Organisation';
 
 @Injectable({
   providedIn: 'root'
@@ -153,7 +154,7 @@ export class FirebaseService {
   //todo models
   async addOrganisation(orgData: any) {
 
-    const orgReq = {
+    const orgReq:Organisation = {
       name: orgData.name ? orgData.name : null,
       summary: orgData.summary ? orgData.summary: null,
       description: orgData.description ? orgData.description: null,
@@ -178,10 +179,26 @@ export class FirebaseService {
 
     let batch = this.fs.firestore.batch()
 
+    //adds the org
     batch.set(orgRef, orgReq)
+
+    //adds the general donations subcollection
     batch.set(generalDonationsRef, generalDOnationReq)
+
+    //commits the batch
     batch.commit()
+      // work in progress
+      //.catch(err => throwError(() => err));
+
+    //returns success message
     return {orgRef:orgRef.id,message:`${orgReq.name} successfully added`}
+  }
+
+  async editOrganisation(orgID: string, organisationReq: Organisation) {
+    this.fs.collection('Organisations').doc(orgID)
+      .update(organisationReq)
+
+    return organisationReq;
   }
 
   checkImageType(img: FileList) {
