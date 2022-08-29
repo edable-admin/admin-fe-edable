@@ -122,10 +122,12 @@ export class OrganisationComponent {
 
         const orgReq: Organisation = {
           description: result.description,
-          name: result.name,
-          phone: result.phone,
-          summary: result.summary,
-          website: result.website,
+          name: result.name ? result.name : "",
+          phone: result.phone ? result.phone : "",
+          summary: result.summary ? result.summary : "",
+          website: result.website ? result.website : "",
+          totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
+          totalDonations:result.totalDonations ? result.totalDonations : 0,
           activeStatus:true
         }
 
