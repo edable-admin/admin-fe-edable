@@ -127,3 +127,24 @@ table {
     }
 
 }
+@media screen and (max-width: 430px) {
+    .remove-org {
+
+    }
+    .control-button {
+        display: inline-block;
+        width: 100%;
+        margin: 5px;
+    }
+    
+}
+@media screen and (max-width: 300px) {
+    .item-container {
+        width: 100%;
+    }
+    .add-item-card {
+        width: 100%;
+        margin: 0;
+        
+    }
+}
