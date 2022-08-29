@@ -133,14 +133,8 @@ export class FirebaseService {
     generalDonationsSummary.delete();
     org.delete()
 
-    const storageRef = this.storage.ref(`Organisations/${orgID}`)
+    this.storage.ref(`Organisations/${orgID}/orgLogo`).delete()
 
-    storageRef.list().forEach((resp) => {
-      console.log(resp.items)
-      if (resp.items.length >= 1) {
-        this.storage.ref(`Organisations/${orgID}/orgLogo`).delete()
-      }
-    })
 
     response = {message: `${orgName} deleted`}
 
@@ -158,7 +152,7 @@ export class FirebaseService {
   async addOrganisation(orgData: any) {
 
     const orgReq:Organisation = {
-      name: orgData.name ? orgData.name : "",
+      name: orgData.name ? orgData.name : null,
       summary: orgData.summary ? orgData.summary: null,
       description: orgData.description ? orgData.description: null,
       activeStatus: orgData.activeStatus ? orgData.activeStatus: null,
