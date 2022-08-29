@@ -84,28 +84,10 @@ export class OrganisationComponent {
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
-
-      const reqOrgBody: any = {
-        name: result?.name,
-        summary: result?.summary,
-        description: result?.description,
-        activeStatus: result?.activeStatus,
-        ABN: result?.ABN,
-        phone: result?.phone,
-        website: result?.website,
-        img: result?.img,
-        file: result?.file,
-        totalDonationItems: 0,
-        totalDonations: 0,
-      }
       //----------------------------- Create an Org --------------------------//
       if (result) {
+        console.log(result)
         this.fs.addOrganisation(result)
-          .then((resp) => {
-            if (result?.file) {
-              this.fs.uploadImage(resp.orgRef,result.file)
-            }
-        })
       }
     });
   }

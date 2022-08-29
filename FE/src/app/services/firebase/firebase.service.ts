@@ -133,9 +133,7 @@ export class FirebaseService {
     generalDonationsSummary.delete();
     org.delete()
 
-    setTimeout(() => {
-      this.storage.ref(`Organisations/${orgID}/orgLogo`).delete()
-    }, 10000);
+    this.storage.ref(`Organisations/${orgID}/orgLogo`).delete()
 
 
     response = {message: `${orgName} deleted`}
@@ -162,16 +160,21 @@ export class FirebaseService {
       ABN: orgData.ABN ? orgData.ABN: null,
       phone: orgData.phone ? orgData.phone: null,
       website: orgData.website ? orgData.website: null,
-      img: null,
       totalDonationItems: 0,
       totalDonations:0
     }
+
+
 
     let generalDOnationReq = noSQLData.GeneralDonationsSummary[0];
 
     let orgRef = this.fs
       .collection('Organisations')
       .doc().ref
+
+    if (orgData?.file) {
+      this.uploadImage(orgRef.id, orgData.file)
+    }
 
     let generalDonationsRef = orgRef
       .collection('GeneralDonations')
@@ -180,7 +183,7 @@ export class FirebaseService {
     let batch = this.fs.firestore.batch()
 
     //adds the org
-    batch.set(orgRef, orgReq)
+    batch.set(orgRef, orgReq,{merge:true})
 
     //adds the general donations subcollection
     batch.set(generalDonationsRef, generalDOnationReq)
@@ -226,7 +229,7 @@ export class FirebaseService {
        await (await this.storage.upload(`Organisations/${orgRef}/orgLogo`, file[0])).ref
         .getDownloadURL()
         .then(async (url) => {
-          await org.update({img:url})
+          await org.set({img:url},{merge:true})
         }).catch(err => console.log(err))
     }
   }
