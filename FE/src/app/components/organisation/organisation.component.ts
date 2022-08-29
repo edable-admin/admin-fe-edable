@@ -12,6 +12,7 @@ import { RemoveOrganisationDialog } from './remove-organisation/remove-organisat
 import { Item } from 'src/app/models/Item';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-organisation',
@@ -50,6 +51,8 @@ export class OrganisationComponent {
   selectedOrgData: any;
   items: Item[] = [];
 
+  getOrgsSubscription: Subscription;
+
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -60,6 +63,10 @@ export class OrganisationComponent {
     public storage: AngularFireStorage,
     public fs:FirebaseService
   ) { }
+
+  ngOnDestroy(): void {
+    this.getOrgsSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.getOrgs();
@@ -160,10 +167,10 @@ export class OrganisationComponent {
     });
   }
 
-  getOrgs() {
+  //todo toggle active orgs with show inactive toggle
 
-    //todo look at ngondestroy to stop performance issues
-    this.fs.getOrgs()
+  getOrgs() {
+    this.getOrgsSubscription = this.fs.getOrgs()
       .subscribe(orgs => {
             this.orgData = new MatTableDataSource(orgs);
             this.orgData.paginator = this.paginator;
