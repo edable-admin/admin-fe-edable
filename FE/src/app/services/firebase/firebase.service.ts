@@ -155,7 +155,7 @@ export class FirebaseService {
       name: orgData.name ? orgData.name : null,
       summary: orgData.summary ? orgData.summary: null,
       description: orgData.description ? orgData.description: null,
-      activeStatus: orgData.activeStatus ? orgData.activeStatus: null,
+      activeStatus: orgData.activeStatus ? orgData.activeStatus: true,
       ABN: orgData.ABN ? orgData.ABN: null,
       phone: orgData.phone ? orgData.phone: null,
       website: orgData.website ? orgData.website : null,
