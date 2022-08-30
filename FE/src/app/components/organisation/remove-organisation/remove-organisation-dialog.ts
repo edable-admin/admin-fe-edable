@@ -16,14 +16,25 @@ export class RemoveOrganisationDialog {
         public http: HttpClient
 
     ) { }
-
+    showWarning: boolean;
+    isDisabled: boolean;
     onNoClick(): void {
         this.dialogRef.close(false);
     }
     cancelDelete() {
         this.dialogRef.close(false);
     }
-    confirmDelete() {
-        this.dialogRef.close(true);
+    confirmDelete(data) {
+        
+        if (data.totalDonationItems != 0) {
+            this.showWarning = true;
+            
+            this.isDisabled = !this.isDisabled
+           
+        }
+        else {
+            this.showWarning = false;
+            this.dialogRef.close(true);
+        }        
     }
 }
