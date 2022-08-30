@@ -10,6 +10,6 @@
   
   <div mat-dialog-actions>
     <button mat-button (click)="cancelDelete()">Cancel</button>
-    <button mat-button (click)="confirmDelete(data)" cdkFocusInitial color="accent">Confirm</button>
+    <button mat-button [disabled]="isDisabled" (click)="confirmDelete(data)" cdkFocusInitial color="accent">Confirm</button>
   </div>
   

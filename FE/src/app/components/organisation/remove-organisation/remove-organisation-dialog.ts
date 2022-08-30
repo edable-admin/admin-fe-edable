@@ -17,6 +17,7 @@ export class RemoveOrganisationDialog {
 
     ) { }
     showWarning: boolean;
+    isDisabled: boolean;
     onNoClick(): void {
         this.dialogRef.close(false);
     }
@@ -27,6 +28,8 @@ export class RemoveOrganisationDialog {
         console.log(data)
         if (data.totalDonationItems != 0) {
             this.showWarning = true;
+            
+            this.isDisabled = !this.isDisabled
            
         }
         else {
