@@ -41,13 +41,21 @@ export class UploadImageComponent implements OnInit {
 
   ngOnInit(): void {
 
+    const orgFile = this.storage.ref(`Organisations/${this.orgnisationRef}`)
     if (this.orgnisationRef !== '') {
-      this.meta = this.getImageURL();
 
-      this.meta.subscribe({
-        next: (img) => this.image = img,
-        error:(err) => console.log(err)
-       });
+      orgFile.list().subscribe({
+        next: (resp) => {
+          if (resp?.items?.length >= 1) {
+            this.meta = this.getImageURL();
+
+            this.meta.subscribe({
+              next: (img) => this.image = img,
+              error:(err) => console.log(err)
+            });
+          }
+        }
+      })
     }
   }
 
