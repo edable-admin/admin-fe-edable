@@ -18,7 +18,7 @@ export class RemoveOrganisationDialog {
     ) { }
 
     onNoClick(): void {
-        this.dialogRef.close();
+        this.dialogRef.close(false);
     }
     cancelDelete() {
         this.dialogRef.close(false);
