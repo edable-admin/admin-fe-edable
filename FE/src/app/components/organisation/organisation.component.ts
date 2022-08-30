@@ -34,17 +34,7 @@ export class OrganisationComponent {
   totalDonationItems: number;
   totalDonations: number;
   displayedColumns: string[] = ['name', 'activeItems', 'donations'];
-  selectedRowIndex = '';
-  selectedOrgName = '';
-  selectedOrgSummary = '';
-  selectedOrgDescription = '';
-  selectedOrgActiveStatus = null;
-  selectedOrgABN = '';
-  selectedOrgPhone = '';
-  selectedOrgWebsite = '';
-  selectedOrgImg = '';
-  selectedOrgTotalDonationItems = '';
-  selectedOrgTotalDonations = '';
+  selectedOrg:Organisation;
   activeItems: Item[];
   orgData: any;
   cleanOrgData: any;
@@ -70,6 +60,23 @@ export class OrganisationComponent {
 
   ngOnInit(): void {
     this.getOrgs();
+    this.initSelectedOrg();
+  }
+
+  initSelectedOrg(){
+    this.selectedOrg = {
+      id:'',
+      ABN:'',
+      activeStatus:true,
+      description:'',
+      img:'',
+      name:'',
+      phone:'',
+      summary:'',
+      totalDonationItems:0,
+      totalDonations:0,
+      website:''
+      }
   }
 
   addOrgDialog(): void {
@@ -99,55 +106,49 @@ export class OrganisationComponent {
     });
   }
 
+  // Open dialog box to edit organisations
   editOrgDialog(): void {
     const dialogRef = this.dialog.open(EditOrganisationDialog, {
       width: '730px',
       data: {
-        id: this.selectedRowIndex,
-        name: this.selectedOrgName,
-        summary: this.selectedOrgSummary,
-        description: this.selectedOrgDescription,
-        activeStatus: this.selectedOrgActiveStatus,
-        ABN: this.selectedOrgABN,
-        phone: this.selectedOrgPhone,
-        website: this.selectedOrgWebsite,
-        img: this.img,
-        totalDonationItems: this.selectedOrgTotalDonationItems,
-        totalDonations: this.selectedOrgTotalDonations,
+        id: this.selectedOrg.id,
+        name: this.selectedOrg.name,
+        summary: this.selectedOrg.summary,
+        description: this.selectedOrg.description,
+        activeStatus: this.selectedOrg.activeStatus,
+        ABN: this.selectedOrg.ABN,
+        phone: this.selectedOrg.phone,
+        website: this.selectedOrg.website,
+        img: this.selectedOrg.img,
+        totalDonationItems: this.selectedOrg.totalDonationItems,
+        totalDonations: this.selectedOrg.totalDonations,
       },
     });
 
+    // runs after dialog closes. updates org
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
 
         const orgReq: Organisation = {
+          id: result.id,
+          ABN:result.ABN,
           description: result.description ? result.description : "",
           name: result.name ? result.name : "",
           phone: result.phone ? result.phone : "",
           summary: result.summary ? result.summary : "",
           website: result.website ? result.website : "",
-          img: result.img ? result.imgs : "",
+          img: result.img ? result.img : "",
           totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
           totalDonations:result.totalDonations ? result.totalDonations : 0,
           activeStatus:true
         }
 
-        console.log(orgReq)
-
-        this.fs.editOrganisation(this.selectedRowIndex, orgReq)
+        this.fs.editOrganisation(this.selectedOrg.id, orgReq)
           .then((resp) => {
-
-            this.selectedOrgName = resp.name;
-            this.selectedOrgSummary = resp.summary;
-            this.selectedOrgDescription = resp.description;
-            this.selectedOrgActiveStatus = resp.activeStatus;
-            this.selectedOrgABN = resp.ABN;
-            this.selectedOrgPhone = resp.phone;
-            this.selectedOrgWebsite = resp.website;
-            this.selectedOrgImg = resp.img;
+            this.selectedOrg = resp
 
             if (result?.file) {
-              this.fs.uploadImage(this.selectedRowIndex,result.file)
+              this.fs.uploadImage(this.selectedOrg.id,result.file)
             }
         })
       }
@@ -158,8 +159,8 @@ export class OrganisationComponent {
     const dialogRef = this.dialog.open(RemoveOrganisationDialog, {
       width: '730px',
       data: {
-        id: this.selectedRowIndex,
-        name: this.selectedOrgName,
+        id: this.selectedOrg.id,
+        name: this.selectedOrg.name,
       },
     });
 
@@ -167,7 +168,7 @@ export class OrganisationComponent {
 
       if (result === true) {
 
-        this.fs.removeOrganisation(this.selectedRowIndex)
+        this.fs.removeOrganisation(this.selectedOrg.id)
       }
     });
   }
@@ -192,24 +193,13 @@ export class OrganisationComponent {
     }
   }
 
+  // selected row of org table
   selectRow(orgData) {
-    if (this.selectedRowIndex === orgData.id) {
-      this.selectedRowIndex = '';
-      this.selectedOrgImg = '';
-      this.activeItems = [];
+    if (this.selectedOrg.id === orgData.id) {
+      this.initSelectedOrg();
       return;
     }
-    this.selectedRowIndex = orgData.id;
-    this.selectedOrgName = orgData.name;
-    this.selectedOrgSummary = orgData.summary;
-    this.selectedOrgDescription = orgData.description;
-    this.selectedOrgActiveStatus = orgData.activeStatus;
-    this.selectedOrgABN = orgData.ABN;
-    this.selectedOrgPhone = orgData.phone;
-    this.selectedOrgWebsite = orgData.website;
-    this.selectedOrgImg = orgData.img;
-    this.selectedOrgTotalDonationItems = orgData.totalDonationItems;
-    this.selectedOrgTotalDonations = orgData.totalDonations;
+    this.selectedOrg = orgData;
     this.activeItems = this.items.filter((item) => {
       return item.orgID === orgData.id;
     });
