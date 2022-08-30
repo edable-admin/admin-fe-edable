@@ -187,6 +187,7 @@ export class OrganisationComponent {
   }
 
   toggleActiveStatus(){
+    this.initSelectedOrg();
     this.activeStatusToggle = !this.activeStatusToggle;
     this.getOrgsSubscription.unsubscribe()
     this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
@@ -219,6 +220,7 @@ export class OrganisationComponent {
   }
 
   applyFilter(event: Event) {
+    this.initSelectedOrg();
     const filterValue = (event.target as HTMLInputElement).value;
     this.orgData.filter = filterValue.trim().toLowerCase();
 

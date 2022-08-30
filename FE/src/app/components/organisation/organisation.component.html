@@ -21,7 +21,7 @@
 
     <div class="flex-container">
       <div class="mat-elevation-z8">
-        <table mat-table [dataSource]="orgData" matSort>
+        <table mat-table [dataSource]="orgData" matSort (matSortChange)="initSelectedOrg()">
 
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
@@ -52,8 +52,7 @@
         </mat-paginator>
       </div>
 
-      <div class="big-graph-placeholder">
-        <img src="{{this.selectedOrg.img}}" style="width: 300px; height:auto; max-height: 400px;" alt="">
+      <div class="big-graph-placeholder">        <img src="{{this.selectedOrg.img}}" style="width: 300px; height:auto; max-height: 400px;" alt="">
       </div>
       <div class="graph-expansion">
         <mat-accordion>
