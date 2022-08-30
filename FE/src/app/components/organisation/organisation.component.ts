@@ -153,7 +153,7 @@ export class OrganisationComponent {
         this.fs.editOrganisation(this.selectedOrg.id, orgReq)
           .then((resp) => {
             this.selectedOrg = resp
-            this.openSnackBar("Organisation Editited")
+            this.openSnackBar(resp.name + " Edited Successfully")
 
             if (result?.file) {
               this.fs.uploadImage(this.selectedOrg.id,result.file)
