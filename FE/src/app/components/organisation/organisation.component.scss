@@ -141,10 +141,14 @@ table {
 @media screen and (max-width: 300px) {
     .item-container {
         width: 100%;
+        justify-content: center;
     }
     .add-item-card {
         width: 100%;
         margin: 0;
         
+    }
+    .container {
+        margin: 0;        
     }
 }
