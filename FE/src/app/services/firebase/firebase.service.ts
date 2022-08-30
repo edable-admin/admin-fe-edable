@@ -136,7 +136,7 @@ export class FirebaseService {
     this.storage.ref(`Organisations/${orgID}/orgLogo`).delete()
 
 
-    response = {message: `${orgName} deleted`}
+    response = {message: `${orgName} Successfully Deleted`}
 
     return response;
   }
@@ -192,7 +192,7 @@ export class FirebaseService {
       //.catch(err => throwError(() => err));
 
     //returns success message
-    return {orgRef:orgRef.id,message:`${orgReq.name} successfully added`}
+    return {orgRef:orgRef.id,message:`${orgReq.name} Successfully Added`}
   }
 
   async editOrganisation(orgID: string, organisationReq: Organisation) {
