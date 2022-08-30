@@ -13,6 +13,7 @@ import { Item } from 'src/app/models/Item';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-organisation',
@@ -43,6 +44,9 @@ export class OrganisationComponent {
 
   getOrgsSubscription: Subscription;
 
+  //snackbar variables
+  message: string; 
+
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -51,7 +55,8 @@ export class OrganisationComponent {
     public dialog: MatDialog,
     public http: HttpClient,
     public storage: AngularFireStorage,
-    public fs:FirebaseService
+    public fs:FirebaseService,
+    public _snackBar: MatSnackBar
   ) { }
 
   ngOnDestroy(): void {
@@ -101,8 +106,10 @@ export class OrganisationComponent {
       //----------------------------- Create an Org --------------------------//
       if (result) {
         console.log(result)
-        this.fs.addOrganisation(result)
-      }
+        this.fs.addOrganisation(result).then ((response) => {
+          this.openSnackBar(response.message)
+      })
+    }
     });
   }
 
@@ -146,6 +153,7 @@ export class OrganisationComponent {
         this.fs.editOrganisation(this.selectedOrg.id, orgReq)
           .then((resp) => {
             this.selectedOrg = resp
+            this.openSnackBar("Organisation Editited")
 
             if (result?.file) {
               this.fs.uploadImage(this.selectedOrg.id,result.file)
@@ -161,6 +169,7 @@ export class OrganisationComponent {
       data: {
         id: this.selectedOrg.id,
         name: this.selectedOrg.name,
+        totalDonationItems: this.selectedOrg.totalDonationItems,
       },
     });
 
@@ -168,7 +177,9 @@ export class OrganisationComponent {
 
       if (result === true) {
 
-        this.fs.removeOrganisation(this.selectedOrg.id)
+        this.fs.removeOrganisation(this.selectedOrg.id).then((response) => {
+          this.openSnackBar(response.message)
+        })
       }
     });
   }
@@ -203,5 +214,9 @@ export class OrganisationComponent {
     this.activeItems = this.items.filter((item) => {
       return item.orgID === orgData.id;
     });
+  }
+  //Snackbar
+  openSnackBar(message) {
+    this._snackBar.open(message);       
   }
 }

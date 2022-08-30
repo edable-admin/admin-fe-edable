@@ -5,11 +5,11 @@
   
   <div class="centerAlign">
   <h2>This will remove {{data.name}} from Organisations</h2>
-  
+  <span class="warning" *ngIf="showWarning == true">This Item has donation items and cannot be removed</span>
   </div>
   
   <div mat-dialog-actions>
     <button mat-button (click)="cancelDelete()">Cancel</button>
-    <button mat-button (click)="confirmDelete()" cdkFocusInitial color="accent">Confirm</button>
+    <button mat-button (click)="confirmDelete(data)" cdkFocusInitial color="accent">Confirm</button>
   </div>
   
