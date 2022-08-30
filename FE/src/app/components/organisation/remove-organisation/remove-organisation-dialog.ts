@@ -25,7 +25,7 @@ export class RemoveOrganisationDialog {
         this.dialogRef.close(false);
     }
     confirmDelete(data) {
-        console.log(data)
+        
         if (data.totalDonationItems != 0) {
             this.showWarning = true;
             
