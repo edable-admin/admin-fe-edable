@@ -149,7 +149,7 @@ export class OrganisationComponent {
           img: result.img ? result.img : "",
           totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
           totalDonations:result.totalDonations ? result.totalDonations : 0,
-          activeStatus:true
+          activeStatus:result.activeStatus
         }
 
         this.fs.editOrganisation(this.selectedOrg.id, orgReq)
