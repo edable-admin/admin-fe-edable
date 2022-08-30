@@ -195,6 +195,11 @@ export class OrganisationComponent {
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
+        this.orgData.filterPredicate = function (data, filter: string): boolean {
+          return data.name.trim().toLowerCase().includes(filter) || 
+              data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
+              data.totalDonationsItem.toString().trim().toLowerCase().includes(filter);
+          };
     })
     
   }
@@ -205,9 +210,11 @@ export class OrganisationComponent {
             this.orgData = new MatTableDataSource(orgs);
             this.orgData.paginator = this.paginator;
             this.orgData.sort = this.sort;
-            this.orgData.filterPredicate = function(data, filter: string): boolean {
-              return data.name.trim().toLowerCase().includes(filter);
-          };
+            this.orgData.filterPredicate = function (data, filter: string): boolean {
+            return data.name.trim().toLowerCase().includes(filter) || 
+                data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
+                data.totalDonationsItem.toString().trim().toLowerCase().includes(filter);
+            };
     })
   }
 
