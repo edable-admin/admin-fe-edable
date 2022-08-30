@@ -1,45 +1,48 @@
 <div style="text-align: center">
-    <div class="bigHeader">Add an Organisation</div>
-  </div>
-  <hr size="2" width="90%" color="grey" />
-  
+  <div class="bigHeader">Add an Organisation</div>
+</div>
+<hr size="2" width="90%" color="grey" />
+
+<form [formGroup]="organisationForm">
   <div class="leftContainer">
     <div class="centerAlign">
       <mat-form-field [style.width.px]="327" appearance="fill">
         <mat-label>Organisation Name</mat-label>
-        <input matInput [(ngModel)]="data.name" />
+        <input matInput [(ngModel)]="data.name" formControlName="name" />
       </mat-form-field>
       <mat-form-field [style.width.px]="327" appearance="fill">
         <mat-label>Description</mat-label>
-        <input matInput [(ngModel)]="data.description" />
+        <input matInput [(ngModel)]="data.description" formControlName="description" />
       </mat-form-field>
       <mat-form-field [style.width.px]="327" appearance="fill">
         <mat-label>Summary</mat-label>
-        <input matInput [(ngModel)]="data.summary" />
+        <input matInput [(ngModel)]="data.summary" formControlName="summary" />
       </mat-form-field>
       <mat-form-field [style.width.px]="327" appearance="fill">
         <mat-label>ABN</mat-label>
-        <input matInput [(ngModel)]="data.ABN" />
+        <input matInput [(ngModel)]="data.ABN" formControlName="abn" />
       </mat-form-field>
     </div>
   </div>
-  
+
   <div class="rightContainer">
     <div class="centerAlign">
       <mat-form-field [style.width.px]="327" appearance="fill">
         <mat-label>Phone</mat-label>
-        <input matInput [(ngModel)]="data.phone" />
+        <input matInput [(ngModel)]="data.phone" formControlName="phone"/>
       </mat-form-field>
       <mat-form-field [style.width.px]="327" appearance="fill">
         <mat-label>Website</mat-label>
-        <input matInput [(ngModel)]="data.website" />
+        <input matInput [(ngModel)]="data.website" formControlName="website"/>
       </mat-form-field>
       <app-upload-image (imageOut)="getImageFromChild($event)"></app-upload-image>
     </div>
   </div>
-  
+
   <div class="rightContainer" mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button [mat-dialog-close]="data" cdkFocusInitial color="primary">Add</button>
+    <button mat-button [disabled]="!organisationForm.valid" [mat-dialog-close]="data" cdkFocusInitial
+      color="primary">Add</button>
+      <button (click)="test()">test</button>
   </div>
-  
+</form>
