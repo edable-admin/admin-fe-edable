@@ -41,6 +41,8 @@ export class OrganisationComponent {
   selectedOrgData: any;
   items: Item[] = [];
 
+  activeStatusToggle:boolean = true;
+
   getOrgsSubscription: Subscription;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -173,10 +175,21 @@ export class OrganisationComponent {
     });
   }
 
-  //todo toggle active orgs with show inactive toggle
+  toggleActiveStatus(){
+    this.activeStatusToggle = !this.activeStatusToggle;
+    this.getOrgsSubscription.unsubscribe()
+    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
+    .subscribe(
+      orgs => {
+        this.orgData = new MatTableDataSource(orgs);
+        this.orgData.paginator = this.paginator;
+        this.orgData.sort = this.sort;
+    })
+    
+  }
 
   getOrgs() {
-    this.getOrgsSubscription = this.fs.getOrgs()
+    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
       .subscribe(orgs => {
             this.orgData = new MatTableDataSource(orgs);
             this.orgData.paginator = this.paginator;

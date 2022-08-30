@@ -2,7 +2,7 @@ import { Injectable, Type } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { noSQLData } from './no-sql-data';
-import { doc, limit, QueryDocumentSnapshot } from 'firebase/firestore';
+import { doc, limit, query, QueryDocumentSnapshot } from 'firebase/firestore';
 import { getType } from '@angular/flex-layout/extended/style/style-transforms';
 import { EventType } from '@angular/router';
 import { throwError, timeout } from 'rxjs';
@@ -141,9 +141,10 @@ export class FirebaseService {
     return response;
   }
 
-  getOrgs() {
+  getOrgs(activeStatus:boolean) {
     let orgs = this.fs
-      .collection('Organisations')
+      .collection('Organisations', query => 
+      query.where('activeStatus',"==", activeStatus))
       .valueChanges({idField:"id"})
     return orgs
 
