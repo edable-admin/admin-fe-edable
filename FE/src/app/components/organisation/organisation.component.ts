@@ -182,7 +182,7 @@ export class OrganisationComponent {
             this.orgData.paginator = this.paginator;
             this.orgData.sort = this.sort;
             this.orgData.filterPredicate = function(data, filter: string): boolean {
-              return data.name.toLowerCase().includes(filter) || data.symbol.toLowerCase().includes(filter) || data.position.toString().includes(filter);
+              return data.name.trim().toLowerCase().includes(filter);
           };
     })
   }
