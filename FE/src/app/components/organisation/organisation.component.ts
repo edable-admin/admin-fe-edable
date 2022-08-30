@@ -51,7 +51,7 @@ export class OrganisationComponent {
   selectedOrgData: any;
   items: Item[] = [];
 
-  activeStatusToggle:boolean[] = [true];
+  activeStatusToggle:boolean = true;
 
   getOrgsSubscription: Subscription;
 
@@ -175,7 +175,7 @@ export class OrganisationComponent {
   }
 
   toggleActiveStatus(){
-    this.activeStatusToggle.length === 2 ? this.activeStatusToggle.pop() : this.activeStatusToggle.push(false);
+    this.activeStatusToggle = !this.activeStatusToggle;
     this.getOrgsSubscription.unsubscribe()
     this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
     .subscribe(

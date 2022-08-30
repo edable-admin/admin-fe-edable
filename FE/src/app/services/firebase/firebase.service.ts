@@ -141,10 +141,10 @@ export class FirebaseService {
     return response;
   }
 
-  getOrgs(activeStatus:boolean[]) {
+  getOrgs(activeStatus:boolean) {
     let orgs = this.fs
       .collection('Organisations', query => 
-      query.where('activeStatus',"in", activeStatus))
+      query.where('activeStatus',"==", activeStatus))
       .valueChanges({idField:"id"})
     return orgs
 
