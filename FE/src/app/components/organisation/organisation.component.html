@@ -16,6 +16,7 @@
                 <mat-label>Search Organisations</mat-label>
                 <input matInput (keyup)="applyFilter($event)" #input>
             </mat-form-field>
+            <mat-slide-toggle (click)="toggleActiveStatus()">Show All Orgs</mat-slide-toggle>
         </div>
 
     <div class="flex-container">
@@ -95,7 +96,6 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <button (click)="toggleActiveStatus()">toggle ActiveStatus</button>
   </div>
 </body>
 
