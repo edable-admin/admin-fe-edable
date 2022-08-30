@@ -34,7 +34,7 @@ export class OrganisationComponent {
   file: any;
   totalDonationItems: number;
   totalDonations: number;
-  displayedColumns: string[] = ['name', 'activeItems', 'donations'];
+  displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
   selectedOrg:Organisation;
   activeItems: Item[];
   orgData: any;
