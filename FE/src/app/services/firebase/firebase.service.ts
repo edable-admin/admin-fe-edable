@@ -196,6 +196,7 @@ export class FirebaseService {
   }
 
   async editOrganisation(orgID: string, organisationReq: Organisation) {
+    console.log(organisationReq)
     this.fs.collection('Organisations').doc(orgID)
       .update(organisationReq)
 

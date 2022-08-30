@@ -6,10 +6,10 @@
             <button class="control-button" (click)="addOrgDialog()" mat-raised-button color="primary">
                 <mat-icon>add</mat-icon>Organisation
             </button>
-            <button class="control-button" *ngIf="selectedRowIndex" (click)="editOrgDialog()" mat-raised-button color="warn">
+            <button class="control-button" *ngIf="this.selectedOrg.id" (click)="editOrgDialog()" mat-raised-button color="warn">
               <mat-icon>edit</mat-icon>Edit
           </button>
-          <button class="control-button" *ngIf="selectedRowIndex" (click)="removeOrgDialog()" mat-raised-button color="accent">
+          <button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()" mat-raised-button color="accent">
             <mat-icon>remove</mat-icon>Remove
         </button>
             <mat-form-field class="control-button" appearance="standard">
@@ -39,7 +39,7 @@
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-            [ngClass]="{'row-selected': selectedRowIndex == row.id}" (click)="selectRow(row)"></tr>
+            [ngClass]="{'row-selected': this.selectedOrg.id == row.id}" (click)="selectRow(row)"></tr>
 
           <!-- Row shown when there is no matching data. -->
           <tr class="mat-row" *matNoDataRow>
@@ -52,7 +52,7 @@
       </div>
 
       <div class="big-graph-placeholder">
-        <img src="{{selectedOrgImg}}" style="width: 300px; height:auto; max-height: 400px;" alt="">
+        <img src="{{this.selectedOrg.img}}" style="width: 300px; height:auto; max-height: 400px;" alt="">
       </div>
       <div class="graph-expansion">
         <mat-accordion>
@@ -63,7 +63,7 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="small-graph-placeholder">
-              <img src="{{selectedOrgImg}}" style="width: 200px; height:auto;" alt="">
+              <img src="{{this.selectedOrg.img}}" style="width: 200px; height:auto;" alt="">
             </div>
           </mat-expansion-panel>
         </mat-accordion>
@@ -72,7 +72,7 @@
     <div class="item-container">
 
       <!--Add Item-->
-      <mat-card class="add-item-card" *ngIf="selectedRowIndex !== ''">
+      <mat-card class="add-item-card" *ngIf="this.selectedOrg.id !== ''">
         <mat-card-header>
           <mat-card-title>
             Add Item
