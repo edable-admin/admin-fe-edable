@@ -1,3 +1,5 @@
+<div id="container">
+
 <div style="text-align: center;">
   <div class="bigHeader">Edit an Organisation</div>
 </div>
@@ -5,19 +7,19 @@
 
 <div class="leftContainer">
   <div class="centerAlign">
-    <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-form-field class="form-field" appearance="fill">
       <mat-label>Organisation Name</mat-label>
       <input matInput [(ngModel)]="data.name" />
     </mat-form-field>
-    <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-form-field class="form-field" appearance="fill">
       <mat-label>Description</mat-label>
       <input matInput [(ngModel)]="data.description" />
     </mat-form-field>
-    <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-form-field class="form-field" appearance="fill">
       <mat-label>Summary</mat-label>
       <input matInput [(ngModel)]="data.summary" />
     </mat-form-field>
-    <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-form-field class="form-field" appearance="fill">
       <mat-label>ABN</mat-label>
       <input matInput [(ngModel)]="data.ABN" />
     </mat-form-field>
@@ -25,28 +27,32 @@
 </div>
 <div class="rightContainer">
   <div class="centerAlign">
-    <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-form-field class="form-field" appearance="fill">
       <mat-label>Phone</mat-label>
       <input matInput [(ngModel)]="data.phone" />
     </mat-form-field>
-    <mat-form-field [style.width.px]="327" appearance="fill">
+    <mat-form-field class="form-field" appearance="fill">
       <mat-label>Website</mat-label>
       <input matInput [(ngModel)]="data.website" />
     </mat-form-field>
-    <mat-form-field [style.width.px]="327" appearance="fill">
+    <app-upload-image [orgnisationRef]="data.id" (imageOut)="getImageFromChild($event)"></app-upload-image>
+    <div class="dialog-actions" mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Cancel</button>
+      <button mat-button [mat-dialog-close]="data" cdkFocusInitial color="warn">Edit</button>
+    </div>
+    <!-- <mat-form-field [style.width.px]="327" appearance="fill">
       <mat-label>Active Donation Items</mat-label>
       <input disabled matInput [(ngModel)]="data.totalDonationItems" />
     </mat-form-field>
     <mat-form-field [style.width.px]="327" appearance="fill">
       <mat-label>Donations</mat-label>
-      <input disabled matInput [(ngModel)]="data.totalDonations" />
-    </mat-form-field>
+      <input matInput [(ngModel)]="data.totalDonations" />
+    </mat-form-field> -->
+  </div>
   </div>
 </div>
-
-<app-upload-image [orgnisationRef]="data.id" (imageOut)="getImageFromChild($event)"></app-upload-image>
-
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial color="warn">Edit</button>
-</div>
+  
+  
+  
+  
+  
