@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
-import { Component, Inject } from "@angular/core";
+import { Component, Inject, Input } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { DialogData } from 'src/app/models/DialogData';
-
+import { Organisation } from "src/app/models/Organisation/Organisation";
 
 @Component({
     selector: 'remove-organisation-dialog.component',
@@ -14,8 +14,10 @@ export class RemoveOrganisationDialog {
         public dialogRef: MatDialogRef<RemoveOrganisationDialog>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
         public http: HttpClient
+        
 
     ) { }
+    @Input() responseMsg = '';
     showWarning: boolean;
     isDisabled: boolean;
     onNoClick(): void {
