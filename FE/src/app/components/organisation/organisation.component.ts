@@ -48,7 +48,7 @@ export class OrganisationComponent {
   getOrgsSubscription: Subscription;
 
   //snackbar variables
-  message: string; 
+  message: string;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -108,7 +108,7 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-        
+
         this.fs.addOrganisation(result).then ((response) => {
           this.openSnackBar(response.message)
       })
@@ -209,12 +209,12 @@ export class OrganisationComponent {
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
         this.orgData.filterPredicate = function (data, filter: string): boolean {
-          return data.name.trim().toLowerCase().includes(filter) || 
+          return data.name.trim().toLowerCase().includes(filter) ||
               data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
               data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
           };
     })
-    
+
   }
 
   getOrgs() {
@@ -224,7 +224,7 @@ export class OrganisationComponent {
             this.orgData.paginator = this.paginator;
             this.orgData.sort = this.sort;
             this.orgData.filterPredicate = function (data, filter: string): boolean {
-              return data.name.trim().toLowerCase().includes(filter) || 
+              return data.name.trim().toLowerCase().includes(filter) ||
                 data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
                 data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
               };
@@ -254,6 +254,6 @@ export class OrganisationComponent {
   }
   //Snackbar
   openSnackBar(message) {
-    this._snackBar.open(message);       
+    this._snackBar.open(message);
   }
 }

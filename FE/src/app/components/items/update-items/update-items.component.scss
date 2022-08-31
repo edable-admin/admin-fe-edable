@@ -1,27 +1,50 @@
-.full-width {
-  width: 100%;
+.edit-item-container{
+  padding: 0px;
+  height: 300px;
+  max-height: 80vh;
+
+  form{
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .mat-card-header{
+      display: flex;
+      justify-content: center;
+      padding-bottom: 10px;
+    }
+
+    .mat-card-actions{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .mat-card-content{
+      max-width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 5px;
+      margin-bottom: 14px;
+      align-items: center;
+      justify-content: center;
+
+      div{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        column-gap: 5px;
+
+        .mat-form-field{
+          width: 100%;
+          max-width: 200px;
+        }
+      }
+
+    }
+  }
 }
 
-.shipping-card {
-  min-width: 120px;
-  margin: 20px auto;
-}
-
-.mat-radio-button {
-  display: block;
-  margin: 5px 0;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.col {
-  flex: 1;
-  margin-right: 20px;
-}
-
-.col:last-child {
-  margin-right: 0;
-}
