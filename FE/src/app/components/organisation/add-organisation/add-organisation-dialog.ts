@@ -18,14 +18,13 @@ export class AddOrganisationDialog {
     ) {
         this.organisationForm = this.formBuilder.group({
             name: new FormControl('', Validators.required),
-            description: ['', Validators.required],
+            description: new FormControl('', Validators.required),
             summary: new FormControl('', Validators.required),
             ABN: new FormControl('', [Validators.required, Validators.pattern("^(\\d *?){11}$")]),
             phone: new FormControl('', [Validators.required, Validators.pattern('^[0-9 ]*$')]),
             website: new FormControl('', Validators.required)
         });
     }
-
     //---------- Function to get image from image dialogBox --------------//
     getImageFromChild(file: any) {
         this.data.file = file;
