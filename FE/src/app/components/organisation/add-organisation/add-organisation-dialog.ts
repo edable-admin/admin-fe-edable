@@ -24,14 +24,6 @@ export class AddOrganisationDialog {
             phone: new FormControl('', [Validators.required, Validators.pattern('^[0-9 ]*$')]),
             website: new FormControl('', Validators.required)
         });
-        // this.organisationForm = this.formBuilder.group({
-        //     name: ['', Validators.required],
-        //     description: ['', Validators.required],
-        //     summary: ['', Validators.required],
-        //     abn: ['', [Validators.required, Validators.pattern("^(\\d *?){11}$")]],
-        //     phone: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-        //     website: ['', Validators.required]
-        // });
     }
 
     //---------- Function to get image from image dialogBox --------------//
@@ -45,12 +37,12 @@ export class AddOrganisationDialog {
     }
     onSubmit(): void {
         if (!this.organisationForm.valid) return;
-    
+
         this.data.name = this.organisationForm.get('name').value;
         this.data.description = this.organisationForm.get('description').value;
         this.data.summary = this.organisationForm.get('summary').value;
         this.data.ABN = this.organisationForm.get('ABN').value;
-        this.data.phone = this.organisationForm.get('phone').value.replace(/\s/g,'');
+        this.data.phone = this.organisationForm.get('phone').value.replace(/\s/g, '');
         this.data.website = this.organisationForm.get('website').value;
         this.dialogRef.close(this.data);
     }
