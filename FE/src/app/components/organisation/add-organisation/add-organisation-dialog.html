@@ -8,19 +8,19 @@
     <div class="centerAlign">
       <mat-form-field [style.width.px]="327" appearance="fill">
         <mat-label>Organisation Name</mat-label>
-        <input matInput [(ngModel)]="data.name" formControlName="name" />
+        <input matInput formControlName="name" />
       </mat-form-field>
       <mat-form-field [style.width.px]="327" appearance="fill">
         <mat-label>Description</mat-label>
-        <input matInput [(ngModel)]="data.description" formControlName="description" />
+        <input matInput formControlName="description" />
       </mat-form-field>
       <mat-form-field [style.width.px]="327" appearance="fill">
         <mat-label>Summary</mat-label>
-        <input matInput [(ngModel)]="data.summary" formControlName="summary" />
+        <input matInput formControlName="summary" />
       </mat-form-field>
       <mat-form-field [style.width.px]="327" appearance="fill">
         <mat-label>ABN</mat-label>
-        <input matInput [(ngModel)]="data.ABN" formControlName="abn" />
+        <input matInput maxLength="11" formControlName="abn" />
       </mat-form-field>
     </div>
   </div>
@@ -29,11 +29,11 @@
     <div class="centerAlign">
       <mat-form-field [style.width.px]="327" appearance="fill">
         <mat-label>Phone</mat-label>
-        <input matInput [(ngModel)]="data.phone" formControlName="phone"/>
+        <input matInput formControlName="phone" />
       </mat-form-field>
       <mat-form-field [style.width.px]="327" appearance="fill">
         <mat-label>Website</mat-label>
-        <input matInput [(ngModel)]="data.website" formControlName="website"/>
+        <input matInput formControlName="website" />
       </mat-form-field>
       <app-upload-image (imageOut)="getImageFromChild($event)"></app-upload-image>
     </div>
@@ -41,8 +41,7 @@
 
   <div class="rightContainer" mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button [disabled]="!organisationForm.valid" [mat-dialog-close]="data" cdkFocusInitial
+    <button mat-button [disabled]="!organisationForm.valid" (click)="onSubmit()" cdkFocusInitial
       color="primary">Add</button>
-      <button (click)="test()">test</button>
   </div>
 </form>

@@ -1,8 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from 'src/app/models/DialogData';
-import { FormBuilder, Validators } from '@angular/forms';
-import { validateArgCount } from '@firebase/util';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'add-organisation-dialog.component',
@@ -10,20 +9,20 @@ import { validateArgCount } from '@firebase/util';
     styleUrls: ['add-organisation-dialog.scss'],
 })
 export class AddOrganisationDialog {
-    organisationForm;
+    organisationForm: FormGroup;
 
     constructor(
         public dialogRef: MatDialogRef<AddOrganisationDialog>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
-        private _formBuilder: FormBuilder
+        private formBuilder: FormBuilder
     ) {
-        this.organisationForm = this._formBuilder.group({
-            name: [Validators.required],
-            description: [Validators.required],
-            summary: [Validators.required],
-            abn: [Validators.required, Validators.pattern("^(\\d *?){11}$")],
-            phone: [Validators.required],
-            website: [Validators.required]
+        this.organisationForm = this.formBuilder.group({
+            name: ['', Validators.required],
+            description: ['', Validators.required],
+            summary: ['', Validators.required],
+            abn: ['', [Validators.required, Validators.pattern("^(\\d *?){11}$")]],
+            phone: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+            website: ['', Validators.required]
         });
     }
 
@@ -36,8 +35,15 @@ export class AddOrganisationDialog {
     onNoClick(): void {
         this.dialogRef.close();
     }
-    test() {
-        console.log(this.organisationForm.valid);
-        
+    onSubmit(): void {
+        if (!this.organisationForm.valid) return;
+
+        this.data.name = this.organisationForm.get('name').value;
+        this.data.description = this.organisationForm.get('description').value;
+        this.data.summary = this.organisationForm.get('summary').value;
+        this.data.ABN = this.organisationForm.get('abn').value;
+        this.data.phone = this.organisationForm.get('phone').value;
+        this.data.website = this.organisationForm.get('website').value;
+        this.dialogRef.close(this.data);
     }
 }
