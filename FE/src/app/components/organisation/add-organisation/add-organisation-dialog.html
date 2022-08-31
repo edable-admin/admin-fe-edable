@@ -1,48 +1,48 @@
-<div style="text-align: center">
-  <div class="bigHeader">Add an Organisation</div>
-</div>
-<hr size="2" width="90%" color="grey" />
+<div id="container">
 
-<form [formGroup]="organisationForm">
-  <div class="leftContainer">
-    <div class="centerAlign">
-      <mat-form-field [style.width.px]="327" appearance="fill">
-        <mat-label>Organisation Name</mat-label>
-        <input matInput formControlName="name" />
-      </mat-form-field>
-      <mat-form-field [style.width.px]="327" appearance="fill">
-        <mat-label>Description</mat-label>
-        <input matInput formControlName="description" />
-      </mat-form-field>
-      <mat-form-field [style.width.px]="327" appearance="fill">
-        <mat-label>Summary</mat-label>
-        <input matInput formControlName="summary" />
-      </mat-form-field>
-      <mat-form-field [style.width.px]="327" hintLabel="Numeric Characters Only" appearance="fill">
-        <mat-label>ABN</mat-label>
-        <input matInput #inputABN maxLength="11" formControlName="ABN" />
-        <mat-hint align="end">{{inputABN.value?.length || 0}}/11</mat-hint>
-      </mat-form-field>
+  <div style="text-align: center">
+    <div class="bigHeader">Add an Organisation</div>
+  </div>
+  <hr size="2" width="90%" color="grey" />
+
+  <form [formGroup]="organisationForm">
+    <div class="leftContainer">
+      <div class="centerAlign">
+        <mat-form-field class="form-field" appearance="fill">
+          <mat-label>Organisation Name</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="fill">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description" />
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="fill">
+          <mat-label>Summary</mat-label>
+          <input matInput formControlName="summary" />
+        </mat-form-field>
+        <mat-form-field class="form-field" hintLabel="Numeric Characters Only" appearance="fill">
+          <mat-label>ABN</mat-label>
+          <input matInput #inputABN maxLength="11" formControlName="ABN" />
+          <mat-hint align="end">{{inputABN.value?.length || 0}}/11</mat-hint>
+        </mat-form-field>
+      </div>
     </div>
-  </div>
 
-  <div class="rightContainer">
-    <div class="centerAlign">
-      <mat-form-field [style.width.px]="327" hintLabel="Numeric Characters Only" appearance="fill">
-        <mat-label>Phone</mat-label>
-        <input matInput formControlName="phone" />
-      </mat-form-field>
-      <mat-form-field [style.width.px]="327" appearance="fill">
-        <mat-label>Website</mat-label>
-        <input matInput formControlName="website" />
-      </mat-form-field>
-      <app-upload-image (imageOut)="getImageFromChild($event)"></app-upload-image>
+    <div class="rightContainer">
+      <div class="centerAlign">
+        <mat-form-field class="form-field" hintLabel="Numeric Characters Only" appearance="fill">
+          <mat-label>Phone</mat-label>
+          <input matInput formControlName="phone" />
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="fill">
+          <mat-label>Website</mat-label>
+          <input matInput formControlName="website" />
+        </mat-form-field>
+        <app-upload-image (imageOut)="getImageFromChild($event)"></app-upload-image>
+        <div class="dialog-actions" mat-dialog-actions>
+          <button mat-button (click)="onNoClick()">Cancel</button>
+          <button mat-button [disabled]="!organisationForm.valid" (click)="onSubmit()" cdkFocusInitial
+            color="primary">Add</button>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="rightContainer" mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button [disabled]="!organisationForm.valid" (click)="onSubmit()" cdkFocusInitial
-      color="primary">Add</button>
-  </div>
-</form>

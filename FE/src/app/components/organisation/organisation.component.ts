@@ -10,6 +10,10 @@ import { AddOrganisationDialog } from './add-organisation/add-organisation-dialo
 import { EditOrganisationDialog } from './edit-organisation/edit-organisation-dialog';
 import { RemoveOrganisationDialog } from './remove-organisation/remove-organisation-dialog';
 import { Item } from 'src/app/models/Item';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { Organisation } from 'src/app/models/Organisation/Organisation';
+import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-organisation',
@@ -30,23 +34,20 @@ export class OrganisationComponent {
   file: any;
   totalDonationItems: number;
   totalDonations: number;
-  displayedColumns: string[] = ['name', 'activeItems', 'donations'];
-  selectedRowIndex = '';
-  selectedOrgName = '';
-  selectedOrgSummary = '';
-  selectedOrgDescription = '';
-  selectedOrgActiveStatus = '';
-  selectedOrgABN = '';
-  selectedOrgPhone = '';
-  selectedOrgWebsite = '';
-  selectedOrgImg = '';
-  selectedOrgTotalDonationItems = '';
-  selectedOrgTotalDonations = '';
+  displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
+  selectedOrg:Organisation;
   activeItems: Item[];
   orgData: any;
   cleanOrgData: any;
   selectedOrgData: any;
   items: Item[] = [];
+
+  activeStatusToggle:boolean = true;
+
+  getOrgsSubscription: Subscription;
+
+  //snackbar variables
+  message: string; 
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -56,12 +57,33 @@ export class OrganisationComponent {
     public dialog: MatDialog,
     public http: HttpClient,
     public storage: AngularFireStorage,
+    public fs:FirebaseService,
+    public _snackBar: MatSnackBar
   ) { }
+
+  ngOnDestroy(): void {
+    this.getOrgsSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.getOrgs();
-    console.log(this.items);
-    
+    this.initSelectedOrg();
+  }
+
+  initSelectedOrg(){
+    this.selectedOrg = {
+      id:'',
+      ABN:'',
+      activeStatus:true,
+      description:'',
+      img:'',
+      name:'',
+      phone:'',
+      summary:'',
+      totalDonationItems:0,
+      totalDonations:0,
+      website:''
+      }
   }
 
   addOrgDialog(): void {
@@ -77,161 +99,68 @@ export class OrganisationComponent {
         website: this.website,
         img: this.img,
         file: this.file,
-        totalDonationItems: 0,
-        totalDonations: 0,
+        totalDonationItems: this.totalDonationItems,
+        totalDonations: this.totalDonations,
       },
     });
 
-    dialogRef.afterClosed().subscribe((result: any) => {
-
-      const reqOrgBody: any = {
-        name: result?.name,
-        summary: result?.summary,
-        description: result?.description,
-        activeStatus: result?.activeStatus,
-        ABN: result?.ABN,
-        phone: result?.phone,
-        website: result?.website,
-        img: result?.img,
-        file: result?.file,
-        totalDonationItems: 0,
-        totalDonations: 0,
-      }
+    dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-
-        this.http
-          .post(
-            'https://dip-challenge.azurewebsites.net/organisation',
-            JSON.parse(JSON.stringify(reqOrgBody))
-          )
-          .subscribe({
-            next: (createOrgResp: any) => {
-              const image = typeof (result.file) != "undefined" ? result?.file[0] : undefined
-              console.log(result.file);
-
-
-              if (image) {
-                //--------------- Uploads new org image to org --------------------//
-                const docRef = createOrgResp._path.segments[1];
-                const collectionRef = createOrgResp._path.segments[0];
-                this.storage.upload(`${collectionRef}/${docRef}/orgLogo`, image)
-                  .then(
-                    (resp) => {
-                      //-------------------------- Update Image URL -----------------------//
-                      let imgRef = this.storage.ref(`Organisations/${docRef}/orgLogo`)
-
-                      imgRef.getDownloadURL()
-                        .forEach(
-                          (imgResp) => {
-
-                            reqOrgBody.img = imgResp;
-
-                            this.http
-                              .put(
-                                `https://dip-challenge.azurewebsites.net/organisation/${docRef}`,
-                                reqOrgBody
-                              ).subscribe({
-                                error: (err) => console.log(err),
-                                complete: () => { }
-                              })
-
-                          }
-                        )
-                      //------------------------------------------------------------------//
-                    }
-                  ).then(() => {
-                    this.getOrgs();
-                  })
-
-              } else {
-                this.getOrgs();
-
-              }
-
-            }
-          })
-      }
+        
+        this.fs.addOrganisation(result).then ((response) => {
+          this.openSnackBar(response.message)
+      })
+    }
     });
   }
 
+  // Open dialog box to edit organisations
   editOrgDialog(): void {
     const dialogRef = this.dialog.open(EditOrganisationDialog, {
       width: '730px',
       data: {
-        id: this.selectedRowIndex,
-        name: this.selectedOrgName,
-        summary: this.selectedOrgSummary,
-        description: this.selectedOrgDescription,
-        activeStatus: this.selectedOrgActiveStatus,
-        ABN: this.selectedOrgABN,
-        phone: this.selectedOrgPhone,
-        website: this.selectedOrgWebsite,
-        img: this.img,
-        totalDonationItems: this.selectedOrgTotalDonationItems,
-        totalDonations: this.selectedOrgTotalDonations,
+        id: this.selectedOrg.id,
+        name: this.selectedOrg.name,
+        summary: this.selectedOrg.summary,
+        description: this.selectedOrg.description,
+        activeStatus: this.selectedOrg.activeStatus,
+        ABN: this.selectedOrg.ABN,
+        phone: this.selectedOrg.phone,
+        website: this.selectedOrg.website,
+        img: this.selectedOrg.img,
+        totalDonationItems: this.selectedOrg.totalDonationItems,
+        totalDonations: this.selectedOrg.totalDonations,
       },
     });
 
+    // runs after dialog closes. updates org
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
 
-        this.http
-          .put(
-            `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
-            JSON.parse(JSON.stringify(result))
-          )
-          .subscribe((response) => {
-            this.getOrgs();
-            this.selectedOrgName = result.name;
-            this.selectedOrgSummary = result.summary;
-            this.selectedOrgDescription = result.description;
-            this.selectedOrgActiveStatus = result.activeStatus;
-            this.selectedOrgABN = result.ABN;
-            this.selectedOrgPhone = result.phone;
-            this.selectedOrgWebsite = result.website;
-            this.selectedOrgImg = result.img;
-            this.selectedOrgTotalDonationItems = result.totalDonationItems;
-            this.selectedOrgTotalDonations = result.totalDonations;
-          });
-      }
+        const orgReq: Organisation = {
+          id: result.id,
+          ABN:result.ABN,
+          description: result.description ? result.description : "",
+          name: result.name ? result.name : "",
+          phone: result.phone ? result.phone : "",
+          summary: result.summary ? result.summary : "",
+          website: result.website ? result.website : "",
+          img: result.img ? result.img : "",
+          totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
+          totalDonations:result.totalDonations ? result.totalDonations : 0,
+          activeStatus:result.activeStatus
+        }
 
-      const image = result?.file[0];
-
-      if (image) {
-        this.storage.upload(`Organisations/${this.selectedRowIndex}/orgLogo`, image)
+        this.fs.editOrganisation(this.selectedOrg.id, orgReq)
           .then((resp) => {
-            //-------------------------- Update Image URL -----------------------------------//
-            let imgRef = this.storage.ref(`Organisations/${this.selectedRowIndex}/orgLogo`)
+            this.selectedOrg = resp
+            this.openSnackBar(resp.name + " Edited Successfully")
 
-            let orgReqBody: any = {
-              name: result.name,
-              summary: result.summary,
-              description: result.description,
-              activeStatus: result.activeStatus,
-              ABN: result.ABN,
-              phone: result.phone,
-              website: result.website,
-              file: result.file,
-              totalDonationItems: 0,
-              totalDonations: 0,
+            if (result?.file) {
+              this.fs.uploadImage(this.selectedOrg.id,result.file)
             }
-
-            imgRef.getDownloadURL()
-              .forEach((imgResp) => {
-                orgReqBody.img = imgResp;
-              }).then(() => {
-
-                this.http
-                  .put(
-                    `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`,
-                    orgReqBody
-                  ).subscribe({
-                    error: (err) => console.log(err),
-                    complete: () => { }
-                  })
-              })
-          })
+        })
       }
     });
   }
@@ -240,56 +169,58 @@ export class OrganisationComponent {
     const dialogRef = this.dialog.open(RemoveOrganisationDialog, {
       width: '730px',
       data: {
-        id: this.selectedRowIndex,
-        name: this.selectedOrgName,
+        id: this.selectedOrg.id,
+        name: this.selectedOrg.name,
+        totalDonationItems: this.selectedOrg.totalDonationItems,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+
       if (result === true) {
-        this.http
-          .delete<any>(
-            `https://dip-challenge.azurewebsites.net/organisation/${this.selectedRowIndex}`
-          )
-          .subscribe((response) => {
-            this.getOrgs();
-            this.selectedRowIndex = '';
-          });
+
+        this.fs.removeOrganisation(this.selectedOrg.id).then((response) => {
+          this.openSnackBar(response.message)
+        })
       }
     });
   }
 
-  getOrgs() {
-    this.http
-      .get<any>(
-        'https://dip-challenge.azurewebsites.net/organisation/dashboard'
-      )
-      .subscribe((response) => {
-        this.orgData = response.map((item: any) => {
-          let org = {
-            id: item.id,
-            name: item.org.name,
-            activeItems: item.org.totalDonationItems,
-            donations: item.org.totalDonations,
-            summary: item.org.summary,
-            description: item.org.description,
-            activeStatus: item.org.activeStatus,
-            ABN: item.org.ABN,
-            phone: item.org.phone,
-            website: item.org.website,
-            img: item.org.img,
-            totalDonationItems: item.org.totalDonationItems,
-            totalDonations: item.org.totalDonations,
-          };
-          return org;
-        });
-        this.orgData = new MatTableDataSource(this.orgData);
+  toggleActiveStatus(){
+    this.initSelectedOrg();
+    this.activeStatusToggle = !this.activeStatusToggle;
+    this.getOrgsSubscription.unsubscribe()
+    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
+    .subscribe(
+      orgs => {
+        this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
-      });
+        this.orgData.filterPredicate = function (data, filter: string): boolean {
+          return data.name.trim().toLowerCase().includes(filter) || 
+              data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
+              data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
+          };
+    })
+    
+  }
+
+  getOrgs() {
+    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
+      .subscribe(orgs => {
+            this.orgData = new MatTableDataSource(orgs);
+            this.orgData.paginator = this.paginator;
+            this.orgData.sort = this.sort;
+            this.orgData.filterPredicate = function (data, filter: string): boolean {
+              return data.name.trim().toLowerCase().includes(filter) || 
+                data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
+                data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
+              };
+    })
   }
 
   applyFilter(event: Event) {
+    this.initSelectedOrg();
     const filterValue = (event.target as HTMLInputElement).value;
     this.orgData.filter = filterValue.trim().toLowerCase();
 
@@ -298,25 +229,19 @@ export class OrganisationComponent {
     }
   }
 
+  // selected row of org table
   selectRow(orgData) {
-    if (this.selectedRowIndex === orgData.id) {
-      this.selectedRowIndex = '';
-      this.activeItems = [];
+    if (this.selectedOrg.id === orgData.id) {
+      this.initSelectedOrg();
       return;
     }
-    this.selectedRowIndex = orgData.id;
-    this.selectedOrgName = orgData.name;
-    this.selectedOrgSummary = orgData.summary;
-    this.selectedOrgDescription = orgData.description;
-    this.selectedOrgActiveStatus = orgData.activeStatus;
-    this.selectedOrgABN = orgData.ABN;
-    this.selectedOrgPhone = orgData.phone;
-    this.selectedOrgWebsite = orgData.website;
-    this.selectedOrgImg = orgData.img;
-    this.selectedOrgTotalDonationItems = orgData.activeItems;
-    this.selectedOrgTotalDonations = orgData.donations;
+    this.selectedOrg = orgData;
     this.activeItems = this.items.filter((item) => {
       return item.orgID === orgData.id;
     });
+  }
+  //Snackbar
+  openSnackBar(message) {
+    this._snackBar.open(message);       
   }
 }

@@ -98,6 +98,10 @@ table {
 .graph-expansion {
     display: none;
 }
+.toggle-active {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
 
 @media screen and (max-width:700px) {
     .graph-expansion {
@@ -126,4 +130,29 @@ table {
         align-items: center;
     }
 
+}
+@media screen and (max-width: 430px) {
+    .remove-org {
+
+    }
+    .control-button {
+        display: inline-block;
+        width: 100%;
+        margin: 5px;
+    }
+    
+}
+@media screen and (max-width: 300px) {
+    .item-container {
+        width: 100%;
+        justify-content: center;
+    }
+    .add-item-card {
+        width: 100%;
+        margin: 0;
+        
+    }
+    .container {
+        margin: 0;        
+    }
 }
