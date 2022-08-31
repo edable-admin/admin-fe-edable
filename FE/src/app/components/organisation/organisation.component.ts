@@ -14,6 +14,7 @@ import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UpdateItemsComponent } from '../items/update-items/update-items.component';
 
 @Component({
   selector: 'app-organisation',
@@ -183,6 +184,17 @@ export class OrganisationComponent {
           this.openSnackBar(response.message)
         })
       }
+    });
+  }
+
+  openItemUpdateDialog():void{
+    const dialogRef = this.dialog.open(UpdateItemsComponent, {
+      width: '730px',
+      data: {
+        id: this.selectedOrg.id,
+        name: this.selectedOrg.name,
+        totalDonationItems: this.selectedOrg.totalDonationItems,
+      },
     });
   }
 

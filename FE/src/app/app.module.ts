@@ -38,6 +38,7 @@ import { EditOrganisationDialog } from './components/organisation/edit-organisat
 import { RemoveOrganisationDialog } from './components/organisation/remove-organisation/remove-organisation-dialog';
 import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
+import { UpdateItemsComponent } from './components/items/update-items/update-items.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { HttpClientModule } from '@angular/common/http';
     AddOrganisationDialog,
     EditOrganisationDialog,
     RemoveOrganisationDialog,
+    UpdateItemsComponent
   ],
   imports: [
     BrowserModule,
