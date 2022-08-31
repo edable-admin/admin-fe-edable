@@ -1,0 +1,25 @@
+<body>
+  <div class="displayTable">
+    <div class="displayTableCell">
+        <div class="authBlock">
+            <h3>EdAble Admin System</h3>
+            <h2>Sign In</h2>
+            <div class="formGroup">
+            <input type="text" class="formControl" placeholder="Username" #userName required>
+            </div>
+            <div class="formGroup">
+            <input type="password" class="formControl" placeholder="Password" #userPassword required>
+            </div>
+            <!-- Calling SignIn Api from AuthService -->
+            <div class="formGroup">
+              <button mat-raised-button color="basic" type="submit" class="btn btnPrimary" (click)="authService.SignIn(userName.value, userPassword.value)">Sign In</button>
+            </div>
+            <!-- forgot password redirects to forgot password page -->
+            <div class="forgotPassword">
+            <span class="redirect" routerLink="/forgot-password">Forgot Password?</span>
+            </div>
+        </div>
+    </div>
+  </div>
+</body>
+

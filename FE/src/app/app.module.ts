@@ -1,38 +1,81 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { MaterialsModule } from './modules/materials.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { EnterNameComponent } from './components/dialog-passing/enter-name/enter-name.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { DialogPassingPageComponent } from './components/dialog-passing/dialog-passing-page/dialog-passing-page.component';
-import { ParentComponent } from './components/parent/parent.component';
-import { ChildComponent } from './components/parent/child/child.component';
-import { DisplayEnvironmentComponent } from './components/display-environment/display-environment.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { OrganisationComponent } from './components/organisation/organisation.component';
+import { HeaderComponent } from './components/navigation/header/header.component';
+import { SidebarComponent } from './components/navigation/sidebar/sidebar.component';
+import { TransactionsComponent } from './components/transactions/transactions.component';
+
+import { AuthService } from "./shared/services/auth.service";
+
+//------------- Upload Image Component ----------------------------//
+import { UploadImageComponent } from './components/upload-image/upload-image.component';
+import { DragDropDirectiveDirective } from './components/upload-image/drag-drop-directive/drag-drop-directive.directive';
+//--------------------------------------------------------------------//
+
+//-------------------- FireBase libs ---------------------------------------//
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+//---------------------------------------------------------------------------//
+import { environment } from '../environments/environment';
+import { SignInComponent } from './components/authentication/sign-in/sign-in.component';
+import { ForgotPasswordComponent } from './components/authentication/forgot-password/forgot-password.component';
+import { TempPageComponent } from './components/authentication/temp-page/temp-page.component';
+import { MainComponent } from './components/main/main.component';
+
+const config = environment.firebaseConfig;
+
+import { AddOrganisationDialog } from './components/organisation/add-organisation/add-organisation-dialog';
+import { EditOrganisationDialog } from './components/organisation/edit-organisation/edit-organisation-dialog';
+import { RemoveOrganisationDialog } from './components/organisation/remove-organisation/remove-organisation-dialog';
+import { MatNativeDateModule } from '@angular/material/core';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavBarComponent,
-    EnterNameComponent,
-    DialogPassingPageComponent,
-    ParentComponent,
-    ChildComponent,
-    DisplayEnvironmentComponent
+    OrganisationComponent,
+    UploadImageComponent,
+    DragDropDirectiveDirective,
+    SignInComponent,
+    ForgotPasswordComponent,
+    TempPageComponent,
+    HeaderComponent,
+    SidebarComponent,
+    TransactionsComponent,
+    MainComponent,
+    AddOrganisationDialog,
+    EditOrganisationDialog,
+    RemoveOrganisationDialog,
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    provideFirebaseApp(() => initializeApp(config)),
+    provideFirestore(() => getFirestore()),
+    AngularFireStorageModule,
+    AngularFireAuthModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialsModule,
     FlexLayoutModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    { provide: BUCKET, useValue: environment.firebaseConfig.storageBucket }, AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
