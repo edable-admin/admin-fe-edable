@@ -18,16 +18,17 @@
         <mat-label>Summary</mat-label>
         <input matInput formControlName="summary" />
       </mat-form-field>
-      <mat-form-field [style.width.px]="327" appearance="fill">
+      <mat-form-field [style.width.px]="327" hintLabel="Numeric Characters Only" appearance="fill">
         <mat-label>ABN</mat-label>
-        <input matInput maxLength="11" formControlName="abn" />
+        <input matInput #inputABN maxLength="11" formControlName="ABN" />
+        <mat-hint align="end">{{inputABN.value?.length || 0}}/11</mat-hint>
       </mat-form-field>
     </div>
   </div>
 
   <div class="rightContainer">
     <div class="centerAlign">
-      <mat-form-field [style.width.px]="327" appearance="fill">
+      <mat-form-field [style.width.px]="327" hintLabel="Numeric Characters Only" appearance="fill">
         <mat-label>Phone</mat-label>
         <input matInput formControlName="phone" />
       </mat-form-field>
