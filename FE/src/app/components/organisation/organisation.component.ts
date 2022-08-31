@@ -34,7 +34,7 @@ export class OrganisationComponent {
   file: any;
   totalDonationItems: number;
   totalDonations: number;
-  displayedColumns: string[] = ['name', 'activeItems', 'donations'];
+  displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
   selectedOrg:Organisation;
   activeItems: Item[];
   orgData: any;
@@ -187,6 +187,7 @@ export class OrganisationComponent {
   }
 
   toggleActiveStatus(){
+    this.initSelectedOrg();
     this.activeStatusToggle = !this.activeStatusToggle;
     this.getOrgsSubscription.unsubscribe()
     this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
@@ -195,6 +196,11 @@ export class OrganisationComponent {
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
+        this.orgData.filterPredicate = function (data, filter: string): boolean {
+          return data.name.trim().toLowerCase().includes(filter) || 
+              data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
+              data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
+          };
     })
     
   }
@@ -205,13 +211,16 @@ export class OrganisationComponent {
             this.orgData = new MatTableDataSource(orgs);
             this.orgData.paginator = this.paginator;
             this.orgData.sort = this.sort;
-            this.orgData.filterPredicate = function(data, filter: string): boolean {
-              return data.name.trim().toLowerCase().includes(filter);
-          };
+            this.orgData.filterPredicate = function (data, filter: string): boolean {
+              return data.name.trim().toLowerCase().includes(filter) || 
+                data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
+                data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
+              };
     })
   }
 
   applyFilter(event: Event) {
+    this.initSelectedOrg();
     const filterValue = (event.target as HTMLInputElement).value;
     this.orgData.filter = filterValue.trim().toLowerCase();
 
