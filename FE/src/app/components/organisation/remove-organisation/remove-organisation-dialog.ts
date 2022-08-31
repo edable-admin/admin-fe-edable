@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Component, Inject, Input } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { DialogData } from 'src/app/models/DialogData';
-import { Organisation } from "src/app/models/Organisation/Organisation";
+
 
 @Component({
     selector: 'remove-organisation-dialog.component',
@@ -13,13 +13,19 @@ export class RemoveOrganisationDialog {
     constructor(
         public dialogRef: MatDialogRef<RemoveOrganisationDialog>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
-        public http: HttpClient
+        public http: HttpClient,
+        
+        
         
 
     ) { }
-    @Input() responseMsg = '';
+    
     showWarning: boolean;
     isDisabled: boolean;
+    
+    message:string
+
+    
     onNoClick(): void {
         this.dialogRef.close(false);
     }
@@ -28,11 +34,17 @@ export class RemoveOrganisationDialog {
     }
     confirmDelete(data) {
         
-        if (data.totalDonationItems != 0) {
+        if (data.totalDonationItems > 0) {
             this.showWarning = true;
-            
+            this.message = data.name + " has donation items and cannot be deleted"
+
             this.isDisabled = !this.isDisabled
            
+        }
+        else if (data.totalDonations > 0) {
+            this.showWarning = true;
+            this.message = data.name + " has donation records and cannot be deleted"
+            this.isDisabled = !this.isDisabled
         }
         else {
             this.showWarning = false;
