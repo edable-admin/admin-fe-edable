@@ -233,4 +233,8 @@ export class FirebaseService {
         }).catch(err => console.log(err))
     }
   }
+
+  //------------------------ DONATION ITEMS ------------------------\\
+
+  //------------------------ READ DONATION ITEMS ------------------------\\
 }
