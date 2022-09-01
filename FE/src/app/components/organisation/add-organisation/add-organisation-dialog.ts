@@ -34,6 +34,8 @@ export class AddOrganisationDialog {
     onNoClick(): void {
         this.dialogRef.close();
     }
+}
+
     onSubmit(): void {
         if (!this.organisationForm.valid) return;
 
@@ -46,3 +48,4 @@ export class AddOrganisationDialog {
         this.dialogRef.close(this.data);
     }
 }
+
