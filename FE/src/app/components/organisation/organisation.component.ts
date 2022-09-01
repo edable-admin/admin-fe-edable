@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddDonationItemComponent } from '../donation-item/add-donation-item/add-donation-item.component';
 import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
+import { UpdateItemsComponent } from '../items/update-items/update-items.component';
 
 
 @Component({
@@ -87,7 +88,7 @@ export class OrganisationComponent {
 
     this.getOrgs();
     this.initSelectedOrg();
-    
+
   }
 
   initSelectedOrg() {
@@ -275,6 +276,23 @@ export class OrganisationComponent {
 
   }
 
+  openItemUpdateDialog(item: Item): void{
+  const dialogRef = this.dialog.open(UpdateItemsComponent, {
+    maxWidth: '90vw',
+    width:'500px',
+    height:'fit-content',
+    maxHeight:'90vh',
+    data: {
+      ...item
+    }
+  });
+
+  dialogRef.afterClosed().subscribe((res) => {
+    //todo api call
+    console.log(res)
+  })
+}
+
   getOrgs() {
 
     this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
@@ -325,7 +343,7 @@ export class OrganisationComponent {
 
     this.getItems(this.selectedOrg.id);
   }
-  
+
   //Snackbar
   openSnackBar(message) {
     this._snackBar.open(message);
