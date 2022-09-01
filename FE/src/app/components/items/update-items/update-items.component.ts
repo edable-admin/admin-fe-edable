@@ -25,6 +25,7 @@ export class UpdateItemsComponent {
     ) {}
 
   onSubmit(): void {
+    console.log()
     //console.log(this.editItemForm.controls['initialPrice'].errors)
     if(this.editItemForm.valid){
       this.dialogRef.close(this.editItemForm.value)
@@ -36,30 +37,3 @@ export class UpdateItemsComponent {
     this.dialogRef.close()
   }
 }
-
-//--------------------------- the code below needs to go into the parent ts file ----------//
-//   openItemUpdateDialog():void{
-//   const dialogRef = this.dialog.open(UpdateItemsComponent, {
-//     maxWidth: '90vw',
-//     width:'500px',
-//     height:'fit-content',
-//     maxHeight:'90vh',
-//     data: {
-//       //todo replace data with api data
-//       id:"string",
-//       name: "string",
-//       summary:"string",
-//       description:"string",
-//       initialPrice: 30,
-//       totalDonations: 30,
-//       activeStatus: true,
-//       orgID: "string",
-//       img: "string"
-//     },
-//   });
-
-//   dialogRef.afterClosed().subscribe((res) => {
-//     //todo api call
-//     console.log(res)
-//   })
-// }

@@ -1,5 +1,5 @@
 export interface Item {
-    id?:string,
+    id?: string,
     name?: string;
     summary?:string;
     description?:string;
@@ -8,4 +8,6 @@ export interface Item {
     activeStatus?: boolean;
     orgID?: string;
     img?: string;
+    createdAt?: Date
+    dateCompleted?:Date
   }
