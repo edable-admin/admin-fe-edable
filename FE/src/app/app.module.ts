@@ -38,6 +38,9 @@ import { EditOrganisationDialog } from './components/organisation/edit-organisat
 import { RemoveOrganisationDialog } from './components/organisation/remove-organisation/remove-organisation-dialog';
 import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
+import { DonationItemComponent } from './components/donation-item/donation-item.component';
+import { AddDonationItemComponent } from './components/donation-item/add-donation-item/add-donation-item.component';
+import { RemoveDonationItemComponent } from './components/donation-item/remove-donation-item/remove-donation-item.component';
 import { UpdateItemsComponent } from './components/items/update-items/update-items.component';
 
 @NgModule({
@@ -56,6 +59,9 @@ import { UpdateItemsComponent } from './components/items/update-items/update-ite
     AddOrganisationDialog,
     EditOrganisationDialog,
     RemoveOrganisationDialog,
+    DonationItemComponent,
+    AddDonationItemComponent,
+    RemoveDonationItemComponent,
     UpdateItemsComponent
   ],
   imports: [

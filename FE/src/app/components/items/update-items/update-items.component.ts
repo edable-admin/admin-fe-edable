@@ -58,8 +58,8 @@ export class UpdateItemsComponent {
 //     },
 //   });
 
-//   // dialogRef.afterClosed().subscribe((res) => {
-//   //   //todo api call
-//   //   console.log(res)
-//   // })
+//   dialogRef.afterClosed().subscribe((res) => {
+//     //todo api call
+//     console.log(res)
+//   })
 // }
