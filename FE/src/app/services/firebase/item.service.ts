@@ -34,6 +34,11 @@ export class ItemService {
   //------------------------ DELETE DONATION ITEMS -------------------\\
 
   async deleteItem(orgID: string, itemID: string): Promise<boolean> {
+    let isSuccess: boolean = false;
+    //Get org
+    const orgRef = this.fs
+      .collection('Organisations')
+      .doc(orgID).ref;
 
     //Get item
     const itemDocument = this.fs
@@ -41,21 +46,51 @@ export class ItemService {
       .doc(orgID).collection('Items')
       .doc(itemID);
 
-    //Get item donations collection
+    //Get donations to an item, limited to 1
     const itemDonationColl = itemDocument.collection('ItemsDonations', query => query.limit(1));
 
+    //Assign the donations to an array
     let donations: any;
-
     await itemDonationColl.ref.get().then(data => {
       donations = data.docs;
     });
+    console.log("donations.length: " + donations.length);
+    
+    if (donations.length <= 0) {
 
-    if (donations.length > 0) {
-      return false;
-    } else {
-      itemDocument.delete();
-
-      return true;
+      this.fs.firestore.runTransaction(transaction =>
+        transaction
+          .get(orgRef)
+          .then((orgDoc: any) => {
+            let newItemCount = orgDoc.data().totalDonationItems - 1;
+            if (newItemCount < 0) {
+              //Dont want negative donation items
+              newItemCount = 0;
+            }
+            console.log("newItemCount: " + newItemCount);
+            transaction.update(orgRef, { totalDonationItems: newItemCount })
+            transaction.delete(itemDocument.ref);
+          }))
+        .then((resp) => {
+          console.log("response: " + resp);
+          isSuccess = true
+          console.log("isSuccess .then: " + isSuccess);
+        })
+        .catch((err) => {
+          console.log("error: " + err);
+          isSuccess = false;
+        });
     }
+
+    console.log("isSuccess end: " + isSuccess);
+    
+    return isSuccess;
+    // if (donations.length > 0) {
+    //   return false;
+    // } else {
+    //   itemDocument.delete();
+
+    //   return true;
+    // }
   }
 }
