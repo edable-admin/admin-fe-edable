@@ -230,12 +230,13 @@ export class OrganisationComponent {
 
   //-------------------- GET ITEMS --------------------\\
   getItems(orgID) {
-    this.getItemsSubscription = this.ifs.getItems(orgID).subscribe(items => console.log(items));
-    
-  }
-  
-  
+    this.getItemsSubscription = this.ifs.getItems(orgID)
+    .subscribe(items => {
+      this.items = items as Item[]                
+    })         
+}
 
+  //-------------------- GET ITEMS --------------------\\
   applyFilter(event: Event) {
     this.initSelectedOrg();
     const filterValue = (event.target as HTMLInputElement).value;
