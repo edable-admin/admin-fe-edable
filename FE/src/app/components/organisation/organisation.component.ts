@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddDonationItemComponent } from '../donation-item/add-donation-item/add-donation-item.component';
 import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
 
+
 @Component({
   selector: 'app-organisation',
   templateUrl: './organisation.component.html',
@@ -61,6 +62,7 @@ export class OrganisationComponent {
   //snackbar variables
   message: string;
 
+
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -72,6 +74,7 @@ export class OrganisationComponent {
     public fs: FirebaseService,
     public _snackBar: MatSnackBar,
     public ifs: ItemService
+
   ) { }
 
   ngOnDestroy(): void {
@@ -84,6 +87,7 @@ export class OrganisationComponent {
 
     this.getOrgs();
     this.initSelectedOrg();
+    
   }
 
   initSelectedOrg() {
@@ -236,6 +240,7 @@ export class OrganisationComponent {
         id: this.selectedOrg.id,
         name: this.selectedOrg.name,
         totalDonationItems: this.selectedOrg.totalDonationItems,
+        totalDonations: this.selectedOrg.totalDonations
       },
     });
 
@@ -320,6 +325,7 @@ export class OrganisationComponent {
 
     this.getItems(this.selectedOrg.id);
   }
+  
   //Snackbar
   openSnackBar(message) {
     this._snackBar.open(message);
