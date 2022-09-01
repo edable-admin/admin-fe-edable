@@ -42,23 +42,7 @@ export class AddDonationItemComponent {
         orgID: this.data.id,
       };
 
-        this.itemService.addItem(this.data.id, item)
+        this.itemService.addItem(this.data.id, item);
+        this.dialogRef.close();
   }
-
-
-
-
-
-
-  // async onAdd() {
-  //   let itemAdded = await this.itemService.addItem(this.data.donationItemName,this.data.donationItemSummary,this.data.donationItemDescription,
-  //     this.data.donationItemInitialPrice,this.data.donationItemOrganisationID);
-
-  //   if (itemAdded) {
-  //     this.dialogRef.close();
-  //     return;
-  //   }
-  //   this.showWarning = true;
-  //   this.isDisabled = true;
-  // }
 }

@@ -114,11 +114,6 @@ export class OrganisationComponent {
     const dialogRef = this.dialog.open(AddDonationItemComponent, {
       width: '730px',
       data: {
-        name: this.donationItemName,
-        summary: this.donationItemSummary,
-        description: this.donationItemDescription,
-        image: this.donationItemImage,
-        initialPrice: this.donationItemInitialPrice,
         id: this.selectedOrg.id,
       },
     });
