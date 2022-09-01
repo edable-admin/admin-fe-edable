@@ -18,4 +18,16 @@ export class ItemService {
     public storage:AngularFireStorage,
     public fs:AngularFirestore
   ) { }
+  
+  //------------------------ DONATION ITEMS ------------------------\\
+
+  //------------------------ READ DONATION ITEMS -------------------\\
+
+  getItems(orgID) {
+    let items = this.fs
+      .collection('Organisations').doc(orgID).collection('Items')
+      .valueChanges({idField:"id"})
+    return items
+
+  }
 }

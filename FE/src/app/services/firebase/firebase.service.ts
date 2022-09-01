@@ -234,7 +234,4 @@ export class FirebaseService {
     }
   }
 
-  //------------------------ DONATION ITEMS ------------------------\\
-
-  //------------------------ READ DONATION ITEMS ------------------------\\
 }

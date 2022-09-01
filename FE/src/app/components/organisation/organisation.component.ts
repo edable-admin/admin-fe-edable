@@ -11,6 +11,7 @@ import { EditOrganisationDialog } from './edit-organisation/edit-organisation-di
 import { RemoveOrganisationDialog } from './remove-organisation/remove-organisation-dialog';
 import { Item } from 'src/app/models/Item';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { ItemService } from 'src/app/services/firebase/item.service'
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -46,6 +47,8 @@ export class OrganisationComponent {
 
   getOrgsSubscription: Subscription;
 
+  getItemsSubscription: Subscription;
+
   //snackbar variables
   message: string; 
 
@@ -58,14 +61,18 @@ export class OrganisationComponent {
     public http: HttpClient,
     public storage: AngularFireStorage,
     public fs:FirebaseService,
-    public _snackBar: MatSnackBar
+    public _snackBar: MatSnackBar,
+    public ifs: ItemService
   ) { }
 
   ngOnDestroy(): void {
     this.getOrgsSubscription.unsubscribe();
+    this.getItemsSubscription.unsubscribe();
+    
   }
 
   ngOnInit(): void {
+    
     this.getOrgs();
     this.initSelectedOrg();
   }
@@ -190,6 +197,7 @@ export class OrganisationComponent {
     this.initSelectedOrg();
     this.activeStatusToggle = !this.activeStatusToggle;
     this.getOrgsSubscription.unsubscribe()
+    this.getItemsSubscription.unsubscribe()
     this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
     .subscribe(
       orgs => {
@@ -206,6 +214,7 @@ export class OrganisationComponent {
   }
 
   getOrgs() {
+    
     this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
       .subscribe(orgs => {
             this.orgData = new MatTableDataSource(orgs);
@@ -219,6 +228,14 @@ export class OrganisationComponent {
     })
   }
 
+  //-------------------- GET ITEMS --------------------\\
+  getItems(orgID) {
+    this.getItemsSubscription = this.ifs.getItems(orgID).subscribe(items => console.log(items));
+    
+  }
+  
+  
+
   applyFilter(event: Event) {
     this.initSelectedOrg();
     const filterValue = (event.target as HTMLInputElement).value;
@@ -231,14 +248,19 @@ export class OrganisationComponent {
 
   // selected row of org table
   selectRow(orgData) {
+    
     if (this.selectedOrg.id === orgData.id) {
       this.initSelectedOrg();
+      this.getItemsSubscription.unsubscribe()
+      
       return;
     }
     this.selectedOrg = orgData;
     this.activeItems = this.items.filter((item) => {
       return item.orgID === orgData.id;
     });
+    
+    this.getItems(this.selectedOrg.id);
   }
   //Snackbar
   openSnackBar(message) {
