@@ -15,6 +15,7 @@ import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddDonationItemComponent } from '../donation-item/add-donation-item/add-donation-item.component';
+import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
 
 @Component({
   selector: 'app-organisation',
@@ -41,6 +42,7 @@ export class OrganisationComponent {
   donationItemInitialPrice: number | undefined;
   donationItemImage: string | undefined;
   donationItemOrganisationID: string | undefined;
+  donationItemID: string | undefined;
   displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
   selectedOrg:Organisation;
   activeItems: Item[];
@@ -114,6 +116,25 @@ export class OrganisationComponent {
     //       this.openSnackBar(response.message)
     //   })
     // }
+    });
+  }
+
+  removeDonationItemDialog(): void {
+    const dialogRef = this.dialog.open(RemoveDonationItemComponent, {
+      width: '730px',
+      data: {
+        donationItemID: this.donationItemID,
+        },
+    });
+
+    dialogRef.afterClosed().subscribe(async (result: any) => {
+      //----------------------------- Remove a Donation Item --------------------------//
+      // if (result === true) {
+
+      //   this.fs.removeDonationItem(this.selectedOrg.id).then((response) => {
+      //     this.openSnackBar(response.message)
+      //   })
+      // }
     });
   }
 

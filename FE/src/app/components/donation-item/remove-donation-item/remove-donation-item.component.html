@@ -1,0 +1,50 @@
+<div id="container">
+
+  <div style="text-align: center;">
+    <div class="bigHeader">Add a Donation Item</div>
+  </div>
+  <hr size="2" width="90%" color="grey" />
+
+  <div class="leftContainer">
+    <div class="centerAlign">
+      <mat-form-field class="form-field" appearance="fill">
+        <mat-label>Item Name</mat-label>
+        <input matInput />
+      </mat-form-field>
+      <mat-form-field class="form-field" appearance="fill">
+        <mat-label>Summary</mat-label>
+        <input matInput />
+      </mat-form-field>
+      <mat-form-field class="form-field" appearance="fill">
+        <mat-label>Description</mat-label>
+        <input matInput />
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="rightContainer">
+    <div class="centerAlign">
+      <mat-form-field class="form-field" appearance="fill">
+        <mat-label>Donation Goal</mat-label>
+        <input matInput/>
+      </mat-form-field>
+      <h2>IMAGE UPLOAD COMPONENT</h2>
+      <div class="dialog-actions" mat-dialog-actions>
+        <button mat-button (click)="onNoClick()">Cancel</button>
+        <button mat-button (click)="onNoClick()"cdkFocusInitial color="primary">Add</button>
+      </div>
+
+      <!-- <mat-form-field [style.width.px]="327" appearance="fill">
+        <mat-label>Active Donation Items</mat-label>
+        <input disabled matInput [(ngModel)]="data.totalDonationItems" />
+      </mat-form-field>
+      <mat-form-field [style.width.px]="327" appearance="fill">
+        <mat-label>Donations</mat-label>
+        <input matInput [(ngModel)]="data.totalDonations" />
+      </mat-form-field> -->
+    </div>
+    </div>
+  </div>
+
+
+
+
