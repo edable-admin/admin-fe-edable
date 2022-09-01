@@ -128,12 +128,13 @@ export class OrganisationComponent {
     });
   }
 
-  removeDonationItemDialog(itemID: string): void {
+  removeDonationItemDialog(itemID: string, itemName : string): void {
     const dialogRef = this.dialog.open(RemoveDonationItemComponent, {
       width: '730px',
       data: {
         itemID: itemID,
-        id: this.selectedOrg.id
+        id: this.selectedOrg.id,
+        itemName: itemName,
       },
     });
 

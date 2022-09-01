@@ -4,8 +4,8 @@
 <hr size="2" width="90%" color="grey" />
 
 <div class="centerAlign">
-<h2>This will remove {{data.name}} from Donation Items</h2>
-<p *ngIf="showWarning">Cannot delete item</p>
+<h2>{{data.itemName}} will be permanently removed from Donation Items</h2>
+<span class="warning" *ngIf="showWarning">This Item has donations and cannot be removed</span>
 </div>
 
 <div mat-dialog-actions>
