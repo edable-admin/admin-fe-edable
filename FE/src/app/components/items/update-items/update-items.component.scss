@@ -27,7 +27,6 @@
       max-width: 100%;
       display: flex;
       flex-wrap: wrap;
-      margin-bottom: 14px;
       align-items: center;
       justify-content: center;
 
@@ -37,6 +36,11 @@
         align-items: center;
         flex-wrap: wrap;
         column-gap: 10px;
+        margin-bottom:10px;
+
+        &:last-child{
+          margin-bottom:0px;
+        }
 
         .mat-form-field{
           width: 100%;
