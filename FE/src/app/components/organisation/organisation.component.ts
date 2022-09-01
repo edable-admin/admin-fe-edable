@@ -113,7 +113,7 @@ export class OrganisationComponent {
         description: this.donationItemDescription,
         image: this.donationItemImage,
         initialPrice: this.donationItemInitialPrice,
-        organisationID: this.donationItemOrganisationID,
+        id: this.selectedOrg.id,
       },
     });
 

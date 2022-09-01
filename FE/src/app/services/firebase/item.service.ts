@@ -7,6 +7,7 @@ import { getType } from '@angular/flex-layout/extended/style/style-transforms';
 import { EventType } from '@angular/router';
 import { throwError, timeout } from 'rxjs';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
+import { Item } from 'src/app/models/Item';
 
 
 @Injectable({
@@ -30,6 +31,37 @@ export class ItemService {
     return items
 
   }
+
+    //------------------------ Add Donation Items ---------------------//
+    addItem(orgID: string, item: Item) {
+
+      try {
+
+        const org = this.fs
+        .collection('Organisations').doc(orgID)
+
+        const newItem =
+        org.collection('Items').doc()
+
+        this.fs.firestore.runTransaction(transaction =>
+          transaction.get(org.ref).then((action) => {
+            const newTotalDonationItems = action.data()['totalDonationItems'] + 1;
+            transaction.update(org.ref, { totalDonationItems: newTotalDonationItems })
+            transaction.set(newItem.ref,item)
+          })
+        )
+
+        console.log('Transaction Success!')
+      } catch (e) {
+
+        console.log('Transaction failure:', e)
+
+      }
+
+    }
+
+    //----------------------------------------------------------------//
+
 
   //------------------------ DELETE DONATION ITEMS -------------------\\
 
