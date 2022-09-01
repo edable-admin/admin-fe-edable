@@ -49,48 +49,38 @@ export class ItemService {
     //Get donations to an item, limited to 1
     const itemDonationColl = itemDocument.collection('ItemsDonations', query => query.limit(1));
 
-    //Assign the donations to an array
+    //Assign the donations to an array. Array length is max 1 since it was limited in the query
     let donations: any;
     await itemDonationColl.ref.get().then(data => {
       donations = data.docs;
     });
-    console.log("donations.length: " + donations.length);
-    
-    if (donations.length <= 0) {
 
-      this.fs.firestore.runTransaction(transaction =>
-        transaction
-          .get(orgRef)
-          .then((orgDoc: any) => {
-            let newItemCount = orgDoc.data().totalDonationItems - 1;
-            if (newItemCount < 0) {
-              //Dont want negative donation items
-              newItemCount = 0;
-            }
-            console.log("newItemCount: " + newItemCount);
-            transaction.update(orgRef, { totalDonationItems: newItemCount })
-            transaction.delete(itemDocument.ref);
-          }))
-        .then((resp) => {
-          console.log("response: " + resp);
-          isSuccess = true
-          console.log("isSuccess .then: " + isSuccess);
-        })
-        .catch((err) => {
-          console.log("error: " + err);
-          isSuccess = false;
-        });
+    //If item has donation, do not allow deletion
+    if (donations.length > 0) {
+      return isSuccess = false;
     }
 
-    console.log("isSuccess end: " + isSuccess);
-    
+    await this.fs.firestore.runTransaction(transaction =>
+      transaction
+        .get(orgRef)
+        .then((orgDoc: any) => {
+          //OPTION: count all org items instead of subtracting to avoid errors
+          let newItemCount = orgDoc.data().totalDonationItems - 1;
+          if (newItemCount < 0) {
+            //Dont want negative donation items. maybe not necessary??
+            newItemCount = 0;
+          }
+          transaction.update(orgRef, { totalDonationItems: newItemCount })
+          transaction.delete(itemDocument.ref);
+        }))
+      .then((resp) => {
+        //After item has been successfully deleted
+        isSuccess = true
+      })
+      .catch((err) => {
+        //Any error means item couldn't be deleted
+        isSuccess = false;
+      });
     return isSuccess;
-    // if (donations.length > 0) {
-    //   return false;
-    // } else {
-    //   itemDocument.delete();
-
-    //   return true;
-    // }
   }
 }
