@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddDonationItemComponent } from '../donation-item/add-donation-item/add-donation-item.component';
 import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
 import { UpdateItemsComponent } from '../items/update-items/update-items.component';
+import { serverTimestamp } from 'firebase/firestore';
 
 
 @Component({
@@ -85,7 +86,7 @@ export class OrganisationComponent {
   }
 
   ngOnInit(): void {
-
+    //this.ifs.addItem('4H9O58oiEH0D88AXZEUF',{name:"hi",activeStatus:false,description:"hi",summary:"hi",initialPrice:20,createdAt:serverTimestamp(), img:"",totalDonations:0, dateCompleted:null})
     this.getOrgs();
     this.initSelectedOrg();
 

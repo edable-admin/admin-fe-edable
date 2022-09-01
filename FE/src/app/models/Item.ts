@@ -1,3 +1,4 @@
+import { FieldValue } from 'firebase/firestore';
 export interface Item {
     id?: string,
     name?: string;
@@ -8,6 +9,6 @@ export interface Item {
     activeStatus?: boolean;
     orgID?: string;
     img?: string;
-    createdAt?: Date
-    dateCompleted?:Date
+    createdAt?: FieldValue
+    dateCompleted?:FieldValue
   }
