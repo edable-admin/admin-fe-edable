@@ -24,8 +24,7 @@ export class EditOrganisationDialog {
    
 
     onNoClick(): void {
-        this.dialogRef.close();
-        
+        this.dialogRef.close(); 
     }
     //---------- Function to get image from image dialogBox --------------//
     getImageFromChild(file: any) {

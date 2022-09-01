@@ -1,5 +1,5 @@
 <div class="edit-item-container">
-  <form [formGroup]="editItemForm" novalidate (ngSubmit)="onSubmit()">
+  <form [formGroup]="editItemForm" novalidate>
     <mat-card-header>
       <mat-card-title>Edit Item</mat-card-title>
     </mat-card-header>
@@ -30,12 +30,12 @@
             Please enter a positive dollar amount greater than 0.
           </mat-error>
         </mat-form-field>
-
       </div>
     </mat-card-content>
+    <mat-slide-toggle formControlName="activeStatus">Activate/Deactive</mat-slide-toggle>
     <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Edit</button>
-      <button mat-raised-button color="primary" type="submit">Cancel</button>
+      <button mat-button (click)="onCancel()">Cancel</button>
+      <button mat-button color="warn" type="submit" (click)="onSubmit()">Edit</button>
     </mat-card-actions>
   </form>
 </div>

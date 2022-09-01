@@ -116,6 +116,32 @@ export class OrganisationComponent {
     });
   }
 
+  openItemUpdateDialog():void{
+  const dialogRef = this.dialog.open(UpdateItemsComponent, {
+    maxWidth: '90vw',
+    width:'500px',
+    height:'fit-content',
+    maxHeight:'90vh',
+    data: {
+      //todo replace data with api data
+      id:"string",
+      name: "string",
+      summary:"string",
+      description:"string",
+      initialPrice: 30,
+      totalDonations: 30,
+      activeStatus: true,
+      orgID: "string",
+      img: "string"
+    },
+  });
+
+  dialogRef.afterClosed().subscribe((res) => {
+    //todo api call
+    console.log(res)
+  })
+}
+
   // Open dialog box to edit organisations
   editOrgDialog(): void {
     const dialogRef = this.dialog.open(EditOrganisationDialog, {
@@ -186,18 +212,7 @@ export class OrganisationComponent {
       }
     });
   }
-
-  openItemUpdateDialog():void{
-    const dialogRef = this.dialog.open(UpdateItemsComponent, {
-      width: '730px',
-      data: {
-        id: this.selectedOrg.id,
-        name: this.selectedOrg.name,
-        totalDonationItems: this.selectedOrg.totalDonationItems,
-      },
-    });
-  }
-
+  
   toggleActiveStatus(){
     this.initSelectedOrg();
     this.activeStatusToggle = !this.activeStatusToggle;
