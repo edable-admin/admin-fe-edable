@@ -15,6 +15,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Summary</mat-label>
           <input matInput placeholder="Enter Summary" formControlName="summary">
+          <mat-hint align="end">{{editItemForm.controls.summary.value?.length || 0}}/90</mat-hint>
         </mat-form-field>
       </div>
       <div>
