@@ -1,23 +1,25 @@
 <html>
 
 <body>
-    <div class="container">
-        <div class="table-header">
-            <button class="control-button" (click)="addOrgDialog()" mat-raised-button color="primary">
-                <mat-icon>add</mat-icon>Organisation
-            </button>
-            <button class="control-button" *ngIf="this.selectedOrg.id" (click)="editOrgDialog()" mat-raised-button color="warn">
-              <mat-icon>edit</mat-icon>Edit
-          </button>
-          <button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()" mat-raised-button color="accent">
-            <mat-icon>remove</mat-icon>Remove
-        </button>
-            <mat-form-field class="control-button" appearance="standard">
-                <mat-label>Search Organisations</mat-label>
-                <input matInput (keyup)="applyFilter($event)" #input>
-            </mat-form-field>
-            <mat-slide-toggle class="toggle-active" (click)="toggleActiveStatus()">Show inactive Orgs</mat-slide-toggle>
-        </div>
+  <div class="container">
+    <div class="table-header">
+      <button class="control-button" (click)="addOrgDialog()" mat-raised-button color="primary">
+        <mat-icon>add</mat-icon>Organisation
+      </button>
+      <button class="control-button" *ngIf="this.selectedOrg.id" (click)="editOrgDialog()" mat-raised-button
+        color="warn">
+        <mat-icon>edit</mat-icon>Edit
+      </button>
+      <button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()" mat-raised-button
+        color="accent">
+        <mat-icon>remove</mat-icon>Remove
+      </button>
+      <mat-form-field class="control-button" appearance="standard">
+        <mat-label>Search Organisations</mat-label>
+        <input matInput (keyup)="applyFilter($event)" #input>
+      </mat-form-field>
+      <mat-slide-toggle class="toggle-active" (click)="toggleActiveStatus()">Show inactive Orgs</mat-slide-toggle>
+    </div>
 
     <div class="flex-container">
       <div class="mat-elevation-z8">
@@ -52,7 +54,8 @@
         </mat-paginator>
       </div>
 
-      <div class="big-graph-placeholder">        <img src="{{this.selectedOrg.img}}" style="width: 300px; height:auto; max-height: 400px;" alt="">
+      <div class="big-graph-placeholder"> <img src="{{this.selectedOrg.img}}"
+          style="width: 300px; height:auto; max-height: 400px;" alt="">
       </div>
       <div class="graph-expansion">
         <mat-accordion>
@@ -93,6 +96,14 @@
           <p>Goal: ${{item.initialPrice}}</p>
           <p>Raised: ${{item.totalDonations}}</p>
         </mat-card-content>
+        <div class="item-card-button">
+          <button class="control-button" mat-raised-button color="warn">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button class="control-button" (click)="removeDonationItemDialog()" mat-raised-button color="accent">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </div>
       </mat-card>
     </div>
   </div>

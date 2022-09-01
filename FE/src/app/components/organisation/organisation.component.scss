@@ -68,6 +68,14 @@ table {
     object-fit: contain;
 }
 
+.item-card-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left:10px;
+}
+
+
 .add-item-card {
     height: 0%;
     min-width: 150px;
@@ -90,6 +98,7 @@ table {
     align-items: center;
     height: 268px;
 }
+
 
 .mat-card-header {
     text-align: center;

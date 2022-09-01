@@ -95,6 +95,8 @@ export class OrganisationComponent {
       }
   }
 
+
+//add form validation
   addDonationItemDialog(): void {
     const dialogRef = this.dialog.open(AddDonationItemComponent, {
       width: '730px',
