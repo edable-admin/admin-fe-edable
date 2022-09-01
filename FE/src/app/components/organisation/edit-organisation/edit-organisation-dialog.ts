@@ -44,7 +44,7 @@ export class EditOrganisationDialog implements OnInit {
     ngOnInit(): void {
 
     }
-    onNoClick(): void {
+    onNoClick(): void { 
         this.dialogRef.close();
     }
     //---------- Function to get image from image dialogBox --------------//
