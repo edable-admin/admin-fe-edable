@@ -176,6 +176,7 @@ export class OrganisationComponent {
         id: this.selectedOrg.id,
         name: this.selectedOrg.name,
         totalDonationItems: this.selectedOrg.totalDonationItems,
+        totalDonations: this.selectedOrg.totalDonations
       },
     });
 

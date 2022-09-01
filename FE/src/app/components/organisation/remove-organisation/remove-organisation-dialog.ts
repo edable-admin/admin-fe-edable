@@ -14,18 +14,14 @@ export class RemoveOrganisationDialog {
         public dialogRef: MatDialogRef<RemoveOrganisationDialog>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
         public http: HttpClient,
-        
-        
-        
-
     ) { }
-    
+
     showWarning: boolean;
     isDisabled: boolean;
-    
-    message:string
 
-    
+    message: string
+
+
     onNoClick(): void {
         this.dialogRef.close(false);
     }
@@ -33,22 +29,19 @@ export class RemoveOrganisationDialog {
         this.dialogRef.close(false);
     }
     confirmDelete(data) {
-        
-        if (data.totalDonationItems > 0) {
-            this.showWarning = true;
-            this.message = data.name + " has donation items and cannot be deleted"
-
-            this.isDisabled = !this.isDisabled
-           
-        }
-        else if (data.totalDonations > 0) {
+        if ((data.totalDonationItems > 0 && data.totalDonations > 0) || data.totalDonations > 0) {
             this.showWarning = true;
             this.message = data.name + " has donation records and cannot be deleted"
+            this.isDisabled = !this.isDisabled
+        }
+        else if (data.totalDonationItems > 0) {
+            this.showWarning = true;
+            this.message = data.name + " has donation items and cannot be deleted"
             this.isDisabled = !this.isDisabled
         }
         else {
             this.showWarning = false;
             this.dialogRef.close(true);
-        }        
+        }
     }
 }
