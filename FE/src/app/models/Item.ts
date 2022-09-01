@@ -1,4 +1,5 @@
 export interface Item {
+    id?: string;
     name: string;
     initialPrice: number;
     totalDonations: number;

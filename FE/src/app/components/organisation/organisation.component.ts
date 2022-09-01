@@ -11,9 +11,12 @@ import { EditOrganisationDialog } from './edit-organisation/edit-organisation-di
 import { RemoveOrganisationDialog } from './remove-organisation/remove-organisation-dialog';
 import { Item } from 'src/app/models/Item';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { ItemService } from 'src/app/services/firebase/item.service'
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AddDonationItemComponent } from '../donation-item/add-donation-item/add-donation-item.component';
+import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
 
 
 @Component({
@@ -35,21 +38,30 @@ export class OrganisationComponent {
   file: any;
   totalDonationItems: number;
   totalDonations: number;
+  donationItemName: string | undefined;
+  donationItemSummary: boolean = true;
+  donationItemDescription: string | undefined;
+  donationItemInitialPrice: number | undefined;
+  donationItemImage: string | undefined;
+  donationItemOrganisationID: string | undefined;
+  donationItemID: string | undefined;
   displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
-  selectedOrg:Organisation;
+  selectedOrg: Organisation;
   activeItems: Item[];
   orgData: any;
   cleanOrgData: any;
   selectedOrgData: any;
   items: Item[] = [];
 
-  activeStatusToggle:boolean = true;
+  activeStatusToggle: boolean = true;
 
   getOrgsSubscription: Subscription;
 
-  
+  getItemsSubscription: Subscription;
+
   //snackbar variables
- 
+  message: string;
+
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -59,36 +71,88 @@ export class OrganisationComponent {
     public dialog: MatDialog,
     public http: HttpClient,
     public storage: AngularFireStorage,
-    public fs:FirebaseService,
+    public fs: FirebaseService,
     public _snackBar: MatSnackBar,
-    
+    public ifs: ItemService
+
   ) { }
 
   ngOnDestroy(): void {
     this.getOrgsSubscription.unsubscribe();
+    this.getItemsSubscription.unsubscribe();
+
   }
 
   ngOnInit(): void {
+
     this.getOrgs();
     this.initSelectedOrg();
     
   }
 
-  initSelectedOrg(){
+  initSelectedOrg() {
     this.selectedOrg = {
-      id:'',
-      ABN:'',
-      activeStatus:true,
-      description:'',
-      img:'',
-      name:'',
-      phone:'',
-      summary:'',
-      totalDonationItems:0,
-      totalDonations:0,
-      website:''
-      }
+      id: '',
+      ABN: '',
+      activeStatus: true,
+      description: '',
+      img: '',
+      name: '',
+      phone: '',
+      summary: '',
+      totalDonationItems: 0,
+      totalDonations: 0,
+      website: ''
+    }
   }
+
+
+  //add form validation
+  addDonationItemDialog(): void {
+    const dialogRef = this.dialog.open(AddDonationItemComponent, {
+      width: '730px',
+      data: {
+        name: this.donationItemName,
+        summary: this.donationItemSummary,
+        description: this.donationItemDescription,
+        image: this.donationItemImage,
+        initialPrice: this.donationItemInitialPrice,
+        organisationID: this.donationItemOrganisationID,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(async (result: any) => {
+      //----------------------------- Create a Donation Item --------------------------//
+      //   if (result) {
+
+      //     this.fs.addDonationItem(result).then ((response) => {
+      //       this.openSnackBar(response.message)
+      //   })
+      // }
+    });
+  }
+
+  removeDonationItemDialog(itemID: string, itemName : string): void {
+    const dialogRef = this.dialog.open(RemoveDonationItemComponent, {
+      width: '730px',
+      data: {
+        itemID: itemID,
+        id: this.selectedOrg.id,
+        itemName: itemName,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(async (result: any) => {
+      //----------------------------- Remove a Donation Item --------------------------//
+      // if (result === true) {
+
+      //   this.fs.removeDonationItem(this.selectedOrg.id).then((response) => {
+      //     this.openSnackBar(response.message)
+      //   })
+      // }
+    });
+  }
+
 
   addOrgDialog(): void {
     const dialogRef = this.dialog.open(AddOrganisationDialog, {
@@ -111,11 +175,11 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-        
-        this.fs.addOrganisation(result).then ((response) => {
+
+        this.fs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message)
-      })
-    }
+        })
+      }
     });
   }
 
@@ -144,7 +208,7 @@ export class OrganisationComponent {
 
         const orgReq: Organisation = {
           id: result.id,
-          ABN:result.ABN,
+          ABN: result.ABN,
           description: result.description ? result.description : "",
           name: result.name ? result.name : "",
           phone: result.phone ? result.phone : "",
@@ -152,8 +216,8 @@ export class OrganisationComponent {
           website: result.website ? result.website : "",
           img: result.img ? result.img : "",
           totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
-          totalDonations:result.totalDonations ? result.totalDonations : 0,
-          activeStatus:result.activeStatus
+          totalDonations: result.totalDonations ? result.totalDonations : 0,
+          activeStatus: result.activeStatus
         }
 
         this.fs.editOrganisation(this.selectedOrg.id, orgReq)
@@ -162,9 +226,9 @@ export class OrganisationComponent {
             this.openSnackBar(resp.name + " Edited Successfully")
 
             if (result?.file) {
-              this.fs.uploadImage(this.selectedOrg.id,result.file)
+              this.fs.uploadImage(this.selectedOrg.id, result.file)
             }
-        })
+          })
       }
     });
   }
@@ -191,39 +255,50 @@ export class OrganisationComponent {
     });
   }
 
-  toggleActiveStatus(){
+  toggleActiveStatus() {
     this.initSelectedOrg();
     this.activeStatusToggle = !this.activeStatusToggle;
     this.getOrgsSubscription.unsubscribe()
+    this.getItemsSubscription.unsubscribe()
     this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
-    .subscribe(
-      orgs => {
+      .subscribe(
+        orgs => {
+          this.orgData = new MatTableDataSource(orgs);
+          this.orgData.paginator = this.paginator;
+          this.orgData.sort = this.sort;
+          this.orgData.filterPredicate = function (data, filter: string): boolean {
+            return data.name.trim().toLowerCase().includes(filter) ||
+              data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
+              data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
+          };
+        })
+
+  }
+
+  getOrgs() {
+
+    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
+      .subscribe(orgs => {
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
         this.orgData.filterPredicate = function (data, filter: string): boolean {
-          return data.name.trim().toLowerCase().includes(filter) || 
-              data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
-              data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
-          };
-    })
-    
+          return data.name.trim().toLowerCase().includes(filter) ||
+            data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
+            data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
+        };
+      })
   }
 
-  getOrgs() {
-    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
-      .subscribe(orgs => {
-            this.orgData = new MatTableDataSource(orgs);
-            this.orgData.paginator = this.paginator;
-            this.orgData.sort = this.sort;
-            this.orgData.filterPredicate = function (data, filter: string): boolean {
-              return data.name.trim().toLowerCase().includes(filter) || 
-                data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
-                data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
-              };
-    })
+  //-------------------- GET ITEMS --------------------\\
+  getItems(orgID) {
+    this.getItemsSubscription = this.ifs.getItems(orgID)
+      .subscribe(items => {
+        this.items = items as Item[]
+      })
   }
 
+  //-------------------- GET ITEMS --------------------\\
   applyFilter(event: Event) {
     this.initSelectedOrg();
     const filterValue = (event.target as HTMLInputElement).value;
@@ -236,18 +311,23 @@ export class OrganisationComponent {
 
   // selected row of org table
   selectRow(orgData) {
+
     if (this.selectedOrg.id === orgData.id) {
       this.initSelectedOrg();
+      this.getItemsSubscription.unsubscribe()
+
       return;
     }
     this.selectedOrg = orgData;
     this.activeItems = this.items.filter((item) => {
       return item.orgID === orgData.id;
     });
+
+    this.getItems(this.selectedOrg.id);
   }
   
   //Snackbar
   openSnackBar(message) {
-    this._snackBar.open(message);       
+    this._snackBar.open(message);
   }
 }
