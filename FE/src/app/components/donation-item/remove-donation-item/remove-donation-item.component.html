@@ -5,9 +5,10 @@
 
 <div class="centerAlign">
 <h2>This will remove {{data.name}} from Donation Items</h2>
+<p *ngIf="showWarning">Cannot delete item</p>
 </div>
 
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="onNoClick()" cdkFocusInitial color="accent">Confirm</button>
+  <button mat-button (click)="onDelete()" [disabled]="isDisabled" cdkFocusInitial color="accent">Confirm</button>
 </div>

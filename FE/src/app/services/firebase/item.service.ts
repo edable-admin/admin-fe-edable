@@ -33,7 +33,7 @@ export class ItemService {
 
   //------------------------ DELETE DONATION ITEMS -------------------\\
 
-  async deleteItem(orgID: string, itemID: string) {
+  async deleteItem(orgID: string, itemID: string): Promise<boolean> {
 
     //Get item
     const itemDocument = this.fs
@@ -46,18 +46,16 @@ export class ItemService {
 
     let donations: any;
 
-    itemDonationColl.valueChanges().subscribe(data => {
-      donations = data;
-
-      if (donations.length > 0) {
-        console.log("item has donations records. it cannot be deleted");
-        return;
-      }
-      console.log("item can be deleted");
-      itemDocument.delete();
-
-      return;
+    await itemDonationColl.ref.get().then(data => {
+      donations = data.docs;
     });
 
+    if (donations.length > 0) {
+      return false;
+    } else {
+      itemDocument.delete();
+
+      return true;
+    }
   }
 }
