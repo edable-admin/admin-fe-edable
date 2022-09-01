@@ -14,6 +14,7 @@ import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AddDonationItemComponent } from '../donation-item/add-donation-item/add-donation-item.component';
 
 @Component({
   selector: 'app-organisation',
@@ -34,6 +35,12 @@ export class OrganisationComponent {
   file: any;
   totalDonationItems: number;
   totalDonations: number;
+  donationItemName: string | undefined;
+  donationItemSummary: boolean = true;
+  donationItemDescription: string | undefined;
+  donationItemInitialPrice: number | undefined;
+  donationItemImage: string | undefined;
+  donationItemOrganisationID: string | undefined;
   displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
   selectedOrg:Organisation;
   activeItems: Item[];
@@ -47,7 +54,7 @@ export class OrganisationComponent {
   getOrgsSubscription: Subscription;
 
   //snackbar variables
-  message: string; 
+  message: string;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -86,6 +93,31 @@ export class OrganisationComponent {
       }
   }
 
+  addDonationItemDialog(): void {
+    const dialogRef = this.dialog.open(AddDonationItemComponent, {
+      width: '730px',
+      data: {
+        name: this.donationItemName,
+        summary: this.donationItemSummary,
+        description: this.donationItemDescription,
+        image: this.donationItemImage,
+        initialPrice: this.donationItemInitialPrice,
+        organisationID: this.donationItemOrganisationID,
+        },
+    });
+
+    dialogRef.afterClosed().subscribe(async (result: any) => {
+      //----------------------------- Create a Donation Item --------------------------//
+    //   if (result) {
+
+    //     this.fs.addDonationItem(result).then ((response) => {
+    //       this.openSnackBar(response.message)
+    //   })
+    // }
+    });
+  }
+
+
   addOrgDialog(): void {
     const dialogRef = this.dialog.open(AddOrganisationDialog, {
       width: '730px',
@@ -107,7 +139,7 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-        
+
         this.fs.addOrganisation(result).then ((response) => {
           this.openSnackBar(response.message)
       })
@@ -197,12 +229,12 @@ export class OrganisationComponent {
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
         this.orgData.filterPredicate = function (data, filter: string): boolean {
-          return data.name.trim().toLowerCase().includes(filter) || 
+          return data.name.trim().toLowerCase().includes(filter) ||
               data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
               data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
           };
     })
-    
+
   }
 
   getOrgs() {
@@ -212,7 +244,7 @@ export class OrganisationComponent {
             this.orgData.paginator = this.paginator;
             this.orgData.sort = this.sort;
             this.orgData.filterPredicate = function (data, filter: string): boolean {
-              return data.name.trim().toLowerCase().includes(filter) || 
+              return data.name.trim().toLowerCase().includes(filter) ||
                 data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
                 data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
               };
@@ -242,6 +274,6 @@ export class OrganisationComponent {
   }
   //Snackbar
   openSnackBar(message) {
-    this._snackBar.open(message);       
+    this._snackBar.open(message);
   }
 }
