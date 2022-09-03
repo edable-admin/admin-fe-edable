@@ -86,6 +86,7 @@ export class ItemService {
       return false;
     } else {
       itemDocument.delete();
+      this.storage.ref(`Organisations/${orgID}/Items/${itemID}/itemImg`).delete();
 
       return true;
     }
