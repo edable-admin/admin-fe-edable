@@ -115,17 +115,19 @@ export class OrganisationComponent {
       width: '730px',
       data: {
         id: this.selectedOrg.id,
+        file:this.file
       },
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
-      //----------------------------- Create a Donation Item --------------------------//
-      //   if (result) {
 
-      //     this.fs.addDonationItem(result).then ((response) => {
-      //       this.openSnackBar(response.message)
-      //   })
-      // }
+      if (result) {
+        this.fs.uploadImage(this.selectedOrg.id,result.file,result.id)
+
+        //   this.fs.addDonationItem(result).then ((response) => {
+        //     this.openSnackBar(response.message)
+        // })
+      }
     });
   }
 

@@ -230,9 +230,18 @@ export class FirebaseService {
       const org = this.fs.collection('Organisations')
         .doc(orgRef).ref;
 
+      const item = this.fs
+        .collection('Organisations')
+        .doc(`${orgRef}`)
+        .collection('Items')
+        .doc(`${itemRef}`).ref;
+
       await (await this.storage.upload(imgLocation, file[0])).ref
         .getDownloadURL()
         .then(async (url) => {
+          if (itemRef) {
+            await item.set({img: url}, {merge:true})
+          }
           await org.set({ img: url }, { merge: true })
         }).catch(err => console.log(err));
     }
