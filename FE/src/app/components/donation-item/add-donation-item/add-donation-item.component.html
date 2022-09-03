@@ -25,13 +25,13 @@
     <div class="centerAlign">
       <mat-form-field class="form-field" appearance="fill">
         <mat-label>Donation Goal</mat-label>
-        <input matInput [(ngModel)]="data.donationItemInitialPrice" />
+        <input matInput type="number" [(ngModel)]="data.donationItemInitialPrice" />
       </mat-form-field>
       <mat-form-field class="form-field" appearance="fill">
         <mat-label>Total Donations</mat-label>
-        <input matInput [(ngModel)]="data.donationItemTotalDonations" />
+        <input matInput type="number" [(ngModel)]="data.donationItemTotalDonations" />
       </mat-form-field>
-      <app-upload-image (imageOut)="getImageFromChild($event)"></app-upload-image>
+      <h2>IMAGE UPLOAD COMPONENT</h2>
       <div class="dialog-actions" mat-dialog-actions>
         <button mat-button (click)="onNoClick()">Cancel</button>
         <button mat-button (click)="onAdd()" cdkFocusInitial color="primary">Add</button>
