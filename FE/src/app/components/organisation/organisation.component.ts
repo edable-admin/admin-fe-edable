@@ -172,7 +172,6 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-
         this.fs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message)
         })
