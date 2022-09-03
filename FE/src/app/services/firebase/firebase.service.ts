@@ -220,18 +220,21 @@ export class FirebaseService {
 
   }
 
-  async uploadImage(orgRef: string, file: FileList) {
+  async uploadImage(orgRef: string, file: FileList, itemRef?: string) {
+
+    let imgLocation = itemRef ? `Organisations/${orgRef}/${itemRef}/itemImg`
+      : `Organisations/${orgRef}/orgLogo`;
 
     if (this.checkImageType(file)) {
 
       const org = this.fs.collection('Organisations')
-      .doc(orgRef).ref
+        .doc(orgRef).ref;
 
-       await (await this.storage.upload(`Organisations/${orgRef}/orgLogo`, file[0])).ref
+      await (await this.storage.upload(imgLocation, file[0])).ref
         .getDownloadURL()
         .then(async (url) => {
-          await org.set({img:url},{merge:true})
-        }).catch(err => console.log(err))
+          await org.set({ img: url }, { merge: true })
+        }).catch(err => console.log(err));
     }
   }
 
