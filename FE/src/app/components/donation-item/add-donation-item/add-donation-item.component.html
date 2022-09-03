@@ -31,7 +31,7 @@
         <mat-label>Total Donations</mat-label>
         <input matInput type="number" [(ngModel)]="data.donationItemTotalDonations" />
       </mat-form-field>
-      <h2>IMAGE UPLOAD COMPONENT</h2>
+      <app-upload-image (imageOut)="getImageFromChild($event)"></app-upload-image>
       <div class="dialog-actions" mat-dialog-actions>
         <button mat-button (click)="onNoClick()">Cancel</button>
         <button mat-button (click)="onAdd()" cdkFocusInitial color="primary">Add</button>
