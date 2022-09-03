@@ -1,8 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { Organisation } from 'src/app/models/Organisation/Organisation';
 
 @Component({
   selector: 'app-upload-image',
@@ -13,14 +10,7 @@ export class UploadImageComponent implements OnInit {
 
   @Output() imageOut: EventEmitter<any> = new EventEmitter();
 
-  //string organisation/orgref
-  @Input() organisation:Organisation;
-
-  //todo make organisationID an input which will be received from the api
-  //when say the edit popup is opened
-  //create will be interesting maybe when the api returns a success with the unique id
-  //fire storage will create a file with the unique id and the file can be stored there in fire storage
-  organisationID = "uid";
+  @Input() imgUrl:string;
 
   imageName!: any;
 
@@ -29,17 +19,15 @@ export class UploadImageComponent implements OnInit {
   meta!: Observable<any>;
 
   constructor(
-    private storage: AngularFireStorage,
-    private fs: AngularFirestore
   ) {
   }
 
   getImageURL() {
-    this.image = this.organisation.img
+    this.image = this.imgUrl
   }
 
   ngOnInit(): void {
-    if (this.organisation.img !== '') {
+    if (this.imgUrl !== '') {
       this.getImageURL();
     }
   }
