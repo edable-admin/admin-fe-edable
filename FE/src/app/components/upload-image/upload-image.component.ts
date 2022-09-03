@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
+import { Organisation } from 'src/app/models/Organisation/Organisation';
 
 @Component({
   selector: 'app-upload-image',
@@ -13,7 +14,7 @@ export class UploadImageComponent implements OnInit {
   @Output() imageOut: EventEmitter<any> = new EventEmitter();
 
   //string organisation/orgref
-  @Input() orgnisationRef = '';
+  @Input() organisation:Organisation;
 
   //todo make organisationID an input which will be received from the api
   //when say the edit popup is opened
@@ -34,28 +35,12 @@ export class UploadImageComponent implements OnInit {
   }
 
   getImageURL() {
-    const ref = this.storage.ref(`Organisations/${this.orgnisationRef}/orgLogo`);
-
-    return ref.getDownloadURL();
+    this.image = this.organisation.img
   }
 
   ngOnInit(): void {
-
-    const orgFile = this.storage.ref(`Organisations/${this.orgnisationRef}`)
-    if (this.orgnisationRef !== '') {
-
-      orgFile.list().subscribe({
-        next: (resp) => {
-          if (resp?.items?.length >= 1) {
-            this.meta = this.getImageURL();
-
-            this.meta.subscribe({
-              next: (img) => this.image = img,
-              error:(err) => console.log(err)
-            });
-          }
-        }
-      })
+    if (this.organisation.img !== '') {
+      this.getImageURL();
     }
   }
 

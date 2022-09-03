@@ -41,7 +41,7 @@
         </mat-form-field>
         <mat-slide-toggle (change)="toggleOrg($event)" formControlName="activeStatus">Activate/Deactive
         </mat-slide-toggle>
-        <app-upload-image [orgnisationRef]="data.id" (imageOut)="getImageFromChild($event)"></app-upload-image>
+        <app-upload-image [organisation]="data" (imageOut)="getImageFromChild($event)"></app-upload-image>
         <div class="dialog-actions" mat-dialog-actions>
           <button mat-button (click)="onNoClick()">Cancel</button>
           <button mat-button [disabled]="!organisationForm.valid" (click)="onSubmit()" cdkFocusInitial
