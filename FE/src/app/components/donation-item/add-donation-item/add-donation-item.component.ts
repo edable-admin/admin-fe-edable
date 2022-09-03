@@ -36,7 +36,7 @@ export class AddDonationItemComponent {
         summary: this.data.donationItemSummary,
         initialPrice: this.data.donationItemInitialPrice,
         createdAt: serverTimestamp(),
-        img: "this.data.donationItemOrganisationID",
+        img: "INSERT ITEM IMAGE UPLOAD COMPONENT",
         totalDonations: this.data.donationItemTotalDonations,
         dateCompleted: null,
         orgID: this.data.id,
