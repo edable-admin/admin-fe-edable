@@ -10,13 +10,10 @@ export class UploadImageComponent implements OnInit {
 
   @Output() imageOut: EventEmitter<any> = new EventEmitter();
 
-  @Input() imgUrl:string;
+  @Input() imgUrl: string;
 
-  imageName!: any;
-
-  image!: any;
-  imageURL: any;
-  meta!: Observable<any>;
+  image!: string;
+  imageURL: string;
 
   constructor(
   ) {
