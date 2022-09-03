@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddDonationItemComponent } from '../donation-item/add-donation-item/add-donation-item.component';
 import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
-import { UpdateItemsComponent } from '../items/update-items/update-items.component';
+import { UpdateItemsComponent } from '../donation-item/update-items/update-items.component';
 import { serverTimestamp } from 'firebase/firestore';
 
 
