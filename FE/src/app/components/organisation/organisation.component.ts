@@ -122,7 +122,8 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
 
       if (result) {
-        this.fs.uploadImage(this.selectedOrg.id,result.file,result.id)
+
+        this.fs.uploadImage(this.selectedOrg.id,result.file,result.itemRef)
 
         //   this.fs.addDonationItem(result).then ((response) => {
         //     this.openSnackBar(response.message)

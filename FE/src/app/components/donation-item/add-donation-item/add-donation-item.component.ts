@@ -45,7 +45,7 @@ export class AddDonationItemComponent {
         orgID: this.data.id,
       };
 
-        this.itemService.addItem(this.data.id, item);
-        this.dialogRef.close(this.data);
+      let itemRef = this.itemService.addItem(this.data.id, item);
+      this.dialogRef.close({ file:this.data.file, itemRef:itemRef });
   }
 }

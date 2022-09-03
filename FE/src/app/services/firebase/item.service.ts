@@ -51,13 +51,13 @@ export class ItemService {
           })
         )
 
-        console.log('Transaction Success!')
+        return newItem.ref.id;
       } catch (e) {
 
         console.log('Transaction failure:', e)
 
       }
-
+      return null;
     }
 
     //----------------------------------------------------------------//

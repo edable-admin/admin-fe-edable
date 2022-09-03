@@ -222,7 +222,7 @@ export class FirebaseService {
 
   async uploadImage(orgRef: string, file: FileList, itemRef?: string) {
 
-    let imgLocation = itemRef ? `Organisations/${orgRef}/${itemRef}/itemImg`
+    let imgLocation = itemRef ? `Organisations/${orgRef}/Items/${itemRef}/itemImg`
       : `Organisations/${orgRef}/orgLogo`;
 
     if (this.checkImageType(file)) {
