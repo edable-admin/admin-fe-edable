@@ -143,7 +143,7 @@ export class FirebaseService {
 
   getOrgs(activeStatus:boolean) {
     let orgs = this.fs
-      .collection('Organisations', query => 
+      .collection('Organisations', query =>
       query.where('activeStatus',"==", activeStatus))
       .valueChanges({idField:"id"})
     return orgs
@@ -165,7 +165,10 @@ export class FirebaseService {
       totalDonations:0
     }
 
-    let generalDOnationReq = noSQLData.GeneralDonationsSummary[0];
+    let generalDonationReq = {
+      totalGeneralDonations: 0,
+      numberOfDonations:0
+    }
 
     let orgRef = this.fs
       .collection('Organisations')
@@ -185,19 +188,17 @@ export class FirebaseService {
     batch.set(orgRef, orgReq,{merge:true})
 
     //adds the general donations subcollection
-    batch.set(generalDonationsRef, generalDOnationReq)
+    batch.set(generalDonationsRef, generalDonationReq)
 
     //commits the batch
     batch.commit()
-      // work in progress
-      //.catch(err => throwError(() => err));
 
     //returns success message
     return {orgRef:orgRef.id,message:`${orgReq.name} Successfully Added`}
   }
 
   async editOrganisation(orgID: string, organisationReq: Organisation) {
-    
+
     this.fs.collection('Organisations').doc(orgID)
       .update(organisationReq)
 
@@ -219,18 +220,30 @@ export class FirebaseService {
 
   }
 
-  async uploadImage(orgRef: string, file: FileList) {
+  async uploadImage(orgRef: string, file: FileList, itemRef?: string) {
+
+    let imgLocation = itemRef ? `Organisations/${orgRef}/Items/${itemRef}/itemImg`
+      : `Organisations/${orgRef}/orgLogo`;
 
     if (this.checkImageType(file)) {
 
       const org = this.fs.collection('Organisations')
-      .doc(orgRef).ref
+        .doc(orgRef).ref;
 
-       await (await this.storage.upload(`Organisations/${orgRef}/orgLogo`, file[0])).ref
+      const item = this.fs
+        .collection('Organisations')
+        .doc(`${orgRef}`)
+        .collection('Items')
+        .doc(`${itemRef}`).ref;
+
+      await (await this.storage.upload(imgLocation, file[0])).ref
         .getDownloadURL()
         .then(async (url) => {
-          await org.set({img:url},{merge:true})
-        }).catch(err => console.log(err))
+          if (itemRef) {
+            await item.set({img: url}, {merge:true})
+          }
+          await org.set({ img: url }, { merge: true })
+        }).catch(err => console.log(err));
     }
   }
 

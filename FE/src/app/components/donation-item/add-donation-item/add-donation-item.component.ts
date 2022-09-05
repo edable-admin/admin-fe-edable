@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { serverTimestamp } from 'firebase/firestore';
 import { DialogData } from 'src/app/models/DialogData';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { ItemService } from 'src/app/services/firebase/item.service';
 
 
@@ -16,15 +17,17 @@ export class AddDonationItemComponent {
   constructor(
       public dialogRef: MatDialogRef<AddDonationItemComponent>,
       @Inject(MAT_DIALOG_DATA) public data: DialogData,
-      private itemService: ItemService
+    private itemService: ItemService
   ) { }
 
-  //---------- Function to upload an image for the donation item --------------//
-
-
-  //-------------------------------------------------------------------//
+//---------- Function to get image from image dialogBox --------------//
+    getImageFromChild(file: any) {
+      this.data.file = file;
+  }
+//-------------------------------------------------------------------//
 
   onNoClick(): void {
+    console.log(this.data)
       this.dialogRef.close();
   }
 
@@ -36,29 +39,13 @@ export class AddDonationItemComponent {
         summary: this.data.donationItemSummary,
         initialPrice: this.data.donationItemInitialPrice,
         createdAt: serverTimestamp(),
-        img: "this.data.donationItemOrganisationID",
+        img: "",
         totalDonations: this.data.donationItemTotalDonations,
         dateCompleted: null,
         orgID: this.data.id,
       };
 
-        this.itemService.addItem(this.data.id, item)
+      let itemRef = this.itemService.addItem(this.data.id, item);
+      this.dialogRef.close({ file:this.data.file, itemRef:itemRef });
   }
-
-
-
-
-
-
-  // async onAdd() {
-  //   let itemAdded = await this.itemService.addItem(this.data.donationItemName,this.data.donationItemSummary,this.data.donationItemDescription,
-  //     this.data.donationItemInitialPrice,this.data.donationItemOrganisationID);
-
-  //   if (itemAdded) {
-  //     this.dialogRef.close();
-  //     return;
-  //   }
-  //   this.showWarning = true;
-  //   this.isDisabled = true;
-  // }
 }

@@ -51,13 +51,13 @@ export class ItemService {
           })
         )
 
-        console.log('Transaction Success!')
+        return newItem.ref.id;
       } catch (e) {
 
         console.log('Transaction failure:', e)
 
       }
-
+      return null;
     }
 
     //----------------------------------------------------------------//
@@ -86,6 +86,7 @@ export class ItemService {
       return false;
     } else {
       itemDocument.delete();
+      this.storage.ref(`Organisations/${orgID}/Items/${itemID}/itemImg`).delete();
 
       return true;
     }

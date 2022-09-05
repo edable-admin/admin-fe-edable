@@ -1,6 +1,8 @@
 import { FieldValue } from "firebase/firestore";
 
 export interface Item {
+    summary: any;
+    description: any;
 
     id?: string;
     name: string;

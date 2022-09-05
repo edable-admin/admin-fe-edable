@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddDonationItemComponent } from '../donation-item/add-donation-item/add-donation-item.component';
 import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
-import { UpdateItemsComponent } from '../items/update-items/update-items.component';
+import { UpdateItemsComponent } from '../donation-item/update-items/update-items.component';
 import { serverTimestamp } from 'firebase/firestore';
 
 
@@ -114,23 +114,21 @@ export class OrganisationComponent {
     const dialogRef = this.dialog.open(AddDonationItemComponent, {
       width: '730px',
       data: {
-        name: this.donationItemName,
-        summary: this.donationItemSummary,
-        description: this.donationItemDescription,
-        image: this.donationItemImage,
-        initialPrice: this.donationItemInitialPrice,
         id: this.selectedOrg.id,
+        file:this.file
       },
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
-      //----------------------------- Create a Donation Item --------------------------//
-      //   if (result) {
 
-      //     this.fs.addDonationItem(result).then ((response) => {
-      //       this.openSnackBar(response.message)
-      //   })
-      // }
+      if (result) {
+
+        this.fs.uploadImage(this.selectedOrg.id,result.file,result.itemRef)
+
+        //   this.fs.addDonationItem(result).then ((response) => {
+        //     this.openSnackBar(response.message)
+        // })
+      }
     });
   }
 
@@ -177,7 +175,6 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-
         this.fs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message)
         })
