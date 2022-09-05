@@ -20,7 +20,7 @@ export interface DialogData {
   donationItemSummary: string | undefined;
   donationItemDescription: string | undefined;
   donationItemTotalDonations: number | undefined;
-  donationItemInitialPrice: number | undefined;
+  initialPrice: number | undefined;
   donationItemImg: string | undefined;
   donationItemOrganisationID: string | undefined;
   donationItemID: string | undefined;

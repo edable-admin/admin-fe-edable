@@ -1,12 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DialogData } from 'src/app/models/DialogData';
 import { Item } from 'src/app/models/Item';
 
 @Component({
   selector: 'app-update-items',
-  templateUrl: './update-items.component.html',
-  styleUrls: ['./update-items.component.scss']
+  templateUrl: './update-donation-item.component.html',
+  styleUrls: ['./update-donation-item.component.scss']
 })
 export class UpdateItemsComponent {
   editItemForm = this.fb.group({
@@ -20,15 +21,21 @@ export class UpdateItemsComponent {
 
   constructor(
     public dialogRef: MatDialogRef<UpdateItemsComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: Item,
+        @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private fb: FormBuilder
     ) {}
+
+//---------- Function to get image from image dialogBox --------------//
+    getImageFromChild(file: any) {
+      this.data.file = file;
+  }
+//-------------------------------------------------------------------//
 
   onSubmit(): void {
     console.log()
     //console.log(this.editItemForm.controls['initialPrice'].errors)
     if(this.editItemForm.valid){
-      this.dialogRef.close(this.editItemForm.value)
+      this.dialogRef.close({file:this.data.file,item:this.editItemForm.value})
     }
 
   }

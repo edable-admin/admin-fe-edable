@@ -37,7 +37,7 @@ export class AddDonationItemComponent {
         activeStatus: false,
         description: this.data.donationItemDescription,
         summary: this.data.donationItemSummary,
-        initialPrice: this.data.donationItemInitialPrice,
+        initialPrice: this.data.initialPrice,
         createdAt: serverTimestamp(),
         img: "",
         totalDonations: this.data.donationItemTotalDonations,
