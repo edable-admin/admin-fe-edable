@@ -66,6 +66,11 @@ export class ItemService {
   //------------------------ DELETE DONATION ITEMS -------------------\\
 
   async deleteItem(orgID: string, itemID: string): Promise<boolean> {
+    let isSuccess: boolean = false;
+    //Get org
+    const orgRef = this.fs
+      .collection('Organisations')
+      .doc(orgID).ref;
 
     //Get item
     const itemDocument = this.fs
@@ -73,23 +78,42 @@ export class ItemService {
       .doc(orgID).collection('Items')
       .doc(itemID);
 
-    //Get item donations collection
+    //Get donations to an item, limited to 1
     const itemDonationColl = itemDocument.collection('ItemsDonations', query => query.limit(1));
 
+    //Assign the donations to an array. Array length is max 1 since it was limited in the query
     let donations: any;
-
     await itemDonationColl.ref.get().then(data => {
       donations = data.docs;
     });
-
+    
+    //If item has donation, do not allow deletion
     if (donations.length > 0) {
       return false;
-    } else {
-      itemDocument.delete();
-      this.storage.ref(`Organisations/${orgID}/Items/${itemID}/itemImg`).delete();
-
-      return true;
     }
+
+    await this.fs.firestore.runTransaction(transaction =>
+      transaction
+        .get(orgRef)
+        .then((orgDoc: any) => {
+          //OPTION: count all org items instead of subtracting to avoid errors
+          let newItemCount = orgDoc.data().totalDonationItems - 1;
+          if (newItemCount < 0) {
+            //Dont want negative donation items. maybe not necessary??
+            newItemCount = 0;
+          }
+          transaction.update(orgRef, { totalDonationItems: newItemCount });
+          transaction.delete(itemDocument.ref);
+        }))
+      .then((resp) => {
+        //After item has been successfully deleted
+        isSuccess = true;
+      })
+      .catch((err) => {
+        //Any error means item couldn't be deleted
+        isSuccess = false;
+      });
+    return isSuccess;
   }
 
       //----------------------------------------------------------------//

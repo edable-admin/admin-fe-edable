@@ -13,9 +13,9 @@ export class RemoveDonationItemComponent {
   showWarning: boolean = false;
   isDisabled: boolean = false;
   constructor(
-      public dialogRef: MatDialogRef<RemoveDonationItemComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: DialogData,
-      private itemService: ItemService
+    public dialogRef: MatDialogRef<RemoveDonationItemComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private itemService: ItemService
   ) { }
 
   //---------- Function to upload an image for the donation item --------------//
@@ -24,17 +24,24 @@ export class RemoveDonationItemComponent {
   //-------------------------------------------------------------------//
 
   onNoClick(): void {
-      this.dialogRef.close();
+    this.dialogRef.close();
   }
   async onDelete() {
-    let itemDeleted = await this.itemService.deleteItem(this.data.id, this.data.itemID);
-    
-    if (itemDeleted) {
-      this.dialogRef.close();
-      return;
-    }
-    this.showWarning = true;
-    this.isDisabled = true;
+
+    //Call delete on firebase service. waits for transaction to complete before closing
+    await this.itemService.deleteItem(this.data.id, this.data.itemID)
+      .then((deleteSuccess) => {
+        if (deleteSuccess) {
+          this.dialogRef.close(true);
+          return;
+        } else {          
+          //Item cannot be deleted. show warning message
+          this.showWarning = true;
+          this.isDisabled = true;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 }
-
