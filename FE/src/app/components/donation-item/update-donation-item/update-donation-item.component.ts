@@ -42,9 +42,9 @@ export class UpdateItemsComponent {
       initialPrice: this.editItemForm.value.initialPrice,
       activeStatus: this.editItemForm.value.activeStatus,
     }
-    // call item service with updated information
-    this.itemService.updateItem(this.data.org,this.data.item.id,updatedItem);
     if(this.editItemForm.valid){
+      // call item service with updated information
+      this.itemService.updateItem(this.data.org,this.data.item.id,updatedItem);
       this.dialogRef.close({file:this.data.item.file,item:this.editItemForm.value})
     }
 
