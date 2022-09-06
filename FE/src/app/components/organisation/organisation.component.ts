@@ -286,6 +286,10 @@ export class OrganisationComponent {
   });
 
   dialogRef.afterClosed().subscribe((res) => {
+    console.log(res)
+    if(res?.file){
+      this.fs.uploadImage(this.selectedOrg.id,res.file,res.item.id)
+    }
   })
 }
 
