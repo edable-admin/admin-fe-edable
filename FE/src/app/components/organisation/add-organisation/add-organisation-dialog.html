@@ -42,7 +42,7 @@
         <app-upload-image (imageOut)="getImageFromChild($event)"></app-upload-image>
         <div class="dialog-actions" mat-dialog-actions>
           <button mat-button (click)="onNoClick()">Cancel</button>
-          <button mat-button [disabled]="!organisationForm.valid" (click)="onSubmit()" cdkFocusInitial
+          <button mat-button [disabled]="!organisationForm.valid" (click)="onSubmit()"
             color="primary">Add</button>
         </div>
       </div>

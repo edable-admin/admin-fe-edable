@@ -127,7 +127,7 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
 
-      if (result) {
+      if (result.file) {
 
         this.fs.uploadImage(this.selectedOrg.id, result.file, result.itemRef)
 

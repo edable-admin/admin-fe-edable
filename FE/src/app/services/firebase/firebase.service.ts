@@ -133,7 +133,9 @@ export class FirebaseService {
     generalDonationsSummary.delete();
     org.delete()
 
-    this.storage.ref(`Organisations/${orgID}/orgLogo`).delete()
+    this.storage.ref(`Organisations/${orgID}/orgLogo`).delete().subscribe({
+      error: (err) => console.log(err)
+    })
 
 
     response = {message: `${orgName} Successfully Deleted`}
