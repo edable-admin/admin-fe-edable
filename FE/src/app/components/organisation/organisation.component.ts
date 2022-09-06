@@ -40,13 +40,6 @@ export class OrganisationComponent {
   file: any;
   totalDonationItems: number;
   totalDonations: number;
-  donationItemName: string | undefined;
-  donationItemSummary: boolean = true;
-  donationItemDescription: string | undefined;
-  donationItemInitialPrice: number | undefined;
-  donationItemImage: string | undefined;
-  donationItemOrganisationID: string | undefined;
-  donationItemID: string | undefined;
   displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
   selectedOrg: Organisation;
   activeItems: Item[];
@@ -54,6 +47,7 @@ export class OrganisationComponent {
   cleanOrgData: any;
   selectedOrgData: any;
   items: Item[] = [];
+  activeStatusFilter: string = "Active";
 
   activeStatusToggle: boolean = true;
 
@@ -143,7 +137,6 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Remove a Donation Item --------------------------//
-      console.log(itemName)
       if (result === true) {                
         this.openSnackBar(itemName + " successfully deleted")
       }
@@ -253,26 +246,6 @@ export class OrganisationComponent {
     });
   }
 
-  toggleActiveStatus() {
-    this.initSelectedOrg();
-    this.activeStatusToggle = !this.activeStatusToggle;
-    this.getOrgsSubscription.unsubscribe()
-    this.getItemsSubscription.unsubscribe()
-    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
-      .subscribe(
-        orgs => {
-          this.orgData = new MatTableDataSource(orgs);
-          this.orgData.paginator = this.paginator;
-          this.orgData.sort = this.sort;
-          this.orgData.filterPredicate = function (data, filter: string): boolean {
-            return data.name.trim().toLowerCase().includes(filter) ||
-              data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
-              data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
-          };
-        })
-
-  }
-
   // Function to update item called in the dialog component 
   openItemUpdateDialog(item: Item): void{
   const dialogRef = this.dialog.open(UpdateItemsComponent, {
@@ -290,8 +263,7 @@ export class OrganisationComponent {
 }
 
   getOrgs() {
-
-    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
+    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusFilter)
       .subscribe(orgs => {
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
@@ -310,6 +282,25 @@ export class OrganisationComponent {
       .subscribe(items => {
         this.items = items as Item[]
       })
+  }
+
+  // change active status filter (active/inactive/all)
+  toggleActiveStatus(value:string) {
+    this.activeStatusFilter = value;
+    this.initSelectedOrg();
+    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusFilter)
+      .subscribe(
+        orgs => {
+          this.orgData = new MatTableDataSource(orgs);
+          this.orgData.paginator = this.paginator;
+          this.orgData.sort = this.sort;
+          this.orgData.filterPredicate = function (data, filter: string): boolean {
+            return data.name.trim().toLowerCase().includes(filter) ||
+              data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
+              data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
+          };
+        })
+
   }
 
   //-------------------- GET ITEMS --------------------\\

@@ -141,13 +141,32 @@ export class FirebaseService {
     return response;
   }
 
-  getOrgs(activeStatus:boolean) {
-    let orgs = this.fs
-      .collection('Organisations', query =>
-      query.where('activeStatus',"==", activeStatus))
-      .valueChanges({idField:"id"})
-    return orgs
+  // Get orgs based on filter selected (acitve/inavtive/both)
+  getOrgs(filter:string) {
+    switch(filter){
+      case 'All':
+        let AllOrg = this.fs
+        .collection('Organisations')
+        .valueChanges({idField:"id"})
+        return AllOrg
 
+      case 'Active':
+        let ActiveOrg = this.fs
+        .collection('Organisations', query =>
+        query.where('activeStatus',"==", true))
+        .valueChanges({idField:"id"})
+        return ActiveOrg
+      
+      case 'Inactive':
+        let InacviveOrg = this.fs
+        .collection('Organisations', query =>
+        query.where('activeStatus',"==", false))
+        .valueChanges({idField:"id"})
+        return InacviveOrg
+
+      default:
+        return null;
+    } 
   }
 
   async addOrganisation(orgData: any) {
