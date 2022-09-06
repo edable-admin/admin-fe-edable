@@ -226,6 +226,8 @@ export class FirebaseService {
     let imgLocation = itemRef ? `Organisations/${orgRef}/Items/${itemRef}/itemImg`
       : `Organisations/${orgRef}/orgLogo`;
 
+    let imgURL:string;
+
     if (this.checkImageType(file)) {
 
       const org = this.fs.collection('Organisations')
@@ -245,8 +247,11 @@ export class FirebaseService {
           }else{
             await org.set({ img: url }, { merge: true })
           }
+          imgURL = url
         }).catch(err => console.log(err));
     }
+
+    return imgURL;
   }
 
 }

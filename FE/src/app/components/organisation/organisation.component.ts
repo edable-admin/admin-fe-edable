@@ -228,6 +228,7 @@ export class OrganisationComponent {
 
             if (result?.file) {
               this.fs.uploadImage(this.selectedOrg.id, result.file)
+              .then((imgURL) => this.selectedOrg.img = imgURL)
             }
           })
       }
