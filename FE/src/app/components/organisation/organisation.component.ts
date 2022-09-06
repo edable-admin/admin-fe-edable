@@ -281,6 +281,7 @@ export class OrganisationComponent {
 
   }
 
+
   // Function to update item called in the dialog component 
   openItemUpdateDialog(item: Item): void {
     const dialogRef = this.dialog.open(UpdateItemsComponent, {
