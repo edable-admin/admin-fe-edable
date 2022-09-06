@@ -17,6 +17,9 @@ import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddDonationItemComponent } from '../donation-item/add-donation-item/add-donation-item.component';
 import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
+import { UpdateItemsComponent } from '../donation-item/update-donation-item/update-donation-item.component';
+import { serverTimestamp } from 'firebase/firestore';
+
 
 @Component({
   selector: 'app-organisation',
@@ -61,6 +64,7 @@ export class OrganisationComponent {
   //snackbar variables
   message: string;
 
+
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -72,6 +76,7 @@ export class OrganisationComponent {
     public fs: FirebaseService,
     public _snackBar: MatSnackBar,
     public ifs: ItemService
+
   ) { }
 
   ngOnDestroy(): void {
@@ -81,9 +86,10 @@ export class OrganisationComponent {
   }
 
   ngOnInit(): void {
-
+    //this.ifs.addItem('4H9O58oiEH0D88AXZEUF',{name:"hi",activeStatus:false,description:"hi",summary:"hi",initialPrice:20,createdAt:serverTimestamp(), img:"",totalDonations:0, dateCompleted:null})
     this.getOrgs();
     this.initSelectedOrg();
+
   }
 
   initSelectedOrg() {
@@ -108,23 +114,21 @@ export class OrganisationComponent {
     const dialogRef = this.dialog.open(AddDonationItemComponent, {
       width: '730px',
       data: {
-        name: this.donationItemName,
-        summary: this.donationItemSummary,
-        description: this.donationItemDescription,
-        image: this.donationItemImage,
-        initialPrice: this.donationItemInitialPrice,
-        organisationID: this.donationItemOrganisationID,
+        id: this.selectedOrg.id,
+        file:this.file
       },
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
-      //----------------------------- Create a Donation Item --------------------------//
-      //   if (result) {
 
-      //     this.fs.addDonationItem(result).then ((response) => {
-      //       this.openSnackBar(response.message)
-      //   })
-      // }
+      if (result) {
+
+        this.fs.uploadImage(this.selectedOrg.id,result.file,result.itemRef)
+
+        //   this.fs.addDonationItem(result).then ((response) => {
+        //     this.openSnackBar(response.message)
+        // })
+      }
     });
   }
 
@@ -133,8 +137,7 @@ export class OrganisationComponent {
       width: '730px',
       data: {
         itemID: itemID,
-        id: this.selectedOrg.id,
-        
+        id: this.selectedOrg.id
       },
     });
 
@@ -171,7 +174,6 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-
         this.fs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message)
         })
@@ -236,6 +238,7 @@ export class OrganisationComponent {
         id: this.selectedOrg.id,
         name: this.selectedOrg.name,
         totalDonationItems: this.selectedOrg.totalDonationItems,
+        totalDonations: this.selectedOrg.totalDonations
       },
     });
 
@@ -269,6 +272,23 @@ export class OrganisationComponent {
         })
 
   }
+
+  openItemUpdateDialog(item: Item): void{
+  const dialogRef = this.dialog.open(UpdateItemsComponent, {
+    maxWidth: '90vw',
+    width:'500px',
+    height:'fit-content',
+    maxHeight:'90vh',
+    data: {
+      ...item
+    }
+  });
+
+  dialogRef.afterClosed().subscribe((res) => {
+    //todo api call
+    console.log(res)
+  })
+}
 
   getOrgs() {
 
@@ -320,6 +340,7 @@ export class OrganisationComponent {
 
     this.getItems(this.selectedOrg.id);
   }
+
   //Snackbar
   openSnackBar(message) {
     this._snackBar.open(message);

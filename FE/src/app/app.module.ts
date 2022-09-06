@@ -41,6 +41,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DonationItemComponent } from './components/donation-item/donation-item.component';
 import { AddDonationItemComponent } from './components/donation-item/add-donation-item/add-donation-item.component';
 import { RemoveDonationItemComponent } from './components/donation-item/remove-donation-item/remove-donation-item.component';
+import { UpdateItemsComponent } from './components/donation-item/update-donation-item/update-donation-item.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { RemoveDonationItemComponent } from './components/donation-item/remove-d
     DonationItemComponent,
     AddDonationItemComponent,
     RemoveDonationItemComponent,
+    UpdateItemsComponent
   ],
   imports: [
     BrowserModule,
