@@ -92,12 +92,12 @@ export class ItemService {
         .get(orgRef)
         .then((orgDoc: any) => {
           //OPTION: count all org items instead of subtracting to avoid errors
-          let newItemCount = orgDoc.data().totalDonationItems - 1;
-          if (newItemCount < 0) {
-            //Dont want negative donation items. maybe not necessary??
-            newItemCount = 0;
-          }
-          transaction.update(orgRef, { totalDonationItems: newItemCount });
+          //let newItemCount = orgDoc.data().totalDonationItems - 1;
+          // if (newItemCount < 0) {
+          //   //Dont want negative donation items. maybe not necessary??
+          //   newItemCount = 0;
+          // }
+          transaction.update(orgRef, { totalDonationItems: increment(-1) });
           transaction.delete(itemDocument.ref);
         }))
       .then((resp) => {
