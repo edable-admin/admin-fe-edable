@@ -29,13 +29,13 @@ export class RemoveDonationItemComponent {
   async onDelete() {
 
     //Call delete on firebase service. waits for transaction to complete before closing
-    await this.itemService.deleteItem(this.data.id, this.data.itemID, this.data.itemName)
+    await this.itemService.deleteItem(this.data.id, this.data.itemID)
       .then((deleteSuccess) => {
         if (deleteSuccess) {
           this.dialogRef.close(true);
           return;
         } else {
-          this.dialogRef.close(false);
+          this.dialogRef.close();
           //Item cannot be deleted. show warning message
           this.showWarning = true;
           this.isDisabled = true;

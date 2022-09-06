@@ -128,23 +128,22 @@ export class OrganisationComponent {
     });
   }
 
-  removeDonationItemDialog(itemID: string): void {
+  removeDonationItemDialog(itemID: string, itemName: string): void {
     const dialogRef = this.dialog.open(RemoveDonationItemComponent, {
       width: '730px',
       data: {
         itemID: itemID,
         id: this.selectedOrg.id,
-        itemName: this.donationItemName
+        
       },
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Remove a Donation Item --------------------------//
-      console.log(1)
-      if (result === false) {                
-        this.openSnackBar('hi')
+      console.log(itemName)
+      if (result === true) {                
+        this.openSnackBar(itemName + " successfully deleted")
       }
-      
     })
           
     

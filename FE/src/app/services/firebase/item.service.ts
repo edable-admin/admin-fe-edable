@@ -33,7 +33,7 @@ export class ItemService {
 
   //------------------------ DELETE DONATION ITEMS -------------------\\
 
-  async deleteItem(orgID: string, itemID: string, itemName: string): Promise<boolean> {
+  async deleteItem(orgID: string, itemID: string): Promise<boolean> {
     let isSuccess: boolean = false;
     //Get org
     const orgRef = this.fs
