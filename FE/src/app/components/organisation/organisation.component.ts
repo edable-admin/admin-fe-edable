@@ -257,25 +257,6 @@ export class OrganisationComponent {
     });
   }
 
-
-  toggleActiveStatus() {
-    this.initSelectedOrg();
-    this.activeStatusToggle = !this.activeStatusToggle;
-    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
-      .subscribe(
-        orgs => {
-          this.orgData = new MatTableDataSource(orgs);
-          this.orgData.paginator = this.paginator;
-          this.orgData.sort = this.sort;
-          this.orgData.filterPredicate = function (data, filter: string): boolean {
-            return data.name.trim().toLowerCase().includes(filter) ||
-              data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
-              data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
-          };
-        })
-
-  }
-
   // Function to update item called in the dialog component 
   openItemUpdateDialog(item: Item): void {
     const dialogRef = this.dialog.open(UpdateItemsComponent, {
