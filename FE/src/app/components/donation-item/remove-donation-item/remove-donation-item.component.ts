@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from 'src/app/models/DialogData';
 import { ItemService } from 'src/app/services/firebase/item.service';
@@ -15,7 +16,8 @@ export class RemoveDonationItemComponent {
   constructor(
     public dialogRef: MatDialogRef<RemoveDonationItemComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private itemService: ItemService
+    private itemService: ItemService,
+    private storage:AngularFireStorage,
   ) { }
 
   //---------- Function to upload an image for the donation item --------------//
@@ -24,6 +26,7 @@ export class RemoveDonationItemComponent {
   //-------------------------------------------------------------------//
 
   onNoClick(): void {
+    console.log(this.data)
     this.dialogRef.close();
   }
   async onDelete() {
@@ -32,7 +35,7 @@ export class RemoveDonationItemComponent {
     await this.itemService.deleteItem(this.data.id, this.data.itemID)
       .then((deleteSuccess) => {
         if (deleteSuccess) {
-          this.dialogRef.close(true);
+          this.dialogRef.close({isDeleted:true, itemID:this.data.itemID});
           return;
         } else {          
           //Item cannot be deleted. show warning message
