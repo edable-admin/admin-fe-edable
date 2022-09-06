@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from 'src/app/models/DialogData';
@@ -24,7 +25,8 @@ export class UpdateItemsComponent {
     public dialogRef: MatDialogRef<UpdateItemsComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
-    private itemService: ItemService
+    private itemService: ItemService,
+    private storage:AngularFireStorage,
     ) {}
 
 //---------- Function to get image from image dialogBox --------------//
@@ -42,10 +44,11 @@ export class UpdateItemsComponent {
       initialPrice: this.editItemForm.value.initialPrice,
       activeStatus: this.editItemForm.value.activeStatus,
     }
-    // call item service with updated information
-    this.itemService.updateItem(this.data.org,this.data.item.id,updatedItem);
     if(this.editItemForm.valid){
-      this.dialogRef.close({file:this.data.item.file,item:this.editItemForm.value})
+      // call item service with updated information
+      this.itemService.updateItem(this.data.org,this.data.item.id,updatedItem);
+
+      this.dialogRef.close({file:this.data.file,item:this.editItemForm.value})
     }
 
   }

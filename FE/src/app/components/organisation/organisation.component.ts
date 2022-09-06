@@ -19,6 +19,7 @@ import { AddDonationItemComponent } from '../donation-item/add-donation-item/add
 import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
 import { UpdateItemsComponent } from '../donation-item/update-donation-item/update-donation-item.component';
 import { serverTimestamp } from 'firebase/firestore';
+import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
 
 
 @Component({
@@ -92,6 +93,10 @@ export class OrganisationComponent {
 
   }
 
+  onImgError(event){
+    event.target.src = 'https://freepikpsd.com/file/2019/10/placeholder-image-png-5-Transparent-Images.png'
+   }
+
   initSelectedOrg() {
     this.selectedOrg = {
       id: '',
@@ -143,8 +148,10 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Remove a Donation Item --------------------------//
-      console.log(itemName)
-      if (result === true) {                
+      if (result.isDeleted === true) {
+
+        this.storage.ref(`Organisations/${this.selectedOrg.id}/Items/${result.itemID}/itemImg`).delete()
+
         this.openSnackBar(itemName + " successfully deleted")
       }
     })
@@ -225,6 +232,7 @@ export class OrganisationComponent {
 
             if (result?.file) {
               this.fs.uploadImage(this.selectedOrg.id, result.file)
+              .then((imgURL) => this.selectedOrg.img = imgURL)
             }
           })
       }
@@ -256,8 +264,6 @@ export class OrganisationComponent {
   toggleActiveStatus() {
     this.initSelectedOrg();
     this.activeStatusToggle = !this.activeStatusToggle;
-    this.getOrgsSubscription.unsubscribe()
-    this.getItemsSubscription.unsubscribe()
     this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
       .subscribe(
         orgs => {
@@ -286,6 +292,9 @@ export class OrganisationComponent {
   });
 
   dialogRef.afterClosed().subscribe((res) => {
+    if(res?.file){
+      this.fs.uploadImage(this.selectedOrg.id,res.file,res.item.id)
+    }
   })
 }
 
