@@ -34,8 +34,7 @@ export class RemoveDonationItemComponent {
         if (deleteSuccess) {
           this.dialogRef.close(true);
           return;
-        } else {
-          this.dialogRef.close();
+        } else {          
           //Item cannot be deleted. show warning message
           this.showWarning = true;
           this.isDisabled = true;
