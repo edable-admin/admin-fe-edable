@@ -70,12 +70,12 @@ export class ItemService {
             //Dont want negative donation items. maybe not necessary??
             newItemCount = 0;
           }
-          transaction.update(orgRef, { totalDonationItems: newItemCount })
+          transaction.update(orgRef, { totalDonationItems: newItemCount });
           transaction.delete(itemDocument.ref);
         }))
       .then((resp) => {
         //After item has been successfully deleted
-        isSuccess = true
+        isSuccess = true;
       })
       .catch((err) => {
         //Any error means item couldn't be deleted
