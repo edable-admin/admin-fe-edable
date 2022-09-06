@@ -18,7 +18,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddDonationItemComponent } from '../donation-item/add-donation-item/add-donation-item.component';
 import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
 import { UpdateItemsComponent } from '../donation-item/update-donation-item/update-donation-item.component';
-import { serverTimestamp } from 'firebase/firestore';
 
 
 @Component({
@@ -143,13 +142,12 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Remove a Donation Item --------------------------//
-      console.log(itemName)
-      if (result === true) {                
+      if (result === true) {
         this.openSnackBar(itemName + " successfully deleted")
       }
     })
-          
-    
+
+
   }
 
 
@@ -273,7 +271,7 @@ export class OrganisationComponent {
 
   }
 
-  // Function to update item called in the dialog component 
+  // Function to update item called in the dialog component
   openItemUpdateDialog(item: Item): void{
   const dialogRef = this.dialog.open(UpdateItemsComponent, {
     maxWidth: '90vw',

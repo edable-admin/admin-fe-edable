@@ -5,19 +5,20 @@
   </div>
   <hr size="2" width="90%" color="grey" />
 
+  <form [formGroup]="donationItemForm">
   <div class="leftContainer">
     <div class="centerAlign">
       <mat-form-field class="form-field" appearance="fill">
         <mat-label>Item Name</mat-label>
-        <input matInput [(ngModel)]="data.donationItemName" />
+        <input matInput formControlName="name" />
       </mat-form-field>
       <mat-form-field class="form-field" appearance="fill">
         <mat-label>Summary</mat-label>
-        <input matInput [(ngModel)]="data.donationItemSummary" />
+        <input matInput formControlName="summary" />
       </mat-form-field>
       <mat-form-field class="form-field" appearance="fill">
         <mat-label>Description</mat-label>
-        <input matInput [(ngModel)]="data.donationItemDescription" />
+        <input matInput formControlName="description" />
       </mat-form-field>
     </div>
   </div>
@@ -25,11 +26,7 @@
     <div class="centerAlign">
       <mat-form-field class="form-field" appearance="fill">
         <mat-label>Donation Goal</mat-label>
-        <input matInput type="number" [(ngModel)]="data.initialPrice" />
-      </mat-form-field>
-      <mat-form-field class="form-field" appearance="fill">
-        <mat-label>Total Donations</mat-label>
-        <input matInput type="number" [(ngModel)]="data.donationItemTotalDonations" />
+        <input matInput formControlName="initialPrice" />
       </mat-form-field>
       <app-upload-image (imageOut)="getImageFromChild($event)"></app-upload-image>
       <div class="dialog-actions" mat-dialog-actions>
@@ -38,4 +35,5 @@
       </div>
     </div>
   </div>
+  </form>
 </div>
