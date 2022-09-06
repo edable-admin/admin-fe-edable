@@ -93,11 +93,12 @@ export class OrganisationComponent {
 
   }
 
-  onImgError(event){
+  onImgError(event) {
     event.target.src = 'https://freepikpsd.com/file/2019/10/placeholder-image-png-5-Transparent-Images.png'
-   }
+  }
 
   initSelectedOrg() {
+    this.items = [];
     this.selectedOrg = {
       id: '',
       ABN: '',
@@ -120,7 +121,7 @@ export class OrganisationComponent {
       width: '730px',
       data: {
         id: this.selectedOrg.id,
-        file:this.file
+        file: this.file
       },
     });
 
@@ -128,7 +129,7 @@ export class OrganisationComponent {
 
       if (result) {
 
-        this.fs.uploadImage(this.selectedOrg.id,result.file,result.itemRef)
+        this.fs.uploadImage(this.selectedOrg.id, result.file, result.itemRef)
 
         //   this.fs.addDonationItem(result).then ((response) => {
         //     this.openSnackBar(response.message)
@@ -155,8 +156,8 @@ export class OrganisationComponent {
         this.openSnackBar(itemName + " successfully deleted")
       }
     })
-          
-    
+
+
   }
 
 
@@ -232,7 +233,7 @@ export class OrganisationComponent {
 
             if (result?.file) {
               this.fs.uploadImage(this.selectedOrg.id, result.file)
-              .then((imgURL) => this.selectedOrg.img = imgURL)
+                .then((imgURL) => this.selectedOrg.img = imgURL)
             }
           })
       }
@@ -280,23 +281,23 @@ export class OrganisationComponent {
   }
 
   // Function to update item called in the dialog component 
-  openItemUpdateDialog(item: Item): void{
-  const dialogRef = this.dialog.open(UpdateItemsComponent, {
-    maxWidth: '90vw',
-    width:'500px',
-    height:'fit-content',
-    maxHeight:'90vh',
-    data: {
-      item:item,org:this.selectedOrg.id
-    }
-  });
+  openItemUpdateDialog(item: Item): void {
+    const dialogRef = this.dialog.open(UpdateItemsComponent, {
+      maxWidth: '90vw',
+      width: '500px',
+      height: 'fit-content',
+      maxHeight: '90vh',
+      data: {
+        item: item, org: this.selectedOrg.id
+      }
+    });
 
-  dialogRef.afterClosed().subscribe((res) => {
-    if(res?.file){
-      this.fs.uploadImage(this.selectedOrg.id,res.file,res.item.id)
-    }
-  })
-}
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res?.file) {
+        this.fs.uploadImage(this.selectedOrg.id, res.file, res.item.id)
+      }
+    })
+  }
 
   getOrgs() {
 
