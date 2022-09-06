@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from 'src/app/models/DialogData';
 import { Item } from 'src/app/models/Item';
+import { ItemService } from 'src/app/services/firebase/item.service';
 
 @Component({
   selector: 'app-update-items',
@@ -11,18 +12,19 @@ import { Item } from 'src/app/models/Item';
 })
 export class UpdateItemsComponent {
   editItemForm = this.fb.group({
-    id:[this.data.id],
-    name: [this.data.name, Validators.required],
-    summary: [this.data.summary, Validators.maxLength(90)],
-    description: [this.data.description],
-    initialPrice: [this.data.initialPrice, [Validators.required,Validators.min(0.01)]],
-    activeStatus:[this.data.activeStatus, Validators.required]
+    id:[this.data.item.id],
+    name: [this.data.item.name, Validators.required],
+    summary: [this.data.item.summary, Validators.maxLength(90)],
+    description: [this.data.item.description],
+    initialPrice: [this.data.item.initialPrice, [Validators.required,Validators.min(0.01)]],
+    activeStatus:[this.data.item.activeStatus, Validators.required]
   });
 
   constructor(
     public dialogRef: MatDialogRef<UpdateItemsComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private fb: FormBuilder
+        @Inject(MAT_DIALOG_DATA) public data: any,
+    private fb: FormBuilder,
+    private itemService: ItemService
     ) {}
 
 //---------- Function to get image from image dialogBox --------------//
@@ -32,10 +34,18 @@ export class UpdateItemsComponent {
 //-------------------------------------------------------------------//
 
   onSubmit(): void {
-    console.log()
-    //console.log(this.editItemForm.controls['initialPrice'].errors)
+    // partial item type needs to be any.
+    const updatedItem:any = {
+      summary: this.editItemForm.value.id,
+      description: this.editItemForm.value.description,
+      name: this.editItemForm.value.name,
+      initialPrice: this.editItemForm.value.initialPrice,
+      activeStatus: this.editItemForm.value.activeStatus,
+    }
+    // call item service with updated information
+    this.itemService.updateItem(this.data.org,this.data.item.id,updatedItem);
     if(this.editItemForm.valid){
-      this.dialogRef.close({file:this.data.file,item:this.editItemForm.value})
+      this.dialogRef.close({file:this.data.item.file,item:this.editItemForm.value})
     }
 
   }

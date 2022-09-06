@@ -273,6 +273,7 @@ export class OrganisationComponent {
 
   }
 
+  // Function to update item called in the dialog component 
   openItemUpdateDialog(item: Item): void{
   const dialogRef = this.dialog.open(UpdateItemsComponent, {
     maxWidth: '90vw',
@@ -280,13 +281,11 @@ export class OrganisationComponent {
     height:'fit-content',
     maxHeight:'90vh',
     data: {
-      ...item
+      item:item,org:this.selectedOrg.id
     }
   });
 
   dialogRef.afterClosed().subscribe((res) => {
-    //todo api call
-    console.log(res)
   })
 }
 

@@ -115,4 +115,23 @@ export class ItemService {
       });
     return isSuccess;
   }
+
+      //----------------------------------------------------------------//
+
+
+  //------------------------ Update DONATION ITEMS -------------------\\
+
+  async updateItem(orgID: string,itemID:string , item: any) {
+
+    // Get Item Variable
+    const itemDocument = this.fs
+      .collection('Organisations')
+      .doc(orgID).collection('Items')
+      .doc(itemID);
+
+
+    itemDocument.update(item);
+
+    return true;
+  }
 }
