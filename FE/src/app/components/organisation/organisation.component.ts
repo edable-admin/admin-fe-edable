@@ -133,18 +133,20 @@ export class OrganisationComponent {
       width: '730px',
       data: {
         itemID: itemID,
-        id: this.selectedOrg.id
+        id: this.selectedOrg.id,
+        //itemName: this.donationItemName
       },
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Remove a Donation Item --------------------------//
-      // if (result === true) {
-
-      //   this.fs.removeDonationItem(this.selectedOrg.id).then((response) => {
-      //     this.openSnackBar(response.message)
-      //   })
-      // }
+       if (result === true) {
+        
+         this.ifs.deleteItem(this.selectedOrg.id, itemID).then((response) => {
+         this.openSnackBar(" has been successfully removed")
+         })
+       }
+       
     });
   }
 
