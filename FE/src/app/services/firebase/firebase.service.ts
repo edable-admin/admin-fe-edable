@@ -222,6 +222,7 @@ export class FirebaseService {
 
   async uploadImage(orgRef: string, file: FileList, itemRef?: string) {
 
+
     let imgLocation = itemRef ? `Organisations/${orgRef}/Items/${itemRef}/itemImg`
       : `Organisations/${orgRef}/orgLogo`;
 
@@ -241,8 +242,9 @@ export class FirebaseService {
         .then(async (url) => {
           if (itemRef) {
             await item.set({img: url}, {merge:true})
+          }else{
+            await org.set({ img: url }, { merge: true })
           }
-          await org.set({ img: url }, { merge: true })
         }).catch(err => console.log(err));
     }
   }

@@ -259,8 +259,6 @@ export class OrganisationComponent {
   toggleActiveStatus() {
     this.initSelectedOrg();
     this.activeStatusToggle = !this.activeStatusToggle;
-    this.getOrgsSubscription.unsubscribe()
-    this.getItemsSubscription.unsubscribe()
     this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
       .subscribe(
         orgs => {
