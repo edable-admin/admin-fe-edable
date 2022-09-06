@@ -12,4 +12,5 @@ export interface DialogData {
   totalDonationItems: number;
   totalDonations: number;
   itemID: string;
+  itemName: string;
 }

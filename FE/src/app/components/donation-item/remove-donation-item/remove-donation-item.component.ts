@@ -32,9 +32,9 @@ export class RemoveDonationItemComponent {
     await this.itemService.deleteItem(this.data.id, this.data.itemID)
       .then((deleteSuccess) => {
         if (deleteSuccess) {
-          this.dialogRef.close();
+          this.dialogRef.close(true);
           return;
-        } else {
+        } else {          
           //Item cannot be deleted. show warning message
           this.showWarning = true;
           this.isDisabled = true;

@@ -54,11 +54,13 @@ export class ItemService {
     await itemDonationColl.ref.get().then(data => {
       donations = data.docs;
     });
-
+    
     //If item has donation, do not allow deletion
     if (donations.length > 0) {
       return isSuccess = false;
     }
+
+    
 
     await this.fs.firestore.runTransaction(transaction =>
       transaction

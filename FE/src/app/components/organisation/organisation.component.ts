@@ -128,24 +128,25 @@ export class OrganisationComponent {
     });
   }
 
-  removeDonationItemDialog(itemID: string): void {
+  removeDonationItemDialog(itemID: string, itemName: string): void {
     const dialogRef = this.dialog.open(RemoveDonationItemComponent, {
       width: '730px',
       data: {
         itemID: itemID,
-        id: this.selectedOrg.id
+        id: this.selectedOrg.id,
+        
       },
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Remove a Donation Item --------------------------//
-      // if (result === true) {
-
-      //   this.fs.removeDonationItem(this.selectedOrg.id).then((response) => {
-      //     this.openSnackBar(response.message)
-      //   })
-      // }
-    });
+      console.log(itemName)
+      if (result === true) {                
+        this.openSnackBar(itemName + " successfully deleted")
+      }
+    })
+          
+    
   }
 
 
