@@ -58,7 +58,8 @@
         </mat-paginator>
       </div>
 
-      <div class="big-graph-placeholder"> <img src="{{this.selectedOrg.img}}"
+      <div class="big-graph-placeholder"> <img src="{{selectedOrg.img}}"
+        (error)="onImgError($event)"
           style="width: 300px; height:auto; max-height: 400px;" alt="">
       </div>
       <div class="graph-expansion">
@@ -70,7 +71,7 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="small-graph-placeholder">
-              <img src="{{this.selectedOrg.img}}" style="width: 200px; height:auto;" alt="">
+              <img src="{{selectedOrg.img}}" (error)="onImgError($event)"  style="width: 200px; height:auto;" alt="">
             </div>
           </mat-expansion-panel>
         </mat-accordion>
@@ -95,7 +96,7 @@
         <mat-card-header>
           <mat-card-title>{{item.name}}</mat-card-title>
         </mat-card-header>
-        <img mat-card-image src={{item.img}}>
+        <img mat-card-image src={{item.img}} (error)="onImgError($event)">
         <mat-card-content>
           <p>Goal: ${{item.initialPrice}}</p>
           <p>Raised: ${{item.totalDonations}}</p>

@@ -133,7 +133,9 @@ export class FirebaseService {
     generalDonationsSummary.delete();
     org.delete()
 
-    this.storage.ref(`Organisations/${orgID}/orgLogo`).delete()
+    this.storage.ref(`Organisations/${orgID}/orgLogo`).delete().subscribe({
+      error: (err) => console.log(err)
+    })
 
 
     response = {message: `${orgName} Successfully Deleted`}
@@ -241,8 +243,11 @@ export class FirebaseService {
 
   async uploadImage(orgRef: string, file: FileList, itemRef?: string) {
 
+
     let imgLocation = itemRef ? `Organisations/${orgRef}/Items/${itemRef}/itemImg`
       : `Organisations/${orgRef}/orgLogo`;
+
+    let imgURL:string;
 
     if (this.checkImageType(file)) {
 
@@ -260,10 +265,14 @@ export class FirebaseService {
         .then(async (url) => {
           if (itemRef) {
             await item.set({img: url}, {merge:true})
+          }else{
+            await org.set({ img: url }, { merge: true })
           }
-          await org.set({ img: url }, { merge: true })
+          imgURL = url
         }).catch(err => console.log(err));
     }
+
+    return imgURL;
   }
 
 }
