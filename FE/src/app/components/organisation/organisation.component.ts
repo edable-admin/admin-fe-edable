@@ -134,20 +134,20 @@ export class OrganisationComponent {
       data: {
         itemID: itemID,
         id: this.selectedOrg.id,
-        //itemName: this.donationItemName
+        itemName: this.donationItemName
       },
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Remove a Donation Item --------------------------//
-       if (result === true) {
-        
-         this.ifs.deleteItem(this.selectedOrg.id, itemID).then((response) => {
-         this.openSnackBar(" has been successfully removed")
-         })
-       }
-       
-    });
+      console.log(1)
+      if (result === false) {                
+        this.openSnackBar('hi')
+      }
+      
+    })
+          
+    
   }
 
 
