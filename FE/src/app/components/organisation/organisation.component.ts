@@ -18,6 +18,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddDonationItemComponent } from '../donation-item/add-donation-item/add-donation-item.component';
 import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
 import { UpdateItemsComponent } from '../donation-item/update-donation-item/update-donation-item.component';
+import { serverTimestamp } from 'firebase/firestore';
+import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
 
 
 @Component({
@@ -91,7 +93,12 @@ export class OrganisationComponent {
 
   }
 
+  onImgError(event) {
+    event.target.src = 'https://freepikpsd.com/file/2019/10/placeholder-image-png-5-Transparent-Images.png'
+  }
+
   initSelectedOrg() {
+    this.items = [];
     this.selectedOrg = {
       id: '',
       ABN: '',
@@ -114,15 +121,15 @@ export class OrganisationComponent {
       width: '730px',
       data: {
         id: this.selectedOrg.id,
-        file:this.file
+        file: this.file
       },
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
 
-      if (result) {
+      if (result.file) {
 
-        this.fs.uploadImage(this.selectedOrg.id,result.file,result.itemRef)
+        this.fs.uploadImage(this.selectedOrg.id, result.file, result.itemRef)
 
         //   this.fs.addDonationItem(result).then ((response) => {
         //     this.openSnackBar(response.message)
@@ -136,13 +143,17 @@ export class OrganisationComponent {
       width: '730px',
       data: {
         itemID: itemID,
-        id: this.selectedOrg.id
+        id: this.selectedOrg.id,
+        itemName: itemName
       },
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Remove a Donation Item --------------------------//
-      if (result === true) {
+      if (result.isDeleted === true) {
+
+        this.storage.ref(`Organisations/${this.selectedOrg.id}/Items/${result.itemID}/itemImg`).delete()
+
         this.openSnackBar(itemName + " successfully deleted")
       }
     })
@@ -223,6 +234,7 @@ export class OrganisationComponent {
 
             if (result?.file) {
               this.fs.uploadImage(this.selectedOrg.id, result.file)
+                .then((imgURL) => this.selectedOrg.img = imgURL)
             }
           })
       }
@@ -254,8 +266,6 @@ export class OrganisationComponent {
   toggleActiveStatus() {
     this.initSelectedOrg();
     this.activeStatusToggle = !this.activeStatusToggle;
-    this.getOrgsSubscription.unsubscribe()
-    this.getItemsSubscription.unsubscribe()
     this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
       .subscribe(
         orgs => {
@@ -272,20 +282,23 @@ export class OrganisationComponent {
   }
 
   // Function to update item called in the dialog component
-  openItemUpdateDialog(item: Item): void{
-  const dialogRef = this.dialog.open(UpdateItemsComponent, {
-    maxWidth: '90vw',
-    width:'500px',
-    height:'fit-content',
-    maxHeight:'90vh',
-    data: {
-      item:item,org:this.selectedOrg.id
-    }
-  });
+  openItemUpdateDialog(item: Item): void {
+    const dialogRef = this.dialog.open(UpdateItemsComponent, {
+      maxWidth: '90vw',
+      width: '500px',
+      height: 'fit-content',
+      maxHeight: '90vh',
+      data: {
+        item: item, org: this.selectedOrg.id
+      }
+    });
 
-  dialogRef.afterClosed().subscribe((res) => {
-  })
-}
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res?.file) {
+        this.fs.uploadImage(this.selectedOrg.id, res.file, res.item.id)
+      }
+    })
+  }
 
   getOrgs() {
 
