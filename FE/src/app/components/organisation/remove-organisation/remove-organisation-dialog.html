@@ -2,14 +2,13 @@
     <div class="bigHeader">Are you sure?</div>
   </div>
   <hr size="2" width="90%" color="grey" />
-  
+
   <div class="centerAlign">
   <h2>This will remove {{data.name}} from Organisations</h2>
-  <span class="warning" *ngIf="showWarning == true">This Item has donation items and cannot be removed</span>
+  <span class="warning" *ngIf="showWarning == true">{{message}}</span>
   </div>
-  
+
   <div mat-dialog-actions>
     <button mat-button (click)="cancelDelete()">Cancel</button>
     <button mat-button [disabled]="isDisabled" (click)="confirmDelete(data)" cdkFocusInitial color="accent">Confirm</button>
   </div>
-  

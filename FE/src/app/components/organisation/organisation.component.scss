@@ -68,6 +68,14 @@ table {
     object-fit: contain;
 }
 
+.item-card-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left:10px;
+}
+
+
 .add-item-card {
     height: 0%;
     min-width: 150px;
@@ -75,6 +83,7 @@ table {
     margin: 0px 15px 15px 0px;
     background-color: #3f51b5;
     color: white;
+    cursor: pointer;
 }
 
 .add-icon {
@@ -89,6 +98,7 @@ table {
     align-items: center;
     height: 268px;
 }
+
 
 .mat-card-header {
     text-align: center;
@@ -140,7 +150,7 @@ table {
         width: 100%;
         margin: 5px;
     }
-    
+
 }
 @media screen and (max-width: 300px) {
     .item-container {
@@ -150,9 +160,9 @@ table {
     .add-item-card {
         width: 100%;
         margin: 0;
-        
+
     }
     .container {
-        margin: 0;        
+        margin: 0;
     }
 }

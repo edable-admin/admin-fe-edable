@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -12,50 +10,22 @@ export class UploadImageComponent implements OnInit {
 
   @Output() imageOut: EventEmitter<any> = new EventEmitter();
 
-  //string organisation/orgref
-  @Input() orgnisationRef = '';
+  @Input() imgUrl: string;
 
-  //todo make organisationID an input which will be received from the api
-  //when say the edit popup is opened
-  //create will be interesting maybe when the api returns a success with the unique id
-  //fire storage will create a file with the unique id and the file can be stored there in fire storage
-  organisationID = "uid";
-
-  imageName!: any;
-
-  image!: any;
-  imageURL: any;
-  meta!: Observable<any>;
+  image!: string;
+  imageURL: string;
 
   constructor(
-    private storage: AngularFireStorage,
-    private fs: AngularFirestore
   ) {
   }
 
   getImageURL() {
-    const ref = this.storage.ref(`Organisations/${this.orgnisationRef}/orgLogo`);
-
-    return ref.getDownloadURL();
+    this.image = this.imgUrl
   }
 
   ngOnInit(): void {
-
-    const orgFile = this.storage.ref(`Organisations/${this.orgnisationRef}`)
-    if (this.orgnisationRef !== '') {
-
-      orgFile.list().subscribe({
-        next: (resp) => {
-          if (resp?.items?.length >= 1) {
-            this.meta = this.getImageURL();
-
-            this.meta.subscribe({
-              next: (img) => this.image = img,
-              error:(err) => console.log(err)
-            });
-          }
-        }
-      })
+    if (this.imgUrl !== '') {
+      this.getImageURL();
     }
   }
 
