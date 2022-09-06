@@ -31,6 +31,7 @@
             Please enter a positive dollar amount greater than 0.
           </mat-error>
         </mat-form-field>
+        <app-upload-image [imgUrl]="data.img" (imageOut)="getImageFromChild($event)"></app-upload-image>
       </div>
     </mat-card-content>
     <mat-slide-toggle formControlName="activeStatus">Activate/Deactive</mat-slide-toggle>

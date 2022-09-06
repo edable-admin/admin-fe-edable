@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
-import { UpdateItemsComponent } from './update-items.component';
+import { UpdateItemsComponent } from './update-donation-item.component';
 
 describe('UpdateItemsComponent', () => {
   let component: UpdateItemsComponent;
