@@ -143,7 +143,8 @@ export class OrganisationComponent {
       width: '730px',
       data: {
         itemID: itemID,
-        id: this.selectedOrg.id
+        id: this.selectedOrg.id,
+        itemName: itemName
       },
     });
 
