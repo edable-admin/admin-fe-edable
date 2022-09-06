@@ -93,6 +93,10 @@ export class OrganisationComponent {
 
   }
 
+  onImgError(event){
+    event.target.src = 'https://freepikpsd.com/file/2019/10/placeholder-image-png-5-Transparent-Images.png'
+   }
+
   initSelectedOrg() {
     this.selectedOrg = {
       id: '',
