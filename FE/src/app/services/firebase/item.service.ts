@@ -40,6 +40,7 @@ export class ItemService {
 
         this.fs.firestore.runTransaction(transaction =>
           transaction.get(org.ref).then((action) => {
+
             //const newTotalDonationItems = action.data()['totalDonationItems'] + 1;
             transaction.update(org.ref, { totalDonationItems: increment(1) })
             transaction.set(newItem.ref,item)
@@ -63,9 +64,9 @@ export class ItemService {
   async deleteItem(orgID: string, itemID: string): Promise<boolean> {
     let isSuccess: boolean = false;
     //Get org
-    const orgRef = this.fs
+    const org = this.fs
       .collection('Organisations')
-      .doc(orgID).ref;
+      .doc(orgID);
 
     //Get item
     const itemDocument = this.fs
@@ -87,17 +88,24 @@ export class ItemService {
       return false;
     }
 
+    const itemCount = 
+    org.collection('Items').ref
+
     await this.fs.firestore.runTransaction(transaction =>
       transaction
-        .get(orgRef)
-        .then((orgDoc: any) => {
+        .get(org.ref)
+        .then(() => {
           //OPTION: count all org items instead of subtracting to avoid errors
           //let newItemCount = orgDoc.data().totalDonationItems - 1;
           // if (newItemCount < 0) {
           //   //Dont want negative donation items. maybe not necessary??
           //   newItemCount = 0;
           // }
-          transaction.update(orgRef, { totalDonationItems: increment(-1) });
+
+          itemCount.get().then((snap) => {
+            transaction.update(org.ref,{ totalDonationItems: snap.size })
+          })
+          transaction.update(org.ref, { totalDonationItems: increment(-1) });
           transaction.delete(itemDocument.ref);
         }))
       .then((resp) => {
