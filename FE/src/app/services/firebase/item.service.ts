@@ -101,12 +101,12 @@ export class ItemService {
           //   //Dont want negative donation items. maybe not necessary??
           //   newItemCount = 0;
           // }
-
-          itemCount.get().then((snap) => {
-            transaction.update(org.ref,{ totalDonationItems: snap.size })
-          })
-          transaction.update(org.ref, { totalDonationItems: increment(-1) });
+          //transaction.update(org.ref, { totalDonationItems: increment(-1) });
           transaction.delete(itemDocument.ref);
+          
+                    itemCount.get().then((snap) => {
+                      transaction.update(org.ref,{ totalDonationItems: snap.size })
+                    })
         }))
       .then((resp) => {
         //After item has been successfully deleted
