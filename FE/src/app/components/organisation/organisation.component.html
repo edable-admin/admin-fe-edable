@@ -12,7 +12,7 @@
       </button>
       <button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()" mat-raised-button
         color="accent">
-        <mat-icon>remove</mat-icon>Remove
+        <mat-icon class="remove-icon">delete_forever</mat-icon>Remove
       </button>
       <mat-form-field class="control-button" appearance="standard">
         <mat-label>Search Organisations</mat-label>
@@ -102,7 +102,7 @@
             <mat-icon>edit</mat-icon>
           </button>
           <button class="control-button" (click)="removeDonationItemDialog(item.id, item.name)" mat-raised-button color="accent">
-            <mat-icon>remove</mat-icon>
+            <mat-icon>delete_forever</mat-icon>
           </button>
         </div>
       </mat-card>
