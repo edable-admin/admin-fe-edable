@@ -222,13 +222,14 @@ export class OrganisationComponent {
           summary: result.summary ? result.summary : "",
           website: result.website ? result.website : "",
           img: result.img ? result.img : "",
-          totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
-          totalDonations: result.totalDonations ? result.totalDonations : 0,
+          // totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
+          // totalDonations: result.totalDonations ? result.totalDonations : 0,
           activeStatus: result.activeStatus
         }
 
         this.fs.editOrganisation(this.selectedOrg.id, orgReq)
           .then((resp) => {
+            console.log(resp)
             this.selectedOrg = resp
             this.openSnackBar(resp.name + " Edited Successfully")
 

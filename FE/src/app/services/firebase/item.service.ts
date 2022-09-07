@@ -41,9 +41,9 @@ export class ItemService {
         this.fs.firestore.runTransaction(transaction =>
           transaction.get(org.ref).then((action) => {
 
-            const newTotalDonationItems = action.data()['totalDonationItems'] + 1;
-            transaction.update(org.ref, { totalDonationItems: newTotalDonationItems })
+            transaction.update(org.ref, { totalDonationItems: increment(1) })
             transaction.set(newItem.ref,item)
+            
           })
         )
 
@@ -90,13 +90,12 @@ export class ItemService {
 
     await this.fs.firestore.runTransaction(transaction =>
       transaction
-        .get(org.ref)
-        .then((org) => {
-
-          const newTotalDonationItems = org.data()['totalDonationItems'] - 1;
-          transaction.delete(itemDocument.ref);
-          transaction.update(org.ref, { totalDonationItems: newTotalDonationItems });
-
+        .get(itemDocument.ref)
+        .then((item) => {
+          if(item.exists){
+            transaction.delete(itemDocument.ref);
+            transaction.update(org.ref, { totalDonationItems: increment(-1) });
+          }
         }))
       .then((resp) => {
         //After item has been successfully deleted
