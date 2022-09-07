@@ -88,25 +88,14 @@ export class ItemService {
       return false;
     }
 
-    const itemCount = 
-    org.collection('Items').ref
-
     await this.fs.firestore.runTransaction(transaction =>
       transaction
         .get(org.ref)
         .then(() => {
-          //OPTION: count all org items instead of subtracting to avoid errors
-          //let newItemCount = orgDoc.data().totalDonationItems - 1;
-          // if (newItemCount < 0) {
-          //   //Dont want negative donation items. maybe not necessary??
-          //   newItemCount = 0;
-          // }
-          //transaction.update(org.ref, { totalDonationItems: increment(-1) });
+
           transaction.delete(itemDocument.ref);
-          
-                    itemCount.get().then((snap) => {
-                      transaction.update(org.ref,{ totalDonationItems: snap.size })
-                    })
+          transaction.update(org.ref, { totalDonationItems: increment(-1) });
+
         }))
       .then((resp) => {
         //After item has been successfully deleted
