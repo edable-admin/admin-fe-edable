@@ -34,8 +34,7 @@ export class DbSetupService {
       const generalDonations = summaryRef
       .collection('Donations')
       .doc()
-
-
+      
     orgRef.set(noSQLData.Organisations[0])
       .then(() => {
 
