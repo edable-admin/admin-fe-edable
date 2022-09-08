@@ -10,28 +10,21 @@ import { OrganisationComponent } from './components/organisation/organisation.co
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { SidebarComponent } from './components/navigation/sidebar/sidebar.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
-
 import { AuthService } from "./shared/services/auth.service";
-
 //------------- Upload Image Component ----------------------------//
 import { UploadImageComponent } from './components/upload-image/upload-image.component';
 import { DragDropDirectiveDirective } from './components/upload-image/drag-drop-directive/drag-drop-directive.directive';
-//--------------------------------------------------------------------//
-
 //-------------------- FireBase libs ---------------------------------------//
-import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-//---------------------------------------------------------------------------//
 import { environment } from '../environments/environment';
 import { SignInComponent } from './components/authentication/sign-in/sign-in.component';
 import { ForgotPasswordComponent } from './components/authentication/forgot-password/forgot-password.component';
 import { TempPageComponent } from './components/authentication/temp-page/temp-page.component';
 import { MainComponent } from './components/main/main.component';
-
-const config = environment.firebaseConfig;
 
 import { AddOrganisationDialog } from './components/organisation/add-organisation/add-organisation-dialog';
 import { EditOrganisationDialog } from './components/organisation/edit-organisation/edit-organisation-dialog';
@@ -42,6 +35,8 @@ import { DonationItemComponent } from './components/donation-item/donation-item.
 import { AddDonationItemComponent } from './components/donation-item/add-donation-item/add-donation-item.component';
 import { RemoveDonationItemComponent } from './components/donation-item/remove-donation-item/remove-donation-item.component';
 import { UpdateItemsComponent } from './components/donation-item/update-donation-item/update-donation-item.component';
+
+const config = environment.firebaseConfig;
 
 @NgModule({
   declarations: [
@@ -66,7 +61,7 @@ import { UpdateItemsComponent } from './components/donation-item/update-donation
   ],
   imports: [
     BrowserModule,
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(config),
     provideFirebaseApp(() => initializeApp(config)),
     provideFirestore(() => getFirestore()),
     AngularFireStorageModule,
@@ -82,7 +77,7 @@ import { UpdateItemsComponent } from './components/donation-item/update-donation
     ReactiveFormsModule,
   ],
   providers: [
-    { provide: BUCKET, useValue: environment.firebaseConfig.storageBucket }, AuthService
+    { provide: BUCKET, useValue: config.storageBucket }, AuthService
   ],
   bootstrap: [AppComponent]
 })
