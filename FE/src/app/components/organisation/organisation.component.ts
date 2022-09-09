@@ -228,6 +228,7 @@ export class OrganisationComponent {
           default:
             break;
         }
+
         // re-initiate orgs or they wont load
         this.getOrgs();
 
