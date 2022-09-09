@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, DocumentData } from '@angular/fire/compat/firestore';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
+import { QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
+import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
+import { Response } from 'src/app/models/Response';
+import { Item } from 'src/app/models/Item';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +33,7 @@ export class FirebaseService {
 
     //gets the general donation limited to 1
     const generalDonationsColl = generalDonationsSummary
-      .collection('Donations', query => 
+      .collection('Donations', query =>
         query.limit(1)
       )
 
@@ -38,46 +42,37 @@ export class FirebaseService {
 
     //gets the item limited to 1
     const itemsRef = org
-      .collection('Items', query => 
+      .collection('Items', query =>
       query.limit(1))
-      .ref
+      .ref;
 
-    //todo models
-    let generalDonations: any;
-    let orgName: any;
+
+    let orgName: String;
 
     //gets org data and assigns it to orgName
     await orgRef
       .get()
       .then((org) => orgName = org.data()['name'])
 
-    //gets the general donation query
-    await generalDonationsRef
-      .get()
-      .then((donation: any) => {
-        generalDonations = donation.docs[0]//.docs[0].data()
-      })
+
+    const generalDonationsQuery = generalDonationsRef.get()
+    const generalDonations:GeneralDonations[] = (await generalDonationsQuery).docs.map(x => x.data() as GeneralDonations);
 
     //todo response interface
-    let response: any;
+    let response: Response;
 
     //if there is a general donation in an organisation
-    if (generalDonations) {
+    if (generalDonations.length > 0) {
       response = { message: `${orgName} cannot be deleted as it has general donations`}
       return response;
     }
 
-    let items: any;
 
-    //gets the item query
-    await itemsRef
-      .get()
-      .then((item: any) => {
-        items = item.docs[0]
-      })
+    const itemsQuery = itemsRef.get();
+    const items = (await itemsQuery).docs.map(x => x.data() as Item)
 
     // if there is an item in the organisation return message
-    if (items) {
+    if (items.length > 0) {
       response = { message: `${orgName} cannot be deleted as it has donation items`}
       return response;
     }
@@ -105,7 +100,8 @@ export class FirebaseService {
 
   }
 
-  async addOrganisation(orgData: any) {
+  async addOrganisation(orgData: Organisation) {
+    console.log(orgData)
 
     const orgReq:Organisation = {
       name: orgData.name ? orgData.name : null,

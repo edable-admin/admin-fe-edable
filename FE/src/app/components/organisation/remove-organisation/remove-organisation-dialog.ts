@@ -37,7 +37,7 @@ export class RemoveOrganisationDialog {
         else if (data.totalDonationItems > 0) {
             this.showWarning = true;
             this.message = data.name + " has donation items and cannot be deleted"
-            this.isDisabled = !this.isDisabled
+            this.isDisabled = !this.isDisabled;
         }
         else {
             this.showWarning = false;
