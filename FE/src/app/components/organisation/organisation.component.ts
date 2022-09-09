@@ -29,7 +29,6 @@ import {FormControl} from '@angular/forms'
   styleUrls: ['./organisation.component.scss'],
 })
 export class OrganisationComponent {
-  passedvalues: JSON | undefined;
   id: string | undefined;
   name: string | undefined;
   description: string | undefined;
@@ -46,8 +45,6 @@ export class OrganisationComponent {
   selectedOrg: Organisation;
   activeItems: Item[];
   orgData: any;
-  cleanOrgData: any;
-  selectedOrgData: any;
   items: Item[] = [];
   activeStatusFilter: string = "Active";
 
@@ -77,8 +74,11 @@ export class OrganisationComponent {
   ) { }
 
   ngOnDestroy(): void {
-    this.getOrgsSubscription.unsubscribe();
-    this.getItemsSubscription.unsubscribe();
+    // check if there is a selected org base on id value being '' when null org
+    if (this.selectedOrg.id != '') {
+      this.getOrgsSubscription.unsubscribe();
+      this.getItemsSubscription.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
