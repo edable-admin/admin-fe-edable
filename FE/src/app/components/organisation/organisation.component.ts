@@ -77,7 +77,6 @@ export class OrganisationComponent {
   ngOnDestroy(): void {
     this.getOrgsSubscription.unsubscribe();
     this.getItemsSubscription.unsubscribe();
-
   }
 
   ngOnInit(): void {
@@ -221,6 +220,20 @@ export class OrganisationComponent {
           activeStatus: result.activeStatus
         }
 
+        // check for active status and change filter to follow org
+        switch (orgReq.activeStatus) {
+          case true:
+            this.activeStatusFilter = 'Active'
+            break;
+          case false:
+            this.activeStatusFilter = 'Inactive'
+            break;
+          default:
+            break;
+        }
+        // re-initiate orgs or they wont load
+        this.getOrgs();
+
         this.fs.editOrganisation(this.selectedOrg.id, orgReq)
           .then((resp) => {
             this.selectedOrg = resp
@@ -257,7 +270,7 @@ export class OrganisationComponent {
     });
   }
 
-  // Function to update item called in the dialog component 
+  // Function to update item called in the dialog component
   openItemUpdateDialog(item: Item): void {
     const dialogRef = this.dialog.open(UpdateItemsComponent, {
       maxWidth: '90vw',
@@ -300,8 +313,8 @@ export class OrganisationComponent {
 
   // change active status filter (active/inactive/all)
   toggleActiveStatus(value:string) {
-    this.activeStatusFilter = value;
     this.initSelectedOrg();
+    this.activeStatusFilter = value;
     this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusFilter)
       .subscribe(
         orgs => {
