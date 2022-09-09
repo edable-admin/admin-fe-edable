@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { AngularFirestore} from '@angular/fire/compat/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+  AngularFirestoreDocument,
+} from '@angular/fire/compat/firestore';
+import { increment } from '@angular/fire/firestore';
 import { Item } from 'src/app/models/Item';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ItemService {
-
   constructor(
     public storage: AngularFireStorage,
     public fs: AngularFirestore
-  ) { }
+  ) {}
 
   //------------------------ DONATION ITEMS ------------------------\\
 
@@ -20,85 +23,76 @@ export class ItemService {
 
   getItems(orgID) {
     let items = this.fs
-      .collection('Organisations').doc(orgID).collection('Items')
-      .valueChanges({ idField: "id" })
-    return items
-
+      .collection('Organisations')
+      .doc(orgID)
+      .collection('Items')
+      .valueChanges({ idField: 'id' });
+    return items;
   }
 
-    //------------------------ Add Donation Items ---------------------//
-    addItem(orgID: string, item: Item) {
+  //------------------------ Add Donation Items ---------------------//
+  addItem(orgID: string, item: Item) {
+    try {
+      const org = this.fs.collection('Organisations').doc(orgID);
 
-      try {
+      const newItem = org.collection('Items').doc();
 
-        const org = this.fs
-        .collection('Organisations').doc(orgID)
+      this.fs.firestore.runTransaction((transaction) =>
+        transaction.get(org.ref).then((action) => {
+          transaction.update(org.ref, { totalDonationItems: increment(1) });
+          transaction.set(newItem.ref, item);
+        })
+      );
 
-        const newItem =
-        org.collection('Items').doc()
-
-        this.fs.firestore.runTransaction(transaction =>
-          transaction.get(org.ref).then((action) => {
-            const newTotalDonationItems = action.data()['totalDonationItems'] + 1;
-            transaction.update(org.ref, { totalDonationItems: newTotalDonationItems })
-            transaction.set(newItem.ref,item)
-          })
-        )
-
-        return newItem.ref.id;
-      } catch (e) {
-
-        console.log('Transaction failure:', e)
-
-      }
-      return null;
+      return newItem.ref.id;
+    } catch (e) {
+      console.log('Transaction failure:', e);
     }
+    return null;
+  }
 
-    //----------------------------------------------------------------//
-
+  //----------------------------------------------------------------//
 
   //------------------------ DELETE DONATION ITEMS -------------------\\
 
   async deleteItem(orgID: string, itemID: string): Promise<boolean> {
     let isSuccess: boolean = false;
     //Get org
-    const orgRef = this.fs
-      .collection('Organisations')
-      .doc(orgID).ref;
+    const org = this.fs.collection('Organisations').doc(orgID);
 
     //Get item
     const itemDocument = this.fs
       .collection('Organisations')
-      .doc(orgID).collection('Items')
+      .doc(orgID)
+      .collection('Items')
       .doc(itemID);
 
     //Get donations to an item, limited to 1
-    const itemDonationColl = itemDocument.collection('ItemsDonations', query => query.limit(1));
+    const itemDonationColl = itemDocument.collection(
+      'ItemsDonations',
+      (query) => query.limit(1)
+    );
 
     //Assign the donations to an array. Array length is max 1 since it was limited in the query
     let donations: any;
-    await itemDonationColl.ref.get().then(data => {
+    await itemDonationColl.ref.get().then((data) => {
       donations = data.docs;
     });
-    
+
     //If item has donation, do not allow deletion
     if (donations.length > 0) {
       return false;
     }
 
-    await this.fs.firestore.runTransaction(transaction =>
-      transaction
-        .get(orgRef)
-        .then((orgDoc: any) => {
-          //OPTION: count all org items instead of subtracting to avoid errors
-          let newItemCount = orgDoc.data().totalDonationItems - 1;
-          if (newItemCount < 0) {
-            //Dont want negative donation items. maybe not necessary??
-            newItemCount = 0;
+    await this.fs.firestore
+      .runTransaction((transaction) =>
+        transaction.get(itemDocument.ref).then((item) => {
+          if (item.exists) {
+            transaction.delete(itemDocument.ref);
+            transaction.update(org.ref, { totalDonationItems: increment(-1) });
           }
-          transaction.update(orgRef, { totalDonationItems: newItemCount });
-          transaction.delete(itemDocument.ref);
-        }))
+        })
+      )
       .then((resp) => {
         //After item has been successfully deleted
         isSuccess = true;
@@ -110,19 +104,17 @@ export class ItemService {
     return isSuccess;
   }
 
-      //----------------------------------------------------------------//
-
+  //----------------------------------------------------------------//
 
   //------------------------ Update DONATION ITEMS -------------------\\
 
-  async updateItem(orgID: string,itemID:string , item: any) {
-
+  async updateItem(orgID: string, itemID: string, item: any) {
     // Get Item Variable
     const itemDocument = this.fs
       .collection('Organisations')
-      .doc(orgID).collection('Items')
+      .doc(orgID)
+      .collection('Items')
       .doc(itemID);
-
 
     itemDocument.update(item);
 
