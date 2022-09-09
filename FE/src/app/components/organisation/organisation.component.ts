@@ -66,7 +66,7 @@ export class OrganisationComponent {
   //snackbar variables
   message: string;
 
-  
+
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -260,6 +260,7 @@ export class OrganisationComponent {
       if (result === true) {
 
         this.fs.removeOrganisation(this.selectedOrg.id).then((response) => {
+          this.initSelectedOrg();
           this.openSnackBar(response.message)
         })
       }
@@ -285,7 +286,7 @@ export class OrganisationComponent {
   }
 
 
-  // Function to update item called in the dialog component 
+  // Function to update item called in the dialog component
   openItemUpdateDialog(item: Item): void {
     const dialogRef = this.dialog.open(UpdateItemsComponent, {
       maxWidth: '90vw',
