@@ -2,33 +2,38 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { serverTimestamp } from 'firebase/firestore';
 import { DialogData } from 'src/app/models/DialogData';
-import { ItemService } from 'src/app/services/firebase/item.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-
-
+import { ItemService } from 'src/app/services/firebase/item-service/item.service';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-add-donation-item',
   templateUrl: './add-donation-item.component.html',
-  styleUrls: ['./add-donation-item.component.scss']
+  styleUrls: ['./add-donation-item.component.scss'],
 })
 export class AddDonationItemComponent {
   donationItemForm: FormGroup;
-
 
   constructor(
     public dialogRef: MatDialogRef<AddDonationItemComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private itemService: ItemService,
     private formBuilder: FormBuilder
-
   ) {
     this.donationItemForm = this.formBuilder.group({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       summary: new FormControl('', Validators.required),
-      initialPrice: new FormControl('', [Validators.required, Validators.required,Validators.min(0.01)]),
-  });
+      initialPrice: new FormControl('', [
+        Validators.required,
+        Validators.required,
+        Validators.min(0.01),
+      ]),
+    });
   }
 
   //---------- Function to get image from image dialogBox --------------//
@@ -42,7 +47,6 @@ export class AddDonationItemComponent {
   }
 
   async onAdd() {
-
     if (!this.donationItemForm.valid) return;
 
     let item = {
@@ -52,7 +56,7 @@ export class AddDonationItemComponent {
       summary: this.donationItemForm.get('summary').value,
       initialPrice: this.donationItemForm.get('initialPrice').value,
       createdAt: serverTimestamp(),
-      img: "",
+      img: '',
       totalDonations: 0,
       dateCompleted: null,
       orgID: this.data.id,

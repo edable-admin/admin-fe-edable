@@ -6,6 +6,7 @@ import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { FirebaseService } from '../firebase.service';
 import { Response } from 'src/app/models/Response';
 import { Item } from 'src/app/models/Item';
+import { ImageService } from '../image-service/image.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,8 @@ export class OrganisationService {
   constructor(
     public storage: AngularFireStorage,
     public fs: AngularFirestore,
-    public fbs: FirebaseService
+    public fbs: FirebaseService,
+    public imgService: ImageService
   ) {}
 
   async removeOrganisation(orgID: string) {
@@ -117,7 +119,7 @@ export class OrganisationService {
     let orgRef = this.fs.collection('Organisations').doc().ref;
 
     if (orgData?.file) {
-      this.fbs.uploadImage(orgRef.id, orgData.file);
+      this.imgService.uploadImage(orgRef.id, orgData.file);
     }
 
     let generalDonationsRef = orgRef

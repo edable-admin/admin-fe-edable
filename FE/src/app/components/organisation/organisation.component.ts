@@ -11,7 +11,7 @@ import { EditOrganisationDialog } from './edit-organisation/edit-organisation-di
 import { RemoveOrganisationDialog } from './remove-organisation/remove-organisation-dialog';
 import { Item } from 'src/app/models/Item';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
-import { ItemService } from 'src/app/services/firebase/item.service';
+import { ItemService } from 'src/app/services/firebase/item-service/item.service';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,6 +19,7 @@ import { AddDonationItemComponent } from '../donation-item/add-donation-item/add
 import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
 import { UpdateItemsComponent } from '../donation-item/update-donation-item/update-donation-item.component';
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
+import { ImageService } from 'src/app/services/firebase/image-service/image.service';
 
 @Component({
   selector: 'app-organisation',
@@ -74,7 +75,8 @@ export class OrganisationComponent {
     public fs: FirebaseService,
     public ofs: OrganisationService,
     public _snackBar: MatSnackBar,
-    public ifs: ItemService
+    public ifs: ItemService,
+    public imgService: ImageService
   ) {}
 
   ngOnDestroy(): void {
@@ -122,7 +124,11 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
       if (result.file) {
-        this.fs.uploadImage(this.selectedOrg.id, result.file, result.itemRef);
+        this.imgService.uploadImage(
+          this.selectedOrg.id,
+          result.file,
+          result.itemRef
+        );
 
         //   this.fs.addDonationItem(result).then ((response) => {
         //     this.openSnackBar(response.message)
@@ -226,7 +232,7 @@ export class OrganisationComponent {
           this.openSnackBar(resp.name + ' Edited Successfully');
 
           if (result?.file) {
-            this.fs
+            this.imgService
               .uploadImage(this.selectedOrg.id, result.file)
               .then((imgURL) => (this.selectedOrg.img = imgURL));
           }
@@ -300,7 +306,7 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe((res) => {
       if (res?.file) {
-        this.fs.uploadImage(this.selectedOrg.id, res.file, res.item.id);
+        this.imgService.uploadImage(this.selectedOrg.id, res.file, res.item.id);
       }
     });
   }
