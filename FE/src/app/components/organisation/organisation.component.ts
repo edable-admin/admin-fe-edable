@@ -20,7 +20,8 @@ import { RemoveDonationItemComponent } from '../donation-item/remove-donation-it
 import { UpdateItemsComponent } from '../donation-item/update-donation-item/update-donation-item.component';
 import { serverTimestamp } from 'firebase/firestore';
 import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
-
+import {TooltipPosition} from '@angular/material/tooltip';
+import {FormControl} from '@angular/forms'
 
 @Component({
   selector: 'app-organisation',
@@ -59,6 +60,7 @@ export class OrganisationComponent {
   //snackbar variables
   message: string;
 
+  
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -215,8 +217,8 @@ export class OrganisationComponent {
           summary: result.summary ? result.summary : "",
           website: result.website ? result.website : "",
           img: result.img ? result.img : "",
-          totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
-          totalDonations: result.totalDonations ? result.totalDonations : 0,
+          // totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
+          // totalDonations: result.totalDonations ? result.totalDonations : 0,
           activeStatus: result.activeStatus
         }
 
@@ -236,6 +238,7 @@ export class OrganisationComponent {
 
         this.fs.editOrganisation(this.selectedOrg.id, orgReq)
           .then((resp) => {
+            console.log(resp)
             this.selectedOrg = resp
             this.openSnackBar(resp.name + " Edited Successfully")
 

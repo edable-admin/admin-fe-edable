@@ -27,7 +27,7 @@ export class AddDonationItemComponent {
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       summary: new FormControl('', Validators.required),
-      initialPrice: new FormControl('', [Validators.required, Validators.pattern("^[0-9]+$")]),
+      initialPrice: new FormControl('', [Validators.required, Validators.required,Validators.min(0.01)]),
   });
   }
 
