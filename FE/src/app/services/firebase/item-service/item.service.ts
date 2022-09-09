@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-  AngularFirestoreDocument,
-} from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { increment } from '@angular/fire/firestore';
 import { Item } from 'src/app/models/Item';
 
@@ -17,11 +13,9 @@ export class ItemService {
     public fs: AngularFirestore
   ) {}
 
-  //------------------------ DONATION ITEMS ------------------------\\
+  //------------------------ Gets a list of donation items for an organisation -------------------\\
 
-  //------------------------ READ DONATION ITEMS -------------------\\
-
-  getItems(orgID) {
+  getItems(orgID: string) {
     let items = this.fs
       .collection('Organisations')
       .doc(orgID)
@@ -30,13 +24,17 @@ export class ItemService {
     return items;
   }
 
-  //------------------------ Add Donation Items ---------------------//
+  //------------------------ Add donation items ---------------------//
   addItem(orgID: string, item: Item) {
     try {
       const org = this.fs.collection('Organisations').doc(orgID);
 
       const newItem = org.collection('Items').doc();
 
+      //Transaction ensures that adding the donation item and the total donation items count update
+      //happen together if one fails the other transaction does not happen.
+      //A transaction will be retried up to 5 times then rolled back if the failure keeps happening.
+      //https://firebase.google.com/docs/firestore/manage-data/transactions
       this.fs.firestore.runTransaction((transaction) =>
         transaction.get(org.ref).then((action) => {
           transaction.update(org.ref, { totalDonationItems: increment(1) });
@@ -51,9 +49,7 @@ export class ItemService {
     return null;
   }
 
-  //----------------------------------------------------------------//
-
-  //------------------------ DELETE DONATION ITEMS -------------------\\
+  //------------------------ Delete donation items -------------------\\
 
   async deleteItem(orgID: string, itemID: string): Promise<boolean> {
     let isSuccess: boolean = false;
@@ -84,6 +80,10 @@ export class ItemService {
       return false;
     }
 
+    //Transaction ensures that adding the donation item and the total donation items count update
+    //happen together if one fails the other transaction does not happen.
+    //A transaction will be retried up to 5 times then rolled back if the failure keeps happening.
+    //https://firebase.google.com/docs/firestore/manage-data/transactions
     await this.fs.firestore
       .runTransaction((transaction) =>
         transaction.get(itemDocument.ref).then((item) => {
@@ -104,10 +104,7 @@ export class ItemService {
     return isSuccess;
   }
 
-  //----------------------------------------------------------------//
-
-  //------------------------ Update DONATION ITEMS -------------------\\
-
+  //------------------------ Update donation items -------------------\\
   async updateItem(orgID: string, itemID: string, item: any) {
     // Get Item Variable
     const itemDocument = this.fs
