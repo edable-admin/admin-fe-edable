@@ -1,8 +1,8 @@
 .overflow {
-    white-space: nowrap; 
-    width: 150px; 
+    white-space: nowrap;
+    width: 150px;
     overflow: hidden;
-    text-overflow: ellipsis;    
+    text-overflow: ellipsis;
     margin:auto;
     text-align: center;
   }
@@ -87,13 +87,13 @@ table {
     height: 350px;
     min-width: 150px;
     max-width: 200px;
-    
+
 }
 
 .add-item-card {
     height: 350px;
-    min-width: 150px;    
-    margin-top: 10px;   
+    min-width: 150px;
+    margin-top: 10px;
     background-color: #3f51b5;
     color: white;
     cursor: pointer;
@@ -128,6 +128,11 @@ mat-card {
     margin-bottom: 10px;
     margin-left: 10px;
 }
+
+.radio{
+    margin: 5px;
+}
+
 .remove-icon {
     margin-bottom: 2px;
 }
@@ -167,7 +172,7 @@ mat-card {
     .item-container {
         align-items: center;
         justify-content: center;
-        
+
         .add-item-card {
             height: 20px;
             width: 100%;
@@ -175,7 +180,7 @@ mat-card {
             padding-right: 0px;
             margin:0;
         }
-        
+
     }
     .add-item-card {
         /* Changes height of add item and icon location */
@@ -188,7 +193,7 @@ mat-card {
             padding: 0;
         }
     }
-    
+
     .add-icon-mobile {
         display: inline-block;
     }
