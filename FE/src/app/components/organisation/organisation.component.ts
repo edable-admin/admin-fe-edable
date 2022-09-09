@@ -26,7 +26,6 @@ import { ImageService } from 'src/app/services/firebase/image-service/image.serv
   styleUrls: ['./organisation.component.scss'],
 })
 export class OrganisationComponent {
-  passedvalues: JSON | undefined;
   id: string | undefined;
   name: string | undefined;
   description: string | undefined;
@@ -39,20 +38,12 @@ export class OrganisationComponent {
   file: any;
   totalDonationItems: number;
   totalDonations: number;
-  donationItemName: string | undefined;
-  donationItemSummary: boolean = true;
-  donationItemDescription: string | undefined;
-  donationItemInitialPrice: number | undefined;
-  donationItemImage: string | undefined;
-  donationItemOrganisationID: string | undefined;
-  donationItemID: string | undefined;
   displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
   selectedOrg: Organisation;
   activeItems: Item[];
   orgData: any;
-  cleanOrgData: any;
-  selectedOrgData: any;
   items: Item[] = [];
+  activeStatusFilter: string = 'Active';
 
   activeStatusToggle: boolean = true;
 
@@ -78,8 +69,11 @@ export class OrganisationComponent {
   ) {}
 
   ngOnDestroy(): void {
-    this.getOrgsSubscription.unsubscribe();
-    this.getItemsSubscription.unsubscribe();
+    // check if there is a selected org base on id value being '' when null org
+    if (this.selectedOrg.id != '') {
+      this.getOrgsSubscription.unsubscribe();
+      this.getItemsSubscription.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
@@ -128,7 +122,7 @@ export class OrganisationComponent {
           result.itemRef
         );
 
-        //   this.fs.addDonationItem(result).then ((response) => {
+        //   this.ofs.addDonationItem(result).then ((response) => {
         //     this.openSnackBar(response.message)
         // })
       }
@@ -223,6 +217,20 @@ export class OrganisationComponent {
           activeStatus: result.activeStatus,
         };
 
+        // check for active status and change filter to follow org
+        switch (orgReq.activeStatus) {
+          case true:
+            this.activeStatusFilter = 'Active';
+            break;
+          case false:
+            this.activeStatusFilter = 'Inactive';
+            break;
+          default:
+            break;
+        }
+        // re-initiate orgs or they wont load
+        this.getOrgs();
+
         this.ofs.editOrganisation(this.selectedOrg.id, orgReq).then((resp) => {
           this.selectedOrg = resp;
           this.openSnackBar(resp.name + ' Edited Successfully');
@@ -257,36 +265,6 @@ export class OrganisationComponent {
     });
   }
 
-  toggleActiveStatus() {
-    this.initSelectedOrg();
-    this.activeStatusToggle = !this.activeStatusToggle;
-    this.getOrgsSubscription = this.ofs
-      .getOrgs(this.activeStatusToggle)
-      .subscribe((orgs) => {
-        this.orgData = new MatTableDataSource(orgs);
-        this.orgData.paginator = this.paginator;
-        this.orgData.sort = this.sort;
-        this.orgData.filterPredicate = function (
-          data,
-          filter: string
-        ): boolean {
-          return (
-            data.name.trim().toLowerCase().includes(filter) ||
-            data.totalDonations
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter) ||
-            data.totalDonationItems
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter)
-          );
-        };
-      });
-  }
-
   // Function to update item called in the dialog component
   openItemUpdateDialog(item: Item): void {
     const dialogRef = this.dialog.open(UpdateItemsComponent, {
@@ -309,7 +287,7 @@ export class OrganisationComponent {
 
   getOrgs() {
     this.getOrgsSubscription = this.ofs
-      .getOrgs(this.activeStatusToggle)
+      .getOrgs(this.activeStatusFilter)
       .subscribe((orgs) => {
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
@@ -340,6 +318,37 @@ export class OrganisationComponent {
     this.getItemsSubscription = this.ifs.getItems(orgID).subscribe((items) => {
       this.items = items as Item[];
     });
+  }
+
+  // change active status filter (active/inactive/all)
+  toggleActiveStatus(value: string) {
+    this.initSelectedOrg();
+    this.activeStatusFilter = value;
+    this.getOrgsSubscription = this.ofs
+      .getOrgs(this.activeStatusFilter)
+      .subscribe((orgs) => {
+        this.orgData = new MatTableDataSource(orgs);
+        this.orgData.paginator = this.paginator;
+        this.orgData.sort = this.sort;
+        this.orgData.filterPredicate = function (
+          data,
+          filter: string
+        ): boolean {
+          return (
+            data.name.trim().toLowerCase().includes(filter) ||
+            data.totalDonations
+              .toString()
+              .trim()
+              .toLowerCase()
+              .includes(filter) ||
+            data.totalDonationItems
+              .toString()
+              .trim()
+              .toLowerCase()
+              .includes(filter)
+          );
+        };
+      });
   }
 
   //-------------------- GET ITEMS --------------------\\
