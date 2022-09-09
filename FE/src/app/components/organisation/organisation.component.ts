@@ -60,7 +60,7 @@ export class OrganisationComponent {
   //snackbar variables
   message: string;
 
-  
+
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -238,7 +238,6 @@ export class OrganisationComponent {
 
         this.fs.editOrganisation(this.selectedOrg.id, orgReq)
           .then((resp) => {
-            console.log(resp)
             this.selectedOrg = resp
             this.openSnackBar(resp.name + " Edited Successfully")
 
