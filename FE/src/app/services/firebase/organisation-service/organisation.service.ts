@@ -3,7 +3,6 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
-import { FirebaseService } from '../firebase.service';
 import { Response } from 'src/app/models/Response';
 import { Item } from 'src/app/models/Item';
 import { ImageService } from '../image-service/image.service';
@@ -15,7 +14,6 @@ export class OrganisationService {
   constructor(
     public storage: AngularFireStorage,
     public fs: AngularFirestore,
-    public fbs: FirebaseService,
     public imgService: ImageService
   ) {}
 

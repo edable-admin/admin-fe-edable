@@ -10,7 +10,6 @@ import { AddOrganisationDialog } from './add-organisation/add-organisation-dialo
 import { EditOrganisationDialog } from './edit-organisation/edit-organisation-dialog';
 import { RemoveOrganisationDialog } from './remove-organisation/remove-organisation-dialog';
 import { Item } from 'src/app/models/Item';
-import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { ItemService } from 'src/app/services/firebase/item-service/item.service';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { Subscription } from 'rxjs';
@@ -72,7 +71,6 @@ export class OrganisationComponent {
     public dialog: MatDialog,
     public http: HttpClient,
     public storage: AngularFireStorage,
-    public fs: FirebaseService,
     public ofs: OrganisationService,
     public _snackBar: MatSnackBar,
     public ifs: ItemService,
