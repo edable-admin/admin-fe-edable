@@ -12,13 +12,17 @@
       </button>
       <button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()" mat-raised-button
         color="accent">
-        <mat-icon>remove</mat-icon>Remove
+        <mat-icon class="remove-icon">delete_forever</mat-icon>Delete
       </button>
       <mat-form-field class="control-button" appearance="standard">
         <mat-label>Search Organisations</mat-label>
         <input matInput (keyup)="applyFilter($event)" #input>
       </mat-form-field>
-      <mat-slide-toggle class="toggle-active" (click)="toggleActiveStatus()">Show inactive Orgs</mat-slide-toggle>
+      <mat-radio-group aria-label="Select an option" [(ngModel)]="activeStatusFilter">
+        <mat-radio-button class='radio' value="Active" (click)="toggleActiveStatus('Active')">Active Orgs</mat-radio-button>
+        <mat-radio-button class='radio' value="All" (click)="toggleActiveStatus('All')">All Orgs</mat-radio-button>
+        <mat-radio-button class='radio' value="Inactive" (click)="toggleActiveStatus('Inactive')">Inactive Orgs</mat-radio-button>
+      </mat-radio-group>
     </div>
 
     <div class="flex-container">
@@ -80,7 +84,7 @@
       <mat-card class="add-item-card" *ngIf="this.selectedOrg.id !== ''" (click)="addDonationItemDialog()">
         <mat-card-header>
           <mat-card-title>
-            Add Item
+            <mat-icon class="add-icon-mobile">add</mat-icon> Add Item
           </mat-card-title>
         </mat-card-header>
         <div class="add-icon-container">
@@ -91,7 +95,12 @@
       <!--All Organisation Item Cards-->
       <mat-card class="item-card" *ngFor="let item of items">
         <mat-card-header>
-          <mat-card-title>{{item.name}}</mat-card-title>
+          <div class="overflow"
+              matTooltip="{{item.name}}"
+              [matTooltipPosition]="'below'"
+              aria-label="Button that displays a tooltip in various positions">
+              {{item.name}}
+          </div>
         </mat-card-header>
         <img mat-card-image src={{item.img}} (error)="onImgError($event)">
         <mat-card-content>
@@ -102,9 +111,8 @@
           <button class="control-button" (click)="openItemUpdateDialog(item)" mat-raised-button color="warn">
             <mat-icon>edit</mat-icon>
           </button>
-          <button class="control-button" (click)="removeDonationItemDialog(item.id, item.name)" mat-raised-button
-            color="accent">
-            <mat-icon>remove</mat-icon>
+          <button class="control-button" (click)="removeDonationItemDialog(item.id, item.name)" mat-raised-button color="accent">
+            <mat-icon>delete_forever</mat-icon>
           </button>
         </div>
       </mat-card>

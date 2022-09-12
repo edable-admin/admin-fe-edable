@@ -20,7 +20,8 @@ import { RemoveDonationItemComponent } from '../donation-item/remove-donation-it
 import { UpdateItemsComponent } from '../donation-item/update-donation-item/update-donation-item.component';
 import { serverTimestamp } from 'firebase/firestore';
 import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
-
+import {TooltipPosition} from '@angular/material/tooltip';
+import {FormControl} from '@angular/forms'
 
 @Component({
   selector: 'app-organisation',
@@ -28,7 +29,6 @@ import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
   styleUrls: ['./organisation.component.scss'],
 })
 export class OrganisationComponent {
-  passedvalues: JSON | undefined;
   id: string | undefined;
   name: string | undefined;
   description: string | undefined;
@@ -41,20 +41,12 @@ export class OrganisationComponent {
   file: any;
   totalDonationItems: number;
   totalDonations: number;
-  donationItemName: string | undefined;
-  donationItemSummary: boolean = true;
-  donationItemDescription: string | undefined;
-  donationItemInitialPrice: number | undefined;
-  donationItemImage: string | undefined;
-  donationItemOrganisationID: string | undefined;
-  donationItemID: string | undefined;
   displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
   selectedOrg: Organisation;
   activeItems: Item[];
   orgData: any;
-  cleanOrgData: any;
-  selectedOrgData: any;
   items: Item[] = [];
+  activeStatusFilter: string = "Active";
 
   activeStatusToggle: boolean = true;
 
@@ -64,6 +56,7 @@ export class OrganisationComponent {
 
   //snackbar variables
   message: string;
+
 
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -81,9 +74,11 @@ export class OrganisationComponent {
   ) { }
 
   ngOnDestroy(): void {
-    this.getOrgsSubscription.unsubscribe();
-    this.getItemsSubscription.unsubscribe();
-
+    // check if there is a selected org base on id value being '' when null org
+    if (this.selectedOrg.id != '') {
+      this.getOrgsSubscription.unsubscribe();
+      this.getItemsSubscription.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
@@ -222,10 +217,24 @@ export class OrganisationComponent {
           summary: result.summary ? result.summary : "",
           website: result.website ? result.website : "",
           img: result.img ? result.img : "",
-          totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
-          totalDonations: result.totalDonations ? result.totalDonations : 0,
+          // totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
+          // totalDonations: result.totalDonations ? result.totalDonations : 0,
           activeStatus: result.activeStatus
         }
+
+        // check for active status and change filter to follow org
+        switch (orgReq.activeStatus) {
+          case true:
+            this.activeStatusFilter = 'Active'
+            break;
+          case false:
+            this.activeStatusFilter = 'Inactive'
+            break;
+          default:
+            break;
+        }
+        // re-initiate orgs or they wont load
+        this.getOrgs();
 
         this.fs.editOrganisation(this.selectedOrg.id, orgReq)
           .then((resp) => {
@@ -263,26 +272,7 @@ export class OrganisationComponent {
     });
   }
 
-  toggleActiveStatus() {
-    this.initSelectedOrg();
-    this.activeStatusToggle = !this.activeStatusToggle;
-    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
-      .subscribe(
-        orgs => {
-          this.orgData = new MatTableDataSource(orgs);
-          this.orgData.paginator = this.paginator;
-          this.orgData.sort = this.sort;
-          this.orgData.filterPredicate = function (data, filter: string): boolean {
-            return data.name.trim().toLowerCase().includes(filter) ||
-              data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
-              data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
-          };
-        })
-
-  }
-
-
-  // Function to update item called in the dialog component 
+  // Function to update item called in the dialog component
   openItemUpdateDialog(item: Item): void {
     const dialogRef = this.dialog.open(UpdateItemsComponent, {
       maxWidth: '90vw',
@@ -302,8 +292,7 @@ export class OrganisationComponent {
   }
 
   getOrgs() {
-
-    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusToggle)
+    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusFilter)
       .subscribe(orgs => {
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
@@ -322,6 +311,25 @@ export class OrganisationComponent {
       .subscribe(items => {
         this.items = items as Item[]
       })
+  }
+
+  // change active status filter (active/inactive/all)
+  toggleActiveStatus(value:string) {
+    this.initSelectedOrg();
+    this.activeStatusFilter = value;
+    this.getOrgsSubscription = this.fs.getOrgs(this.activeStatusFilter)
+      .subscribe(
+        orgs => {
+          this.orgData = new MatTableDataSource(orgs);
+          this.orgData.paginator = this.paginator;
+          this.orgData.sort = this.sort;
+          this.orgData.filterPredicate = function (data, filter: string): boolean {
+            return data.name.trim().toLowerCase().includes(filter) ||
+              data.totalDonations.toString().trim().toLowerCase().includes(filter) ||
+              data.totalDonationItems.toString().trim().toLowerCase().includes(filter);
+          };
+        })
+
   }
 
   //-------------------- GET ITEMS --------------------\\
