@@ -1,11 +1,8 @@
-
-
-
 .overflow {
-    white-space: nowrap; 
-    width: 150px; 
+    white-space: nowrap;
+    width: 150px;
     overflow: hidden;
-    text-overflow: ellipsis;    
+    text-overflow: ellipsis;
     margin:auto;
     text-align: center;
   }
@@ -71,7 +68,7 @@ table {
     height: 350px;
     min-width: 150px;
     max-width: 200px;
-    margin: 0px 15px 15px 0px;
+    margin: 10px;
 }
 
 .item-card img {
@@ -86,16 +83,23 @@ table {
   align-items: center;
   margin-left:10px;
 }
+.item-card {
+    height: 350px;
+    min-width: 150px;
+    max-width: 200px;
 
+}
 
 .add-item-card {
     height: 350px;
     min-width: 150px;
-    max-width: 200px;
-    margin: 0px 15px 15px 0px;    
+    margin-top: 10px;
     background-color: #3f51b5;
     color: white;
     cursor: pointer;
+}
+mat-card {
+    margin: 10px;
 }
 
 .add-icon {
@@ -123,6 +127,17 @@ table {
 .toggle-active {
     margin-bottom: 10px;
     margin-left: 10px;
+}
+
+.radio{
+    margin: 5px;
+}
+
+.remove-icon {
+    margin-bottom: 2px;
+}
+.add-icon-mobile {
+    display: none;
 }
 
 @media screen and (max-width:700px) {
@@ -153,25 +168,38 @@ table {
     }
 
 }
-@media screen and (max-width: 430px) {
-
-    .control-button {
-        display: inline-block;
-        width: 100%;
-        margin: 5px;
-    }
-
-}
-@media screen and (max-width: 488px) {
+@media screen and (max-width: 500px) {
     .item-container {
-        width: 100%;
+        align-items: center;
         justify-content: center;
+
+        .add-item-card {
+            height: 20px;
+            width: 100%;
+            padding-left: 0px;
+            padding-right: 0px;
+            margin:0;
+        }
+
     }
     .add-item-card {
-        margin: 10, 0, 10, 0;
+        /* Changes height of add item and icon location */
+        mat-card-title {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+            margin-left: -10px;
+            padding: 0;
+        }
+    }
 
+    .add-icon-mobile {
+        display: inline-block;
     }
     .container {
         margin: 0;
     }
+
 }
+

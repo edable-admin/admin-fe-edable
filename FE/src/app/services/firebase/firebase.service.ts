@@ -2,10 +2,6 @@ import { Injectable, Type } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { noSQLData } from './no-sql-data';
-import { doc, limit, query, QueryDocumentSnapshot } from 'firebase/firestore';
-import { getType } from '@angular/flex-layout/extended/style/style-transforms';
-import { EventType } from '@angular/router';
-import { throwError, timeout } from 'rxjs';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 
 @Injectable({
@@ -143,13 +139,32 @@ export class FirebaseService {
     return response;
   }
 
-  getOrgs(activeStatus:boolean) {
-    let orgs = this.fs
-      .collection('Organisations', query =>
-      query.where('activeStatus',"==", activeStatus))
-      .valueChanges({idField:"id"})
-    return orgs
+  // Get orgs based on filter selected (acitve/inavtive/both)
+  getOrgs(filter:string) {
+    switch(filter){
+      case 'All':
+        let AllOrg = this.fs
+        .collection('Organisations')
+        .valueChanges({idField:"id"})
+        return AllOrg
 
+      case 'Active':
+        let ActiveOrg = this.fs
+        .collection('Organisations', query =>
+        query.where('activeStatus',"==", true))
+        .valueChanges({idField:"id"})
+        return ActiveOrg
+      
+      case 'Inactive':
+        let InacviveOrg = this.fs
+        .collection('Organisations', query =>
+        query.where('activeStatus',"==", false))
+        .valueChanges({idField:"id"})
+        return InacviveOrg
+
+      default:
+        return null;
+    } 
   }
 
   async addOrganisation(orgData: any) {
