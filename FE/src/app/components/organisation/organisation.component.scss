@@ -43,9 +43,11 @@ button {
     margin-right: 10px;
 }
 
-.example-container {
-    height: 400px;
+.scroll-container {
+    // Height of 5 table rows + header + paginator
+    height: 442px;
     overflow: auto;
+    flex: 1;
 }
 
 .mat-paginator-sticky {
