@@ -266,6 +266,7 @@ export class OrganisationComponent {
       if (result === true) {
 
         this.fs.removeOrganisation(this.selectedOrg.id).then((response) => {
+          this.initSelectedOrg();
           this.openSnackBar(response.message)
         })
       }
