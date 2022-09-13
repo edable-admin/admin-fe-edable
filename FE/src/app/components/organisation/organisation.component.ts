@@ -287,7 +287,6 @@ export class OrganisationComponent {
     this.getOrgsSubscription = this.ofs
       .getOrgs(this.activeStatusFilter)
       .subscribe((orgs) => {
-        console.log(orgs);
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
