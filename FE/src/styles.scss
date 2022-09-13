@@ -29,6 +29,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: rgb(98, 2, 98);
   }
 }
+::-webkit-scrollbar {
+  width: 4px;
+  overflow-y: scroll;
+  background: grey;
+  box-shadow: inset 0 0 4px #707070;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: lightgray;
+  border-radius: 10px;
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

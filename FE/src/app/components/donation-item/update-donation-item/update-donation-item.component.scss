@@ -1,9 +1,14 @@
 .edit-item-container{
-  .desc {
-    overflow: hidden;
-    height: 15px;
-  }
+  .text-box {
+    overflow: auto;
+}
+.desc {
+  height: 35px;
+}
+.sum {
+  height: 15px;
   
+}
   form{
     display: flex;
     flex-direction: column;
