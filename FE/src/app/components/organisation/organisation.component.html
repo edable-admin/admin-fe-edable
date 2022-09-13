@@ -12,13 +12,17 @@
       </button>
       <button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()" mat-raised-button
         color="accent">
-        <mat-icon class="remove-icon">delete_forever</mat-icon>Remove
+        <mat-icon class="remove-icon">delete_forever</mat-icon>Delete
       </button>
       <mat-form-field class="control-button" appearance="standard">
         <mat-label>Search Organisations</mat-label>
         <input matInput (keyup)="applyFilter($event)" #input>
       </mat-form-field>
-      <mat-slide-toggle class="toggle-active" (click)="toggleActiveStatus()">Show inactive Orgs</mat-slide-toggle>
+      <mat-radio-group aria-label="Select an option" [(ngModel)]="activeStatusFilter">
+        <mat-radio-button class='radio' value="Active" (click)="toggleActiveStatus('Active')">Active Orgs</mat-radio-button>
+        <mat-radio-button class='radio' value="All" (click)="toggleActiveStatus('All')">All Orgs</mat-radio-button>
+        <mat-radio-button class='radio' value="Inactive" (click)="toggleActiveStatus('Inactive')">Inactive Orgs</mat-radio-button>
+      </mat-radio-group>
     </div>
 
     <div class="flex-container">
