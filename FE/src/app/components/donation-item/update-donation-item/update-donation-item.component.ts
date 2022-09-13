@@ -41,7 +41,7 @@ export class UpdateItemsComponent {
   onSubmit(): void {
     // partial item type needs to be any.
     const updatedItem: any = {
-      summary: this.editItemForm.value.id,
+      summary: this.editItemForm.value.summary,
       description: this.editItemForm.value.description,
       name: this.editItemForm.value.name,
       initialPrice: this.editItemForm.value.initialPrice,
