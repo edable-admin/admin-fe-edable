@@ -43,6 +43,19 @@ button {
     margin-right: 10px;
 }
 
+.scroll-container {
+    // Height of 5 table rows + header + paginator
+    max-height: 442px;
+    overflow: auto;
+    flex: 1;
+}
+
+.mat-paginator-sticky {
+    bottom: 0px;
+    position: sticky;
+    z-index: 10;
+}
+
 .big-graph-placeholder {
     flex: 1;
     background: rgb(194, 194, 194);
@@ -78,10 +91,10 @@ table {
 }
 
 .item-card-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left:10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
 }
 .item-card {
     height: 350px;
@@ -124,6 +137,7 @@ mat-card {
 .graph-expansion {
     display: none;
 }
+
 .toggle-active {
     margin-bottom: 10px;
     margin-left: 10px;
@@ -197,6 +211,7 @@ mat-card {
     .add-icon-mobile {
         display: inline-block;
     }
+
     .container {
         margin: 0;
     }
