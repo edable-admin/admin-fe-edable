@@ -7,11 +7,11 @@
         <mat-icon>add</mat-icon>Organisation
       </button>
       <button class="control-button" *ngIf="this.selectedOrg.id" (click)="editOrgDialog()" mat-raised-button
-        color="warn">
+        color="primary">
         <mat-icon>edit</mat-icon>Edit
       </button>
       <button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()" mat-raised-button
-        color="accent">
+        color="warn">
         <mat-icon class="remove-icon">delete_forever</mat-icon>Delete
       </button>
       <mat-form-field class="control-button" appearance="standard">
@@ -19,9 +19,11 @@
         <input matInput (keyup)="applyFilter($event)" #input>
       </mat-form-field>
       <mat-radio-group aria-label="Select an option" [(ngModel)]="activeStatusFilter">
-        <mat-radio-button class='radio' value="Active" (click)="toggleActiveStatus('Active')">Active Orgs</mat-radio-button>
+        <mat-radio-button class='radio' value="Active" (click)="toggleActiveStatus('Active')">Active Orgs
+        </mat-radio-button>
         <mat-radio-button class='radio' value="All" (click)="toggleActiveStatus('All')">All Orgs</mat-radio-button>
-        <mat-radio-button class='radio' value="Inactive" (click)="toggleActiveStatus('Inactive')">Inactive Orgs</mat-radio-button>
+        <mat-radio-button class='radio' value="Inactive" (click)="toggleActiveStatus('Inactive')">Inactive Orgs
+        </mat-radio-button>
       </mat-radio-group>
     </div>
 
@@ -58,8 +60,7 @@
         </mat-paginator>
       </div>
 
-      <div class="big-graph-placeholder"> <img src="{{selectedOrg.img}}"
-        (error)="onImgError($event)"
+      <div class="big-graph-placeholder"> <img src="{{selectedOrg.img}}" (error)="onImgError($event)"
           style="width: 300px; height:auto; max-height: 400px;" alt="">
       </div>
       <div class="graph-expansion">
@@ -71,7 +72,7 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="small-graph-placeholder">
-              <img src="{{selectedOrg.img}}" (error)="onImgError($event)"  style="width: 200px; height:auto;" alt="">
+              <img src="{{selectedOrg.img}}" (error)="onImgError($event)" style="width: 200px; height:auto;" alt="">
             </div>
           </mat-expansion-panel>
         </mat-accordion>
@@ -94,11 +95,9 @@
       <!--All Organisation Item Cards-->
       <mat-card class="item-card" *ngFor="let item of items">
         <mat-card-header>
-          <div class="overflow"
-              matTooltip="{{item.name}}"
-              [matTooltipPosition]="'below'"
-              aria-label="Button that displays a tooltip in various positions">
-              {{item.name}}
+          <div class="overflow" matTooltip="{{item.name}}" [matTooltipPosition]="'below'"
+            aria-label="Button that displays a tooltip in various positions">
+            {{item.name}}
           </div>
         </mat-card-header>
         <img mat-card-image src={{item.img}} (error)="onImgError($event)">
@@ -107,10 +106,11 @@
           <p>Raised: ${{item.totalDonations}}</p>
         </mat-card-content>
         <div class="item-card-button">
-          <button class="control-button" (click)="openItemUpdateDialog(item)" mat-raised-button color="warn">
+          <button class="control-button" (click)="openItemUpdateDialog(item)" mat-raised-button color="primary">
             <mat-icon>edit</mat-icon>
           </button>
-          <button class="control-button" (click)="removeDonationItemDialog(item.id, item.name)" mat-raised-button color="accent">
+          <button class=" control-button" (click)="removeDonationItemDialog(item.id, item.name)" mat-raised-button
+            color="warn">
             <mat-icon>delete_forever</mat-icon>
           </button>
         </div>
