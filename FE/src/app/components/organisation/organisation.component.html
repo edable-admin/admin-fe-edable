@@ -55,7 +55,7 @@
           </tr>
         </table>
 
-        <mat-paginator class="mat-paginator-sticky" [pageSizeOptions]="[5, 10, 25, 100]"
+        <mat-paginator class="mat-paginator-sticky" (page)="changePage($event)" [pageSizeOptions]="[5, 10, 25, 100]"
           aria-label="Select page of users">
         </mat-paginator>
       </section>
