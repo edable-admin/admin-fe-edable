@@ -260,6 +260,7 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
         this.ofs.removeOrganisation(this.selectedOrg.id).then((response) => {
+          this.initSelectedOrg();
           this.openSnackBar(response.message);
         });
       }
