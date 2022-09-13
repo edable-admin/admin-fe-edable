@@ -1,3 +1,4 @@
+
 .bigHeader {
     font-size: 30px;
     font-weight: bold;
@@ -7,6 +8,16 @@
 }
 hr {
     margin-bottom: 20px;
+}
+.text-box {
+    
+    overflow: auto;
+    .desc {
+        height: 35px;
+    }
+    .sum {
+        height: 15px;
+    }
 }
 .leftContainer {
     float:left;
