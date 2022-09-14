@@ -19,6 +19,7 @@ import { RemoveDonationItemComponent } from '../donation-item/remove-donation-it
 import { UpdateItemsComponent } from '../donation-item/update-donation-item/update-donation-item.component';
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { ImageService } from 'src/app/services/firebase/image-service/image.service';
+import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-organisation',
@@ -103,7 +104,6 @@ export class OrganisationComponent {
       website: '',
     };
   }
-
   //add form validation
   addDonationItemDialog(): void {
     const dialogRef = this.dialog.open(AddDonationItemComponent, {
@@ -332,7 +332,34 @@ export class OrganisationComponent {
   toggleActiveStatus(value: string) {
     this.initSelectedOrg();
     this.activeStatusFilter = value;
+    this.getOrgsSubscription = this.ofs
+      .getOrgs(this.activeStatusFilter)
+      .subscribe((orgs) => {        
+        this.orgData = new MatTableDataSource(orgs);
+        this.orgData.paginator = this.paginator;
+        this.orgData.sort = this.sort;
+        this.orgData.filterPredicate = function (
+          data,
+          filter: string
+        ): boolean {
+          return (
+            data.name.trim().toLowerCase().includes(filter) ||
+            data.totalDonations
+              .toString()
+              .trim()
+              .toLowerCase()
+              .includes(filter) ||
+            data.totalDonationItems
+              .toString()
+              .trim()
+              .toLowerCase()
+              .includes(filter)
+          );
+        };
+      });
+
     this.getOrgs();
+
   }
 
   //-------------------- GET ITEMS --------------------\\
@@ -342,7 +369,7 @@ export class OrganisationComponent {
     this.orgData.filter = filterValue.trim().toLowerCase();
 
     if (this.orgData.paginator) {
-      this.orgData.paginator.firstPage();
+      this.orgData.paginator.firstPage();      
     }
   }
 
@@ -365,5 +392,26 @@ export class OrganisationComponent {
   //Snackbar
   openSnackBar(message) {
     this._snackBar.open(message);
+  }
+  
+  //Org + Items Deselect on pgae change
+  changePage(event) {
+    this.selectedOrg = {
+      id: '',
+      ABN: '',
+      activeStatus: true,
+      description: '',
+      img: '',
+      name: '',
+      phone: '',
+      summary: '',
+      totalDonationItems: 0,
+      totalDonations: 0,
+      website: '',
+    };
+
+    for (var i = this.items.length; i >= 0; i--) {
+       this.items.splice(i)
+    }       
   }
 }
