@@ -39,11 +39,12 @@
           <mat-label>Website</mat-label>
           <input matInput formControlName="website" />
         </mat-form-field>
+        <mat-slide-toggle (change)="toggleOrg($event)" formControlName="activeStatus">Activate/Deactive
+        </mat-slide-toggle>
         <app-upload-image (imageOut)="getImageFromChild($event)"></app-upload-image>
         <div class="dialog-actions" mat-dialog-actions>
           <button mat-button (click)="onNoClick()">Cancel</button>
-          <button mat-button [disabled]="!organisationForm.valid" (click)="onSubmit()"
-            color="primary">Add</button>
+          <button mat-button [disabled]="!organisationForm.valid" (click)="onSubmit()" color="primary">Add</button>
         </div>
       </div>
     </div>
