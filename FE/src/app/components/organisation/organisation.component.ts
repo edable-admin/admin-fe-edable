@@ -217,24 +217,21 @@ export class OrganisationComponent {
           activeStatus: result.activeStatus,
         };
 
-        // check for active status and change filter to follow org
-        switch (orgReq.activeStatus) {
-          case true:
-            this.activeStatusFilter = 'Active';
-            break;
-          case false:
-            this.activeStatusFilter = 'Inactive';
-            break;
-          default:
-            break;
-        }
-
-        // re-initiate orgs or they wont load
-        this.getOrgs();
+        this.getOrgsSubscription.unsubscribe();
 
         this.ofs.editOrganisation(this.selectedOrg.id, orgReq).then((resp) => {
           this.selectedOrg = resp;
           this.openSnackBar(resp.name + ' Edited Successfully');
+
+          // check for active status and change filter to follow org
+          switch (resp.activeStatus) {
+            case true:
+              this.toggleActiveStatus('Active');
+              break;
+            case false:
+              this.toggleActiveStatus('Inactive');
+              break;
+          }
 
           if (result?.file) {
             this.imgService
@@ -351,6 +348,9 @@ export class OrganisationComponent {
           );
         };
       });
+
+    this.getOrgs();
+
   }
 
   //-------------------- GET ITEMS --------------------\\

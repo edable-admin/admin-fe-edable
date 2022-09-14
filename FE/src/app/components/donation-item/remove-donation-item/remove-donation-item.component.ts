@@ -24,7 +24,6 @@ export class RemoveDonationItemComponent {
   //-------------------------------------------------------------------//
 
   onNoClick(): void {
-    console.log(this.data);
     this.dialogRef.close();
   }
   async onDelete() {
