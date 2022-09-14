@@ -104,12 +104,12 @@ export class OrganisationService {
         return ActiveOrg;
 
       case 'Inactive':
-        let InacviveOrg = this.fs
+        let InactiveOrg = this.fs
           .collection('Organisations', (query) =>
             query.where('activeStatus', '==', false)
           )
           .valueChanges({ idField: 'id' });
-        return InacviveOrg;
+        return InactiveOrg;
 
       default:
         return null;

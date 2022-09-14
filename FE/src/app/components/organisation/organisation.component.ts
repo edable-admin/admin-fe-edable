@@ -20,6 +20,8 @@ import { UpdateItemsComponent } from '../donation-item/update-donation-item/upda
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { ImageService } from 'src/app/services/firebase/image-service/image.service';
 import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
+import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
+import { DonationService } from 'src/app/services/firebase/donation-service/donation.service';
 
 @Component({
   selector: 'app-organisation',
@@ -44,6 +46,7 @@ export class OrganisationComponent {
   activeItems: Item[];
   orgData: any;
   items: Item[] = [];
+  donations: GeneralDonations[] = [];
   activeStatusFilter: string = 'Active';
 
   activeStatusToggle: boolean = true;
@@ -66,7 +69,8 @@ export class OrganisationComponent {
     public ofs: OrganisationService,
     public _snackBar: MatSnackBar,
     public ifs: ItemService,
-    public imgService: ImageService
+    public imgService: ImageService,
+    public dfs: DonationService,
   ) { }
 
   ngOnDestroy(): void {
@@ -172,11 +176,10 @@ export class OrganisationComponent {
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
+      this.getOrgsSubscription.unsubscribe();
+
       //----------------------------- Create an Org --------------------------//
       if (result) {
-        
-        this.getOrgsSubscription.unsubscribe();
-
         this.ofs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message);
           switch (result.activeStatus) {
@@ -188,6 +191,7 @@ export class OrganisationComponent {
               break;
           }
         });
+
       }
     });
   }
@@ -330,13 +334,19 @@ export class OrganisationComponent {
     });
   }
 
+  getDonations(orgID) {
+    this.dfs.getDonations(orgID).subscribe((donations) => {
+      console.log(donations);
+    })
+  }
+
   // change active status filter (active/inactive/all)
   toggleActiveStatus(value: string) {
     this.initSelectedOrg();
     this.activeStatusFilter = value;
     this.getOrgsSubscription = this.ofs
       .getOrgs(this.activeStatusFilter)
-      .subscribe((orgs) => {        
+      .subscribe((orgs) => {
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
@@ -371,7 +381,7 @@ export class OrganisationComponent {
     this.orgData.filter = filterValue.trim().toLowerCase();
 
     if (this.orgData.paginator) {
-      this.orgData.paginator.firstPage();      
+      this.orgData.paginator.firstPage();
     }
   }
 
@@ -395,7 +405,7 @@ export class OrganisationComponent {
   openSnackBar(message) {
     this._snackBar.open(message);
   }
-  
+
   //Org + Items Deselect on pgae change
   changePage(event) {
     this.selectedOrg = {
@@ -414,6 +424,6 @@ export class OrganisationComponent {
 
     for (var i = this.items.length; i >= 0; i--) {
        this.items.splice(i)
-    }       
+    }
   }
 }
