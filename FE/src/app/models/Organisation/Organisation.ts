@@ -9,5 +9,6 @@ export interface Organisation {
   summary: string,
   totalDonationItems?: number,
   totalDonations?: number,
-  website:string
+  website: string,
+  file?:FileList
 }

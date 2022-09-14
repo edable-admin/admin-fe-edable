@@ -1,8 +1,10 @@
 <div class="edit-item-container">
   <form [formGroup]="editItemForm" novalidate>
     <mat-card-header>
-      <mat-card-title>Edit Item</mat-card-title>
+      <div class="bigHeader">Edit Item</div>
     </mat-card-header>
+    <hr size="2" width="90%" color="grey" />
+
     <mat-card-content>
       <div>
         <mat-form-field appearance="fill">
@@ -14,14 +16,14 @@
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Summary</mat-label>
-          <input matInput placeholder="Enter Summary" formControlName="summary">
+          <textarea class="text-box sum" matInput placeholder="Enter Summary" formControlName="summary"></textarea>
           <mat-hint align="end">{{editItemForm.controls.summary.value?.length || 0}}/90</mat-hint>
         </mat-form-field>
       </div>
       <div>
         <mat-form-field appearance="fill">
           <mat-label>Description</mat-label>
-          <input matInput placeholder="Enter Description" formControlName="description">
+          <textarea class="text-box desc" matInput placeholder="Enter Description" formControlName="description"></textarea>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Initial Price</mat-label>

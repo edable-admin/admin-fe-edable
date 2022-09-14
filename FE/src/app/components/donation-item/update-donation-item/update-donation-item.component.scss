@@ -1,9 +1,23 @@
 .edit-item-container{
-
+  .text-box {
+    overflow: auto;
+}
+.desc {
+  height: 35px;
+}
+.sum {
+  height: 15px;
+  
+}
   form{
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    .bigHeader {
+      font-size: 30px;
+      font-weight: bold;
+    }
 
     .mat-slide-toggle{
       padding:10px;

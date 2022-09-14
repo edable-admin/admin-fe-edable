@@ -1,7 +1,7 @@
 <div id="container">
 
   <div style="text-align: center;">
-    <div class="bigHeader">Add a Donation Item</div>
+    <div class="bigHeader">Add Item</div>
   </div>
   <hr size="2" width="90%" color="grey" />
 
@@ -14,17 +14,17 @@
       </mat-form-field>
       <mat-form-field class="form-field" appearance="fill">
         <mat-label>Summary</mat-label>
-        <input matInput formControlName="summary" />
+        <textarea class="text-box sum" matInput formControlName="summary"></textarea>
       </mat-form-field>
       <mat-form-field class="form-field" appearance="fill">
         <mat-label>Description</mat-label>
-        <input matInput formControlName="description" />
+        <textarea class="text-box desc" matInput formControlName="description" ></textarea>
       </mat-form-field>
     </div>
   </div>
   <div class="rightContainer">
     <div class="centerAlign">
-      <mat-form-field class="form-field" appearance="fill">
+      <mat-form-field class="form-field" hintLabel="Numeric Characters Only" appearance="fill">
         <mat-label>Donation Goal</mat-label>
         <input type="number" matInput formControlName="initialPrice" />
         <mat-error
