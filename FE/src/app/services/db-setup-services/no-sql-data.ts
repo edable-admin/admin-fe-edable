@@ -3,7 +3,7 @@ import { serverTimestamp } from "firebase/firestore";
 export const noSQLData = {
   Organisations: [
     {
-      name: "Donation Item Test",
+      name: "Donation Item Test ",
       summary: "t",
       description: "t",
       activeStatus: true,
@@ -20,42 +20,38 @@ export const noSQLData = {
     {
       paidAMT: 100,
       donationDate: serverTimestamp(),
-      IsError: false,
-      IsErrorMessage:"",
       IsRefunded: false,
       IsSubscribed: false,
       refundMessage: "",
-      donorPublicName: "Ursula",
+      donorPublicName: "jim",
+      comment: "hello",
     },
     {
       paidAMT: 398,
       donationDate: serverTimestamp(),
-      IsError: false,
-      IsErrorMessage:"",
       IsRefunded: false,
       IsSubscribed: false,
       refundMessage: "",
-      donorPublicName: "Jim",
+      donorPublicName: "Lorry",
+      comment: "hello",
     },
     {
       paidAMT: 122,
       donationDate: serverTimestamp(),
-      IsError: false,
-      IsErrorMessage:"",
       IsRefunded: true,
       IsSubscribed: false,
       refundMessage: "had to refund due to issues",
-      donorPublicName: "Noah",
+      donorPublicName: "Tori",
+      comment: "hello",
     },
     {
       paidAMT: 134,
       donationDate: serverTimestamp(),
-      IsError: false,
-      IsErrorMessage:"",
       IsRefunded: false,
       IsSubscribed: false,
       refundMessage: "",
-      donorPublicName: "James",
+      donorPublicName: "Obi Wan",
+      comment: "hello",
     }
   ],
   Items: [
@@ -75,31 +71,28 @@ export const noSQLData = {
     {
       paidAMT: 20,
       donationDate: serverTimestamp(),
-      IsError: false,
-      errorMessage: "",
       IsRefunded: false,
       refundMessage: "",
-      donorPublicName: "Wilson",
+      donorPublicName: "Qui Gon",
+      comment: "hey",
             
     },
     {
       paidAMT: 40,
       donationDate: serverTimestamp(),
-      IsError: false,
-      errorMessage: "",
       IsRefunded: false,
       refundMessage: "",
-      donorPublicName: "Riki",
+      donorPublicName: "Anikin",
+      comment: "hey",
             
     },
     {
       paidAMT: 80,
       donationDate: serverTimestamp(),
-      IsError: false,
-      errorMessage: "",
       IsRefunded: false,
       refundMessage: "",
-      donorPublicName: "Adam",
+      donorPublicName: "Padme",
+      comment: "hey",
             
     }
   ]

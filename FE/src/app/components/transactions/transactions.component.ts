@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DbSetupService } from 'src/app/services/db-setup-services/db-setup.service';
 
 @Component({
   selector: 'app-transactions',
@@ -7,10 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TransactionsComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dbs: DbSetupService) { }
 
   ngOnInit(): void {
-    
+    this.dbs.generateNoSQLStructure();
   }
 
 }
