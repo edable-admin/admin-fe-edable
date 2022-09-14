@@ -66,7 +66,7 @@ export class OrganisationComponent {
     public _snackBar: MatSnackBar,
     public ifs: ItemService,
     public imgService: ImageService
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     // check if there is a selected org base on id value being '' when null org
@@ -175,7 +175,16 @@ export class OrganisationComponent {
       //----------------------------- Create an Org --------------------------//
       if (result) {
         this.ofs.addOrganisation(result).then((response) => {
+          this.getOrgsSubscription.unsubscribe();
           this.openSnackBar(response.message);
+          switch (result.activeStatus) {
+            case true:
+              this.toggleActiveStatus('Active');
+              break;
+            case false:
+              this.toggleActiveStatus('Inactive');
+              break;
+          }
         });
       }
     });

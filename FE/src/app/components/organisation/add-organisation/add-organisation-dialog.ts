@@ -4,47 +4,55 @@ import { DialogData } from 'src/app/models/DialogData';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-    selector: 'add-organisation-dialog.component',
-    templateUrl: 'add-organisation-dialog.html',
-    styleUrls: ['add-organisation-dialog.scss'],
+  selector: 'add-organisation-dialog.component',
+  templateUrl: 'add-organisation-dialog.html',
+  styleUrls: ['add-organisation-dialog.scss'],
 })
 export class AddOrganisationDialog {
-    organisationForm: FormGroup;
+  organisationForm: FormGroup;
 
-    constructor(
-        public dialogRef: MatDialogRef<AddOrganisationDialog>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData,
-        private formBuilder: FormBuilder
-    ) {
-        this.organisationForm = this.formBuilder.group({
-            name: new FormControl('', Validators.required),
-            description: new FormControl('', Validators.required),
-            summary: new FormControl('', Validators.required),
-            ABN: new FormControl('', [Validators.required, Validators.pattern("^(\\d *?){11}$")]),
-            phone: new FormControl('', [Validators.required, Validators.pattern('^[0-9 ]*$')]),
-            website: new FormControl('', Validators.required)
-        });
-    }
-    //---------- Function to get image from image dialogBox --------------//
-    getImageFromChild(file: any) {
-        this.data.file = file;
-    }
-    //-------------------------------------------------------------------//
+  constructor(
+    public dialogRef: MatDialogRef<AddOrganisationDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private formBuilder: FormBuilder
+  ) {
+    this.organisationForm = this.formBuilder.group({
+      name: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      summary: new FormControl('', Validators.required),
+      ABN: new FormControl('', [Validators.required, Validators.pattern("^(\\d *?){11}$")]),
+      phone: new FormControl('', [Validators.required, Validators.pattern('^[0-9 ]*$')]),
+      website: new FormControl('', Validators.required),
+      activeStatus: this.data.activeStatus
 
-    onNoClick(): void {
-        this.dialogRef.close();
-    }
+    });
+  }
+  //---------- Function to get image from image dialogBox --------------//
+  getImageFromChild(file: any) {
+    this.data.file = file;
+  }
+  //-------------------------------------------------------------------//
 
-    onSubmit(): void {
-        if (!this.organisationForm.valid) return;
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 
-        this.data.name = this.organisationForm.get('name').value;
-        this.data.description = this.organisationForm.get('description').value;
-        this.data.summary = this.organisationForm.get('summary').value;
-        this.data.ABN = this.organisationForm.get('ABN').value;
-        this.data.phone = this.organisationForm.get('phone').value.replace(/\s/g, '');
-        this.data.website = this.organisationForm.get('website').value;
-        this.dialogRef.close(this.data);
-    }
+  toggleOrg(event: any) {
+    this.data.activeStatus = event.checked;
+  }
+
+
+  onSubmit(): void {
+    if (!this.organisationForm.valid) return;
+
+    this.data.name = this.organisationForm.get('name').value;
+    this.data.description = this.organisationForm.get('description').value;
+    this.data.summary = this.organisationForm.get('summary').value;
+    this.data.ABN = this.organisationForm.get('ABN').value;
+    this.data.phone = this.organisationForm.get('phone').value.replace(/\s/g, '');
+    this.data.website = this.organisationForm.get('website').value;
+    this.data.activeStatus = this.organisationForm.get('activeStatus').value;
+    this.dialogRef.close(this.data);
+  }
 }
 
