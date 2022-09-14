@@ -36,6 +36,11 @@ import { AddDonationItemComponent } from './components/donation-item/add-donatio
 import { RemoveDonationItemComponent } from './components/donation-item/remove-donation-item/remove-donation-item.component';
 import { UpdateItemsComponent } from './components/donation-item/update-donation-item/update-donation-item.component';
 import { ViewDonationItemComponent } from './components/donation-item/view-donation-item/view-donation-item.component';
+import { DonationItemTableComponent } from './components/donation-item/view-donation-item/donation-item-table/donation-item-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { ViewItemDetailsComponent } from './components/donation-item/view-donation-item/view-item-details/view-item-details.component';
 
 const config = environment.firebaseConfig;
 
@@ -59,7 +64,9 @@ const config = environment.firebaseConfig;
     AddDonationItemComponent,
     RemoveDonationItemComponent,
     UpdateItemsComponent,
-    ViewDonationItemComponent
+    ViewDonationItemComponent,
+    DonationItemTableComponent,
+    ViewItemDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -77,6 +84,9 @@ const config = environment.firebaseConfig;
     HttpClientModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [
     { provide: BUCKET, useValue: config.storageBucket }, AuthService

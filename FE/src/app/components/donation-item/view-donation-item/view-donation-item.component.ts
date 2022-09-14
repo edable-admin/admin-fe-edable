@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Timestamp } from 'firebase/firestore';
+import { Item, ViewItem, ViewItemInformation } from 'src/app/models/Item';
 
 @Component({
   selector: 'app-view-donation-item',
@@ -7,9 +10,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewDonationItemComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public dialogRef: MatDialogRef<ViewDonationItemComponent>,
+        @Inject(MAT_DIALOG_DATA) public item:ViewItem,
+  ) {
+  }
+
+  itemInformation: ViewItemInformation;
 
   ngOnInit(): void {
+    this.itemInformation = {
+      name:this.item.name,
+      description: this.item.description,
+      summary: this.item.summary,
+      img:this.item.img
+    }
+    console.log(this.item)
+    //console.log(this.data.createdAt.toDate().toLocaleDateString())
   }
 
 }

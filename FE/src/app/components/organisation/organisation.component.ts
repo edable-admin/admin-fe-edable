@@ -285,12 +285,14 @@ export class OrganisationComponent {
     });
   }
 
-  openViewItemDialog(){
+  openViewItemDialog(itemObject:Item){
     const dialogRef = this.dialog.open(ViewDonationItemComponent, {
       maxWidth: '90vw',
-      width: '500px',
+      maxHeight: '90vh',
       height: 'fit-content',
-      maxHeight: '90vh'
+      data: {
+        ...itemObject
+      }
     });
 
     // dialogRef.afterClosed().subscribe(() => {
