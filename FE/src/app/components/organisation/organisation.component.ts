@@ -19,6 +19,7 @@ import { RemoveDonationItemComponent } from '../donation-item/remove-donation-it
 import { UpdateItemsComponent } from '../donation-item/update-donation-item/update-donation-item.component';
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { ImageService } from 'src/app/services/firebase/image-service/image.service';
+import { ViewDonationItemComponent } from '../donation-item/view-donation-item/view-donation-item.component';
 
 @Component({
   selector: 'app-organisation',
@@ -282,6 +283,18 @@ export class OrganisationComponent {
         this.imgService.uploadImage(this.selectedOrg.id, res.file, res.item.id);
       }
     });
+  }
+
+  openViewItemDialog(){
+    const dialogRef = this.dialog.open(ViewDonationItemComponent, {
+      maxWidth: '90vw',
+      width: '500px',
+      height: 'fit-content',
+      maxHeight: '90vh'
+    });
+
+    // dialogRef.afterClosed().subscribe(() => {
+    // });
   }
 
   getOrgs() {
