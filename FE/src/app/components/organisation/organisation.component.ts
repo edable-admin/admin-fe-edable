@@ -174,8 +174,10 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
+        
+        this.getOrgsSubscription.unsubscribe();
+
         this.ofs.addOrganisation(result).then((response) => {
-          this.getOrgsSubscription.unsubscribe();
           this.openSnackBar(response.message);
           switch (result.activeStatus) {
             case true:
