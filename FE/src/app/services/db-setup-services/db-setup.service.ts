@@ -38,19 +38,20 @@ export class DbSetupService {
     orgRef.set(noSQLData.Organisations[0])
       .then(() => {
 
-        summaryRef.set(noSQLData.GeneralDonationsSummary[0])
-
-      }).then(() => {
-
+        for (var i = 0; i <= noSQLData.GeneralDonations.length; i++) {
         generalDonations.set(noSQLData.GeneralDonations[0])
+        }
 
       }).then(() => {
 
+        for (var i = 0; i <= noSQLData.Items.length; i++) {
         itemsRef.set(noSQLData.Items[0])
+        }
 
       }).then(() => {
-
+        for (var i = 0; i <= noSQLData.ItemDonations.length; i++) {
         itemDonationsRef.set(noSQLData.ItemDonations[0])
+        }
 
       }).then(resp => console.log(resp)).catch(err => console.log(err))
 
