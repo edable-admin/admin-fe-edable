@@ -224,15 +224,15 @@ export class OrganisationComponent {
           this.selectedOrg = resp;
           this.openSnackBar(resp.name + ' Edited Successfully');
 
-          // check for active status and change filter to follow org
-          switch (resp.activeStatus) {
-            case true:
-              this.toggleActiveStatus('Active');
-              break;
-            case false:
-              this.toggleActiveStatus('Inactive');
-              break;
-          }
+          // // check for active status and change filter to follow org
+          // switch (resp.activeStatus) {
+          //   case true:
+          //     this.toggleActiveStatus('Active');
+          //     break;
+          //   case false:
+          //     this.toggleActiveStatus('Inactive');
+          //     break;
+          // }
 
           if (result?.file) {
             this.imgService
@@ -290,6 +290,7 @@ export class OrganisationComponent {
       maxWidth: '90vw',
       maxHeight: '90vh',
       height: 'fit-content',
+      width:'max-content',
       data: {
         ...itemObject
       }

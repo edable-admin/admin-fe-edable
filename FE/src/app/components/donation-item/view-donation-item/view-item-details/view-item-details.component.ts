@@ -12,7 +12,6 @@ export class ViewItemDetailsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.itemInformation)
   }
 
 }

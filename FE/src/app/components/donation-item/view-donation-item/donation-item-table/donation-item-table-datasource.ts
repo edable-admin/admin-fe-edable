@@ -17,6 +17,7 @@ const EXAMPLE_DATA: DonationItemTableItem[] = [
   {donor:'Aob', amount:10, date:new Date('2023-05-02')},
   {donor:'Bob', amount:10, date:new Date()},
   {donor:'Bob', amount:10, date:new Date()},
+  {donor:'Bob', amount:1, date:new Date()},
   {donor:'Bob', amount:1, date:new Date()}
 ];
 
