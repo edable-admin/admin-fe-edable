@@ -12,7 +12,7 @@ import { RemoveOrganisationDialog } from './remove-organisation/remove-organisat
 import { Item } from 'src/app/models/Item';
 import { ItemService } from 'src/app/services/firebase/item-service/item.service';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
-import { Subscription } from 'rxjs';
+import { from, Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddDonationItemComponent } from '../donation-item/add-donation-item/add-donation-item.component';
 import { RemoveDonationItemComponent } from '../donation-item/remove-donation-item/remove-donation-item.component';
@@ -20,6 +20,7 @@ import { UpdateItemsComponent } from '../donation-item/update-donation-item/upda
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { ImageService } from 'src/app/services/firebase/image-service/image.service';
 import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
+import { MatTabLabel } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-organisation',
@@ -48,10 +49,6 @@ export class OrganisationComponent {
 
   activeStatusToggle: boolean = true;
 
-  getOrgsSubscription: Subscription;
-
-  getItemsSubscription: Subscription;
-
   //snackbar variables
   message: string;
 
@@ -72,8 +69,8 @@ export class OrganisationComponent {
   ngOnDestroy(): void {
     // check if there is a selected org base on id value being '' when null org
     if (this.selectedOrg.id != '') {
-      this.getOrgsSubscription.unsubscribe();
-      this.getItemsSubscription.unsubscribe();
+      // this.getOrgsSubscription.unsubscribe();
+      // this.getItemsSubscription.unsubscribe();
     }
   }
 
@@ -174,8 +171,9 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-        
-        this.getOrgsSubscription.unsubscribe();
+        console.log("add org result active status: " + result.activeStatus);
+
+        // this.getOrgsSubscription.unsubscribe();
 
         this.ofs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message);
@@ -228,7 +226,7 @@ export class OrganisationComponent {
           activeStatus: result.activeStatus,
         };
 
-        this.getOrgsSubscription.unsubscribe();
+        // this.getOrgsSubscription.unsubscribe();
 
         this.ofs.editOrganisation(this.selectedOrg.id, orgReq).then((resp) => {
           this.selectedOrg = resp;
@@ -295,37 +293,60 @@ export class OrganisationComponent {
     });
   }
 
-  getOrgs() {
-    this.getOrgsSubscription = this.ofs
-      .getOrgs(this.activeStatusFilter)
-      .subscribe((orgs) => {
-        this.orgData = new MatTableDataSource(orgs);
-        this.orgData.paginator = this.paginator;
-        this.orgData.sort = this.sort;
-        this.orgData.filterPredicate = function (
-          data,
-          filter: string
-        ): boolean {
-          return (
-            data.name.trim().toLowerCase().includes(filter) ||
-            data.totalDonations
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter) ||
-            data.totalDonationItems
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter)
-          );
-        };
-      });
+  async getOrgs() {
+    // this.ofs
+    //   .getOrgs(this.activeStatusFilter)
+    //   .subscribe((orgs) => {
+    //     this.orgData = new MatTableDataSource(orgs);
+    //     this.orgData.paginator = this.paginator;
+    //     this.orgData.sort = this.sort;
+    //     this.orgData.filterPredicate = function (
+    //       data,
+    //       filter: string
+    //     ): boolean {
+    //       return (
+    //         data.name.trim().toLowerCase().includes(filter) ||
+    //         data.totalDonations
+    //           .toString()
+    //           .trim()
+    //           .toLowerCase()
+    //           .includes(filter) ||
+    //         data.totalDonationItems
+    //           .toString()
+    //           .trim()
+    //           .toLowerCase()
+    //           .includes(filter)
+    //       );
+    //     };
+    //   });
+    let orgs = await this.ofs.getOrgs(this.activeStatusFilter);
+    this.orgData = new MatTableDataSource(orgs);
+    this.orgData.paginator = this.paginator;
+    this.orgData.sort = this.sort;
+    this.orgData.filterPredicate = function (
+      data,
+      filter: string
+    ): boolean {
+      return (
+        data.name.trim().toLowerCase().includes(filter) ||
+        data.totalDonations
+          .toString()
+          .trim()
+          .toLowerCase()
+          .includes(filter) ||
+        data.totalDonationItems
+          .toString()
+          .trim()
+          .toLowerCase()
+          .includes(filter)
+      );
+    };
+
   }
 
   //-------------------- GET ITEMS --------------------\\
   getItems(orgID) {
-    this.getItemsSubscription = this.ifs.getItems(orgID).subscribe((items) => {
+    this.ifs.getItems(orgID).subscribe((items) => {
       this.items = items as Item[];
     });
   }
@@ -334,32 +355,34 @@ export class OrganisationComponent {
   toggleActiveStatus(value: string) {
     this.initSelectedOrg();
     this.activeStatusFilter = value;
-    this.getOrgsSubscription = this.ofs
-      .getOrgs(this.activeStatusFilter)
-      .subscribe((orgs) => {        
-        this.orgData = new MatTableDataSource(orgs);
-        this.orgData.paginator = this.paginator;
-        this.orgData.sort = this.sort;
-        this.orgData.filterPredicate = function (
-          data,
-          filter: string
-        ): boolean {
-          return (
-            data.name.trim().toLowerCase().includes(filter) ||
-            data.totalDonations
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter) ||
-            data.totalDonationItems
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter)
-          );
-        };
-      });
+    // this.ofs
+    //   .getOrgs(this.activeStatusFilter)
+    //   .subscribe((orgs) => {
+    //     console.log(orgs);
 
+    //     this.orgData = new MatTableDataSource(orgs);
+    //     this.orgData.paginator = this.paginator;
+    //     this.orgData.sort = this.sort;
+    //     this.orgData.filterPredicate = function (
+    //       data,
+    //       filter: string
+    //     ): boolean {
+    //       return (
+    //         data.name.trim().toLowerCase().includes(filter) ||
+    //         data.totalDonations
+    //           .toString()
+    //           .trim()
+    //           .toLowerCase()
+    //           .includes(filter) ||
+    //         data.totalDonationItems
+    //           .toString()
+    //           .trim()
+    //           .toLowerCase()
+    //           .includes(filter)
+    //       );
+    //     };
+    //   });
+    // this.ofs.getOrgs(this.activeStatusFilter);
     this.getOrgs();
 
   }
@@ -371,7 +394,7 @@ export class OrganisationComponent {
     this.orgData.filter = filterValue.trim().toLowerCase();
 
     if (this.orgData.paginator) {
-      this.orgData.paginator.firstPage();      
+      this.orgData.paginator.firstPage();
     }
   }
 
@@ -379,7 +402,7 @@ export class OrganisationComponent {
   selectRow(orgData) {
     if (this.selectedOrg.id === orgData.id) {
       this.initSelectedOrg();
-      this.getItemsSubscription.unsubscribe();
+      // this.getItemsSubscription.unsubscribe();
 
       return;
     }
@@ -395,7 +418,7 @@ export class OrganisationComponent {
   openSnackBar(message) {
     this._snackBar.open(message);
   }
-  
+
   //Org + Items Deselect on pgae change
   changePage(event) {
     this.selectedOrg = {
@@ -413,7 +436,7 @@ export class OrganisationComponent {
     };
 
     for (var i = this.items.length; i >= 0; i--) {
-       this.items.splice(i)
-    }       
+      this.items.splice(i)
+    }
   }
 }
