@@ -15,7 +15,7 @@ export class OrganisationService {
     public storage: AngularFireStorage,
     public fs: AngularFirestore,
     public imgService: ImageService
-  ) {}
+  ) { }
 
   async removeOrganisation(orgID: string) {
     //gets the organisation
@@ -121,7 +121,7 @@ export class OrganisationService {
       name: orgData.name ? orgData.name : null,
       summary: orgData.summary ? orgData.summary : null,
       description: orgData.description ? orgData.description : null,
-      activeStatus: orgData.activeStatus ? orgData.activeStatus : true,
+      activeStatus: orgData.activeStatus,
       ABN: orgData.ABN ? orgData.ABN : null,
       phone: orgData.phone ? orgData.phone : null,
       website: orgData.website ? orgData.website : null,
