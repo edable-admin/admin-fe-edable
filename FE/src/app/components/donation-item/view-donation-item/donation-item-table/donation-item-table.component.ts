@@ -2,6 +2,7 @@ import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/cor
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { doc } from 'firebase/firestore';
 import { Item, ItemDonationsData, ViewItemFinancialDetails, ViewItemInformation } from 'src/app/models/Item';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 
@@ -24,9 +25,18 @@ export class DonationItemTableComponent implements AfterViewInit {
   }
 
   getOrgItemData() {
-    let data:ItemDonationsData[] = []
+    let data: ItemDonationsData[] = []
+
     this.ts.getOrgItemDonations(this.itemFinancialDetails.orgID,this.itemFinancialDetails.itemID).then(snap => snap.forEach(
-      doc => data.push(doc.data() as ItemDonationsData)
+      (doc) => {
+        data.push(doc.data() as ItemDonationsData)
+
+        //TODO later possibly for more detailed reports
+        //TODO sometimes collection is ItemDonations Other times it is ItemDonations
+        //TODO Make sure that ItemDonations name is the same accross all documents
+        // doc.ref.collection("Private").doc("Private").get()
+        // .then(donor => console.log(donor.data()))
+      }
     )).finally(() => {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
