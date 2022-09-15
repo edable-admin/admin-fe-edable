@@ -27,8 +27,9 @@ export class TransactionsComponent implements OnInit {
         this.ts.getOrgItemDonations(orgID, ItemID).then((resp) => {resp.docs.forEach(resp => resp.data())});
   }
 
-  //-------------------- Get General Donations for org --------------------------\\
-  getOrgGenDonations(orgID:string) {
-    this.ts.getOrgGeneralDonations(orgID).then((resp) => {resp.docs.forEach(resp => resp.data())});
+  //-------------------- Get all item donations ---------------------------------\\
+  getItemDonations() {
+    this.ts.getItemDonations().then((resp) => {resp.docs.forEach(resp => resp.data())});
+
   }
 }
