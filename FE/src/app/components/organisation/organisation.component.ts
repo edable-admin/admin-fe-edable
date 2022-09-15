@@ -68,10 +68,10 @@ export class OrganisationComponent {
 
   ngOnDestroy(): void {
     // check if there is a selected org base on id value being '' when null org
-    if (this.selectedOrg.id != '') {
-      // this.getOrgsSubscription.unsubscribe();
-      // this.getItemsSubscription.unsubscribe();
-    }
+    // if (this.selectedOrg.id != '') {
+    //   this.getOrgsSubscription.unsubscribe();
+    //   this.getItemsSubscription.unsubscribe();
+    // }
   }
 
   ngOnInit(): void {
@@ -173,7 +173,6 @@ export class OrganisationComponent {
       if (result) {
         console.log("add org result active status: " + result.activeStatus);
 
-        // this.getOrgsSubscription.unsubscribe();
 
         this.ofs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message);
@@ -225,8 +224,6 @@ export class OrganisationComponent {
           //totalDonations: result.totalDonations ? result.totalDonations : 0,
           activeStatus: result.activeStatus,
         };
-
-        // this.getOrgsSubscription.unsubscribe();
 
         this.ofs.editOrganisation(this.selectedOrg.id, orgReq).then((resp) => {
           this.selectedOrg = resp;
@@ -294,31 +291,7 @@ export class OrganisationComponent {
   }
 
   async getOrgs() {
-    // this.ofs
-    //   .getOrgs(this.activeStatusFilter)
-    //   .subscribe((orgs) => {
-    //     this.orgData = new MatTableDataSource(orgs);
-    //     this.orgData.paginator = this.paginator;
-    //     this.orgData.sort = this.sort;
-    //     this.orgData.filterPredicate = function (
-    //       data,
-    //       filter: string
-    //     ): boolean {
-    //       return (
-    //         data.name.trim().toLowerCase().includes(filter) ||
-    //         data.totalDonations
-    //           .toString()
-    //           .trim()
-    //           .toLowerCase()
-    //           .includes(filter) ||
-    //         data.totalDonationItems
-    //           .toString()
-    //           .trim()
-    //           .toLowerCase()
-    //           .includes(filter)
-    //       );
-    //     };
-    //   });
+
     let orgs = await this.ofs.getOrgs(this.activeStatusFilter);
     this.orgData = new MatTableDataSource(orgs);
     this.orgData.paginator = this.paginator;
@@ -355,36 +328,7 @@ export class OrganisationComponent {
   toggleActiveStatus(value: string) {
     this.initSelectedOrg();
     this.activeStatusFilter = value;
-    // this.ofs
-    //   .getOrgs(this.activeStatusFilter)
-    //   .subscribe((orgs) => {
-    //     console.log(orgs);
-
-    //     this.orgData = new MatTableDataSource(orgs);
-    //     this.orgData.paginator = this.paginator;
-    //     this.orgData.sort = this.sort;
-    //     this.orgData.filterPredicate = function (
-    //       data,
-    //       filter: string
-    //     ): boolean {
-    //       return (
-    //         data.name.trim().toLowerCase().includes(filter) ||
-    //         data.totalDonations
-    //           .toString()
-    //           .trim()
-    //           .toLowerCase()
-    //           .includes(filter) ||
-    //         data.totalDonationItems
-    //           .toString()
-    //           .trim()
-    //           .toLowerCase()
-    //           .includes(filter)
-    //       );
-    //     };
-    //   });
-    // this.ofs.getOrgs(this.activeStatusFilter);
     this.getOrgs();
-
   }
 
   //-------------------- GET ITEMS --------------------\\
@@ -402,7 +346,6 @@ export class OrganisationComponent {
   selectRow(orgData) {
     if (this.selectedOrg.id === orgData.id) {
       this.initSelectedOrg();
-      // this.getItemsSubscription.unsubscribe();
 
       return;
     }

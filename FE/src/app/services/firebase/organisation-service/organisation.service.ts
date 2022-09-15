@@ -91,61 +91,19 @@ export class OrganisationService {
     const orgsCollectionRef = this.fs.collection('Organisations').ref;
     const orgsQuery = orgsCollectionRef.get();
     const allOrgs = (await orgsQuery).docs.map((x) => x.data() as Organisation);
-    // return orgs;
 
     switch (filter) {
       case 'All':
-        console.log(allOrgs);
-
         return allOrgs;
-
       case 'Active':
         let activeOrgs = allOrgs.filter(org => org.activeStatus === true);
-        console.log(activeOrgs);
         return activeOrgs;
-
       case 'Inactive':
         let inactiveOrgs = allOrgs.filter(org => org.activeStatus === false);
-        console.log(inactiveOrgs);
         return inactiveOrgs;
-
       default:
         return null;
     }
-
-    // this.fs.collection('Organisations').ref.get().then((response) => {
-    //   console.log(response.data());
-
-    // });
-    // console.log("all orgs:" + orgs);
-
-
-    // switch (filter) {
-    //   case 'All':
-    //     let AllOrg = this.fs
-    //       .collection('Organisations')
-    //       .valueChanges({ idField: 'id' });
-    //     return AllOrg;
-
-    //   case 'Active':
-    //     let ActiveOrg = this.fs
-    //       .collection('Organisations', (query) =>
-    //         query.where('activeStatus', '==', true)
-    //       )
-    //       .valueChanges({ idField: 'id' });
-    //     return ActiveOrg;
-
-    //   case 'Inactive':
-    //     let InacviveOrg = this.fs
-    //       .collection('Organisations', (query) =>
-    //         query.where('activeStatus', '==', false)
-    //       )
-    //       .valueChanges({ idField: 'id' });
-    //     return InacviveOrg;
-
-    //   default:
-    //     return null;
-    // }
   }
 
   async addOrganisation(orgData: Organisation) {
