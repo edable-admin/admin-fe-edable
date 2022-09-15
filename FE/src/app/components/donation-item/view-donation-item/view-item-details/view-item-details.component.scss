@@ -2,13 +2,13 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  height: 400px;
-  max-width: 500px;
+  max-width: 400px;
   overflow: auto;
   text-align: center;
 
   .view-item-img {
     align-self: center;
+    margin-bottom: 5px;
   }
 }
 

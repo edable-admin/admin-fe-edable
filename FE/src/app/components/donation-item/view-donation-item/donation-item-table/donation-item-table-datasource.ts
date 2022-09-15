@@ -13,6 +13,16 @@ export interface DonationItemTableItem {
 
 // TODO: replace this with real data from your application
 const EXAMPLE_DATA: DonationItemTableItem[] = [
+  {donor:'Bobasdfasdfasdfasdf', amount:10, date:new Date('2023-05-01')},
+  {donor:'Aob', amount:10, date:new Date('2023-05-02')},
+  {donor:'Bob', amount:10, date:new Date()},
+  {donor:'Bob', amount:10, date:new Date()},
+  {donor:'Bob', amount:1, date:new Date()},
+  {donor:'Bob', amount:10, date:new Date('2023-05-01')},
+  {donor:'Aob', amount:10, date:new Date('2023-05-02')},
+  {donor:'Bob', amount:10, date:new Date()},
+  {donor:'Bob', amount:10, date:new Date()},
+  {donor:'Bob', amount:1, date:new Date()},
   {donor:'Bob', amount:10, date:new Date('2023-05-01')},
   {donor:'Aob', amount:10, date:new Date('2023-05-02')},
   {donor:'Bob', amount:10, date:new Date()},

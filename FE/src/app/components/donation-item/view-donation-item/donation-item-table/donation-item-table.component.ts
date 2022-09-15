@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
+import { ViewItemFinancialDetails, ViewItemInformation } from 'src/app/models/Item';
 import { DonationItemTableDataSource, DonationItemTableItem } from './donation-item-table-datasource';
 
 @Component({
@@ -14,6 +15,8 @@ export class DonationItemTableComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<DonationItemTableItem>;
   dataSource: DonationItemTableDataSource;
+
+  @Input() itemFinancialDetails:ViewItemFinancialDetails;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['donor', 'amount', 'date'];

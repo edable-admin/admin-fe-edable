@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Timestamp } from 'firebase/firestore';
-import { Item, ViewItem, ViewItemInformation } from 'src/app/models/Item';
+import { Item, ViewItem, ViewItemFinancialDetails, ViewItemInformation } from 'src/app/models/Item';
 
 @Component({
   selector: 'app-view-donation-item',
@@ -17,6 +17,7 @@ export class ViewDonationItemComponent implements OnInit {
   }
 
   itemInformation: ViewItemInformation;
+  itemFinancialDetails:ViewItemFinancialDetails;
 
   ngOnInit(): void {
     this.itemInformation = {
@@ -25,7 +26,13 @@ export class ViewDonationItemComponent implements OnInit {
       summary: this.item.summary,
       img:this.item.img
     }
-    console.log(this.item)
+
+    this.itemFinancialDetails = {
+      name:this.item.name,
+      initialPrice:this.item.initialPrice,
+      totalDonations:this.item.totalDonations,
+      createdAt:this.item.createdAt
+    }
     //console.log(this.data.createdAt.toDate().toLocaleDateString())
   }
 

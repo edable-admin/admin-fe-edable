@@ -14,6 +14,8 @@ export interface Item {
     dateCompleted?:FieldValue;
 }
 
+
+//---------------- These models are used for the view-items dialog box ------------//
 export interface ViewItem {
   summary: any;
   description: any;
@@ -26,11 +28,18 @@ export interface ViewItem {
   img: string;
   createdAt?:Timestamp;
   dateCompleted?:FieldValue;
-}
+};
+
+export interface ViewItemFinancialDetails{
+  name:string;
+  initialPrice: number;
+  totalDonations: number;
+  createdAt?:Timestamp;
+};
 
 export interface ViewItemInformation{
   summary: any;
   description: any;
   name: string;
   img: string;
-}
+};
