@@ -22,8 +22,6 @@ export class ViewDonationItemComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.item)
-
     this.itemInformation = {
       name:this.item.name,
       description: this.item.description,
@@ -39,7 +37,6 @@ export class ViewDonationItemComponent implements OnInit {
       totalDonations:this.item.totalDonations,
       createdAt:this.item.createdAt
     }
-    //console.log(this.data.createdAt.toDate().toLocaleDateString())
   }
 
 }

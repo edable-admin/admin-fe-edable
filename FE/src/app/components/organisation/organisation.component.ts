@@ -223,8 +223,6 @@ export class OrganisationComponent {
           summary: result.summary ? result.summary : '',
           website: result.website ? result.website : '',
           img: result.img ? result.img : '',
-          //totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
-          //totalDonations: result.totalDonations ? result.totalDonations : 0,
           activeStatus: result.activeStatus,
         };
 
