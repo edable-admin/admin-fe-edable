@@ -29,15 +29,15 @@ export class TransactionsComponent implements OnInit {
 
   //-------------------- Get all item donations ---------------------------------\\
   getItemDonations() {
-    this.ts.getItemDonations().then((resp) => {resp.docs.forEach(resp => resp.data)});
+    this.ts.getItemDonations().then((resp) => {resp.docs.forEach(resp => resp.data())});
   }
 
   //-------------------- Get General Donations for org --------------------------\\
   getOrgGenDonations(orgID:string) {
-    this.ts.getOrgGeneralDonations(orgID).then((resp) => {resp.docs.forEach(resp => resp.data)});
+    this.ts.getOrgGeneralDonations(orgID).then((resp) => {resp.docs.forEach(resp => resp.data())});
   }
   //-------------------- Get All General Donations for --------------------------\\
   getGenDonations() {
-    this.ts.getGeneralDonations().then((resp) => {resp.docs.forEach(resp => resp.data)});
+    this.ts.getGeneralDonations().then((resp) => {resp.docs.forEach(resp => resp.data())});
   }
 }
