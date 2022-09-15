@@ -19,16 +19,25 @@ export class TransactionsComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.getItemDonations();
+    
   }
-  //-------------------- GET ITEMS --------------------\\
+  
+  //-------------------- Get item donations for singular org --------------------\\
+  getOrgItemDonations(orgID:string, ItemID:string) {
+        this.ts.getOrgItemDonations(orgID, ItemID).then((resp) => {resp.docs.forEach(resp => console.log(resp.data(),"org item donos"))});
+  }
+
+  //-------------------- Get all item donations ---------------------------------\\
   getItemDonations() {
-    // this.getItemDonationsSubscription = this.ts.getItemDonations("3m9Tkk834Wr8HaX7Can3", "fpWWj0Rrpr3XHMS8ifk2").subscribe((donations) => {
-    //   console.log(donations);
-    //   this.itemDonations = donations as ItemDonations[];
-    // });
-
-    this.ts.getOrgItemDonations("3m9Tkk834Wr8HaX7Can3", "fpWWj0Rrpr3XHMS8ifk2").then((resp) => {resp.docs.forEach(resp => console.log(resp.data()))});
+    this.ts.getItemDonations().then((resp) => {resp.docs.forEach(resp => console.log(resp.data(),"all item donos"))});
   }
 
+  //-------------------- Get General Donations for org --------------------------\\
+  getOrgGenDonations(orgID:string) {
+    this.ts.getOrgGeneralDonations(orgID).then((resp) => {resp.docs.forEach(resp => console.log(resp.data(),"org gen donos"))});
+  }
+  //-------------------- Get All General Donations for --------------------------\\
+  getGenDonations() {
+    this.ts.getGeneralDonations().then((resp) => {resp.docs.forEach(resp => console.log(resp.data(),"all gen donos"))});
+  }
 }

@@ -16,23 +16,12 @@ export class TransactionService {
   ) { }
 
   //------------------------ Gets a list of donation items for an organisation -------------------\\
-
   getItemDonations() {
-  //   let itemDonations = this.fs
-  //     .collection('Organisations')
-  //     .doc(orgID)
-  //     .collection('Items')
-  //     .doc(itemID)
-  //     .collection('ItemsDonations')      
-  //     .valueChanges({ idField: 'id' });
-  //     console.log(itemDonations);
-  //   return itemDonations;
-  // }
-
-  let itemDonations = this.fs.firestore.collectionGroup("ItemsDonations").get();
-  return itemDonations;
+    let itemDonations = this.fs.firestore.collectionGroup("ItemsDonations").get();
+    return itemDonations;
   }
 
+  //------------------------ Get Org Item Donations ----------------------------------------------\\
   getOrgItemDonations(orgID: string, itemID: string) {
     let itemDonations = this.fs.firestore.collection('Organisations')
     .doc(orgID)
@@ -40,5 +29,19 @@ export class TransactionService {
     .doc(itemID)
     .collection("ItemsDonations").get();
      return itemDonations;
+  }
+
+  //------------------------ Get Org General Donations -------------------------------------------\\
+  getOrgGeneralDonations(orgID: string) {
+    let orgGenDonations = this.fs.firestore.collection('Organisations')
+    .doc(orgID)
+    .collection("GeneralDonations").get();
+    return orgGenDonations;
+  }
+
+  //------------------------ Get All General Donations -------------------------------------------\\
+  getGeneralDonations() {
+    let orgGenDonations = this.fs.firestore.collectionGroup('GeneralDonations').get();
+    return orgGenDonations;
   }
 }
