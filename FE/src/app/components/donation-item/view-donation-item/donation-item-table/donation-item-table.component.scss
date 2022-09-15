@@ -2,25 +2,29 @@
   width: 100%;
 }
 
+h1 {
+  font-weight: bold;
+}
 
-.table-container{
+
+.table-container {
   max-width: 89vw;
   max-height: 400px;
   overflow: auto;
 }
 
-.view-item-financial-details{
+.view-item-financial-details {
   display: flex;
   justify-content: space-evenly;
 
-  div{
-    padding:2px;
-    width:100%;
+  div {
+    padding: 2px;
+    width: 100%;
     text-align: left;
     background-color: lightgray;
     border: 0.5px solid black;
 
-    span{
+    span {
       font-weight: bold;
     }
   }
