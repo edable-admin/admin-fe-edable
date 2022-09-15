@@ -398,22 +398,7 @@ export class OrganisationComponent {
   
   //Org + Items Deselect on pgae change
   changePage(event) {
-    this.selectedOrg = {
-      id: '',
-      ABN: '',
-      activeStatus: true,
-      description: '',
-      img: '',
-      name: '',
-      phone: '',
-      summary: '',
-      totalDonationItems: 0,
-      totalDonations: 0,
-      website: '',
-    };
-
-    for (var i = this.items.length; i >= 0; i--) {
-       this.items.splice(i)
-    }       
+    this.initSelectedOrg();
+    
   }
 }
