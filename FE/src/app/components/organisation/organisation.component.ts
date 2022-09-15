@@ -67,7 +67,7 @@ export class OrganisationComponent {
     public _snackBar: MatSnackBar,
     public ifs: ItemService,
     public imgService: ImageService
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     // check if there is a selected org base on id value being '' when null org
@@ -104,7 +104,6 @@ export class OrganisationComponent {
       website: '',
     };
   }
-
   //add form validation
   addDonationItemDialog(): void {
     const dialogRef = this.dialog.open(AddDonationItemComponent, {
@@ -175,8 +174,19 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
+
+        this.getOrgsSubscription.unsubscribe();
+
         this.ofs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message);
+          switch (result.activeStatus) {
+            case true:
+              this.toggleActiveStatus('Active');
+              break;
+            case false:
+              this.toggleActiveStatus('Inactive');
+              break;
+          }
         });
       }
     });
@@ -339,7 +349,34 @@ export class OrganisationComponent {
   toggleActiveStatus(value: string) {
     this.initSelectedOrg();
     this.activeStatusFilter = value;
+    this.getOrgsSubscription = this.ofs
+      .getOrgs(this.activeStatusFilter)
+      .subscribe((orgs) => {
+        this.orgData = new MatTableDataSource(orgs);
+        this.orgData.paginator = this.paginator;
+        this.orgData.sort = this.sort;
+        this.orgData.filterPredicate = function (
+          data,
+          filter: string
+        ): boolean {
+          return (
+            data.name.trim().toLowerCase().includes(filter) ||
+            data.totalDonations
+              .toString()
+              .trim()
+              .toLowerCase()
+              .includes(filter) ||
+            data.totalDonationItems
+              .toString()
+              .trim()
+              .toLowerCase()
+              .includes(filter)
+          );
+        };
+      });
+
     this.getOrgs();
+
   }
 
   //-------------------- GET ITEMS --------------------\\
@@ -372,5 +409,11 @@ export class OrganisationComponent {
   //Snackbar
   openSnackBar(message) {
     this._snackBar.open(message);
+  }
+
+  //Org + Items Deselect on pgae change
+  changePage(event) {
+    this.initSelectedOrg();
+
   }
 }

@@ -3,20 +3,21 @@
 <body>
   <div class="container">
     <div class="table-header">
-      <button class="control-button" (click)="addOrgDialog()" mat-raised-button color="primary">
+      <button mat-raised-button class="control-button" (click)="addOrgDialog()" color="primary"
+        matTooltip="Add Organisation" aria-label="Add Organisation">
         <mat-icon>add</mat-icon>Organisation
       </button>
-      <button class="control-button" *ngIf="this.selectedOrg.id" (click)="editOrgDialog()" mat-raised-button
-        color="primary">
+      <button mat-raised-button class="control-button" *ngIf="this.selectedOrg.id" (click)="editOrgDialog()"
+        color="primary" matTooltip="Edit Organisation" aria-label="Edit Organisation">
         <mat-icon>edit</mat-icon>Edit
       </button>
-      <button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()" mat-raised-button
-        color="warn">
+      <button mat-raised-button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()"
+        color="warn" matTooltip="Delete Organisation" aria-label="Delete Organisation">
         <mat-icon class="remove-icon">delete_forever</mat-icon>Delete
       </button>
       <mat-form-field class="control-button" appearance="standard">
         <mat-label>Search Organisations</mat-label>
-        <input matInput (keyup)="applyFilter($event)" #input>
+        <input matInput aria-label="Search Organisations" (keyup)="applyFilter($event)" #input>
       </mat-form-field>
       <mat-radio-group aria-label="Select an option" [(ngModel)]="activeStatusFilter">
         <mat-radio-button class='radio' value="Active" (click)="toggleActiveStatus('Active')">Active Orgs
@@ -55,7 +56,7 @@
           </tr>
         </table>
 
-        <mat-paginator class="mat-paginator-sticky" [pageSizeOptions]="[5, 10, 25, 100]"
+        <mat-paginator class="mat-paginator-sticky" (page)="changePage($event)" [pageSizeOptions]="[5, 10, 25, 100]"
           aria-label="Select page of users">
         </mat-paginator>
       </section>
@@ -81,7 +82,8 @@
     <div class="item-container">
 
       <!--Add Item-->
-      <mat-card class="add-item-card" *ngIf="this.selectedOrg.id !== ''" (click)="addDonationItemDialog()">
+      <mat-card class="add-item-card" *ngIf="this.selectedOrg.id !== ''" (click)="addDonationItemDialog()"
+        aria-label="Add Item">
         <mat-card-header>
           <mat-card-title>
             <mat-icon class="add-icon-mobile">add</mat-icon> Add Item
@@ -113,7 +115,7 @@
             <mat-icon>edit</mat-icon>
           </button>
           <button class=" control-button" (click)="removeDonationItemDialog(item.id, item.name)" mat-raised-button
-            color="warn">
+            color="warn" matTooltip="Delete Item" aria-label="Delete Item">
             <mat-icon>delete_forever</mat-icon>
           </button>
         </div>
