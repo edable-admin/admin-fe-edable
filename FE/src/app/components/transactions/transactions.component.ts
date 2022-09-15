@@ -11,13 +11,7 @@ import { stringToKeyValue } from '@angular/flex-layout/extended/style/style-tran
 })
 export class TransactionsComponent implements OnInit {
 
-  getItemDonationsSubscription: Subscription;
-  itemDonations: ItemDonations[] = [];
-  
-
-  constructor(public ts:TransactionService) { }
-
-  
+  constructor() { }
 
   ngOnInit(): void {
     
