@@ -1,11 +1,18 @@
 import { Timestamp } from "firebase/firestore";
 
 export interface GeneralDonations {
-  IsSubscribed: boolean,
+  IsError: boolean,
+  IsErrorMessage: string,
   IsRefunded: boolean,
   donationDate: Timestamp,
   paidAMT: number,
   refundMessage:string,
-  comment:string,
-  donorPublicName:string  
+  donor: {
+    IsAnon: boolean,
+    agreeToContact: boolean,
+    email: string,
+    mailingAddress: string,
+    name: string,
+    phone: string,
+  }
 }
