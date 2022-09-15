@@ -1,7 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 
-export interface GeneralDonations {
-  IsSubscribed: boolean,
+export interface ItemDonations {
   IsRefunded: boolean,
   donationDate: Timestamp,
   paidAMT: number,

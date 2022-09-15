@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { Subscription } from 'rxjs';
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
-import { stringToKeyValue } from '@angular/flex-layout/extended/style/style-transforms';
+
 
 export interface PeriodicElement {
   date: string;
@@ -31,15 +31,20 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class TransactionsComponent implements OnInit {
 
+  getItemDonationsSubscription: Subscription;
+  itemDonations: ItemDonations[] = [];
+
   dataSource = ELEMENT_DATA;
   displayedColumns: string[] = ['date', 'name', 'email', 'donationItem', 'donationAmount', 'organisation'];
 
-  constructor() { }
+  constructor(public ts:TransactionService) { }
+
+
 
   ngOnInit(): void {
-    
+   
   }
-  
+
   //-------------------- Get item donations for singular org --------------------\\
   getOrgItemDonations(orgID:string, ItemID:string) {
         this.ts.getOrgItemDonations(orgID, ItemID).then((resp) => {resp.docs.forEach(resp => resp.data())});
@@ -48,6 +53,7 @@ export class TransactionsComponent implements OnInit {
   //-------------------- Get all item donations ---------------------------------\\
   getItemDonations() {
     this.ts.getItemDonations().then((resp) => {resp.docs.forEach(resp => resp.data())});
+
   }
 
   //-------------------- Get General Donations for org --------------------------\\
