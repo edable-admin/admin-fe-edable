@@ -17,9 +17,13 @@ export class ViewDonationItemComponent implements OnInit {
   }
 
   itemInformation: ViewItemInformation;
-  itemFinancialDetails:ViewItemFinancialDetails;
+  itemFinancialDetails: ViewItemFinancialDetails;
+
 
   ngOnInit(): void {
+
+    console.log(this.item)
+
     this.itemInformation = {
       name:this.item.name,
       description: this.item.description,
@@ -28,6 +32,8 @@ export class ViewDonationItemComponent implements OnInit {
     }
 
     this.itemFinancialDetails = {
+      orgID: this.item.orgID,
+      itemID:this.item.id,
       name:this.item.name,
       initialPrice:this.item.initialPrice,
       totalDonations:this.item.totalDonations,

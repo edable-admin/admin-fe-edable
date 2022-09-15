@@ -302,7 +302,8 @@ export class OrganisationComponent {
       height: 'fit-content',
       width:'max-content',
       data: {
-        ...itemObject
+        ...itemObject,
+        orgID:this.selectedOrg.id
       }
     });
 

@@ -31,6 +31,8 @@ export interface ViewItem {
 };
 
 export interface ViewItemFinancialDetails{
+  itemID: string,
+  orgID:string
   name:string;
   initialPrice: number;
   totalDonations: number;
@@ -43,3 +45,11 @@ export interface ViewItemInformation{
   name: string;
   img: string;
 };
+
+export interface ItemDonationsData{
+  IsRefunded: boolean,
+  amount: number,
+  comment: string,
+  donationDate: Timestamp,
+  donorPublicName:string
+}
