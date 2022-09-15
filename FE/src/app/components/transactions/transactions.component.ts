@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { Subscription } from 'rxjs';
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
+import { stringToKeyValue } from '@angular/flex-layout/extended/style/style-transforms';
 
 @Component({
   selector: 'app-transactions',
@@ -19,7 +20,7 @@ export class TransactionsComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.getOrgItemDonations("3m9Tkk834Wr8HaX7Can3", "fpWWj0Rrpr3XHMS8ifk2");
+    
   }
   
   //-------------------- Get item donations for singular org --------------------\\
