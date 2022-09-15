@@ -7,8 +7,19 @@
   text-align: center;
 
   .view-item-img {
+    width: 30vh;
     align-self: center;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+  }
+
+  .text-container {
+    max-height: 350px;
+    overflow: auto;
+
+    span {
+      font-weight: bold;
+    }
+
   }
 }
 
