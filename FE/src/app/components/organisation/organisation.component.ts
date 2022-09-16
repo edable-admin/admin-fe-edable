@@ -334,8 +334,14 @@ export class OrganisationComponent {
     });
   }
 
-  getDonations(orgID) {
-    this.dfs.getDonations(orgID).subscribe((donations) => {
+  getGeneralDonations(orgID) {
+    this.dfs.getGeneralDonations(orgID).subscribe((donations) => {
+      console.log(donations);
+    })
+  }
+
+  getItemsDonations(orgID, ) {
+    this.dfs.getGeneralDonations(orgID).subscribe((donations) => {
       console.log(donations);
     })
   }
