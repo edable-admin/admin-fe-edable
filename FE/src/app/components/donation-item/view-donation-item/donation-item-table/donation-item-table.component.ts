@@ -24,12 +24,13 @@ export class DonationItemTableComponent implements AfterViewInit {
   constructor(public ts: TransactionService) {
   }
 
+  itemDonationData: ItemDonationsData[] = [];
+
   getOrgItemData() {
-    let data: ItemDonationsData[] = []
 
     this.ts.getOrgItemDonations(this.itemFinancialDetails.orgID,this.itemFinancialDetails.itemID).then(snap => snap.forEach(
       (doc) => {
-        data.push(doc.data() as ItemDonationsData)
+        this.itemDonationData.push(doc.data() as ItemDonationsData)
 
         //TODO later possibly for more detailed reports
         //TODO sometimes collection is ItemDonations Other times it is ItemDonations
@@ -38,7 +39,7 @@ export class DonationItemTableComponent implements AfterViewInit {
         // .then(donor => console.log(donor.data()))
       }
     )).finally(() => {
-      this.dataSource = new MatTableDataSource(data);
+      this.dataSource = new MatTableDataSource(this.itemDonationData);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     });

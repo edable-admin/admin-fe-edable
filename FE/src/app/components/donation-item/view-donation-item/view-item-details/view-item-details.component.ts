@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ViewItemInformation } from 'src/app/models/Item';
+import { ViewItemFinancialDetails, ViewItemInformation } from 'src/app/models/Item';
 
 @Component({
   selector: 'app-view-item-details',
@@ -7,7 +7,7 @@ import { ViewItemInformation } from 'src/app/models/Item';
   styleUrls: ['./view-item-details.component.scss']
 })
 export class ViewItemDetailsComponent implements OnInit {
-  @Input() itemInformation:ViewItemInformation;
+  @Input() itemInformation: ViewItemInformation;
 
   constructor() { }
 

@@ -1,0 +1,58 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { ItemDonationsData, ViewItemFinancialDetails } from 'src/app/models/Item';
+import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
+
+@Component({
+  selector: 'app-export-csv',
+  templateUrl: './export-csv.component.html',
+  styleUrls: ['./export-csv.component.scss']
+})
+export class ExportCsvComponent implements OnInit {
+
+  @Input() itemDonationData: ItemDonationsData[] = [];
+  @Input() itemFinancialDetails:ViewItemFinancialDetails;
+
+  constructor() { }
+
+  ngOnInit(): void {
+    console.log(this.itemDonationData)
+  }
+
+  exportCSV() {
+
+    interface itemDonationCSVModel{
+      IsRefunded: boolean,
+      amount: number,
+      comment: string,
+      donationDate: string,
+      donorPublicName:string
+  }
+
+    const options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalseparator: '.',
+      showLabels: true,
+      showTitle: true,
+      title: `Item: ${this.itemFinancialDetails.name}`,
+      useBom: true,
+      noDownload: false,
+      headers: ["Donation_Date", "Donor_Public_Name", "Comment", "Amount", "IsRefunded"],
+      useHeader: false,
+      nullToEmptyString: false,
+    };
+
+    const data: itemDonationCSVModel[] = this.itemDonationData.map((item: ItemDonationsData) => {
+      const newItemDonation: itemDonationCSVModel = {
+        donationDate: item.donationDate.toDate().toLocaleDateString(),
+        donorPublicName: item.donorPublicName,
+        comment: item.comment,
+        amount: item.amount,
+        IsRefunded: item.IsRefunded
+      }
+      return newItemDonation;
+    })
+    new AngularCsv([...data,{colOne:"",colTwo:"",colThree:"Total:",Total:this.itemFinancialDetails.totalDonations}],`Item:${this.itemFinancialDetails.name}`,options)
+  }
+
+}

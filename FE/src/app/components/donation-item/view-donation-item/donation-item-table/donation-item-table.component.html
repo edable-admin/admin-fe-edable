@@ -31,4 +31,8 @@
   <mat-paginator #paginator [length]="dataSource?.data?.length" [pageIndex]="0" [pageSize]="20"
     [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
   </mat-paginator>
+  <app-export-csv
+    [itemDonationData]="itemDonationData"
+    [itemFinancialDetails]="itemFinancialDetails"
+  ></app-export-csv>
 </div>
