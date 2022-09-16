@@ -14,4 +14,9 @@ export class ViewItemDetailsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onImgError(event:Event) {
+    (event.target as HTMLImageElement).src =
+      'https://freepikpsd.com/file/2019/10/placeholder-image-png-5-Transparent-Images.png';
+  }
+
 }
