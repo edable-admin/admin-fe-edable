@@ -334,18 +334,6 @@ export class OrganisationComponent {
     });
   }
 
-  getGeneralDonations(orgID) {
-    this.dfs.getGeneralDonations(orgID).subscribe((donations) => {
-      console.log(donations);
-    })
-  }
-
-  getItemsDonations(orgID, ) {
-    this.dfs.getGeneralDonations(orgID).subscribe((donations) => {
-      console.log(donations);
-    })
-  }
-
   // change active status filter (active/inactive/all)
   toggleActiveStatus(value: string) {
     this.initSelectedOrg();

@@ -32,4 +32,31 @@ export class DonationService {
       .valueChanges({ idField: 'id' });
     return itemDonations;
   }
+
+  getPrivateDetails(orgID: string) {
+    let privateDetails = this.fs
+      .collection('Organisations')
+      .doc(orgID)
+      .collection('Items')
+      .doc('W6yP3MqZzxWcJyZb5c1R')
+      .collection('ItemsDonations')
+      .doc('BkPPUQPtdbQdjLC1PLzY')
+      .collection('Private')
+      .doc('Private')
+      .valueChanges({ idField: 'id' });
+    return privateDetails;
+  }
+
+  updateDonation(orgID: string, itemID: string, donationID: string, updatedDonation: any) {
+    // Get Item Variable
+    const itemDocument = this.fs
+      .collection('Organisations')
+      .doc(orgID)
+      .collection('Items')
+      .doc(itemID)
+      .collection('ItemsDonations')
+      .doc(donationID)
+      .update(updatedDonation);
+    return itemDocument;
+  }
 }
