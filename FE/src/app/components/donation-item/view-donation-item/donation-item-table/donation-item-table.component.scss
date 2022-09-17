@@ -11,6 +11,11 @@ h1 {
   max-width: 89vw;
   max-height: 400px;
   overflow: auto;
+
+  .export-button-container{
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 
 .view-item-financial-details {
