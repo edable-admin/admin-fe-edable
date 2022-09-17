@@ -42,6 +42,8 @@ export class ExportCsvComponent implements OnInit {
       nullToEmptyString: false,
     };
 
+    //creates the data that will be in the csv
+    //converts donation date to format suitable for csv dd/mm/yy
     const data: itemDonationCSVModel[] = this.itemDonationData.map((item: ItemDonationsData) => {
       const newItemDonation: itemDonationCSVModel = {
         donationDate: item.donationDate.toDate().toLocaleDateString(),
@@ -52,6 +54,8 @@ export class ExportCsvComponent implements OnInit {
       }
       return newItemDonation;
     })
+
+    // Creates csv file that is downloaded
     new AngularCsv([...data,{colOne:"",colTwo:"",colThree:"Total:",Total:this.itemFinancialDetails.totalDonations}],`Item:${this.itemFinancialDetails.name}`,options)
   }
 
