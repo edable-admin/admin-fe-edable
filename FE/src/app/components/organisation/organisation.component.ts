@@ -419,5 +419,6 @@ export class OrganisationComponent {
     for (var i = this.items.length; i >= 0; i--) {
        this.items.splice(i)
     }
+    this.initSelectedOrg();
   }
 }
