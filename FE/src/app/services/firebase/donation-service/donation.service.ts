@@ -48,8 +48,7 @@ export class DonationService {
   }
 
   updateDonation(orgID: string, itemID: string, donationID: string, updatedDonation: any) {
-    // Get Item Variable
-    const itemDocument = this.fs
+    const donationDocument = this.fs
       .collection('Organisations')
       .doc(orgID)
       .collection('Items')
@@ -57,6 +56,6 @@ export class DonationService {
       .collection('ItemsDonations')
       .doc(donationID)
       .update(updatedDonation);
-    return itemDocument;
+    return donationDocument;
   }
 }
