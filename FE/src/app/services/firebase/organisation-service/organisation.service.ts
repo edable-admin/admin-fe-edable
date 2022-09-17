@@ -96,7 +96,9 @@ export class OrganisationService {
     const orgsQuery = await orgsCollectionRef.get();
 
     //Map data to Organisation model
-    const allOrgs = orgsQuery.docs.map((x) => x.data() as Organisation);
+    const allOrgs = orgsQuery.docs.map((org: any) => {
+      return { ...org.data(), id: org.id } as Organisation;
+    });
 
     //Filter array by active status
     switch (filter) {
