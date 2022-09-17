@@ -15,7 +15,6 @@ export class ExportCsvComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.itemDonationData)
   }
 
   exportCSV() {
