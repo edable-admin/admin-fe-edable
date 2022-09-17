@@ -88,10 +88,17 @@ export class OrganisationService {
 
   // Get orgs based on filter selected (acitve/inavtive/both)
   async getOrgs(filter: string): Promise<Organisation[]> {
-    const orgsCollectionRef = this.fs.collection('Organisations').ref;
-    const orgsQuery = orgsCollectionRef.get();
-    const allOrgs = (await orgsQuery).docs.map((x) => x.data() as Organisation);
 
+    //Reference to orgs collection
+    const orgsCollectionRef = this.fs.collection('Organisations').ref;
+
+    //Get all organisations
+    const orgsQuery = await orgsCollectionRef.get();
+
+    //Map data to Organisation model
+    const allOrgs = orgsQuery.docs.map((x) => x.data() as Organisation);
+
+    //Filter array by active status
     switch (filter) {
       case 'All':
         return allOrgs;
