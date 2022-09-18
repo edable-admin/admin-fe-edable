@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -26,7 +26,7 @@ import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
   templateUrl: './organisation.component.html',
   styleUrls: ['./organisation.component.scss'],
 })
-export class OrganisationComponent {
+export class OrganisationComponent implements OnInit {
   id: string | undefined;
   name: string | undefined;
   description: string | undefined;
@@ -42,9 +42,11 @@ export class OrganisationComponent {
   displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
   selectedOrg: Organisation;
   activeItems: Item[];
-  orgData: any;
+  orgData: any = new MatTableDataSource([]);
+  allOrgs:Organisation[] = []
   items: Item[] = [];
   activeStatusFilter: string = 'Active';
+  filterValue: string = "";
 
   activeStatusToggle: boolean = true;
 
@@ -55,7 +57,7 @@ export class OrganisationComponent {
   //snackbar variables
   message: string;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
@@ -78,7 +80,6 @@ export class OrganisationComponent {
   }
 
   ngOnInit(): void {
-    //this.ifs.addItem('4H9O58oiEH0D88AXZEUF',{name:"hi",activeStatus:false,description:"hi",summary:"hi",initialPrice:20,createdAt:serverTimestamp(), img:"",totalDonations:0, dateCompleted:null})
     this.getOrgs();
     this.initSelectedOrg();
   }
@@ -174,19 +175,8 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-        this.getOrgsSubscription.unsubscribe();
-        this.orgData = [];
-
         this.ofs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message);
-          switch (result.activeStatus) {
-            case true:
-              this.toggleActiveStatus('Active');
-              break;
-            case false:
-              this.toggleActiveStatus('Inactive');
-              break;
-          }
         });
       }
     });
@@ -238,22 +228,9 @@ export class OrganisationComponent {
               .uploadImage(this.selectedOrg.id, result.file)
               .then((imgURL) => (this.selectedOrg.img = imgURL));
           }
-
-          this.getOrgsSubscription.unsubscribe();
-          this.orgData = [];
-
-          let selectedOrg = resp;
-
-          // check for active status and change filter to follow org
-          switch (resp.activeStatus) {
-            case true:
-              this.toggleActiveStatus('Active',selectedOrg);
-              break;
-            case false:
-              this.toggleActiveStatus('Inactive',selectedOrg);
-              break;
-          }
         });
+
+        this.initSelectedOrg();
       }
     });
   }
@@ -301,30 +278,33 @@ export class OrganisationComponent {
 
   getOrgs() {
     this.getOrgsSubscription = this.ofs
-      .getOrgs(this.activeStatusFilter)
+      .getOrgs()
       .subscribe((orgs) => {
+        this.allOrgs = orgs as Organisation[];
         this.orgData = new MatTableDataSource(orgs);
-        this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
-        this.orgData.filterPredicate = function (
-          data,
-          filter: string
-        ): boolean {
+        this.orgData.paginator = this.paginator;
+        this.orgData.filterPredicate =
+          (data, filter: string): boolean => {
           return (
+            data.activeStatus === this.activeStatus &&
             data.name.trim().toLowerCase().includes(filter) ||
-            data.totalDonations
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter) ||
-            data.totalDonationItems
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter)
+              data.totalDonations
+                .toString()
+                .trim()
+                .toLowerCase()
+                .includes(filter) ||
+              data.totalDonationItems
+                .toString()
+                .trim()
+                .toLowerCase()
+                .includes(filter)
           );
-        };
+          };
+          this.toggleActiveStatus(this.activeStatusFilter)
       });
+
+
   }
 
   //-------------------- GET ITEMS --------------------\\
@@ -335,49 +315,41 @@ export class OrganisationComponent {
   }
 
   // change active status filter (active/inactive/all)
-  toggleActiveStatus(value: string, selectedOrg?:Organisation) {
+  toggleActiveStatus(activeStatusFilter: string) {
 
-    this.getOrgsSubscription.unsubscribe();
-    this.initSelectedOrg();
+    let filteredOrgs: Organisation[] = [];
 
-    this.activeStatusFilter = value;
-    this.getOrgsSubscription = this.ofs
-      .getOrgs(this.activeStatusFilter)
-      .subscribe(async (orgs) => {
-        this.orgData = new MatTableDataSource(orgs);
-        this.orgData.paginator = this.paginator;
-        this.orgData.sort = this.sort;
+    switch (activeStatusFilter) {
+      case "Active":
+        filteredOrgs =
+          this.allOrgs.filter(org => org.activeStatus === true);
+        this.activeStatusFilter = "Active";
+        break;
+      case 'Inactive':
+        filteredOrgs =
+          this.allOrgs.filter(org => org.activeStatus === false);
+        this.activeStatusFilter = "Inactive";
+        break;
+      case 'All':
+        filteredOrgs =
+          this.allOrgs.filter(org => org.activeStatus === true || org.activeStatus === false);
+        this.activeStatusFilter = "All";
+        break;
 
-        this.orgData.filterPredicate = function (
-          data,
-          filter: string
-        ): boolean {
-          return (
-            data.name.trim().toLowerCase().includes(filter) ||
-            data.totalDonations
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter) ||
-            data.totalDonationItems
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter)
-          );
-        };
-      });
+    }
 
-      if (selectedOrg) {
-        this.selectRow(selectedOrg)
-      }
+    this.orgData = new MatTableDataSource(filteredOrgs);
+    this.orgData.paginator = this.paginator;
+    this.orgData.sort = this.sort;
+    this.orgData.filter = this.filterValue;
   }
 
   //-------------------- GET ITEMS --------------------\\
   applyFilter(event: Event) {
     this.initSelectedOrg();
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.orgData.filter = filterValue.trim().toLowerCase();
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.filterValue = this.filterValue.trim().toLowerCase();
+    this.orgData.filter = this.filterValue;
 
     if (this.orgData.paginator) {
       this.orgData.paginator.firstPage();
