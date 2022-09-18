@@ -33,14 +33,14 @@ export class DonationService {
     return itemDonations;
   }
 
-  getPrivateDetails(orgID: string) {
+  getPrivateDetails(orgID: string, itemID: string, donationID: string) {
     let privateDetails = this.fs
       .collection('Organisations')
       .doc(orgID)
       .collection('Items')
-      .doc('W6yP3MqZzxWcJyZb5c1R')
+      .doc(itemID)
       .collection('ItemsDonations')
-      .doc('BkPPUQPtdbQdjLC1PLzY')
+      .doc(donationID)
       .collection('Private')
       .doc('Private')
       .valueChanges({ idField: 'id' });
