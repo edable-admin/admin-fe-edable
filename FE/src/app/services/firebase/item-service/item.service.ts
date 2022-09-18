@@ -21,6 +21,7 @@ export class ItemService {
       .doc(orgID)
       .collection('Items')
       .valueChanges({ idField: 'id' });
+      console.log(items);
     return items;
   }
 
