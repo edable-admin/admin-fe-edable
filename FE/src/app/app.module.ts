@@ -36,6 +36,7 @@ import { AddDonationItemComponent } from './components/donation-item/add-donatio
 import { RemoveDonationItemComponent } from './components/donation-item/remove-donation-item/remove-donation-item.component';
 import { UpdateItemsComponent } from './components/donation-item/update-donation-item/update-donation-item.component';
 import { ReportsComponent } from './components/reports/reports.component';
+import { WebdatarocksPivotModule } from 'ng-webdatarocks';
 
 const config = environment.firebaseConfig;
 
@@ -77,6 +78,7 @@ const config = environment.firebaseConfig;
     HttpClientModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    WebdatarocksPivotModule
   ],
   providers: [
     { provide: BUCKET, useValue: config.storageBucket }, AuthService
