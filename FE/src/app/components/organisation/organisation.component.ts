@@ -226,11 +226,11 @@ export class OrganisationComponent implements OnInit {
           if (result?.file) {
             this.imgService
               .uploadImage(this.selectedOrg.id, result.file)
-              .then((imgURL) => (this.selectedOrg.img = imgURL));
           }
+          this.initSelectedOrg();
         });
 
-        this.initSelectedOrg();
+
       }
     });
   }
@@ -280,6 +280,7 @@ export class OrganisationComponent implements OnInit {
     this.getOrgsSubscription = this.ofs
       .getOrgs()
       .subscribe((orgs) => {
+
         this.allOrgs = orgs as Organisation[];
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.sort = this.sort;
@@ -334,6 +335,8 @@ export class OrganisationComponent implements OnInit {
         filteredOrgs =
           this.allOrgs.filter(org => org.activeStatus === true || org.activeStatus === false);
         this.activeStatusFilter = "All";
+        break;
+      default:
         break;
 
     }
