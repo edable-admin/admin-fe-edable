@@ -14,6 +14,7 @@ import {MaterialsModule} from './modules/materials.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatNativeDateModule} from '@angular/material/core';
 import {HttpClientModule} from '@angular/common/http';
+import { ReportsComponent } from './components/reports/reports.component';
 
   // User canActivate with [AuthGuard] to secure endpoints and ensure user is logged in
   // { path: 'dashboard', component: OrganisationComponent,  canActivate: [AuthGuard]},
@@ -27,6 +28,7 @@ const routes: Routes = [
     children:[
       { path: '', component: OrganisationComponent},
       { path: 'transaction', component: TransactionsComponent},
+      { path: 'report', component: ReportsComponent}
     ]
   }
 
