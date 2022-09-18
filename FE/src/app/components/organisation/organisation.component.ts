@@ -174,8 +174,8 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-        
         this.getOrgsSubscription.unsubscribe();
+        this.orgData = [];
 
         this.ofs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message);
@@ -228,26 +228,30 @@ export class OrganisationComponent {
           activeStatus: result.activeStatus,
         };
 
-        this.getOrgsSubscription.unsubscribe();
+
 
         this.ofs.editOrganisation(this.selectedOrg.id, orgReq).then((resp) => {
-          this.selectedOrg = resp;
           this.openSnackBar(resp.name + ' Edited Successfully');
-
-          // check for active status and change filter to follow org
-          switch (resp.activeStatus) {
-            case true:
-              this.toggleActiveStatus('Active');
-              break;
-            case false:
-              this.toggleActiveStatus('Inactive');
-              break;
-          }
 
           if (result?.file) {
             this.imgService
               .uploadImage(this.selectedOrg.id, result.file)
               .then((imgURL) => (this.selectedOrg.img = imgURL));
+          }
+
+          this.getOrgsSubscription.unsubscribe();
+          this.orgData = [];
+
+          let selectedOrg = resp;
+
+          // check for active status and change filter to follow org
+          switch (resp.activeStatus) {
+            case true:
+              this.toggleActiveStatus('Active',selectedOrg);
+              break;
+            case false:
+              this.toggleActiveStatus('Inactive',selectedOrg);
+              break;
           }
         });
       }
@@ -331,15 +335,19 @@ export class OrganisationComponent {
   }
 
   // change active status filter (active/inactive/all)
-  toggleActiveStatus(value: string) {
+  toggleActiveStatus(value: string, selectedOrg?:Organisation) {
+
+    this.getOrgsSubscription.unsubscribe();
     this.initSelectedOrg();
+
     this.activeStatusFilter = value;
     this.getOrgsSubscription = this.ofs
       .getOrgs(this.activeStatusFilter)
-      .subscribe((orgs) => {        
+      .subscribe(async (orgs) => {
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
+
         this.orgData.filterPredicate = function (
           data,
           filter: string
@@ -360,8 +368,9 @@ export class OrganisationComponent {
         };
       });
 
-    this.getOrgs();
-
+      if (selectedOrg) {
+        this.selectRow(selectedOrg)
+      }
   }
 
   //-------------------- GET ITEMS --------------------\\
@@ -371,7 +380,7 @@ export class OrganisationComponent {
     this.orgData.filter = filterValue.trim().toLowerCase();
 
     if (this.orgData.paginator) {
-      this.orgData.paginator.firstPage();      
+      this.orgData.paginator.firstPage();
     }
   }
 
@@ -395,10 +404,10 @@ export class OrganisationComponent {
   openSnackBar(message) {
     this._snackBar.open(message);
   }
-  
+
   //Org + Items Deselect on pgae change
   changePage(event) {
     this.initSelectedOrg();
-    
+
   }
 }
