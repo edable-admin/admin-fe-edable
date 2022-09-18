@@ -35,6 +35,7 @@ import { DonationItemComponent } from './components/donation-item/donation-item.
 import { AddDonationItemComponent } from './components/donation-item/add-donation-item/add-donation-item.component';
 import { RemoveDonationItemComponent } from './components/donation-item/remove-donation-item/remove-donation-item.component';
 import { UpdateItemsComponent } from './components/donation-item/update-donation-item/update-donation-item.component';
+import { ReportsComponent } from './components/reports/reports.component';
 
 const config = environment.firebaseConfig;
 
@@ -57,7 +58,8 @@ const config = environment.firebaseConfig;
     DonationItemComponent,
     AddDonationItemComponent,
     RemoveDonationItemComponent,
-    UpdateItemsComponent
+    UpdateItemsComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,
