@@ -248,6 +248,7 @@ export class OrganisationComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
+        console.log(this.selectedOrg.id)
         this.ofs.removeOrganisation(this.selectedOrg.id).then((response) => {
           this.initSelectedOrg();
           this.openSnackBar(response.message);
