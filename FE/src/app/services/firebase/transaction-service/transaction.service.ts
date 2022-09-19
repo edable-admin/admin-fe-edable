@@ -27,7 +27,7 @@ export class TransactionService {
     .doc(orgID)
     .collection("Items")
     .doc(itemID)
-    .collection("ItemsDonations").get();
+    .collection("ItemDonations").get();
      return itemDonations;
   }
 

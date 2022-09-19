@@ -19,7 +19,7 @@ import { RemoveDonationItemComponent } from '../donation-item/remove-donation-it
 import { UpdateItemsComponent } from '../donation-item/update-donation-item/update-donation-item.component';
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { ImageService } from 'src/app/services/firebase/image-service/image.service';
-import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
+import { ViewDonationItemComponent } from '../donation-item/view-donation-item/view-donation-item.component';
 
 @Component({
   selector: 'app-organisation',
@@ -174,7 +174,7 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-        
+
         this.getOrgsSubscription.unsubscribe();
 
         this.ofs.addOrganisation(result).then((response) => {
@@ -223,8 +223,6 @@ export class OrganisationComponent {
           summary: result.summary ? result.summary : '',
           website: result.website ? result.website : '',
           img: result.img ? result.img : '',
-          //totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
-          //totalDonations: result.totalDonations ? result.totalDonations : 0,
           activeStatus: result.activeStatus,
         };
 
@@ -234,15 +232,15 @@ export class OrganisationComponent {
           this.selectedOrg = resp;
           this.openSnackBar(resp.name + ' Edited Successfully');
 
-          // check for active status and change filter to follow org
-          switch (resp.activeStatus) {
-            case true:
-              this.toggleActiveStatus('Active');
-              break;
-            case false:
-              this.toggleActiveStatus('Inactive');
-              break;
-          }
+          // // check for active status and change filter to follow org
+          // switch (resp.activeStatus) {
+          //   case true:
+          //     this.toggleActiveStatus('Active');
+          //     break;
+          //   case false:
+          //     this.toggleActiveStatus('Inactive');
+          //     break;
+          // }
 
           if (result?.file) {
             this.imgService
@@ -295,6 +293,22 @@ export class OrganisationComponent {
     });
   }
 
+  openViewItemDialog(itemObject:Item){
+    const dialogRef = this.dialog.open(ViewDonationItemComponent, {
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      height: 'fit-content',
+      width:'max-content',
+      data: {
+        ...itemObject,
+        orgID:this.selectedOrg.id
+      }
+    });
+
+    // dialogRef.afterClosed().subscribe(() => {
+    // });
+  }
+
   getOrgs() {
     this.getOrgsSubscription = this.ofs
       .getOrgs(this.activeStatusFilter)
@@ -336,7 +350,7 @@ export class OrganisationComponent {
     this.activeStatusFilter = value;
     this.getOrgsSubscription = this.ofs
       .getOrgs(this.activeStatusFilter)
-      .subscribe((orgs) => {        
+      .subscribe((orgs) => {
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
@@ -371,7 +385,7 @@ export class OrganisationComponent {
     this.orgData.filter = filterValue.trim().toLowerCase();
 
     if (this.orgData.paginator) {
-      this.orgData.paginator.firstPage();      
+      this.orgData.paginator.firstPage();
     }
   }
 
@@ -395,10 +409,10 @@ export class OrganisationComponent {
   openSnackBar(message) {
     this._snackBar.open(message);
   }
-  
+
   //Org + Items Deselect on pgae change
   changePage(event) {
     this.initSelectedOrg();
-    
+
   }
 }
