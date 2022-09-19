@@ -61,7 +61,7 @@ export class ReportsComponent implements OnInit {
       this.orgItems = itemData as Item[];
 
       const data: itemCSVModel[] = this.orgItems.map((item: Item) => {
-        const a: itemCSVModel = {
+        const newItem: itemCSVModel = {
           name: item.name,
           //TODO: Fix date format from timestamp
           dateCreated: item.createdAt.toString(),
@@ -73,7 +73,7 @@ export class ReportsComponent implements OnInit {
           dateCompleted: item.dateCompleted?.toString(),
           activeStatus: item.activeStatus
         }
-        return a;
+        return newItem;
 
       })
 
@@ -84,6 +84,29 @@ export class ReportsComponent implements OnInit {
 
   generateDonationReport() {
 
+    if (this.selectedOrg.id === '') {
+      this.snackBar.open("No organisation selected");
+      return;
+    }
+
+    const options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalseparator: '.',
+      showLabels: true,
+      showTitle: true,
+      title: `${this.selectedOrg.name}'s General Donations`,
+      useBom: true,
+      noDownload: false,
+      //TODO: Add Headers
+      headers: "",
+      useHeader: false,
+      nullToEmptyString: false,
+    };
+
+    //TODO: Call Org service to get geenral donations
+    //TODO: Map data to match headers
+    //TODO: Generaate CSV
   }
 
   getOrgs() {
