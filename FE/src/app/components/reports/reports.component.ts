@@ -120,7 +120,7 @@ export class ReportsComponent implements OnInit {
           comment: item.comment,
           isSubscribed: item.IsSubscribed,
           isRefunded: item.IsRefunded,
-          amount: item.paidAMT
+          paidAMT: item.paidAMT
         }
         return newItem;
       });
@@ -203,5 +203,5 @@ interface DonationCSVModel {
   comment: string,
   isSubscribed: boolean,
   isRefunded: boolean,
-  amount: number
+  paidAMT: number
 }
