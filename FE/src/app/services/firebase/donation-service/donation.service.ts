@@ -6,6 +6,7 @@ import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonatio
 import { retry } from 'rxjs';
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 
+
 @Injectable({
   providedIn: 'root',
 })
@@ -14,6 +15,7 @@ export class DonationService {
     public storage: AngularFireStorage,
     public fs: AngularFirestore
   ) { }
+
 
   getGeneralDonations(orgID: string) {
     let generalDonations = this.fs
@@ -46,7 +48,7 @@ export class DonationService {
       .valueChanges({ idField: 'id' });
     return itemDonations;
   }
-
+  
   async getAllItemsDonations() {
     let itemsDonations: ItemDonations[] = [];
     await this.fs.firestore
