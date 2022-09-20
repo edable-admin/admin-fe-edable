@@ -79,6 +79,8 @@ export class OrganisationComponent {
 
   ngOnInit(): void {
     //this.ifs.addItem('4H9O58oiEH0D88AXZEUF',{name:"hi",activeStatus:false,description:"hi",summary:"hi",initialPrice:20,createdAt:serverTimestamp(), img:"",totalDonations:0, dateCompleted:null})
+    
+    
     this.getOrgs();
     this.initSelectedOrg();
   }

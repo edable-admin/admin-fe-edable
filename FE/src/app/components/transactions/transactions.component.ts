@@ -99,8 +99,8 @@ async getGenDonations() {
     this.ts.getGeneralDonations().then(
       (snap) => {
         snap.docs.forEach(
-          async (genDon) => {
-            orgID = genDon.ref.parent.parent.id;
+           (genDon) => {
+            async orgID = genDon.ref.parent.parent.id;
 
             orgName = await this.getOrgs(orgID);
             
@@ -114,6 +114,7 @@ async getGenDonations() {
         //console.log(this.genDonData);
         
         this.generalDonDataSource = new MatTableDataSource(this.genDonData)
+        
         console.log(this.generalDonDataSource)
       }
      ).finally(() => {     
