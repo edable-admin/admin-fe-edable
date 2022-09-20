@@ -105,7 +105,7 @@
         <img mat-card-image src={{item.img}} (error)="onImgError($event)">
         <mat-card-content>
           <p>Goal: ${{item.initialPrice}}</p>
-          <p>Raised: ${{item.totalDonations}}</p>
+          <p>Raised: ${{item.totalDonationsValue}}</p>
         </mat-card-content>
         <div class="item-card-button">
           <button mat-raised-button color="primary" (click)="openViewItemDialog(item)">

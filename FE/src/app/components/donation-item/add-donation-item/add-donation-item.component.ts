@@ -58,7 +58,7 @@ export class AddDonationItemComponent {
       initialPrice: this.donationItemForm.get('initialPrice').value,
       createdAt: serverTimestamp(),
       img: '',
-      totalDonations: 0,
+      totalDonationsValue: 0,
       dateCompleted: null,
       orgID: this.data.id,
     };
