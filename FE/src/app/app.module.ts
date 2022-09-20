@@ -41,6 +41,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { ViewItemDetailsComponent } from './components/donation-item/view-donation-item/view-item-details/view-item-details.component';
+import { ExportCsvComponent } from './components/donation-item/view-donation-item/donation-item-table/export-csv/export-csv.component';
 
 const config = environment.firebaseConfig;
 
@@ -66,7 +67,8 @@ const config = environment.firebaseConfig;
     UpdateItemsComponent,
     ViewDonationItemComponent,
     DonationItemTableComponent,
-    ViewItemDetailsComponent
+    ViewItemDetailsComponent,
+    ExportCsvComponent
   ],
   imports: [
     BrowserModule,
