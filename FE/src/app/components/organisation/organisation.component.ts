@@ -175,9 +175,6 @@ export class OrganisationComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-
-        this.getOrgsSubscription.unsubscribe();
-
         this.ofs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message);
         });
@@ -234,7 +231,7 @@ export class OrganisationComponent implements OnInit {
           //     this.toggleActiveStatus('Inactive');
           //     break;
           // }
-          
+
           if (result?.file) {
             this.imgService
               .uploadImage(this.selectedOrg.id, result.file)
