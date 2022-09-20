@@ -127,12 +127,6 @@ export class ReportsComponent implements OnInit {
           isSubscribed: item.IsSubscribed,
           isRefunded: item.IsRefunded,
           amount: item.paidAMT
-
-          // donationDate: string,
-          // donorPublicName: string,
-          // comment: string,
-          // amount: number,
-          // isRefunded: boolean
         }
         return newItem;
       });
@@ -141,15 +135,10 @@ export class ReportsComponent implements OnInit {
       console.table(data);
       new AngularCsv(data, `${this.selectedOrg.name}'s General Donations Report`, options);
     });
-
-
-    //TODO: Call Org service to get geenral donations
-    //TODO: Map data to match headers
-    //TODO: Generaate CSV
   }
 
   getOrgs() {
-    this.ofs.getOrgs("All").subscribe(orgs => {
+    this.ofs.getOrgs().subscribe(orgs => {
       this.orgData = new MatTableDataSource(orgs as Organisation[]);
       this.orgData.paginator = this.paginator;
       this.orgData.sort = this.sort;
