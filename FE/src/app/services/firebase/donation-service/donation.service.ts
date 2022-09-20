@@ -22,6 +22,14 @@ export class DonationService {
     return generalDonations;
   }
 
+  getAllGeneralDonations() {
+    let allGeneralDonations = this.fs.firestore
+    .collectionGroup('GeneralDonations')
+      .get().then(snapshot => snapshot.docs
+      .forEach(generalDonation => console.log(generalDonation.data())))
+      return allGeneralDonations;
+  }
+
   getItemsDonations(orgID: string, itemID: string) {
     let itemDonations = this.fs
       .collection('Organisations')
@@ -31,6 +39,14 @@ export class DonationService {
       .collection('ItemsDonations')
       .valueChanges({ idField: 'id' });
     return itemDonations;
+  }
+
+  getAllItemsDonations() {
+    let allItemsDonations = this.fs.firestore
+    .collectionGroup('ItemsDonations')
+      .get().then(snapshot => snapshot.docs
+      .forEach(itemDonation => console.log(itemDonation.data())))
+      return allItemsDonations;
   }
 
   getPrivateDetails(orgID: string, itemID: string, donationID: string) {
