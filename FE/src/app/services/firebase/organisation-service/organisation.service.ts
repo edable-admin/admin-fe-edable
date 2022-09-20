@@ -88,34 +88,6 @@ export class OrganisationService {
     return response;
   }
 
-  // Get orgs based on filter selected (acitve/inavtive/both)
-  getOrgs(filter: string) {
-    switch (filter) {
-      case 'All':
-        let AllOrg = this.fs
-          .collection('Organisations')
-          .valueChanges({ idField: 'id' });
-        return AllOrg;
-
-      case 'Active':
-        let ActiveOrg = this.fs
-          .collection('Organisations', (query) =>
-            query.where('activeStatus', '==', true)
-          )
-          .valueChanges({ idField: 'id' });
-        return ActiveOrg;
-
-      case 'Inactive':
-        let InactiveOrg = this.fs
-          .collection('Organisations', (query) =>
-            query.where('activeStatus', '==', false)
-          )
-          .valueChanges({ idField: 'id' });
-        return InactiveOrg;
-
-      default:
-        return null;
-    }
   // Get all orgs
   getOrgs() {
       return this.fs

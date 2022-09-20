@@ -19,9 +19,6 @@ import { RemoveDonationItemComponent } from '../donation-item/remove-donation-it
 import { UpdateItemsComponent } from '../donation-item/update-donation-item/update-donation-item.component';
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { ImageService } from 'src/app/services/firebase/image-service/image.service';
-import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
-import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
-import { DonationService } from 'src/app/services/firebase/donation-service/donation.service';
 import { ViewDonationItemComponent } from '../donation-item/view-donation-item/view-donation-item.component';
 
 @Component({
@@ -48,7 +45,6 @@ export class OrganisationComponent implements OnInit {
   orgData: any = new MatTableDataSource([]);
   allOrgs:Organisation[] = []
   items: Item[] = [];
-  donations: GeneralDonations[] = [];
   activeStatusFilter: string = 'Active';
   filterValue: string = "";
 
@@ -72,8 +68,7 @@ export class OrganisationComponent implements OnInit {
     public ofs: OrganisationService,
     public _snackBar: MatSnackBar,
     public ifs: ItemService,
-    public imgService: ImageService,
-    public dfs: DonationService,
+    public imgService: ImageService
   ) { }
 
   ngOnDestroy(): void {
@@ -178,16 +173,14 @@ export class OrganisationComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
-      this.getOrgsSubscription.unsubscribe();
-
       //----------------------------- Create an Org --------------------------//
       if (result) {
 
         this.getOrgsSubscription.unsubscribe();
+
         this.ofs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message);
         });
-
       }
     });
   }
@@ -241,7 +234,7 @@ export class OrganisationComponent implements OnInit {
           //     this.toggleActiveStatus('Inactive');
           //     break;
           // }
-          
+
           if (result?.file) {
             this.imgService
               .uploadImage(this.selectedOrg.id, result.file)
@@ -352,34 +345,6 @@ export class OrganisationComponent implements OnInit {
   }
 
   // change active status filter (active/inactive/all)
-  toggleActiveStatus(value: string) {
-    this.initSelectedOrg();
-    this.activeStatusFilter = value;
-    this.getOrgsSubscription = this.ofs
-      .getOrgs(this.activeStatusFilter)
-      .subscribe((orgs) => {
-        this.orgData = new MatTableDataSource(orgs);
-        this.orgData.paginator = this.paginator;
-        this.orgData.sort = this.sort;
-        this.orgData.filterPredicate = function (
-          data,
-          filter: string
-        ): boolean {
-          return (
-            data.name.trim().toLowerCase().includes(filter) ||
-            data.totalDonations
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter) ||
-            data.totalDonationItems
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter)
-          );
-        };
-      });
 
   toggleActiveStatus(activeStatusFilter: string) {
 
@@ -448,23 +413,6 @@ export class OrganisationComponent implements OnInit {
 
   //Org + Items Deselect on pgae change
   changePage(event) {
-    this.selectedOrg = {
-      id: '',
-      ABN: '',
-      activeStatus: true,
-      description: '',
-      img: '',
-      name: '',
-      phone: '',
-      summary: '',
-      totalDonationItems: 0,
-      totalDonations: 0,
-      website: '',
-    };
-
-    for (var i = this.items.length; i >= 0; i--) {
-       this.items.splice(i)
-    }
     this.initSelectedOrg();
 
   }
