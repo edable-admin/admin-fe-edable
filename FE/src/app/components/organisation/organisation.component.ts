@@ -333,6 +333,10 @@ export class OrganisationComponent implements OnInit {
 
   toggleActiveStatus(activeStatusFilter: string) {
 
+    if(this.activeStatusFilter !== activeStatusFilter){
+      this.initSelectedOrg();
+    }
+
     let filteredOrgs: Organisation[] = [];
 
     switch (activeStatusFilter) {
