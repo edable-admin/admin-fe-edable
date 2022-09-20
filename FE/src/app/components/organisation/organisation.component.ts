@@ -175,7 +175,6 @@ export class OrganisationComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-
         this.ofs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message);
         });
