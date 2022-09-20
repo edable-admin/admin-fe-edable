@@ -33,6 +33,7 @@ export class AddDonationItemComponent {
         Validators.required,
         Validators.min(0.01),
       ]),
+      activeStatus: new FormControl(true)
     });
   }
 
@@ -51,7 +52,7 @@ export class AddDonationItemComponent {
 
     let item = {
       name: this.donationItemForm.get('name').value,
-      activeStatus: false,
+      activeStatus: this.donationItemForm.get('activeStatus').value,
       description: this.donationItemForm.get('description').value,
       summary: this.donationItemForm.get('summary').value,
       initialPrice: this.donationItemForm.get('initialPrice').value,
