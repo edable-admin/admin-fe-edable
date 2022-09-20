@@ -8,6 +8,8 @@ import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItemService } from 'src/app/services/firebase/item-service/item.service';
 import { Item } from 'src/app/models/Item';
+import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
+import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 
 @Component({
   selector: 'app-reports',
@@ -27,6 +29,7 @@ export class ReportsComponent implements OnInit {
   constructor(
     private ofs: OrganisationService,
     private ifs: ItemService,
+    private tfs: TransactionService,
     private snackBar: MatSnackBar
   ) { }
 
@@ -60,8 +63,8 @@ export class ReportsComponent implements OnInit {
 
       this.orgItems = itemData as Item[];
 
-      const data: itemCSVModel[] = this.orgItems.map((item: Item) => {
-        const newItem: itemCSVModel = {
+      const data: ItemCSVModel[] = this.orgItems.map((item: Item) => {
+        const newItem: ItemCSVModel = {
           name: item.name,
           //TODO: Fix date format from timestamp
           dateCreated: item.createdAt.toString(),
@@ -79,16 +82,16 @@ export class ReportsComponent implements OnInit {
 
       new AngularCsv(data, `${this.selectedOrg.name}'s Donation Item Report`, options);
     });
-
+    
   }
-
+  
   generateDonationReport() {
-
+    
     if (this.selectedOrg.id === '') {
       this.snackBar.open("No organisation selected");
       return;
     }
-
+    
     const options = {
       fieldSeparator: ',',
       quoteStrings: '"',
@@ -98,17 +101,28 @@ export class ReportsComponent implements OnInit {
       title: `${this.selectedOrg.name}'s General Donations`,
       useBom: true,
       noDownload: false,
-      //TODO: Add Headers
-      headers: "",
+      headers: ["Donation Date", "Donor Public Name", "Comment", "Amount", "IsRefunded"],
       useHeader: false,
       nullToEmptyString: false,
     };
+    let donations: GeneralDonations[] = [];
+    
+    this.tfs.getOrgGeneralDonations(this.selectedOrg.id).then((data) => {
+      data.forEach((resp) => {
+        donations.push(resp.data() as GeneralDonations);
+      });
+    });
 
+    donations.map((item) => {
+      
+    })
+    
+    new AngularCsv(donations, `${this.selectedOrg.name}'s General Donations Report`, options);
     //TODO: Call Org service to get geenral donations
     //TODO: Map data to match headers
     //TODO: Generaate CSV
   }
-
+  
   getOrgs() {
     this.ofs.getOrgs("All").subscribe(orgs => {
       this.orgData = new MatTableDataSource(orgs as Organisation[]);
@@ -153,7 +167,7 @@ export class ReportsComponent implements OnInit {
   }
 }
 
-interface itemCSVModel {
+interface ItemCSVModel {
   name: string,
   dateCreated?: string,
   initialPrice?: number,
@@ -162,4 +176,11 @@ interface itemCSVModel {
   isFunded?: boolean,
   dateCompleted?: string,
   activeStatus?: boolean
+}
+interface DonationCSVModel {
+  donationDate: string,
+  donorPublicName: string,
+  comment: string,
+  amount: number,
+  isRefunded: boolean
 }
