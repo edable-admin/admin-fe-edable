@@ -3,13 +3,16 @@
 <body>
   <div class="container">
     <div class="table-header">
-      <button mat-raised-button class="control-button" (click)="addOrgDialog()" color="primary" matTooltip="Add Organisation" aria-label="Add Organisation">
+      <button mat-raised-button class="control-button" (click)="addOrgDialog()" color="primary"
+        matTooltip="Add Organisation" aria-label="Add Organisation">
         <mat-icon>add</mat-icon>Organisation
       </button>
-      <button mat-raised-button class="control-button" *ngIf="this.selectedOrg.id" (click)="editOrgDialog()" color="primary" matTooltip="Edit Organisation" aria-label="Edit Organisation">
+      <button mat-raised-button class="control-button" *ngIf="this.selectedOrg.id" (click)="editOrgDialog()"
+        color="primary" matTooltip="Edit Organisation" aria-label="Edit Organisation">
         <mat-icon>edit</mat-icon>Edit
       </button>
-      <button mat-raised-button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()" color="warn" matTooltip="Delete Organisation" aria-label="Delete Organisation">
+      <button mat-raised-button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()"
+        color="warn" matTooltip="Delete Organisation" aria-label="Delete Organisation">
         <mat-icon class="remove-icon">delete_forever</mat-icon>Delete
       </button>
       <mat-form-field class="control-button" appearance="standard">
@@ -79,7 +82,8 @@
     <div class="item-container">
 
       <!--Add Item-->
-      <mat-card class="add-item-card" *ngIf="this.selectedOrg.id !== ''" (click)="addDonationItemDialog()" aria-label="Add Item">
+      <mat-card class="add-item-card" *ngIf="this.selectedOrg.id !== ''" (click)="addDonationItemDialog()"
+        aria-label="Add Item">
         <mat-card-header>
           <mat-card-title>
             <mat-icon class="add-icon-mobile">add</mat-icon> Add Item
@@ -104,10 +108,14 @@
           <p>Raised: ${{item.totalDonations}}</p>
         </mat-card-content>
         <div class="item-card-button">
-          <button class="control-button" (click)="openItemUpdateDialog(item)" mat-raised-button color="primary" matTooltip="Edit Item" aria-label="Edit Item">
+          <button mat-raised-button color="primary" (click)="openViewItemDialog(item)">
+            View
+          </button>
+          <button class="control-button" (click)="openItemUpdateDialog(item)" mat-raised-button color="primary">
             <mat-icon>edit</mat-icon>
           </button>
-          <button class=" control-button" (click)="removeDonationItemDialog(item.id, item.name)" mat-raised-button color="warn" matTooltip="Delete Item" aria-label="Delete Item">
+          <button class=" control-button" (click)="removeDonationItemDialog(item.id, item.name)" mat-raised-button
+            color="warn" matTooltip="Delete Item" aria-label="Delete Item">
             <mat-icon>delete_forever</mat-icon>
           </button>
         </div>
