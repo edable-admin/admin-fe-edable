@@ -55,7 +55,7 @@ export class ExportCsvComponent implements OnInit {
     })
 
     // Creates csv file that is downloaded
-    new AngularCsv([...data,{colOne:"",colTwo:"",colThree:"Total:",Total:this.itemFinancialDetails.totalDonations}],`Item:${this.itemFinancialDetails.name}`,options)
+    new AngularCsv([...data,{colOne:"",colTwo:"",colThree:"Total:",Total:this.itemFinancialDetails.totalDonationsValue}],`Item:${this.itemFinancialDetails.name}`,options)
   }
 
 }

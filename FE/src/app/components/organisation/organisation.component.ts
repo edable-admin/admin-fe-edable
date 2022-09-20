@@ -234,7 +234,7 @@ export class OrganisationComponent implements OnInit {
           //     this.toggleActiveStatus('Inactive');
           //     break;
           // }
-          
+
           if (result?.file) {
             this.imgService
               .uploadImage(this.selectedOrg.id, result.file)
