@@ -1,0 +1,31 @@
+.item-information-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 400px;
+  overflow: auto;
+  text-align: center;
+
+  .view-item-img {
+    width: 30vh;
+    align-self: center;
+    margin-bottom: 10px;
+  }
+
+  .text-container {
+    max-height: 350px;
+    overflow: auto;
+
+    span {
+      font-weight: bold;
+    }
+
+  }
+}
+
+
+@media(max-width: 1030px) {
+  .item-information-container {
+    height: 100%;
+  }
+}
