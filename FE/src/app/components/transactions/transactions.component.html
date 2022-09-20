@@ -8,7 +8,7 @@
        
     </div>
     <div class="lower">
-        <table [dataSource]="generalDonDataSource" mat-table class="mat-elevation-z8 table">
+        <table [dataSource]="genDonData" mat-table class="mat-elevation-z8 table">
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef> Date </th>
               <td mat-cell *matCellDef="let element"> {{element.donationDate.toDate().toLocaleDateString()}} </td>
@@ -24,17 +24,10 @@
               <td mat-cell *matCellDef="let element"> ${{element.paidAMT}} </td>
             </ng-container>
           
-            <ng-container matColumnDef="donationItem">
-              <th mat-header-cell *matHeaderCellDef> Donation Item </th>
-              <td mat-cell *matCellDef="let element"> {{element.donationItem}} </td>
-            </ng-container>
-
-            
             <ng-container matColumnDef="organisation">
-                <th mat-header-cell *matHeaderCellDef> Organisation </th>
-                <td mat-cell *matCellDef="let element"> {{element.organisation}} </td>
+              <th mat-header-cell *matHeaderCellDef> Organisation </th>
+              <td mat-cell *matCellDef="let element"> {{element.orgName}} </td>
             </ng-container>
-          
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>

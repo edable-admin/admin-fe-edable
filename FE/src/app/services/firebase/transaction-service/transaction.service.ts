@@ -17,13 +17,13 @@ export class TransactionService {
 
   //------------------------ Gets a list of donation items for an organisation -------------------\\
   getItemDonations() {
-    let itemDonations = this.fs.firestore.collectionGroup("ItemsDonations").get();
+    const itemDonations = this.fs.firestore.collectionGroup("ItemsDonations").get();
     return itemDonations;
   }
 
   //------------------------ Get Org Item Donations ----------------------------------------------\\
   getOrgItemDonations(orgID: string, itemID: string) {
-    let itemDonations = this.fs.firestore.collection('Organisations')
+    const itemDonations = this.fs.firestore.collection('Organisations')
     .doc(orgID)
     .collection("Items")
     .doc(itemID)
@@ -33,7 +33,7 @@ export class TransactionService {
 
   //------------------------ Get Org General Donations -------------------------------------------\\
   getOrgGeneralDonations(orgID: string) {
-    let orgGenDonations = this.fs.firestore.collection('Organisations')
+    const orgGenDonations = this.fs.firestore.collection('Organisations')
     .doc(orgID)
     .collection("GeneralDonations").get();
     return orgGenDonations;
@@ -41,7 +41,7 @@ export class TransactionService {
 
   //------------------------ Get All General Donations -------------------------------------------\\
   getGeneralDonations() {
-    let orgGenDonations = this.fs.firestore.collectionGroup('GeneralDonations').get();
+    const orgGenDonations = this.fs.firestore.collectionGroup('GeneralDonations').get();
     
     return orgGenDonations;
   }

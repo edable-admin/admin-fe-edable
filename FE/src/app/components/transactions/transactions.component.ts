@@ -38,9 +38,9 @@ export class TransactionsComponent implements OnInit {
   itemDonations: ItemDonations[] = [];
   
   orgData: any = [];
-  generalDonDataSource:any[] = [];
+  generalDonDataSource: any;
   displayedColumns: string[] = ['date', 'name', 'donationAmount', 'organisation'];
-
+  genDonData:any[]=[]
   
   constructor(
     public ts:TransactionService,
@@ -92,10 +92,10 @@ async getGenDonations() {
 
     //console.log(await this.getOrgs("3m9Tkk834Wr8HaX7Can3"))
 
-    let count = 0
+  
     let orgID:string;
     let orgName:string;
-    let genDonData:any[]=[]
+    //let genDonData:any[]=[]
     this.ts.getGeneralDonations().then(
       (snap) => {
         snap.docs.forEach(
@@ -104,22 +104,24 @@ async getGenDonations() {
 
             orgName = await this.getOrgs(orgID);
             
-            genDonData.push({
+            this.genDonData.push({
               ...genDon.data(), orgName:orgName
-
+              
             })
-
-
             
-          }
+          },  
         )
+        //console.log(this.genDonData);
+        
+        this.generalDonDataSource = new MatTableDataSource(this.genDonData)
+        console.log(this.generalDonDataSource)
       }
-    ).finally(() => {
+     ).finally(() => {     
       
-      this.generalDonDataSource = genDonData;
-      console.log(this.generalDonDataSource)
-    })
-
+      
+      
+     })
+     
     // this.ts.getGeneralDonations()
     // .then((snapshot) => 
     // {
@@ -169,6 +171,7 @@ async getGenDonations() {
     //   test = new MatTableDataSource(this.genDonations)
     //   //console.log(test)
     // })
+    
     
   }
 }
