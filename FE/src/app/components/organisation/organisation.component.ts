@@ -221,17 +221,6 @@ export class OrganisationComponent implements OnInit {
         this.ofs.editOrganisation(this.selectedOrg.id, orgReq).then((resp) => {
           this.openSnackBar(resp.name + ' Edited Successfully');
 
-
-          // // check for active status and change filter to follow org
-          // switch (resp.activeStatus) {
-          //   case true:
-          //     this.toggleActiveStatus('Active');
-          //     break;
-          //   case false:
-          //     this.toggleActiveStatus('Inactive');
-          //     break;
-          // }
-
           if (result?.file) {
             this.imgService
               .uploadImage(this.selectedOrg.id, result.file)
