@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -22,13 +22,14 @@ import { ImageService } from 'src/app/services/firebase/image-service/image.serv
 import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { DonationService } from 'src/app/services/firebase/donation-service/donation.service';
+import { ViewDonationItemComponent } from '../donation-item/view-donation-item/view-donation-item.component';
 
 @Component({
   selector: 'app-organisation',
   templateUrl: './organisation.component.html',
   styleUrls: ['./organisation.component.scss'],
 })
-export class OrganisationComponent {
+export class OrganisationComponent implements OnInit {
   id: string | undefined;
   name: string | undefined;
   description: string | undefined;
@@ -44,10 +45,12 @@ export class OrganisationComponent {
   displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
   selectedOrg: Organisation;
   activeItems: Item[];
-  orgData: any;
+  orgData: any = new MatTableDataSource([]);
+  allOrgs:Organisation[] = []
   items: Item[] = [];
   donations: GeneralDonations[] = [];
   activeStatusFilter: string = 'Active';
+  filterValue: string = "";
 
   activeStatusToggle: boolean = true;
 
@@ -58,7 +61,7 @@ export class OrganisationComponent {
   //snackbar variables
   message: string;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
@@ -82,7 +85,6 @@ export class OrganisationComponent {
   }
 
   ngOnInit(): void {
-    //this.ifs.addItem('4H9O58oiEH0D88AXZEUF',{name:"hi",activeStatus:false,description:"hi",summary:"hi",initialPrice:20,createdAt:serverTimestamp(), img:"",totalDonations:0, dateCompleted:null})
     this.getOrgs();
     this.initSelectedOrg();
   }
@@ -180,16 +182,10 @@ export class OrganisationComponent {
 
       //----------------------------- Create an Org --------------------------//
       if (result) {
+
+        this.getOrgsSubscription.unsubscribe();
         this.ofs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message);
-          switch (result.activeStatus) {
-            case true:
-              this.toggleActiveStatus('Active');
-              break;
-            case false:
-              this.toggleActiveStatus('Inactive');
-              break;
-          }
         });
 
       }
@@ -227,33 +223,33 @@ export class OrganisationComponent {
           summary: result.summary ? result.summary : '',
           website: result.website ? result.website : '',
           img: result.img ? result.img : '',
-          //totalDonationItems: result.totalDonationItems ? result.totalDonationItems : 0,
-          //totalDonations: result.totalDonations ? result.totalDonations : 0,
           activeStatus: result.activeStatus,
         };
 
-        this.getOrgsSubscription.unsubscribe();
+
 
         this.ofs.editOrganisation(this.selectedOrg.id, orgReq).then((resp) => {
-          this.selectedOrg = resp;
           this.openSnackBar(resp.name + ' Edited Successfully');
 
-          // check for active status and change filter to follow org
-          switch (resp.activeStatus) {
-            case true:
-              this.toggleActiveStatus('Active');
-              break;
-            case false:
-              this.toggleActiveStatus('Inactive');
-              break;
-          }
 
+          // // check for active status and change filter to follow org
+          // switch (resp.activeStatus) {
+          //   case true:
+          //     this.toggleActiveStatus('Active');
+          //     break;
+          //   case false:
+          //     this.toggleActiveStatus('Inactive');
+          //     break;
+          // }
+          
           if (result?.file) {
             this.imgService
               .uploadImage(this.selectedOrg.id, result.file)
-              .then((imgURL) => (this.selectedOrg.img = imgURL));
           }
+          this.initSelectedOrg();
         });
+
+
       }
     });
   }
@@ -271,6 +267,7 @@ export class OrganisationComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
+        console.log(this.selectedOrg.id)
         this.ofs.removeOrganisation(this.selectedOrg.id).then((response) => {
           this.initSelectedOrg();
           this.openSnackBar(response.message);
@@ -299,32 +296,52 @@ export class OrganisationComponent {
     });
   }
 
+  openViewItemDialog(itemObject:Item){
+    const dialogRef = this.dialog.open(ViewDonationItemComponent, {
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      height: 'fit-content',
+      width:'max-content',
+      data: {
+        ...itemObject,
+        orgID:this.selectedOrg.id
+      }
+    });
+
+    // dialogRef.afterClosed().subscribe(() => {
+    // });
+  }
+
   getOrgs() {
     this.getOrgsSubscription = this.ofs
-      .getOrgs(this.activeStatusFilter)
+      .getOrgs()
       .subscribe((orgs) => {
+
+        this.allOrgs = orgs as Organisation[];
         this.orgData = new MatTableDataSource(orgs);
-        this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
-        this.orgData.filterPredicate = function (
-          data,
-          filter: string
-        ): boolean {
+        this.orgData.paginator = this.paginator;
+        this.orgData.filterPredicate =
+          (data, filter: string): boolean => {
           return (
+            data.activeStatus === this.activeStatus &&
             data.name.trim().toLowerCase().includes(filter) ||
-            data.totalDonations
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter) ||
-            data.totalDonationItems
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter)
+              data.totalDonations
+                .toString()
+                .trim()
+                .toLowerCase()
+                .includes(filter) ||
+              data.totalDonationItems
+                .toString()
+                .trim()
+                .toLowerCase()
+                .includes(filter)
           );
-        };
+          };
+          this.toggleActiveStatus(this.activeStatusFilter)
       });
+
+
   }
 
   //-------------------- GET ITEMS --------------------\\
@@ -364,15 +381,44 @@ export class OrganisationComponent {
         };
       });
 
-    this.getOrgs();
+  toggleActiveStatus(activeStatusFilter: string) {
 
+    let filteredOrgs: Organisation[] = [];
+
+    switch (activeStatusFilter) {
+      case "Active":
+        filteredOrgs =
+          this.allOrgs.filter(org => org.activeStatus === true);
+        this.activeStatusFilter = "Active";
+        break;
+      case 'Inactive':
+        filteredOrgs =
+          this.allOrgs.filter(org => org.activeStatus === false);
+        this.activeStatusFilter = "Inactive";
+        break;
+      case 'All':
+        filteredOrgs =
+          this.allOrgs.filter(org => org.activeStatus === true || org.activeStatus === false);
+        this.activeStatusFilter = "All";
+        break;
+      default:
+        break;
+
+
+    }
+
+    this.orgData = new MatTableDataSource(filteredOrgs);
+    this.orgData.paginator = this.paginator;
+    this.orgData.sort = this.sort;
+    this.orgData.filter = this.filterValue;
   }
 
   //-------------------- GET ITEMS --------------------\\
   applyFilter(event: Event) {
     this.initSelectedOrg();
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.orgData.filter = filterValue.trim().toLowerCase();
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.filterValue = this.filterValue.trim().toLowerCase();
+    this.orgData.filter = this.filterValue;
 
     if (this.orgData.paginator) {
       this.orgData.paginator.firstPage();
@@ -420,5 +466,6 @@ export class OrganisationComponent {
        this.items.splice(i)
     }
     this.initSelectedOrg();
+
   }
 }

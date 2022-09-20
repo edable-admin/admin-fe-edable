@@ -24,13 +24,9 @@ export class OrganisationService {
     //gets the reference
     const orgRef = org.ref;
 
-    const generalDonationsSummary = org
-      .collection('GeneralDonations')
-      .doc('Summary');
-
     //gets the general donation limited to 1
-    const generalDonationsColl = generalDonationsSummary.collection(
-      'Donations',
+    const generalDonationsColl = org.collection(
+      'GeneralDonations',
       (query) => query.limit(1)
     );
 
@@ -44,6 +40,7 @@ export class OrganisationService {
     //gets org data and assigns it to orgName
     await orgRef.get().then((org) => (orgName = org.data()['name']));
 
+    //API call to get generalDonations
     const generalDonationsQuery = generalDonationsRef.get();
     const generalDonations: GeneralDonations[] = (
       await generalDonationsQuery
@@ -71,15 +68,20 @@ export class OrganisationService {
     }
 
     //If organisation does not have items or donations delete organisations
-    generalDonationsSummary.delete();
     org.delete();
 
-    this.storage
+    try {
+      this.storage
       .ref(`Organisations/${orgID}/orgLogo`)
       .delete()
       .subscribe({
         error: (err) => console.log(err),
       });
+    } catch (error) {
+      console.error(error)
+    }
+
+
 
     response = { message: `${orgName} Successfully Deleted` };
 
@@ -114,6 +116,11 @@ export class OrganisationService {
       default:
         return null;
     }
+  // Get all orgs
+  getOrgs() {
+      return this.fs
+      .collection('Organisations')
+      .valueChanges({ idField: 'id' })
   }
 
   async addOrganisation(orgData: Organisation) {
@@ -126,13 +133,14 @@ export class OrganisationService {
       phone: orgData.phone ? orgData.phone : null,
       website: orgData.website ? orgData.website : null,
       img: orgData.img ? orgData.img : null,
+      totalDonationCount: 0,
       totalDonationItems: 0,
       totalDonations: 0,
-    };
-
-    let generalDonationReq = {
-      totalGeneralDonations: 0,
-      numberOfDonations: 0,
+      totalDonationsValue: 0,
+      totalGeneralDonationsCount: 0,
+      totalGeneralDonationsValue:0,
+      totalItemDonationsCount:0,
+      totalItemDonationsValue:0
     };
 
     let orgRef = this.fs.collection('Organisations').doc().ref;
@@ -141,17 +149,10 @@ export class OrganisationService {
       this.imgService.uploadImage(orgRef.id, orgData.file);
     }
 
-    let generalDonationsRef = orgRef
-      .collection('GeneralDonations')
-      .doc('Summary');
-
     let batch = this.fs.firestore.batch();
 
     //adds the org
     batch.set(orgRef, orgReq, { merge: true });
-
-    //adds the general donations subcollection
-    batch.set(generalDonationsRef, generalDonationReq);
 
     //commits the batch
     batch.commit();
