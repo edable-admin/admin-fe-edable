@@ -39,7 +39,7 @@ export class OrganisationComponent implements OnInit {
   file: any;
   totalDonationItems: number;
   totalDonations: number;
-  displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
+  displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonationsValue'];
   selectedOrg: Organisation;
   activeItems: Item[];
   orgData: any = new MatTableDataSource([]);
@@ -294,7 +294,6 @@ export class OrganisationComponent implements OnInit {
     this.getOrgsSubscription = this.ofs
       .getOrgs()
       .subscribe((orgs) => {
-
         this.allOrgs = orgs as Organisation[];
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.sort = this.sort;
@@ -358,6 +357,7 @@ export class OrganisationComponent implements OnInit {
     }
 
     this.orgData = new MatTableDataSource(filteredOrgs);
+    console.log(filteredOrgs);
     this.orgData.paginator = this.paginator;
     this.orgData.sort = this.sort;
     this.orgData.filter = this.filterValue;
