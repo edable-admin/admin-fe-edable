@@ -68,9 +68,9 @@ export class ReportsComponent implements OnInit {
           name: item.name,
           createdAt: item.createdAt.toDate().toLocaleDateString(),
           initialPrice: item.initialPrice,
-          totalDonations: item.totalDonations,
-          amountRemaining: Math.max(0, (item.initialPrice - item.totalDonations)),
-          isFunded: item.totalDonations >= item.initialPrice,
+          totalDonationsValue: item.totalDonationsValue,
+          amountRemaining: Math.max(0, (item.initialPrice - item.totalDonationsValue)),
+          isFunded: item.totalDonationsValue >= item.initialPrice,
           dateCompleted: item.dateCompleted?.toDate().toLocaleTimeString(),
           activeStatus: item.activeStatus
         }
@@ -177,7 +177,7 @@ export class ReportsComponent implements OnInit {
 interface ItemCSVModel {
   name: string;
   initialPrice: number;
-  totalDonations: number;
+  totalDonationsValue: number;
   amountRemaining: number;
   isFunded: boolean;
   activeStatus: boolean;
@@ -190,7 +190,7 @@ interface ItemGetModel {
   id?: string;
   name: string;
   initialPrice: number;
-  totalDonations: number;
+  totalDonationsValue: number;
   activeStatus: boolean;
   orgID: string;
   img: string;
