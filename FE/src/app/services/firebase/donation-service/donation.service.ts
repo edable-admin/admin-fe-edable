@@ -3,6 +3,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { increment } from '@angular/fire/firestore';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
+import { retry } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class DonationService {
   constructor(
     public storage: AngularFireStorage,
     public fs: AngularFirestore
-  ) {}
+  ) { }
 
   getGeneralDonations(orgID: string) {
     let generalDonations = this.fs
@@ -22,12 +23,17 @@ export class DonationService {
     return generalDonations;
   }
 
-  getAllGeneralDonations() {
-    let allGeneralDonations = this.fs.firestore
-    .collectionGroup('GeneralDonations')
-      .get().then(snapshot => snapshot.docs
-      .forEach(generalDonation => console.log(generalDonation.data())))
-      return allGeneralDonations;
+  async getAllGeneralDonations() {
+    let donations: GeneralDonations[] = [];
+    await this.fs.firestore
+      .collectionGroup('GeneralDonations')
+      .get().then((resp) => {
+        resp.forEach((resp) => {
+          donations.push(resp.data() as GeneralDonations);
+        });
+      });
+
+    return donations;
   }
 
   getItemsDonations(orgID: string, itemID: string) {
@@ -43,10 +49,10 @@ export class DonationService {
 
   getAllItemsDonations() {
     let allItemsDonations = this.fs.firestore
-    .collectionGroup('ItemsDonations')
+      .collectionGroup('ItemsDonations')
       .get().then(snapshot => snapshot.docs
-      .forEach(itemDonation => console.log(itemDonation.data())))
-      return allItemsDonations;
+        .forEach(itemDonation => console.log(itemDonation.data())))
+    return allItemsDonations;
   }
 
   getPrivateDetails(orgID: string, itemID: string, donationID: string) {
