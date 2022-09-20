@@ -37,9 +37,9 @@ export class AddOrganisationDialog {
     this.dialogRef.close();
   }
 
-  toggleOrg(event: any) {
-    this.data.activeStatus = event.checked;
-  }
+  // toggleOrg(event: any) {
+  //   this.data.activeStatus = event.checked;
+  // }
 
 
   onSubmit(): void {
