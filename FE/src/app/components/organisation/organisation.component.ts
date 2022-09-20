@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -39,7 +39,7 @@ export class OrganisationComponent implements OnInit {
   file: any;
   totalDonationItems: number;
   totalDonations: number;
-  displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
+  displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonationsValue'];
   selectedOrg: Organisation;
   activeItems: Item[];
   orgData: any = new MatTableDataSource([]);
@@ -222,17 +222,6 @@ export class OrganisationComponent implements OnInit {
         this.ofs.editOrganisation(this.selectedOrg.id, orgReq).then((resp) => {
           this.openSnackBar(resp.name + ' Edited Successfully');
 
-
-          // // check for active status and change filter to follow org
-          // switch (resp.activeStatus) {
-          //   case true:
-          //     this.toggleActiveStatus('Active');
-          //     break;
-          //   case false:
-          //     this.toggleActiveStatus('Inactive');
-          //     break;
-          // }
-          
           if (result?.file) {
             this.imgService
               .uploadImage(this.selectedOrg.id, result.file)
@@ -258,7 +247,6 @@ export class OrganisationComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        console.log(this.selectedOrg.id)
         this.ofs.removeOrganisation(this.selectedOrg.id).then((response) => {
           this.initSelectedOrg();
           this.openSnackBar(response.message);
@@ -307,7 +295,6 @@ export class OrganisationComponent implements OnInit {
     this.getOrgsSubscription = this.ofs
       .getOrgs()
       .subscribe((orgs) => {
-
         this.allOrgs = orgs as Organisation[];
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.sort = this.sort;
@@ -371,6 +358,7 @@ export class OrganisationComponent implements OnInit {
     }
 
     this.orgData = new MatTableDataSource(filteredOrgs);
+    console.log(filteredOrgs);
     this.orgData.paginator = this.paginator;
     this.orgData.sort = this.sort;
     this.orgData.filter = this.filterValue;

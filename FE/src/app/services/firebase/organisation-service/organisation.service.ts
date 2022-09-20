@@ -93,6 +93,7 @@ export class OrganisationService {
       return this.fs
       .collection('Organisations')
       .valueChanges({ idField: 'id' })
+
   }
 
   async addOrganisation(orgData: Organisation) {

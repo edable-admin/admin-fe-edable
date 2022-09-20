@@ -6,7 +6,7 @@ export interface Item {
     id?: string;
     name: string;
     initialPrice: number;
-    totalDonations: number;
+    totalDonationsValue: number;
     activeStatus: boolean;
     orgID: string;
     img: string;
@@ -22,7 +22,7 @@ export interface ViewItem {
   id?: string;
   name: string;
   initialPrice: number;
-  totalDonations: number;
+  totalDonationsValue: number;
   activeStatus: boolean;
   orgID: string;
   img: string;
@@ -35,7 +35,7 @@ export interface ViewItemFinancialDetails{
   orgID:string
   name:string;
   initialPrice: number;
-  totalDonations: number;
+  totalDonationsValue: number;
   createdAt?:Timestamp;
 };
 

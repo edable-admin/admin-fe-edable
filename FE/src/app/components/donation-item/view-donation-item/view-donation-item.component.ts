@@ -34,7 +34,8 @@ export class ViewDonationItemComponent implements OnInit {
       itemID:this.item.id,
       name:this.item.name,
       initialPrice:this.item.initialPrice,
-      totalDonations:this.item.totalDonations,
+      totalDonationsValue:this.item.totalDonationsValue
+      ,
       createdAt:this.item.createdAt
     }
   }

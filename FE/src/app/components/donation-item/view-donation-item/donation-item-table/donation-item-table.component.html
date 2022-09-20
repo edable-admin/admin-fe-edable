@@ -1,7 +1,7 @@
 <h1>Item: {{itemFinancialDetails.name}}</h1>
 <div class="view-item-financial-details">
   <div><span>Cost:</span> ${{itemFinancialDetails.initialPrice}}</div>
-  <div><span>Donated:</span> ${{itemFinancialDetails.totalDonations}}</div>
+  <div><span>Donated:</span> ${{itemFinancialDetails.totalDonationsValue}}</div>
   <div><span>Listed On:</span> {{itemFinancialDetails.createdAt.toDate().toLocaleDateString()}}</div>
 </div>
 <div class="mat-elevation-z8 table-container">
@@ -27,13 +27,14 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-
-  <mat-paginator #paginator [length]="dataSource?.data?.length" [pageIndex]="0" [pageSize]="20"
-    [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
+</div>
+<div class="mat-elevation-z8 table-container">
+  <mat-paginator #paginator [length]="dataSource?.data?.length" [pageIndex]="0" [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
   </mat-paginator>
   <app-export-csv
-    class="export-button-container"
-    [itemDonationData]="itemDonationData"
-    [itemFinancialDetails]="itemFinancialDetails"
+  class="export-button-container"
+  [itemDonationData]="itemDonationData"
+  [itemFinancialDetails]="itemFinancialDetails"
   ></app-export-csv>
 </div>
