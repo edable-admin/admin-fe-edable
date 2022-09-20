@@ -174,9 +174,6 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-        
-        this.getOrgsSubscription.unsubscribe();
-
         this.ofs.addOrganisation(result).then((response) => {
           this.openSnackBar(response.message);
           switch (result.activeStatus) {
@@ -227,8 +224,6 @@ export class OrganisationComponent {
           //totalDonations: result.totalDonations ? result.totalDonations : 0,
           activeStatus: result.activeStatus,
         };
-
-        this.getOrgsSubscription.unsubscribe();
 
         this.ofs.editOrganisation(this.selectedOrg.id, orgReq).then((resp) => {
           this.selectedOrg = resp;
@@ -336,7 +331,7 @@ export class OrganisationComponent {
     this.activeStatusFilter = value;
     this.getOrgsSubscription = this.ofs
       .getOrgs(this.activeStatusFilter)
-      .subscribe((orgs) => {        
+      .subscribe((orgs) => {
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
@@ -371,7 +366,7 @@ export class OrganisationComponent {
     this.orgData.filter = filterValue.trim().toLowerCase();
 
     if (this.orgData.paginator) {
-      this.orgData.paginator.firstPage();      
+      this.orgData.paginator.firstPage();
     }
   }
 
@@ -395,10 +390,10 @@ export class OrganisationComponent {
   openSnackBar(message) {
     this._snackBar.open(message);
   }
-  
+
   //Org + Items Deselect on pgae change
   changePage(event) {
     this.initSelectedOrg();
-    
+
   }
 }
