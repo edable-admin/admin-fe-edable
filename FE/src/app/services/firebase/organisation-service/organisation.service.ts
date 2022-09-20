@@ -165,4 +165,12 @@ export class OrganisationService {
 
     return organisationReq;
   }
+
+  getOrgsGeneral(orgID: string) {
+    let records = this.fs
+      .collection('Organisations')
+      .doc(orgID)
+      .get();
+    return records;
+  }
 }

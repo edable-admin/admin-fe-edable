@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
+import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { Subscription } from 'rxjs';
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
+import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations'
+import { MatTableDataSource } from '@angular/material/table';
 
 
 export interface PeriodicElement {
@@ -13,16 +16,16 @@ export interface PeriodicElement {
   organisation: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {date: "08/06/2022", name: "Jeff", email: "test@test.com", donationItem: "Flour", donationAmount: 200, organisation: "Barry's Bakehouse"},
-  {date: "08/06/2022", name: "Jeff", email: "test@test.com", donationItem: "Flour", donationAmount: 200, organisation: "Barry's Bakehouse"},
-  {date: "08/06/2022", name: "Jeff", email: "test@test.com", donationItem: "Flour", donationAmount: 200, organisation: "Barry's Bakehouse"},
-  {date: "08/06/2022", name: "Jeff", email: "test@test.com", donationItem: "Flour", donationAmount: 200, organisation: "Barry's Bakehouse"},
-  {date: "08/06/2022", name: "Jeff", email: "test@test.com", donationItem: "Flour", donationAmount: 200, organisation: "Barry's Bakehouse"},
-  {date: "08/06/2022", name: "Jeff", email: "test@test.com", donationItem: "Flour", donationAmount: 200, organisation: "Barry's Bakehouse"},
+// const ELEMENT_DATA: PeriodicElement[] = [
+//   {date: "08/06/2022", name: "Jeff", email: "test@test.com", donationItem: "Flour", donationAmount: 200, organisation: "Barry's Bakehouse"},
+//   {date: "08/06/2022", name: "Jeff", email: "test@test.com", donationItem: "Flour", donationAmount: 200, organisation: "Barry's Bakehouse"},
+//   {date: "08/06/2022", name: "Jeff", email: "test@test.com", donationItem: "Flour", donationAmount: 200, organisation: "Barry's Bakehouse"},
+//   {date: "08/06/2022", name: "Jeff", email: "test@test.com", donationItem: "Flour", donationAmount: 200, organisation: "Barry's Bakehouse"},
+//   {date: "08/06/2022", name: "Jeff", email: "test@test.com", donationItem: "Flour", donationAmount: 200, organisation: "Barry's Bakehouse"},
+//   {date: "08/06/2022", name: "Jeff", email: "test@test.com", donationItem: "Flour", donationAmount: 200, organisation: "Barry's Bakehouse"},
   
   
-];
+// ];
 
 @Component({
   selector: 'app-transactions',
@@ -33,17 +36,41 @@ export class TransactionsComponent implements OnInit {
 
   getItemDonationsSubscription: Subscription;
   itemDonations: ItemDonations[] = [];
+  
+  orgData: any = [];
+  generalDonDataSource:any[] = [];
+  displayedColumns: string[] = ['date', 'name', 'donationAmount', 'organisation'];
 
-  dataSource = ELEMENT_DATA;
-  displayedColumns: string[] = ['date', 'name', 'email', 'donationItem', 'donationAmount', 'organisation'];
+  
+  constructor(
+    public ts:TransactionService,
+    public fs: OrganisationService
+    
+    ) { }
 
-  constructor(public ts:TransactionService) { }
-
-
+  //dataSource = this.donationData;
 
   ngOnInit(): void {
+   this.getGenDonations();
+   this.fs.getOrgsGeneral("3m9Tkk834Wr8HaX7Can3")
    
+   //this.genDonations = {
+    //name:this.genDonations.donorPublicName,
+    
+  // }
   }
+
+  //-------------------- Get All Orgs --------------------------\\
+  async getOrgs(orgID: string) {
+    let org:any;
+
+    await this.fs.getOrgsGeneral(orgID)
+          .forEach((resp) => {
+            org = resp.data()["name"]
+        })        
+    return org;
+  }
+  
 
   //-------------------- Get item donations for singular org --------------------\\
   getOrgItemDonations(orgID:string, ItemID:string) {
@@ -61,7 +88,87 @@ export class TransactionsComponent implements OnInit {
     this.ts.getOrgGeneralDonations(orgID).then((resp) => {resp.docs.forEach(resp => resp.data())});
   }
   //-------------------- Get All General Donations for --------------------------\\
-  getGenDonations() {
-    this.ts.getGeneralDonations().then((resp) => {resp.docs.forEach(resp => resp.data())});
+async getGenDonations() {
+
+    //console.log(await this.getOrgs("3m9Tkk834Wr8HaX7Can3"))
+
+    let count = 0
+    let orgID:string;
+    let orgName:string;
+    let genDonData:any[]=[]
+    this.ts.getGeneralDonations().then(
+      (snap) => {
+        snap.docs.forEach(
+          async (genDon) => {
+            orgID = genDon.ref.parent.parent.id;
+
+            orgName = await this.getOrgs(orgID);
+            
+            genDonData.push({
+              ...genDon.data(), orgName:orgName
+
+            })
+
+
+            
+          }
+        )
+      }
+    ).finally(() => {
+      
+      this.generalDonDataSource = genDonData;
+      console.log(this.generalDonDataSource)
+    })
+
+    // this.ts.getGeneralDonations()
+    // .then((snapshot) => 
+    // {
+    //   snapshot.docs.forEach(
+    //     (genDon) => {
+    //     {
+    //       //...resp.data(), 
+    //       snapshot.forEach(async (doc) => {          
+    //       const docRef = doc.ref;
+    //       const genDonoCollection = docRef.parent;
+    //       const parent = genDonoCollection.parent;
+    //       //console.log(parent.id)
+    //       //console.log(await this.getOrgs(parent.id))
+
+    //       let org = await this.getOrgs(parent.id)
+
+    //         // this.genDonations.push(
+    //         //   {
+    //         //   ...genDon.data(), orgName:org['name']
+    //         //   }
+    //         // );
+
+    //         //console.log(this.genDonations)
+          
+          
+    //       // .then((org) => {
+    //       //   console.log(org.data())
+    //       //   this.genDonations.push(
+    //       //     {
+    //       //     ...genDon.data(), orgName:org.data()['name']
+    //       //     }
+    //       //   );
+    //       // }).finally(() => {
+    //       //   //console.log(this.genDonations)
+    //       // });
+
+          
+
+          
+    //       //this.genDonations.push(resp.data()),
+    //     } 
+    //     )}
+    //     })
+    
+    // }).finally( () => {
+    //   let test: any;
+    //   test = new MatTableDataSource(this.genDonations)
+    //   //console.log(test)
+    // })
+    
   }
 }

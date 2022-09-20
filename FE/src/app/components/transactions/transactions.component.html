@@ -8,20 +8,20 @@
        
     </div>
     <div class="lower">
-        <table [dataSource]="dataSource" mat-table class="mat-elevation-z8 table">
+        <table [dataSource]="generalDonDataSource" mat-table class="mat-elevation-z8 table">
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef> Date </th>
-              <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.donationDate.toDate().toLocaleDateString()}} </td>
             </ng-container>
           
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef> Name </th>
-              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.donorPublicName}} </td>
             </ng-container>
           
-            <ng-container matColumnDef="email">
-              <th mat-header-cell *matHeaderCellDef> Email </th>
-              <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+            <ng-container matColumnDef="donationAmount">
+              <th mat-header-cell *matHeaderCellDef> Amount </th>
+              <td mat-cell *matCellDef="let element"> ${{element.paidAMT}} </td>
             </ng-container>
           
             <ng-container matColumnDef="donationItem">
@@ -29,11 +29,7 @@
               <td mat-cell *matCellDef="let element"> {{element.donationItem}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="donationAmount">
-                <th mat-header-cell *matHeaderCellDef> Donation Amount </th>
-                <td mat-cell *matCellDef="let element"> {{element.donationAmount}} </td>
-            </ng-container>
-
+            
             <ng-container matColumnDef="organisation">
                 <th mat-header-cell *matHeaderCellDef> Organisation </th>
                 <td mat-cell *matCellDef="let element"> {{element.organisation}} </td>

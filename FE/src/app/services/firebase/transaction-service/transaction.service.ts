@@ -42,6 +42,7 @@ export class TransactionService {
   //------------------------ Get All General Donations -------------------------------------------\\
   getGeneralDonations() {
     let orgGenDonations = this.fs.firestore.collectionGroup('GeneralDonations').get();
+    
     return orgGenDonations;
   }
 }
