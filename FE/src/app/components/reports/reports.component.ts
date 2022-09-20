@@ -82,16 +82,16 @@ export class ReportsComponent implements OnInit {
 
       new AngularCsv(data, `${this.selectedOrg.name}'s Donation Item Report`, options);
     });
-    
+
   }
-  
+
   generateDonationReport() {
-    
+
     if (this.selectedOrg.id === '') {
       this.snackBar.open("No organisation selected");
       return;
     }
-    
+
     const options = {
       fieldSeparator: ',',
       quoteStrings: '"',
@@ -101,28 +101,53 @@ export class ReportsComponent implements OnInit {
       title: `${this.selectedOrg.name}'s General Donations`,
       useBom: true,
       noDownload: false,
-      headers: ["Donation Date", "Donor Public Name", "Comment", "Amount", "IsRefunded"],
+      headers: ["Donation Date", "Donor Public Name", "Comment", "IsSubscribed", "IsRefunded", "Amount"],
       useHeader: false,
       nullToEmptyString: false,
     };
+
     let donations: GeneralDonations[] = [];
-    
-    this.tfs.getOrgGeneralDonations(this.selectedOrg.id).then((data) => {
-      data.forEach((resp) => {
+
+    this.tfs.getOrgGeneralDonations(this.selectedOrg.id).then((resp) => {
+      resp.forEach((resp) => {
+
         donations.push(resp.data() as GeneralDonations);
+
       });
+      console.log("Database read");
+
+      console.table(donations);
+
+
+      const data: DonationCSVModel[] = donations.map((item) => {
+        const newItem: DonationCSVModel = {
+          donationDate: item.donationDate.toDate().toLocaleDateString(),
+          donorPublicName: item.donorPublicName,
+          comment: item.comment,
+          isSubscribed: item.IsSubscribed,
+          isRefunded: item.IsRefunded,
+          amount: item.paidAMT
+
+          // donationDate: string,
+          // donorPublicName: string,
+          // comment: string,
+          // amount: number,
+          // isRefunded: boolean
+        }
+        return newItem;
+      });
+      console.log("Mapped Data");
+
+      console.table(data);
+      new AngularCsv(data, `${this.selectedOrg.name}'s General Donations Report`, options);
     });
 
-    donations.map((item) => {
-      
-    })
-    
-    new AngularCsv(donations, `${this.selectedOrg.name}'s General Donations Report`, options);
+
     //TODO: Call Org service to get geenral donations
     //TODO: Map data to match headers
     //TODO: Generaate CSV
   }
-  
+
   getOrgs() {
     this.ofs.getOrgs("All").subscribe(orgs => {
       this.orgData = new MatTableDataSource(orgs as Organisation[]);
@@ -157,7 +182,7 @@ export class ReportsComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-    // this.initSelectedOrg();
+    this.initSelectedOrg();
     const filterValue = (event.target as HTMLInputElement).value;
     this.orgData.filter = filterValue.trim().toLowerCase();
 
@@ -181,6 +206,7 @@ interface DonationCSVModel {
   donationDate: string,
   donorPublicName: string,
   comment: string,
-  amount: number,
-  isRefunded: boolean
+  isSubscribed: boolean,
+  isRefunded: boolean,
+  amount: number
 }
