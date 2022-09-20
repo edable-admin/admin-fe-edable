@@ -41,9 +41,9 @@
             <td mat-cell *matCellDef="let row"> {{row.totalDonationItems}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="totalDonations">
+          <ng-container matColumnDef="totalGeneralDonationsValue">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Donations </th>
-            <td mat-cell *matCellDef="let row"> ${{row.totalDonations}} </td>
+            <td mat-cell *matCellDef="let row"> ${{row.totalGeneralDonationsValue}} </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

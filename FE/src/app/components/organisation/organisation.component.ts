@@ -39,7 +39,7 @@ export class OrganisationComponent implements OnInit {
   file: any;
   totalDonationItems: number;
   totalDonations: number;
-  displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonations'];
+  displayedColumns: string[] = ['name', 'totalDonationItems', 'totalGeneralDonationsValue'];
   selectedOrg: Organisation;
   activeItems: Item[];
   orgData: any = new MatTableDataSource([]);
