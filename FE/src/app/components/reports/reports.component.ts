@@ -10,6 +10,7 @@ import { ItemService } from 'src/app/services/firebase/item-service/item.service
 import { Item } from 'src/app/models/Item';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-reports',
@@ -21,7 +22,6 @@ export class ReportsComponent implements OnInit {
   displayedColumns: string[] = ["name"];
   selectedOrg: Organisation;
   orgData: MatTableDataSource<Organisation>;
-  orgItems: Item[];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -61,26 +61,24 @@ export class ReportsComponent implements OnInit {
 
     this.ifs.getItems(this.selectedOrg.id).subscribe((itemData) => {
 
-      this.orgItems = itemData as Item[];
+      let orgItems = itemData as ItemGetModel[];
 
-      const data: ItemCSVModel[] = this.orgItems.map((item: Item) => {
+      const data: ItemCSVModel[] = orgItems.map((item: ItemGetModel) => {
         const newItem: ItemCSVModel = {
           name: item.name,
-          //TODO: Fix date format from timestamp
-          dateCreated: item.createdAt.toString(),
+          createdAt: item.createdAt.toDate().toLocaleDateString(),
           initialPrice: item.initialPrice,
           totalDonations: item.totalDonations,
-          amountRemaining: item.initialPrice - item.totalDonations,
+          amountRemaining: Math.max(0, (item.initialPrice - item.totalDonations)),
           isFunded: item.totalDonations >= item.initialPrice,
-          //TODO: Fix date format from timestamp
-          dateCompleted: item.dateCompleted?.toString(),
+          dateCompleted: item.dateCompleted?.toDate().toLocaleTimeString(),
           activeStatus: item.activeStatus
         }
-        return newItem;
-
-      })
-
+        return newItem
+      });
+      
       new AngularCsv(data, `${this.selectedOrg.name}'s Donation Item Report`, options);
+
     });
 
   }
@@ -106,18 +104,14 @@ export class ReportsComponent implements OnInit {
       nullToEmptyString: false,
     };
 
-    let donations: GeneralDonations[] = [];
-
+    
     this.tfs.getOrgGeneralDonations(this.selectedOrg.id).then((resp) => {
+
+      let donations: GeneralDonations[] = [];
+
       resp.forEach((resp) => {
-
         donations.push(resp.data() as GeneralDonations);
-
       });
-      console.log("Database read");
-
-      console.table(donations);
-
 
       const data: DonationCSVModel[] = donations.map((item) => {
         const newItem: DonationCSVModel = {
@@ -130,11 +124,11 @@ export class ReportsComponent implements OnInit {
         }
         return newItem;
       });
-      console.log("Mapped Data");
 
-      console.table(data);
       new AngularCsv(data, `${this.selectedOrg.name}'s General Donations Report`, options);
+
     });
+
   }
 
   getOrgs() {
@@ -180,16 +174,28 @@ export class ReportsComponent implements OnInit {
     }
   }
 }
-
 interface ItemCSVModel {
-  name: string,
-  dateCreated?: string,
-  initialPrice?: number,
-  totalDonations?: number,
-  amountRemaining?: number,
-  isFunded?: boolean,
-  dateCompleted?: string,
-  activeStatus?: boolean
+  name: string;
+  initialPrice: number;
+  totalDonations: number;
+  amountRemaining: number;
+  isFunded: boolean;
+  activeStatus: boolean;
+  createdAt?: string;
+  dateCompleted?: string;
+}
+interface ItemGetModel {
+  summary: string;
+  description: string;
+  id?: string;
+  name: string;
+  initialPrice: number;
+  totalDonations: number;
+  activeStatus: boolean;
+  orgID: string;
+  img: string;
+  createdAt?: Timestamp;
+  dateCompleted?: Timestamp;
 }
 interface DonationCSVModel {
   donationDate: string,
