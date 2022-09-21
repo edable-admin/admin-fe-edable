@@ -6,43 +6,50 @@ import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TransactionService {
-
   constructor(
     public storage: AngularFireStorage,
     public fs: AngularFirestore
-  ) { }
+  ) {}
 
   //------------------------ Gets a list of donation items for an organisation -------------------\\
   getItemDonations() {
-    const itemDonations = this.fs.firestore.collectionGroup("ItemsDonations").get();
+    const itemDonations = this.fs.firestore
+      .collectionGroup('ItemsDonations')
+      .get();
     return itemDonations;
   }
 
   //------------------------ Get Org Item Donations ----------------------------------------------\\
   getOrgItemDonations(orgID: string, itemID: string) {
-    const itemDonations = this.fs.firestore.collection('Organisations')
-    .doc(orgID)
-    .collection("Items")
-    .doc(itemID)
-    .collection("ItemsDonations").get();
-     return itemDonations;
+    const itemDonations = this.fs.firestore
+      .collection('Organisations')
+      .doc(orgID)
+      .collection('Items')
+      .doc(itemID)
+      .collection('ItemsDonations')
+      .get();
+    return itemDonations;
   }
 
   //------------------------ Get Org General Donations -------------------------------------------\\
   getOrgGeneralDonations(orgID: string) {
-    const orgGenDonations = this.fs.firestore.collection('Organisations')
-    .doc(orgID)
-    .collection("GeneralDonations").get();
+    const orgGenDonations = this.fs.firestore
+      .collection('Organisations')
+      .doc(orgID)
+      .collection('GeneralDonations')
+      .get();
     return orgGenDonations;
   }
 
   //------------------------ Get All General Donations -------------------------------------------\\
   getGeneralDonations() {
-    const orgGenDonations = this.fs.firestore.collectionGroup('GeneralDonations').get();
-    
+    const orgGenDonations = this.fs.firestore
+      .collectionGroup('GeneralDonations')
+      .get();
+
     return orgGenDonations;
   }
 }
