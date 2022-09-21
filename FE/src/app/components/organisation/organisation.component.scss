@@ -103,9 +103,19 @@ table {
 
 }
 
+.inactive-item-card{
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M100 0 L0 100 ' stroke='red' stroke-width='3'/><path d='M0 0 L100 100 ' stroke='red' stroke-width='3'/></svg>");
+    background-repeat:no-repeat;
+    background-position:center center;
+    background-size: 100% 100%, auto;
+    background-color: grey;
+}
+
 .add-item-card {
     height: 350px;
+    width: 200px;
     min-width: 150px;
+    max-width: 200px;
     margin-top: 10px;
     background-color: #3f51b5;
     color: white;
@@ -152,6 +162,18 @@ mat-card {
 }
 .add-icon-mobile {
     display: none;
+}
+
+.goal-reached{
+    transform: rotate(45deg);
+    left: 0;
+    margin: 0;
+    font-size: 40px;
+    position: absolute;
+    top: 30%;
+    background-color: rgb(100, 214, 90);
+    border-radius: 20px;
+    padding: 10px;
 }
 
 @media screen and (max-width:700px) {
