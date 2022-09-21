@@ -116,7 +116,7 @@ export class OrganisationComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
-      if (result.file) {
+      if (result?.file) {
         this.imgService.uploadImage(
           this.selectedOrg.id,
           result.file,
@@ -142,7 +142,7 @@ export class OrganisationComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Remove a Donation Item --------------------------//
-      if (result.isDeleted === true) {
+      if (result?.isDeleted === true) {
         this.storage
           .ref(
             `Organisations/${this.selectedOrg.id}/Items/${result.itemID}/itemImg`
@@ -362,7 +362,6 @@ export class OrganisationComponent implements OnInit {
     }
 
     this.orgData = new MatTableDataSource(filteredOrgs);
-    console.log(filteredOrgs);
     this.orgData.paginator = this.paginator;
     this.orgData.sort = this.sort;
     this.orgData.filter = this.filterValue;
