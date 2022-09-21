@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { WebdatarocksComponent } from 'ng-webdatarocks';
+import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 
 @Component({
@@ -11,6 +12,7 @@ export class ReportsComponent implements OnInit {
 
   @ViewChild('pivot1') child: WebdatarocksComponent;
   orgData: any;
+  allOrgs: Organisation[] = [];
 
   constructor(private ofs: OrganisationService) { }
 
@@ -46,100 +48,56 @@ export class ReportsComponent implements OnInit {
     });
   }
   async getOrgData() {
-    // console.log(this.ofs.getOrgs("All"));
 
-    let orgs = await this.ofs.getOrgs("All");
-    console.log(orgs);
+    await this.ofs.getOrgs("All").subscribe((resp) => {
+      this.orgData = resp as Organisation[];
+    });
 
-    this.orgData = [{
-      "ABN": {
-        type: "number"
-      },
-      "Active Status": {
-        type: "string"
-      },
-      "Description": {
-        type: "string"
-      },
-      "ID": {
-        type: "string"
-      },
-      "Image": {
-        type: "string"
-      },
-      "Name": {
-        type: "string"
-      },
-      "Phone": {
-        type: "string"
-      },
-      "Summary": {
-        type: "string"
-      },
-      "Total Donation Items": {
-        type: "number"
-      },
-      "Total Donations": {
-        type: "number"
-      },
-      "Website": {
-        type: "string"
-      },
-    },
-    [11111111111, "True", "Desc", "ID", "ImageURL", "Orgname", "12345", "Summ", 12, 5000],
-    [11111111111, "True", "Desc", "ID", "ImageURL", "Orgname", "12345", "Summ", 12, 5000],
-    [11111111111, "True", "Desc", "ID", "ImageURL", "Orgname", "12345", "Summ", 12, 5000],
-    [11111111111, "True", "Desc", "ID", "ImageURL", "Orgname", "12345", "Summ", 12, 5000],
-    ]
+    // this.orgData = [
+    //   {
+    //     "Name": {
+    //       type: "string"
+    //     },
+    //     "Active Status": {
+    //       type: "string"
+    //     },
+    //     "Total Donation Items": {
+    //       type: "number"
+    //     },
+    //     "Total Donations": {
+    //       type: "number"
+    //     },
+    //   },
+    //   {
+    //     "Name": "OrgName1",
+    //     "Active Status": "true",
+    //     "Total Donation Items": 10,
+    //     "Total Donations": 1500
+    //   },
+    //   {
+    //     "Name": "OrgName2",
+    //     "Active Status": "false",
+    //     "Total Donation Items": 15,
+    //     "Total Donations": 900
+    //   },
+    //   {
+    //     "Name": "OrgName3",
+    //     "Active Status": "true",
+    //     "Total Donation Items": 8,
+    //     "Total Donations": 400
+    //   },
+    //   {
+    //     "Name": "OrgName4",
+    //     "Active Status": "false",
+    //     "Total Donation Items": 6,
+    //     "Total Donations": 2000
+    //   },
+    // ]
 
     this.child.webDataRocks.setReport({
       dataSource: {
         data: this.orgData,
-      },
-      slice: {
-        rows: [{
-          uniqueName: "Total Donation Items"
-        }],
-        columns: [{
-          uniqueName: "Name"
-        }],
-        measures: [{
-          uniqueName: "Total Donations",
-          aggregation: "sum"
-        }]
       }
     });
   }
-  inlineJSON = [{
-    "Salary": {
-      type: "number"
-    },
-    "Eye Color": {
-      type: "string"
-    },
-    "Name": {
-      type: "string"
-    },
-    "Gender": {
-      type: "string"
-    },
-    "Country": {
-      type: "string"
-    },
-    "City": {
-      type: "string"
-    },
-    "Birthday": {
-      type: "year/month/day"
-    },
-
-  },
-  [1444, "brown", "Angelina", "female", "Benin", "Porto-Novoa", "1998-10-15"],
-  [2000, "blue", "Bryan", "male", "Solomon Islands", "Honiara", "1992-11-02"],
-  [4500, "blue", "Bryan", "male", "Solomon Islands", "Honiara", "1997-05-01"],
-  [700, "blue", "Palmer", "male", "Puerto Rico", "San Juan", "1976-07-08"],
-  [550, "blue", "Christy", "female", "Uruguay", "Montevideo", "1989-12-05"],
-  [999, "brown", "John", "male", "Central African Republic", "Bangui", "1968-09-18"]
-  ];
-
 }
