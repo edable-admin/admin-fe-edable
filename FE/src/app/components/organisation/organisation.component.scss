@@ -204,18 +204,10 @@ mat-card {
     }
 
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 564px) {
     .item-container {
         align-items: center;
         justify-content: center;
-
-        .add-item-card {
-            height: 20px;
-            width: 100%;
-            padding-left: 0px;
-            padding-right: 0px;
-            margin:0;
-        }
 
     }
     .add-item-card {
@@ -238,5 +230,18 @@ mat-card {
         margin: 0;
     }
 
+}
+
+@media screen and (max-width: 470px) {
+    .item-container {
+        .add-item-card {
+            height: 20px;
+            width: 200px;
+            padding-left: 0px;
+            padding-right: 0px;
+            margin:0;
+        }
+
+    }
 }
 
