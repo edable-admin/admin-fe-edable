@@ -1,0 +1,35 @@
+.full-width-table {
+  width: 100%;
+}
+
+h1 {
+  font-weight: bold;
+}
+
+
+.table-container {
+  max-width: 89vw;
+  max-height: 295.98px;
+  overflow: auto;
+
+  .export-button-container{
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.view-item-financial-details {
+  display: flex;
+  justify-content: space-evenly;
+
+  div {
+    padding: 5px;
+    width: 100%;
+    background-color: lightgray;
+    border: 0.5px solid black;
+
+    span {
+      font-weight: bold;
+    }
+  }
+}

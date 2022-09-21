@@ -1,0 +1,14 @@
+.row-selected {
+    background: rgb(185, 185, 185);
+}
+
+td,
+tr:hover {
+    cursor: pointer;
+}
+.table-container {
+    max-width: 500px;
+}
+.table-container, table {
+    width: 100%;
+}
