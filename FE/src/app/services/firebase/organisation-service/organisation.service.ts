@@ -15,7 +15,7 @@ export class OrganisationService {
     public storage: AngularFireStorage,
     public fs: AngularFirestore,
     public imgService: ImageService
-  ) { }
+  ) {}
 
   async removeOrganisation(orgID: string) {
     //gets the organisation
@@ -167,10 +167,14 @@ export class OrganisationService {
   }
 
   getOrgsGeneral(orgID: string) {
-    let records = this.fs
-      .collection('Organisations')
-      .doc(orgID)
-      .get();
+    let records = this.fs.collection('Organisations').doc(orgID).get();
     return records;
+  }
+  getALlORgs() {
+    const orgGenDonations = this.fs.firestore
+      .collectionGroup('Organisations')
+      .get();
+
+    return orgGenDonations;
   }
 }

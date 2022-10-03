@@ -1,38 +1,43 @@
 <div class="container">
-    <div class="upper">
-        
-        <mat-form-field class="control-button" appearance="standard">
-            <mat-label>Search Organisations</mat-label>
-            <input matInput #input>
-        </mat-form-field>
-       
-    </div>
-    <div class="lower">
-        <table mat-table [dataSource]="generalDonDataSource" class="mat-elevation-z8 table">
-            <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef> Date </th>
-              <td mat-cell *matCellDef="let element"> {{element.donationDate.toDate().toLocaleDateString()}} </td>
-            </ng-container>
-          
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef> Name </th>
-              <td mat-cell *matCellDef="let element"> {{element.donorPublicName}} </td>
-            </ng-container>
-          
-            <ng-container matColumnDef="donationAmount">
-              <th mat-header-cell *matHeaderCellDef> Amount </th>
-              <td mat-cell *matCellDef="let element"> ${{element.paidAMT}} </td>
-            </ng-container>
-          
-            <ng-container matColumnDef="organisation">
-              <th mat-header-cell *matHeaderCellDef> Organisation </th>
-              <td mat-cell *matCellDef="let element"> {{element.orgName}} </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-    </div>
+  <div class="upper">
+    <mat-form-field class="control-button" appearance="standard">
+      <mat-label>Search Organisations</mat-label>
+      <input matInput #input />
+    </mat-form-field>
+  </div>
+  <div class="lower">
+    <table
+      mat-table
+      [dataSource]="generalDonDataSource"
+      class="mat-elevation-z8 table"
+    >
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.donationDate.toDate().toLocaleDateString() }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="donationAmount">
+        <th mat-header-cell *matHeaderCellDef>Amount</th>
+        <td mat-cell *matCellDef="let element">${{ element.amount }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="organisation">
+        <th mat-header-cell *matHeaderCellDef>Organisation</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.orgName }}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
 </div>
-
-
-  
