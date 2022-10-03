@@ -1,5 +1,12 @@
 <body>
-
+    <app-wbr-pivot #pivot1 
+        [toolbar]="true" 
+        [width]="'100%'" 
+        [height]="500" 
+        [customizeCell]="onCustomizeCell"
+        (ready)="onPivotReady($event)" 
+        (reportcomplete)="onReportComplete()">
+    </app-wbr-pivot>
     <mat-form-field class="control-button" appearance="standard">
         <mat-label>Search Organisations</mat-label>
         <input matInput aria-label="Search Organisations" (keyup)="applyFilter($event)" #input>

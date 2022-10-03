@@ -11,6 +11,7 @@ import { Item } from 'src/app/models/Item';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { Timestamp } from 'firebase/firestore';
+import { WebdatarocksComponent } from 'ng-webdatarocks';
 
 @Component({
   selector: 'app-reports',
@@ -26,6 +27,10 @@ export class ReportsComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  @ViewChild('pivot1') child: WebdatarocksComponent;
+  pivotTableData: any;
+  allOrgs: Organisation[] = [];
+
   constructor(
     private ofs: OrganisationService,
     private ifs: ItemService,
@@ -36,6 +41,7 @@ export class ReportsComponent implements OnInit {
   ngOnInit(): void {
     this.initSelectedOrg();
     this.getOrgs();
+    this.getOrgData();
   }
 
   generateItemReport() {
@@ -172,6 +178,92 @@ export class ReportsComponent implements OnInit {
     if (this.orgData.paginator) {
       this.orgData.paginator.firstPage();
     }
+  }
+
+  //----------------WebDataRocks Stuff-------------------------//
+
+  onPivotReady(pivot: WebDataRocks.Pivot): void {
+    console.log('[ready] WebdatarocksPivotModule', this.child);
+  }
+
+  onCustomizeCell(
+    cell: WebDataRocks.CellBuilder,
+    data: WebDataRocks.CellData
+  ): void {
+    if (data.isClassicTotalRow) {
+      cell.addClass('fm-total-classic-r');
+    }
+    if (data.isGrandTotalRow) {
+      cell.addClass('fm-grand-total-r');
+    }
+    if (data.isGrandTotalColumn) {
+      cell.addClass('fm-grand-total-c');
+    }
+  }
+
+  onReportComplete(): void {
+    this.child.webDataRocks.off('reportcomplete');
+    this.child.webDataRocks.setReport({
+      dataSource: {
+        data: this.pivotTableData,
+      },
+    });
+  }
+
+  async getOrgData() {
+
+    // await this.ofs.getOrgs().subscribe((resp) => {
+    //   this.pivotTableData = resp as Organisation[];
+    //   console.log(this.pivotTableData);
+      
+    // });
+    
+    this.pivotTableData = [
+      {
+        "Name": {
+          type: "string"
+        },
+        "Active Status": {
+          type: "string"
+        },
+        "Total Donation Items": {
+          type: "number"
+        },
+        "Total Donations": {
+          type: "number"
+        },
+      },
+      {
+        "Name": "OrgName1",
+        "Active Status": "true",
+        "Total Donation Items": 10,
+        "Total Donations": 1500
+      },
+      {
+        "Name": "OrgName2",
+        "Active Status": "false",
+        "Total Donation Items": 15,
+        "Total Donations": 900
+      },
+      {
+        "Name": "OrgName3",
+        "Active Status": "true",
+        "Total Donation Items": 8,
+        "Total Donations": 400
+      },
+      {
+        "Name": "OrgName4",
+        "Active Status": "false",
+        "Total Donation Items": 6,
+        "Total Donations": 2000
+      },
+    ]
+
+    this.child.webDataRocks.setReport({
+      dataSource: {
+        data: this.pivotTableData,
+      }
+    });
   }
 }
 interface ItemCSVModel {
