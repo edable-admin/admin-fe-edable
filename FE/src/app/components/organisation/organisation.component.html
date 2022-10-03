@@ -95,12 +95,13 @@
       </mat-card>
 
       <!--All Organisation Item Cards-->
-      <mat-card class="item-card" *ngFor="let item of items">
+      <mat-card [ngClass]="{'item-card': true,'inactive-item-card':!item.activeStatus}" *ngFor="let item of items">
         <mat-card-header>
           <div class="overflow" matTooltip="{{item.name}}" [matTooltipPosition]="'below'"
             aria-label="Button that displays a tooltip in various positions">
             {{item.name}}
           </div>
+          <h2 class="goal-reached" *ngIf="item.initialPrice <= item.totalDonationsValue">Goal Reached!!</h2>
         </mat-card-header>
         <img mat-card-image src={{item.img}} (error)="onImgError($event)">
         <mat-card-content>

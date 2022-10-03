@@ -103,9 +103,19 @@ table {
 
 }
 
+.inactive-item-card{
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M100 0 L0 100 ' stroke='red' stroke-width='3'/><path d='M0 0 L100 100 ' stroke='red' stroke-width='3'/></svg>");
+    background-repeat:no-repeat;
+    background-position:center center;
+    background-size: 100% 100%, auto;
+    background-color: grey;
+}
+
 .add-item-card {
     height: 350px;
+    width: 200px;
     min-width: 150px;
+    max-width: 200px;
     margin-top: 10px;
     background-color: #3f51b5;
     color: white;
@@ -154,6 +164,18 @@ mat-card {
     display: none;
 }
 
+.goal-reached{
+    transform: rotate(45deg);
+    left: 0;
+    margin: 0;
+    font-size: 40px;
+    position: absolute;
+    top: 30%;
+    background-color: rgb(100, 214, 90);
+    border-radius: 20px;
+    padding: 10px;
+}
+
 @media screen and (max-width:700px) {
     .graph-expansion {
         display: block;
@@ -182,18 +204,10 @@ mat-card {
     }
 
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 564px) {
     .item-container {
         align-items: center;
         justify-content: center;
-
-        .add-item-card {
-            height: 20px;
-            width: 100%;
-            padding-left: 0px;
-            padding-right: 0px;
-            margin:0;
-        }
 
     }
     .add-item-card {
@@ -216,5 +230,18 @@ mat-card {
         margin: 0;
     }
 
+}
+
+@media screen and (max-width: 470px) {
+    .item-container {
+        .add-item-card {
+            height: 20px;
+            width: 200px;
+            padding-left: 0px;
+            padding-right: 0px;
+            margin:0;
+        }
+
+    }
 }
 
