@@ -33,6 +33,7 @@
           </mat-error>
       </mat-form-field>
       <app-upload-image (imageOut)="getImageFromChild($event)"></app-upload-image>
+      <mat-slide-toggle formControlName="activeStatus">Activate/Deactive</mat-slide-toggle>
       <div class="dialog-actions" mat-dialog-actions>
         <button mat-button (click)="onNoClick()">Cancel</button>
         <button mat-button (click)="onAdd()" cdkFocusInitial color="primary">Add</button>
