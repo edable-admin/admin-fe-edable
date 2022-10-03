@@ -41,7 +41,7 @@ export class ReportsComponent implements OnInit {
   ngOnInit(): void {
     this.initSelectedOrg();
     this.getOrgs();
-    this.getOrgData();
+    this.setTableData();
   }
 
   generateItemReport() {
@@ -82,7 +82,7 @@ export class ReportsComponent implements OnInit {
         }
         return newItem
       });
-      
+
       new AngularCsv(data, `${this.selectedOrg.name}'s Donation Item Report`, options);
 
     });
@@ -110,7 +110,7 @@ export class ReportsComponent implements OnInit {
       nullToEmptyString: false,
     };
 
-    
+
     this.tfs.getOrgGeneralDonations(this.selectedOrg.id).then((resp) => {
 
       let donations: GeneralDonations[] = [];
@@ -139,6 +139,7 @@ export class ReportsComponent implements OnInit {
 
   getOrgs() {
     this.ofs.getOrgs().subscribe(orgs => {
+      this.pivotTableData = orgs as Organisation[];
       this.orgData = new MatTableDataSource(orgs as Organisation[]);
       this.orgData.paginator = this.paginator;
       this.orgData.sort = this.sort;
@@ -210,59 +211,89 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-  async getOrgData() {
+  setTableData() {
 
     // await this.ofs.getOrgs().subscribe((resp) => {
     //   this.pivotTableData = resp as Organisation[];
     //   console.log(this.pivotTableData);
-      
+
     // });
-    
-    this.pivotTableData = [
-      {
-        "Name": {
-          type: "string"
-        },
-        "Active Status": {
-          type: "string"
-        },
-        "Total Donation Items": {
-          type: "number"
-        },
-        "Total Donations": {
-          type: "number"
-        },
-      },
-      {
-        "Name": "OrgName1",
-        "Active Status": "true",
-        "Total Donation Items": 10,
-        "Total Donations": 1500
-      },
-      {
-        "Name": "OrgName2",
-        "Active Status": "false",
-        "Total Donation Items": 15,
-        "Total Donations": 900
-      },
-      {
-        "Name": "OrgName3",
-        "Active Status": "true",
-        "Total Donation Items": 8,
-        "Total Donations": 400
-      },
-      {
-        "Name": "OrgName4",
-        "Active Status": "false",
-        "Total Donation Items": 6,
-        "Total Donations": 2000
-      },
-    ]
+
+    // this.pivotTableData = [
+    //   {
+    //     "Name": {
+    //       type: "string"
+    //     },
+    //     "Active Status": {
+    //       type: "string"
+    //     },
+    //     "Total Donation Items": {
+    //       type: "number"
+    //     },
+    //     "Total Donations": {
+    //       type: "number"
+    //     },
+    //   },
+    //   {
+    //     "Name": "OrgName1",
+    //     "Active Status": "true",
+    //     "Total Donation Items": 10,
+    //     "Total Donations": 1500
+    //   },
+    //   {
+    //     "Name": "OrgName2",
+    //     "Active Status": "false",
+    //     "Total Donation Items": 15,
+    //     "Total Donations": 900
+    //   },
+    //   {
+    //     "Name": "OrgName3",
+    //     "Active Status": "true",
+    //     "Total Donation Items": 8,
+    //     "Total Donations": 400
+    //   },
+    //   {
+    //     "Name": "OrgName4",
+    //     "Active Status": "false",
+    //     "Total Donation Items": 6,
+    //     "Total Donations": 2000
+    //   },
+    // ]
 
     this.child.webDataRocks.setReport({
       dataSource: {
         data: this.pivotTableData,
       }
+    });
+  }
+  loadOrgItems() {
+    if (this.selectedOrg.id === '') {
+      this.snackBar.open("No organisation selected");
+      return;
+    }
+    this.ifs.getItems(this.selectedOrg.id).subscribe((itemData) => {
+
+      let orgItems = itemData as ItemGetModel[];
+
+      const data: ItemCSVModel[] = orgItems.map((item: ItemGetModel) => {
+        const newItem: ItemCSVModel = {
+          name: item.name,
+          createdAt: item.createdAt.toDate().toLocaleDateString(),
+          initialPrice: item.initialPrice,
+          totalDonationsValue: item.totalDonationsValue,
+          amountRemaining: Math.max(0, (item.initialPrice - item.totalDonationsValue)),
+          isFunded: item.totalDonationsValue >= item.initialPrice,
+          dateCompleted: item.dateCompleted?.toDate().toLocaleTimeString(),
+          activeStatus: item.activeStatus
+        }
+        return newItem
+      });
+
+      this.child.webDataRocks.setReport({
+        dataSource: {
+          data: data,
+        }
+      });
     });
   }
 }
