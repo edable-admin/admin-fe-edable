@@ -10,6 +10,7 @@ import { TransactionService } from 'src/app/services/firebase/transaction-servic
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { Timestamp } from 'firebase/firestore';
 import { WebdatarocksComponent } from 'ng-webdatarocks';
+import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-reports',
@@ -27,7 +28,7 @@ export class ReportsComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('reportTable') reportTable: WebdatarocksComponent;
-
+  @ViewChild(MatAccordion) accordion: MatAccordion;
 
   constructor(
     private ofs: OrganisationService,
@@ -85,7 +86,26 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-  setTableData(dataSource: any[], title: string, fileName: string) {
+  setTableData(dataSource: any[], reportType: string, title: string, fileName: string) {
+
+    if (dataSource.length <= 0 || dataSource === null || dataSource === undefined) {
+      let message = ""
+      switch (reportType) {
+        case "Items":
+          message = `${this.selectedOrg.name} has no donation items`;
+          break;
+        case "Donations":
+          message = `${this.selectedOrg.name} has no general donations`;
+          break;
+
+        default:
+          break;
+      }
+      this.clearTable();
+      this.snackBar.open(message);
+      return;
+    }
+
     this.fileName = fileName;
 
     this.reportTable.webDataRocks.setReport({
@@ -116,17 +136,18 @@ export class ReportsComponent implements OnInit {
       const data: ItemCSVModel[] = orgItems.map((item: ItemGetModel) => {
         const newItem: ItemCSVModel = {
           Name: item.name,
-          CreatedAt: item.createdAt.toDate().toLocaleDateString(),
-          InitialPrice: item.initialPrice,
-          TotalDonationsValue: item.totalDonationsValue,
-          AmountRemaining: Math.max(0, (item.initialPrice - item.totalDonationsValue)),
-          IsFunded: item.totalDonationsValue >= item.initialPrice,
-          DateCompleted: item.dateCompleted?.toDate().toLocaleTimeString(),
-          ActiveStatus: item.activeStatus
+          Created_At: item.createdAt.toDate().toLocaleDateString(),
+          Initial_Price: item.initialPrice,
+          Total_Donations_Value: item.totalDonationsValue,
+          Amount_Remaining: Math.max(0, (item.initialPrice - item.totalDonationsValue)),
+          Is_Funded: item.totalDonationsValue >= item.initialPrice,
+          Date_Completed: item.dateCompleted?.toDate().toLocaleTimeString(),
+          Active_Status: item.activeStatus
         }
         return newItem
       });
-      this.setTableData(data, `${this.selectedOrg.name}'s Donation Items`, `${this.selectedOrg.name} Donation Item Report`);
+      this.setTableData(data, "Items", `${this.selectedOrg.name}'s Donation Items`, `${this.selectedOrg.name} Donation Item Report`);
+      this.accordion.closeAll();
     });
   }
 
@@ -146,23 +167,38 @@ export class ReportsComponent implements OnInit {
 
       const data: DonationCSVModel[] = donations.map((item) => {
         const newItem: DonationCSVModel = {
-          DonationDate: item.donationDate.toDate().toLocaleDateString(),
-          DonorPublicName: item.donorPublicName,
+          Donation_Date: item.donationDate.toDate().toLocaleDateString(),
+          Donor_Public_Name: item.donorPublicName,
           Comment: item.comment,
-          IsSubscribed: item.IsSubscribed,
-          IsRefunded: item.IsRefunded,
+          Is_Subscribed: item.IsSubscribed,
+          Is_Refunded: item.IsRefunded,
           Amount: parseInt(item.paidAMT)
         }
         return newItem;
       });
 
-      this.setTableData(data, `${this.selectedOrg.name}'s General Donations`, `${this.selectedOrg.name} General Donation Report`);
-
+      this.setTableData(data, "Donations", `${this.selectedOrg.name}'s General Donations`, `${this.selectedOrg.name} General Donation Report`);
+      this.accordion.closeAll();
     });
   }
 
   clearTable() {
-    this.setTableData(null, "", "");
+    this.accordion.closeAll();
+    this.fileName = "";
+
+    this.reportTable.webDataRocks.setReport({
+      dataSource: {
+        data: null,
+      },
+      options: {
+        grid: {
+          title: "",
+          type: "flat",
+          showTotals: "on",
+          showGrandTotals: "on"
+        }
+      }
+    });
   }
 
   selectRow(org) {
@@ -206,13 +242,13 @@ export class ReportsComponent implements OnInit {
 }
 interface ItemCSVModel {
   Name: string;
-  InitialPrice: number;
-  TotalDonationsValue: number;
-  AmountRemaining: number;
-  IsFunded: boolean;
-  ActiveStatus: boolean;
-  CreatedAt?: string;
-  DateCompleted?: string;
+  Initial_Price: number;
+  Total_Donations_Value: number;
+  Amount_Remaining: number;
+  Is_Funded: boolean;
+  Active_Status: boolean;
+  Created_At?: string;
+  Date_Completed?: string;
 }
 interface ItemGetModel {
   summary: string;
@@ -228,10 +264,10 @@ interface ItemGetModel {
   dateCompleted?: Timestamp;
 }
 interface DonationCSVModel {
-  DonationDate: string,
+  Donation_Date: string,
   Amount: number,
-  DonorPublicName: string,
+  Donor_Public_Name: string,
   Comment: string,
-  IsSubscribed: boolean,
-  IsRefunded: boolean
+  Is_Subscribed: boolean,
+  Is_Refunded: boolean
 }
