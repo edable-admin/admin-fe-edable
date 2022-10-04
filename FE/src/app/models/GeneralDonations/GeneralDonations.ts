@@ -4,7 +4,7 @@ export interface GeneralDonations {
   IsSubscribed: boolean,
   IsRefunded: boolean,
   donationDate: Timestamp,
-  paidAMT: string,
+  amount: string,
   refundMessage:string,
   comment:string,
   donorPublicName:string  

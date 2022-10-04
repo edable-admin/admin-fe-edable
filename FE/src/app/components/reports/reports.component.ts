@@ -172,7 +172,7 @@ export class ReportsComponent implements OnInit {
           Comment: item.comment,
           Is_Subscribed: item.IsSubscribed,
           Is_Refunded: item.IsRefunded,
-          Amount: parseInt(item.paidAMT)
+          Amount: parseInt(item.amount)
         }
         return newItem;
       });
