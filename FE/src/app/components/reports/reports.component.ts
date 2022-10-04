@@ -7,7 +7,6 @@ import { OrganisationService } from 'src/app/services/firebase/organisation-serv
 import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItemService } from 'src/app/services/firebase/item-service/item.service';
-import { Item } from 'src/app/models/Item';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { Timestamp } from 'firebase/firestore';
@@ -21,6 +20,7 @@ import { WebdatarocksComponent } from 'ng-webdatarocks';
 export class ReportsComponent implements OnInit {
 
   displayedColumns: string[] = ["name"];
+  fileName: string = "";
   selectedOrg: Organisation;
   orgData: MatTableDataSource<Organisation>;
 
@@ -41,7 +41,6 @@ export class ReportsComponent implements OnInit {
   ngOnInit(): void {
     this.initSelectedOrg();
     this.getOrgs();
-    this.setTableData();
   }
 
   generateItemReport() {
@@ -71,14 +70,14 @@ export class ReportsComponent implements OnInit {
 
       const data: ItemCSVModel[] = orgItems.map((item: ItemGetModel) => {
         const newItem: ItemCSVModel = {
-          name: item.name,
-          createdAt: item.createdAt.toDate().toLocaleDateString(),
-          initialPrice: item.initialPrice,
-          totalDonationsValue: item.totalDonationsValue,
-          amountRemaining: Math.max(0, (item.initialPrice - item.totalDonationsValue)),
-          isFunded: item.totalDonationsValue >= item.initialPrice,
-          dateCompleted: item.dateCompleted?.toDate().toLocaleTimeString(),
-          activeStatus: item.activeStatus
+          Name: item.name,
+          CreatedAt: item.createdAt.toDate().toLocaleDateString(),
+          InitialPrice: item.initialPrice,
+          TotalDonationsValue: item.totalDonationsValue,
+          AmountRemaining: Math.max(0, (item.initialPrice - item.totalDonationsValue)),
+          IsFunded: item.totalDonationsValue >= item.initialPrice,
+          DateCompleted: item.dateCompleted?.toDate().toLocaleTimeString(),
+          ActiveStatus: item.activeStatus
         }
         return newItem
       });
@@ -121,12 +120,12 @@ export class ReportsComponent implements OnInit {
 
       const data: DonationCSVModel[] = donations.map((item) => {
         const newItem: DonationCSVModel = {
-          donationDate: item.donationDate.toDate().toLocaleDateString(),
-          donorPublicName: item.donorPublicName,
-          comment: item.comment,
-          isSubscribed: item.IsSubscribed,
-          isRefunded: item.IsRefunded,
-          paidAMT: item.paidAMT
+          DonationDate: item.donationDate.toDate().toLocaleDateString(),
+          DonorPublicName: item.donorPublicName,
+          Comment: item.comment,
+          IsSubscribed: item.IsSubscribed,
+          IsRefunded: item.IsRefunded,
+          Amount: parseInt(item.paidAMT)
         }
         return newItem;
       });
@@ -204,108 +203,135 @@ export class ReportsComponent implements OnInit {
 
   onReportComplete(): void {
     this.child.webDataRocks.off('reportcomplete');
-    this.child.webDataRocks.setReport({
-      dataSource: {
-        data: this.pivotTableData,
-      },
-    });
+    // this.child.webDataRocks.setReport({
+    //   dataSource: {
+    //     data: this.pivotTableData,
+    //   },
+    // });
   }
 
-  setTableData() {
+  customiseToolbar(toolbar) {
+    const tabs = toolbar.getTabs()
 
-    // await this.ofs.getOrgs().subscribe((resp) => {
-    //   this.pivotTableData = resp as Organisation[];
-    //   console.log(this.pivotTableData);
+    toolbar.getTabs = () => {
+      const exportButton = tabs[3]
+      const exportToHTML = exportButton.menu[1];
+      const exportToExcel = exportButton.menu[2];
+      const exportToPDF = exportButton.menu[3];
 
-    // });
+      exportToHTML.handler = () => {
+        this.child.webDataRocks
+          .exportTo('html', {
+            filename: this.fileName
+          })
+      };
 
-    // this.pivotTableData = [
-    //   {
-    //     "Name": {
-    //       type: "string"
-    //     },
-    //     "Active Status": {
-    //       type: "string"
-    //     },
-    //     "Total Donation Items": {
-    //       type: "number"
-    //     },
-    //     "Total Donations": {
-    //       type: "number"
-    //     },
-    //   },
-    //   {
-    //     "Name": "OrgName1",
-    //     "Active Status": "true",
-    //     "Total Donation Items": 10,
-    //     "Total Donations": 1500
-    //   },
-    //   {
-    //     "Name": "OrgName2",
-    //     "Active Status": "false",
-    //     "Total Donation Items": 15,
-    //     "Total Donations": 900
-    //   },
-    //   {
-    //     "Name": "OrgName3",
-    //     "Active Status": "true",
-    //     "Total Donation Items": 8,
-    //     "Total Donations": 400
-    //   },
-    //   {
-    //     "Name": "OrgName4",
-    //     "Active Status": "false",
-    //     "Total Donation Items": 6,
-    //     "Total Donations": 2000
-    //   },
-    // ]
+      exportToExcel.handler = () => {
+        this.child.webDataRocks
+          .exportTo('excel', {
+            filename: this.fileName
+          })
+      };
+
+      exportToPDF.handler = () => {
+        this.child.webDataRocks
+          .exportTo('pdf', {
+            filename: this.fileName
+          })
+      };
+
+      return tabs
+
+    }
+  }
+
+  setTableData(dataSource: any[], title: string) {
 
     this.child.webDataRocks.setReport({
       dataSource: {
-        data: this.pivotTableData,
+        data: dataSource,
+      },
+      options: {
+        grid: {
+          title: title,
+          type: "flat",
+          showTotals: "on",
+          showGrandTotals: "on"
+        }
       }
     });
   }
+
   loadOrgItems() {
     if (this.selectedOrg.id === '') {
       this.snackBar.open("No organisation selected");
       return;
     }
+
     this.ifs.getItems(this.selectedOrg.id).subscribe((itemData) => {
 
       let orgItems = itemData as ItemGetModel[];
 
       const data: ItemCSVModel[] = orgItems.map((item: ItemGetModel) => {
         const newItem: ItemCSVModel = {
-          name: item.name,
-          createdAt: item.createdAt.toDate().toLocaleDateString(),
-          initialPrice: item.initialPrice,
-          totalDonationsValue: item.totalDonationsValue,
-          amountRemaining: Math.max(0, (item.initialPrice - item.totalDonationsValue)),
-          isFunded: item.totalDonationsValue >= item.initialPrice,
-          dateCompleted: item.dateCompleted?.toDate().toLocaleTimeString(),
-          activeStatus: item.activeStatus
+          Name: item.name,
+          CreatedAt: item.createdAt.toDate().toLocaleDateString(),
+          InitialPrice: item.initialPrice,
+          TotalDonationsValue: item.totalDonationsValue,
+          AmountRemaining: Math.max(0, (item.initialPrice - item.totalDonationsValue)),
+          IsFunded: item.totalDonationsValue >= item.initialPrice,
+          DateCompleted: item.dateCompleted?.toDate().toLocaleTimeString(),
+          ActiveStatus: item.activeStatus
         }
         return newItem
       });
-
-      this.child.webDataRocks.setReport({
-        dataSource: {
-          data: data,
-        }
-      });
+      this.fileName = `${this.selectedOrg.name} Donation Item Report`;
+      this.setTableData(data, `${this.selectedOrg.name}'s Donation Items`);
     });
   }
+
+  loadGeneralDonations() {
+    if (this.selectedOrg.id === '') {
+      this.snackBar.open("No organisation selected");
+      return;
+    }
+    
+    this.tfs.getOrgGeneralDonations(this.selectedOrg.id).then((resp) => {
+      
+      let donations: GeneralDonations[] = [];
+      
+      resp.forEach((resp) => {
+        donations.push(resp.data() as GeneralDonations);
+      });
+      
+      const data: DonationCSVModel[] = donations.map((item) => {
+        const newItem: DonationCSVModel = {
+          DonationDate: item.donationDate.toDate().toLocaleDateString(),
+          DonorPublicName: item.donorPublicName,
+          Comment: item.comment,
+          IsSubscribed: item.IsSubscribed,
+          IsRefunded: item.IsRefunded,
+          Amount: parseInt(item.paidAMT)
+        }
+        return newItem;
+      });
+      
+      this.fileName = `${this.selectedOrg.name} General Donation Report`;
+      this.setTableData(data, `${this.selectedOrg.name}'s General Donations`);
+
+    });
+  }
+
 }
 interface ItemCSVModel {
-  name: string;
-  initialPrice: number;
-  totalDonationsValue: number;
-  amountRemaining: number;
-  isFunded: boolean;
-  activeStatus: boolean;
-  createdAt?: string;
-  dateCompleted?: string;
+  Name: string;
+  InitialPrice: number;
+  TotalDonationsValue: number;
+  AmountRemaining: number;
+  IsFunded: boolean;
+  ActiveStatus: boolean;
+  CreatedAt?: string;
+  DateCompleted?: string;
 }
 interface ItemGetModel {
   summary: string;
@@ -321,10 +347,10 @@ interface ItemGetModel {
   dateCompleted?: Timestamp;
 }
 interface DonationCSVModel {
-  donationDate: string,
-  donorPublicName: string,
-  comment: string,
-  isSubscribed: boolean,
-  isRefunded: boolean,
-  paidAMT: number
+  DonationDate: string,
+  Amount: number,
+  DonorPublicName: string,
+  Comment: string,
+  IsSubscribed: boolean,
+  IsRefunded: boolean
 }
