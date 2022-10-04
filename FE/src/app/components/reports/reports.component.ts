@@ -4,13 +4,13 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
-import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItemService } from 'src/app/services/firebase/item-service/item.service';
-import { Item } from 'src/app/models/Item';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { Timestamp } from 'firebase/firestore';
+import { WebdatarocksComponent } from 'ng-webdatarocks';
+import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-reports',
@@ -20,11 +20,15 @@ import { Timestamp } from 'firebase/firestore';
 export class ReportsComponent implements OnInit {
 
   displayedColumns: string[] = ["name"];
+  fileName: string = "";
+  pivotTableData: any;
   selectedOrg: Organisation;
   orgData: MatTableDataSource<Organisation>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('reportTable') reportTable: WebdatarocksComponent;
+  @ViewChild(MatAccordion) accordion: MatAccordion;
 
   constructor(
     private ofs: OrganisationService,
@@ -38,26 +42,92 @@ export class ReportsComponent implements OnInit {
     this.getOrgs();
   }
 
-  generateItemReport() {
+  getOrgs() {
+    this.ofs.getOrgs().subscribe(orgs => {
+      this.pivotTableData = orgs as Organisation[];
+      this.orgData = new MatTableDataSource(orgs as Organisation[]);
+      this.orgData.paginator = this.paginator;
+      this.orgData.sort = this.sort;
+    });
+  }
 
+  //Customise the toolbar to change the filename when exporting reports
+  customiseToolbar(toolbar) {
+    const tabs = toolbar.getTabs();
+
+    toolbar.getTabs = () => {
+      const exportButton = tabs[3]
+      const exportToHTML = exportButton.menu[1];
+      const exportToExcel = exportButton.menu[2];
+      const exportToPDF = exportButton.menu[3];
+
+      exportToHTML.handler = () => {
+        this.reportTable.webDataRocks
+          .exportTo('html', {
+            filename: this.fileName
+          })
+      };
+
+      exportToExcel.handler = () => {
+        this.reportTable.webDataRocks
+          .exportTo('excel', {
+            filename: this.fileName
+          })
+      };
+
+      exportToPDF.handler = () => {
+        this.reportTable.webDataRocks
+          .exportTo('pdf', {
+            filename: this.fileName
+          })
+      };
+
+      return tabs
+    }
+  }
+
+  setTableData(dataSource: any[], reportType: string, title: string, fileName: string) {
+
+    if (dataSource.length <= 0 || dataSource === null || dataSource === undefined) {
+      let message = ""
+      switch (reportType) {
+        case "Items":
+          message = `${this.selectedOrg.name} has no donation items`;
+          break;
+        case "Donations":
+          message = `${this.selectedOrg.name} has no general donations`;
+          break;
+
+        default:
+          break;
+      }
+      this.clearTable();
+      this.snackBar.open(message);
+      return;
+    }
+
+    this.fileName = fileName;
+
+    this.reportTable.webDataRocks.setReport({
+      dataSource: {
+        data: dataSource,
+      },
+      options: {
+        grid: {
+          title: title,
+          type: "flat",
+          showTotals: "on",
+          showGrandTotals: "on"
+        }
+      }
+    });
+  }
+
+  loadOrgItems() {
     if (this.selectedOrg.id === '') {
       this.snackBar.open("No organisation selected");
       return;
     }
-
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalseparator: '.',
-      showLabels: true,
-      showTitle: true,
-      title: `${this.selectedOrg.name}'s Donation Items`,
-      useBom: true,
-      noDownload: false,
-      headers: ["Item Name", "Date Listed", "Initial Price", "Total Donations", "Amount Remaining", "Is Funded", "Date Completed", "Active Status"],
-      useHeader: false,
-      nullToEmptyString: false,
-    };
 
     this.ifs.getItems(this.selectedOrg.id).subscribe((itemData) => {
 
@@ -65,46 +135,28 @@ export class ReportsComponent implements OnInit {
 
       const data: ItemCSVModel[] = orgItems.map((item: ItemGetModel) => {
         const newItem: ItemCSVModel = {
-          name: item.name,
-          createdAt: item.createdAt.toDate().toLocaleDateString(),
-          initialPrice: item.initialPrice,
-          totalDonationsValue: item.totalDonationsValue,
-          amountRemaining: Math.max(0, (item.initialPrice - item.totalDonationsValue)),
-          isFunded: item.totalDonationsValue >= item.initialPrice,
-          dateCompleted: item.dateCompleted?.toDate().toLocaleTimeString(),
-          activeStatus: item.activeStatus
+          Name: item.name,
+          Created_At: item.createdAt.toDate().toLocaleDateString(),
+          Initial_Price: item.initialPrice,
+          Total_Donations_Value: item.totalDonationsValue,
+          Amount_Remaining: Math.max(0, (item.initialPrice - item.totalDonationsValue)),
+          Is_Funded: item.totalDonationsValue >= item.initialPrice,
+          Date_Completed: item.dateCompleted?.toDate().toLocaleTimeString(),
+          Active_Status: item.activeStatus
         }
         return newItem
       });
-      
-      new AngularCsv(data, `${this.selectedOrg.name}'s Donation Item Report`, options);
-
+      this.setTableData(data, "Items", `${this.selectedOrg.name}'s Donation Items`, `${this.selectedOrg.name} Donation Item Report`);
+      this.accordion.closeAll();
     });
-
   }
 
-  generateDonationReport() {
-
+  loadGeneralDonations() {
     if (this.selectedOrg.id === '') {
       this.snackBar.open("No organisation selected");
       return;
     }
 
-    const options = {
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalseparator: '.',
-      showLabels: true,
-      showTitle: true,
-      title: `${this.selectedOrg.name}'s General Donations`,
-      useBom: true,
-      noDownload: false,
-      headers: ["Donation Date", "Donor Public Name", "Comment", "IsSubscribed", "IsRefunded", "Amount"],
-      useHeader: false,
-      nullToEmptyString: false,
-    };
-
-    
     this.tfs.getOrgGeneralDonations(this.selectedOrg.id).then((resp) => {
 
       let donations: GeneralDonations[] = [];
@@ -115,27 +167,37 @@ export class ReportsComponent implements OnInit {
 
       const data: DonationCSVModel[] = donations.map((item) => {
         const newItem: DonationCSVModel = {
-          donationDate: item.donationDate.toDate().toLocaleDateString(),
-          donorPublicName: item.donorPublicName,
-          comment: item.comment,
-          isSubscribed: item.IsSubscribed,
-          isRefunded: item.IsRefunded,
-          paidAMT: item.paidAMT
+          Donation_Date: item.donationDate.toDate().toLocaleDateString(),
+          Donor_Public_Name: item.donorPublicName,
+          Comment: item.comment,
+          Is_Subscribed: item.IsSubscribed,
+          Is_Refunded: item.IsRefunded,
+          Amount: parseInt(item.amount)
         }
         return newItem;
       });
 
-      new AngularCsv(data, `${this.selectedOrg.name}'s General Donations Report`, options);
-
+      this.setTableData(data, "Donations", `${this.selectedOrg.name}'s General Donations`, `${this.selectedOrg.name} General Donation Report`);
+      this.accordion.closeAll();
     });
-
   }
 
-  getOrgs() {
-    this.ofs.getOrgs().subscribe(orgs => {
-      this.orgData = new MatTableDataSource(orgs as Organisation[]);
-      this.orgData.paginator = this.paginator;
-      this.orgData.sort = this.sort;
+  clearTable() {
+    this.accordion.closeAll();
+    this.fileName = "";
+
+    this.reportTable.webDataRocks.setReport({
+      dataSource: {
+        data: null,
+      },
+      options: {
+        grid: {
+          title: "",
+          type: "flat",
+          showTotals: "on",
+          showGrandTotals: "on"
+        }
+      }
     });
   }
 
@@ -173,16 +235,20 @@ export class ReportsComponent implements OnInit {
       this.orgData.paginator.firstPage();
     }
   }
+
+  onPivotReady(pivot: WebDataRocks.Pivot): void {
+    console.log('[ready] WebdatarocksPivotModule', this.reportTable);
+  }
 }
 interface ItemCSVModel {
-  name: string;
-  initialPrice: number;
-  totalDonationsValue: number;
-  amountRemaining: number;
-  isFunded: boolean;
-  activeStatus: boolean;
-  createdAt?: string;
-  dateCompleted?: string;
+  Name: string;
+  Initial_Price: number;
+  Total_Donations_Value: number;
+  Amount_Remaining: number;
+  Is_Funded: boolean;
+  Active_Status: boolean;
+  Created_At?: string;
+  Date_Completed?: string;
 }
 interface ItemGetModel {
   summary: string;
@@ -198,10 +264,10 @@ interface ItemGetModel {
   dateCompleted?: Timestamp;
 }
 interface DonationCSVModel {
-  donationDate: string,
-  donorPublicName: string,
-  comment: string,
-  isSubscribed: boolean,
-  isRefunded: boolean,
-  paidAMT: number
+  Donation_Date: string,
+  Amount: number,
+  Donor_Public_Name: string,
+  Comment: string,
+  Is_Subscribed: boolean,
+  Is_Refunded: boolean
 }
