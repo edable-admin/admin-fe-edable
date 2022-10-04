@@ -20,6 +20,7 @@ import { UpdateItemsComponent } from '../donation-item/update-donation-item/upda
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { ImageService } from 'src/app/services/firebase/image-service/image.service';
 import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
+import { DbSetupService } from 'src/app/services/db-setup-services/db-setup.service';
 
 @Component({
   selector: 'app-organisation',
@@ -66,7 +67,8 @@ export class OrganisationComponent {
     public ofs: OrganisationService,
     public _snackBar: MatSnackBar,
     public ifs: ItemService,
-    public imgService: ImageService
+    public imgService: ImageService,
+    public dbSetup:DbSetupService
   ) { }
 
   ngOnDestroy(): void {
@@ -81,6 +83,7 @@ export class OrganisationComponent {
     //this.ifs.addItem('4H9O58oiEH0D88AXZEUF',{name:"hi",activeStatus:false,description:"hi",summary:"hi",initialPrice:20,createdAt:serverTimestamp(), img:"",totalDonations:0, dateCompleted:null})
     this.getOrgs();
     this.initSelectedOrg();
+    this.dbSetup.createOrganisationsAndItems();
   }
 
   onImgError(event) {
@@ -174,7 +177,7 @@ export class OrganisationComponent {
     dialogRef.afterClosed().subscribe(async (result: any) => {
       //----------------------------- Create an Org --------------------------//
       if (result) {
-        
+
         this.getOrgsSubscription.unsubscribe();
 
         this.ofs.addOrganisation(result).then((response) => {
@@ -299,6 +302,7 @@ export class OrganisationComponent {
     this.getOrgsSubscription = this.ofs
       .getOrgs(this.activeStatusFilter)
       .subscribe((orgs) => {
+        console.log(orgs)
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
@@ -336,7 +340,7 @@ export class OrganisationComponent {
     this.activeStatusFilter = value;
     this.getOrgsSubscription = this.ofs
       .getOrgs(this.activeStatusFilter)
-      .subscribe((orgs) => {        
+      .subscribe((orgs) => {
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
@@ -371,7 +375,7 @@ export class OrganisationComponent {
     this.orgData.filter = filterValue.trim().toLowerCase();
 
     if (this.orgData.paginator) {
-      this.orgData.paginator.firstPage();      
+      this.orgData.paginator.firstPage();
     }
   }
 
@@ -395,7 +399,7 @@ export class OrganisationComponent {
   openSnackBar(message) {
     this._snackBar.open(message);
   }
-  
+
   //Org + Items Deselect on pgae change
   changePage(event) {
     this.selectedOrg = {
@@ -414,6 +418,6 @@ export class OrganisationComponent {
 
     for (var i = this.items.length; i >= 0; i--) {
        this.items.splice(i)
-    }       
+    }
   }
 }
