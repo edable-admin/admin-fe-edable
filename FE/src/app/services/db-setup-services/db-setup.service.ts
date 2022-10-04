@@ -52,8 +52,6 @@ export class DbSetupService {
   ) { }
 
   createOrganisationsAndItems(){
-    //gets the number of Organisations
-    console.log(mockData.length)
 
     let orgs:CreateOrgModel[] = mockData;
     let org:CreateOrgModel;
