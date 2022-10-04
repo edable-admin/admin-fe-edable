@@ -11,7 +11,6 @@ export class TransactionsComponent implements OnInit {
   constructor(public dbs: DbSetupService) { }
 
   ngOnInit(): void {
-    this.dbs.generateNoSQLStructure();
   }
 
 }

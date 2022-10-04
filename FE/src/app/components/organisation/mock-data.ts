@@ -1,5 +1,20 @@
 import { Timestamp, serverTimestamp, FieldValue } from "firebase/firestore"
 
+interface Item {
+    name: string,
+    summary:string,
+    description:string,
+    initialPrice: number,
+    totalDonationCount: number,
+    totalDonations: number,
+    totalDonationsValue:number,
+    activeStatus: boolean,
+    img: string,
+    dateCompleted?:Timestamp,
+    createdAt:FieldValue
+  }
+
+
 interface CreateOrgModel {
       name: string,
       description: string,
@@ -17,21 +32,7 @@ interface CreateOrgModel {
       totalGeneralDonationsValue: number,
       totalItemDonationsCount: number,
       totalItemDonationsValue: number,
-      Items?:[
-        {
-          name: string,
-          summary:string,
-          description:string,
-          initialPrice: number,
-          totalDonationCount: number,
-          totalDonations: number,
-          totalDonationsValue:number,
-          activeStatus: boolean,
-          img: string,
-          dateCompleted?:Timestamp,
-          createdAt:FieldValue
-        }
-      ]
+      Items?: Item[]
 
     }
 
@@ -60,6 +61,19 @@ export const mockData:CreateOrgModel[] =
           "Items":[
             {
               "name": "Shovel",
+              "summary":"Great Shovel",
+              "description":"Good for diggging",
+              "initialPrice": 50,
+              "totalDonationCount": 14,
+              "totalDonations": 0,
+              "totalDonationsValue":405,
+              "activeStatus": true,
+              "dateCompleted":null,
+              "createdAt": serverTimestamp(),
+              "img": "https://source.unsplash.com/QwkqiuQLqBc"
+            },
+            {
+              "name": "Chainsaw",
               "summary":"Great Chainsaw",
               "description":"Good for both cutting and pruning",
               "initialPrice": 50,
@@ -71,6 +85,7 @@ export const mockData:CreateOrgModel[] =
               "createdAt": serverTimestamp(),
               "img": "https://source.unsplash.com/dQcj0H8BcmU"
             }
+
           ]
       },
       {

@@ -4,7 +4,20 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { noSQLData } from './no-sql-data';
 import { mockData } from 'src/app/components/organisation/mock-data';
 import { FieldValue, Timestamp } from 'firebase/firestore';
-import { Item } from 'src/app/models/Item';
+
+interface Item {
+  name: string,
+  summary:string,
+  description:string,
+  initialPrice: number,
+  totalDonationCount: number,
+  totalDonations: number,
+  totalDonationsValue:number,
+  activeStatus: boolean,
+  img: string,
+  dateCompleted?:Timestamp,
+  createdAt:FieldValue
+}
 
 interface CreateOrgModel {
   name: string,
@@ -23,21 +36,7 @@ interface CreateOrgModel {
   totalGeneralDonationsValue: number,
   totalItemDonationsCount: number,
   totalItemDonationsValue: number,
-  Items?:[
-    {
-      name: string,
-      summary:string,
-      description:string,
-      initialPrice: number,
-      totalDonationCount: number,
-      totalDonations: number,
-      totalDonationsValue:number,
-      activeStatus: boolean,
-      img: string,
-      createdAt:FieldValue,
-      dateCompleted?:Timestamp
-    }
-  ]
+  Items?:Item[]
 
 }
 
@@ -84,6 +83,7 @@ export class DbSetupService {
         totalItemDonationsValue:orgObj.totalItemDonationsValue
       }
 
+      //todo make model
       let item:any;
       let itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
 
@@ -108,6 +108,8 @@ export class DbSetupService {
               }
 
               itemRef.set(item)
+
+              itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
             }
           )
 
@@ -115,51 +117,6 @@ export class DbSetupService {
       )
     })
 
-
-
-
-  }
-
-  generateNoSQLStructure() {
-    const orgRef = this.fs
-      .collection('Organisations')
-      .doc().ref
-
-    const itemsRef = orgRef
-      .collection('Items')
-      .doc()
-
-    const itemDonationsRef = itemsRef
-      .collection('ItemsDonations')
-      .doc()
-
-      const summaryRef = orgRef
-      .collection('GeneralDonations')
-      .doc('Summary')
-
-      const generalDonations = summaryRef
-      .collection('Donations')
-      .doc()
-
-    orgRef.set(noSQLData.Organisations[0])
-      .then(() => {
-
-        for (var i = 0; i <= noSQLData.GeneralDonations.length; i++) {
-        generalDonations.set(noSQLData.GeneralDonations[0])
-        }
-
-      }).then(() => {
-
-        for (var i = 0; i <= noSQLData.Items.length; i++) {
-        itemsRef.set(noSQLData.Items[0])
-        }
-
-      }).then(() => {
-        for (var i = 0; i <= noSQLData.ItemDonations.length; i++) {
-        itemDonationsRef.set(noSQLData.ItemDonations[0])
-        }
-
-      }).then(resp => console.log(resp)).catch(err => console.log(err))
 
 
 
