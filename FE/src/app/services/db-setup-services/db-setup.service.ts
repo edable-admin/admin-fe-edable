@@ -56,64 +56,64 @@ export class DbSetupService {
     let orgs:CreateOrgModel[] = mockData;
     let org:CreateOrgModel;
 
-    // orgs.forEach((orgObj) => {
-    //   // create a reference for the new org
-    //   const orgRef = this.fs
-    //   .collection('Organisations')
-    //   .doc().ref
+    orgs.forEach((orgObj) => {
+      // create a reference for the new org
+      const orgRef = this.fs
+      .collection('Organisations')
+      .doc().ref
 
-    //     org = {
-    //     name:orgObj.name,
-    //     description:orgObj.description,
-    //     summary:orgObj.summary,
-    //     activeStatus:orgObj.activeStatus,
-    //     ABN:orgObj.ABN,
-    //     phone:orgObj.phone,
-    //     website:orgObj.website,
-    //     img:orgObj.img,
-    //     totalDonationCount:orgObj.totalDonationCount,
-    //     totalDonationItems:orgObj.totalDonationItems,
-    //     totalDonations:orgObj.totalDonations,
-    //     totalDonationsValue:orgObj.totalDonationsValue,
-    //     totalGeneralDonationsValue:orgObj.totalGeneralDonationsValue,
-    //     totalGeneralDonationsCount:orgObj.totalGeneralDonationsCount,
-    //     totalItemDonationsCount:orgObj.totalItemDonationsCount,
-    //     totalItemDonationsValue:orgObj.totalItemDonationsValue
-    //   }
+        org = {
+        name:orgObj.name,
+        description:orgObj.description,
+        summary:orgObj.summary,
+        activeStatus:orgObj.activeStatus,
+        ABN:orgObj.ABN,
+        phone:orgObj.phone,
+        website:orgObj.website,
+        img:orgObj.img,
+        totalDonationCount:orgObj.totalDonationCount,
+        totalDonationItems:orgObj.totalDonationItems,
+        totalDonations:orgObj.totalDonations,
+        totalDonationsValue:orgObj.totalDonationsValue,
+        totalGeneralDonationsValue:orgObj.totalGeneralDonationsValue,
+        totalGeneralDonationsCount:orgObj.totalGeneralDonationsCount,
+        totalItemDonationsCount:orgObj.totalItemDonationsCount,
+        totalItemDonationsValue:orgObj.totalItemDonationsValue
+      }
 
-    //   //todo make model
-    //   let item:any;
-    //   let itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
+      //todo make model
+      let item:any;
+      let itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
 
-    //   orgRef.set(org).then(
-    //     () => {
+      orgRef.set(org).then(
+        () => {
 
 
-    //       orgObj.Items.forEach(
-    //         (itemObject) => {
-    //           item = {
-    //             name: itemObject.name,
-    //             summary:itemObject.summary,
-    //             description:itemObject.description,
-    //             initialPrice: itemObject.initialPrice,
-    //             totalDonationCount: itemObject.totalDonationCount,
-    //             totalDonations: itemObject.totalDonations,
-    //             totalDonationsValue:itemObject.totalDonationsValue,
-    //             activeStatus: itemObject.activeStatus,
-    //             dateCompleted:itemObject.dateCompleted,
-    //             createdAt: itemObject.createdAt,
-    //             img: itemObject.img
-    //           }
+          orgObj.Items.forEach(
+            (itemObject) => {
+              item = {
+                name: itemObject.name,
+                summary:itemObject.summary,
+                description:itemObject.description,
+                initialPrice: itemObject.initialPrice,
+                totalDonationCount: itemObject.totalDonationCount,
+                totalDonations: itemObject.totalDonations,
+                totalDonationsValue:itemObject.totalDonationsValue,
+                activeStatus: itemObject.activeStatus,
+                dateCompleted:itemObject.dateCompleted,
+                createdAt: itemObject.createdAt,
+                img: itemObject.img
+              }
 
-    //           itemRef.set(item)
+              itemRef.set(item)
 
-    //           itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
-    //         }
-    //       )
+              itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
+            }
+          )
 
-    //     }
-    //   )
-    // })
+        }
+      )
+    })
 
 
 
