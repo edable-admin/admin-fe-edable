@@ -234,7 +234,7 @@ export const mockData:CreateOrgModel[] =
             "initialPrice": 70,
             "totalDonationCount": 2,
             "totalDonations": 85,
-            "totalDonationsValue": 0,
+            "totalDonationsValue": 85,
             "activeStatus": true,
             "dateCompleted":null,
             "createdAt": serverTimestamp(),
