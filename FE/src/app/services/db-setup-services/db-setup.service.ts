@@ -140,7 +140,7 @@ export class DbSetupService {
 
           orgObj.GeneralDonations.forEach((genDon) => {
             generalDonations = {
-              IsRefundable: genDon.IsRefunded,
+              IsRefunded: genDon.IsRefunded,
               IsSubscribed: genDon.IsSubscribed,
               amount: genDon.amount,
               comment: genDon.comment,

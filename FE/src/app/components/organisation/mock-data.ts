@@ -257,22 +257,22 @@ export const mockData:CreateOrgModel[] =
 
                 }
               },
-                {
-                  "IsRefunded":false,
-                  "amount":65,
-                  "comment":"Skid-Steer",
-                  "donorPublicName":"Vittoria Eccleston",
-                  "donationDate":serverTimestamp(),
-                  "private":{
-                    "IsAnon":true,
-                    "agreeToContact":true,
-                    "email":"tolney0@arstechnica.com",
-                    "howHeard":"Facebook",
-                    "mailingAddress":"3502 Linden Terrace",
-                    "name":"Tabbatha Olney",
-                    "phoneNumber":"(519) 9540817"
-                  },
-                }
+              {
+                "IsRefunded":false,
+                "amount":65,
+                "comment":"Skid-Steer",
+                "donorPublicName":"Vittoria Eccleston",
+                "donationDate":serverTimestamp(),
+                "private":{
+                  "IsAnon":true,
+                  "agreeToContact":true,
+                  "email":"tolney0@arstechnica.com",
+                  "howHeard":"Facebook",
+                  "mailingAddress":"3502 Linden Terrace",
+                  "name":"Tabbatha Olney",
+                  "phoneNumber":"(519) 9540817"
+                },
+              }
             ]
           },
           {
