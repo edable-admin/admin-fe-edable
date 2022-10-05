@@ -88,7 +88,7 @@ export class DbSetupService {
         () => {
 
           // Loop over item mock data for that organisation
-          orgObj.Items.forEach(
+          orgObj?.Items?.forEach(
             (itemObject) => {
 
               //create an item object from mock data
@@ -138,7 +138,7 @@ export class DbSetupService {
             }
           )
 
-          orgObj.GeneralDonations.forEach((genDon) => {
+          orgObj?.GeneralDonations?.forEach((genDon) => {
             generalDonations = {
               IsRefunded: genDon.IsRefunded,
               IsSubscribed: genDon.IsSubscribed,
@@ -186,4 +186,6 @@ export class DbSetupService {
 
 
   }
+
+  
 }
