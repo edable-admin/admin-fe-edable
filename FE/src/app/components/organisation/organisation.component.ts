@@ -80,7 +80,8 @@ export class OrganisationComponent {
   }
 
   ngOnInit(): void {
-    this.db.createOrganisationsAndItems();
+    //VVVrun the code below to generate mock data
+    //this.db.createOrganisationsAndItems();
     this.getOrgs();
     this.initSelectedOrg();
   }
