@@ -103,7 +103,14 @@ export class DbSetupService {
                   donorPublicName:itemDon.donorPublicName
                 }
 
-                  itemDonationRef.set(itemDonation)
+                itemDonationRef.set(itemDonation)
+
+                itemDonationRef = this.fs.collection('Organisations')
+                .doc(orgRef.id)
+                .collection('Items')
+                .doc(itemRef.id)
+                .collection('ItemsDonations').doc()
+                .ref;
 
               }
 
