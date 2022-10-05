@@ -4,41 +4,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { noSQLData } from './no-sql-data';
 import { mockData } from 'src/app/components/organisation/mock-data';
 import { FieldValue, Timestamp } from 'firebase/firestore';
-
-interface Item {
-  name: string,
-  summary:string,
-  description:string,
-  initialPrice: number,
-  totalDonationCount: number,
-  totalDonations: number,
-  totalDonationsValue:number,
-  activeStatus: boolean,
-  img: string,
-  dateCompleted?:Timestamp,
-  createdAt:FieldValue
-}
-
-interface CreateOrgModel {
-  name: string,
-  description: string,
-  summary: string,
-  activeStatus: boolean,
-  ABN: string,
-  phone: string,
-  website: string,
-  img: string,
-  totalDonationCount: number,
-  totalDonationItems: number,
-  totalDonations: number,
-  totalDonationsValue: number,
-  totalGeneralDonationsCount: number,
-  totalGeneralDonationsValue: number,
-  totalItemDonationsCount: number,
-  totalItemDonationsValue: number,
-  Items?:Item[]
-
-}
+import { CreateOrgModel } from 'src/app/models/MockDataModels';
 
 
 @Injectable({
@@ -56,12 +22,16 @@ export class DbSetupService {
     let orgs:CreateOrgModel[] = mockData;
     let org:CreateOrgModel;
 
+
+    //Loops through every organisation
     orgs.forEach((orgObj) => {
+
       // create a reference for the new org
       const orgRef = this.fs
       .collection('Organisations')
       .doc().ref
 
+        // from the mock data create an org object
         org = {
         name:orgObj.name,
         description:orgObj.description,
@@ -83,14 +53,29 @@ export class DbSetupService {
 
       //todo make model
       let item:any;
+
+      let itemDonation:any;
+
+      //create an item reference from the Organisation
       let itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
 
+      //create a donation reference for an item donation;
+      let itemDonationRef = this.fs.collection('Organisations')
+      .doc(orgRef.id)
+      .collection('Items')
+      .doc(itemRef.id)
+      .collection('ItemsDonations').doc()
+      .ref;
+
+      //Create organisation in the database
       orgRef.set(org).then(
         () => {
 
-
+          // Loop over item mock data for that organisation
           orgObj.Items.forEach(
             (itemObject) => {
+
+              //create an item object from mock data
               item = {
                 name: itemObject.name,
                 summary:itemObject.summary,
@@ -105,8 +90,29 @@ export class DbSetupService {
                 img: itemObject.img
               }
 
+              //create the item in the database
               itemRef.set(item)
 
+              //loopover item donations for the item
+              itemObject?.itemDonations?.forEach(itemDon => {
+                itemDonation = {
+                  IsRefunded:itemDon.IsRefunded,
+                  amount:itemDon.amount,
+                  comment:itemDon.comment,
+                  donationDate:itemDon.donationDate,
+                  donorPublicName:itemDon.donorPublicName
+                }
+
+                  itemDonationRef.set(itemDonation)
+
+              }
+
+                )
+
+
+
+
+              //reset the item ref to a new reference
               itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
             }
           )

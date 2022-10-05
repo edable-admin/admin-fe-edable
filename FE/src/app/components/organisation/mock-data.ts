@@ -1,40 +1,6 @@
 import { Timestamp, serverTimestamp, FieldValue } from "firebase/firestore"
+import { CreateOrgModel } from "src/app/models/MockDataModels"
 
-interface Item {
-    name: string,
-    summary:string,
-    description:string,
-    initialPrice: number,
-    totalDonationCount: number,
-    totalDonations: number,
-    totalDonationsValue:number,
-    activeStatus: boolean,
-    img: string,
-    dateCompleted?:Timestamp,
-    createdAt:FieldValue
-  }
-
-
-interface CreateOrgModel {
-      name: string,
-      description: string,
-      summary: string,
-      activeStatus: boolean,
-      ABN: string,
-      phone: string,
-      website: string,
-      img: string,
-      totalDonationCount: number,
-      totalDonationItems: number,
-      totalDonations: number,
-      totalDonationsValue: number,
-      totalGeneralDonationsCount: number,
-      totalGeneralDonationsValue: number,
-      totalItemDonationsCount: number,
-      totalItemDonationsValue: number,
-      Items?: Item[]
-
-    }
 
 
 export const mockData:CreateOrgModel[] =
@@ -70,7 +36,27 @@ export const mockData:CreateOrgModel[] =
               "activeStatus": true,
               "dateCompleted":null,
               "createdAt": serverTimestamp(),
-              "img": "https://source.unsplash.com/QwkqiuQLqBc"
+              "img": "https://source.unsplash.com/QwkqiuQLqBc",
+              "itemDonations":[
+                {
+                  "IsRefunded":false,
+                  "amount":20,
+                  "comment":"well done I love Trees R us :)",
+                  "donationDate":serverTimestamp(),
+                  "donorPublicName":"John",
+                  "private":{
+                    "IsAnon":false,
+                    "agreeToContact":true,
+                    "email":"example@john.com.au",
+                    "howHeard":"Facebook",
+                    "mailingAddress":"16 realgood st realville 3136",
+                    "name":"John Smith",
+                    "phoneNumber":"0486723474"
+
+                  }
+
+              }]
+
             },
             {
               "name": "Chainsaw",
@@ -356,42 +342,42 @@ export const mockData:CreateOrgModel[] =
             },
           ]
       },
-      // {
+      {
 
-      //     "name": "Windy",
-      //     "description": "",
-      //     "summary": "Windy is a non for profit organization that helps supply small wind turbines to unpriviled families ",
-      //     "activeStatus": true,
-      //     "ABN": "49557732843",
-      //     "phone": "0438827348",
-      //     "website": "https://www.Windy.com",
-      //     "img": "https://source.unsplash.com/tTv6Lo5uQVQ",
-      //     "totalDonationCount": 0,
-      //     "totalDonationItems": 0,
-      //     "totalDonations": 0,
-      //     "totalDonationsValue": 0,
-      //     "totalGeneralDonationsCount": 0,
-      //     "totalGeneralDonationsValue": 0,
-      //     "totalItemDonationsCount": 0,
-      //     "totalItemDonationsValue": 0
-      // },
-      // {
+          "name": "Windy",
+          "description": "",
+          "summary": "Windy is a non for profit organization that helps supply small wind turbines to unpriviled families ",
+          "activeStatus": true,
+          "ABN": "49557732843",
+          "phone": "0438827348",
+          "website": "https://www.Windy.com",
+          "img": "https://source.unsplash.com/tTv6Lo5uQVQ",
+          "totalDonationCount": 0,
+          "totalDonationItems": 0,
+          "totalDonations": 0,
+          "totalDonationsValue": 0,
+          "totalGeneralDonationsCount": 0,
+          "totalGeneralDonationsValue": 0,
+          "totalItemDonationsCount": 0,
+          "totalItemDonationsValue": 0
+      },
+      {
 
-      //     "name": "Doin Doughies",
-      //     "description": "",
-      //     "summary": "Doin Doughies bakes fresh donuts for the town of Narrandera daily",
-      //     "activeStatus": false,
-      //     "ABN": "46392849511",
-      //     "phone": "0489334598",
-      //     "website": "https://www.doindoughies.com",
-      //     "img": "https://source.unsplash.com/EACvtuV2k2E",
-      //     "totalDonationCount": 0,
-      //     "totalDonationItems": 0,
-      //     "totalDonations": 0,
-      //     "totalDonationsValue": 0,
-      //     "totalGeneralDonationsCount": 0,
-      //     "totalGeneralDonationsValue": 0,
-      //     "totalItemDonationsCount": 0,
-      //     "totalItemDonationsValue": 0
-      // }
+          "name": "Doin Doughies",
+          "description": "",
+          "summary": "Doin Doughies bakes fresh donuts for the town of Narrandera daily",
+          "activeStatus": false,
+          "ABN": "46392849511",
+          "phone": "0489334598",
+          "website": "https://www.doindoughies.com",
+          "img": "https://source.unsplash.com/EACvtuV2k2E",
+          "totalDonationCount": 0,
+          "totalDonationItems": 0,
+          "totalDonations": 0,
+          "totalDonationsValue": 0,
+          "totalGeneralDonationsCount": 0,
+          "totalGeneralDonationsValue": 0,
+          "totalItemDonationsCount": 0,
+          "totalItemDonationsValue": 0
+      }
   ]

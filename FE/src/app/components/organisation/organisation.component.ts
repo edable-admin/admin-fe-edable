@@ -67,7 +67,8 @@ export class OrganisationComponent {
     public ofs: OrganisationService,
     public _snackBar: MatSnackBar,
     public ifs: ItemService,
-    public imgService: ImageService
+    public imgService: ImageService,
+    public db:DbSetupService
   ) { }
 
   ngOnDestroy(): void {
@@ -79,7 +80,7 @@ export class OrganisationComponent {
   }
 
   ngOnInit(): void {
-    //this.ifs.addItem('4H9O58oiEH0D88AXZEUF',{name:"hi",activeStatus:false,description:"hi",summary:"hi",initialPrice:20,createdAt:serverTimestamp(), img:"",totalDonations:0, dateCompleted:null})
+    this.db.createOrganisationsAndItems();
     this.getOrgs();
     this.initSelectedOrg();
   }
@@ -300,7 +301,6 @@ export class OrganisationComponent {
     this.getOrgsSubscription = this.ofs
       .getOrgs(this.activeStatusFilter)
       .subscribe((orgs) => {
-        console.log(orgs)
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
