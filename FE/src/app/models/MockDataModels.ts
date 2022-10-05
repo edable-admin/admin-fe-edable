@@ -21,7 +21,7 @@ export interface Donations {
 
 export interface GeneralDonation extends Donations {
   IsSubscribed:boolean,
-  Private: PrivateDonorDetails
+  private: PrivateDonorDetails
 }
 
 export interface Item {

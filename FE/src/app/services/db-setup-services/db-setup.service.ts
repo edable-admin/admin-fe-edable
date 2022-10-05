@@ -4,7 +4,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { noSQLData } from './no-sql-data';
 import { mockData } from 'src/app/components/organisation/mock-data';
 import { FieldValue, Timestamp } from 'firebase/firestore';
-import { CreateOrgModel } from 'src/app/models/MockDataModels';
+import { CreateOrgModel, GeneralDonation, PrivateDonorDetails } from 'src/app/models/MockDataModels';
 
 
 @Injectable({
@@ -54,7 +54,10 @@ export class DbSetupService {
       //todo make model
       let item:any;
 
-      let itemDonation:any;
+      let itemDonation: any;
+
+      let generalDonations:any;
+      let privateDonor: PrivateDonorDetails;
 
       //create an item reference from the Organisation
       let itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
@@ -66,6 +69,19 @@ export class DbSetupService {
       .doc(itemRef.id)
       .collection('ItemsDonations').doc()
       .ref;
+
+      // create a general donation reference for a general donation
+      let generalDonationRef = this.fs.collection('Organisations')
+        .doc(orgRef.id)
+        .collection('GeneralDonations')
+        .doc().ref;
+
+      let donorPrivateRef = this.fs.collection('Organisations')
+        .doc(orgRef.id)
+        .collection('GeneralDonations')
+        .doc(generalDonationRef.id)
+        .collection('Private')
+        .doc('Private').ref
 
       //Create organisation in the database
       orgRef.set(org).then(
@@ -105,16 +121,14 @@ export class DbSetupService {
 
                 itemDonationRef.set(itemDonation)
 
+                //reset item donation referance
                 itemDonationRef = this.fs.collection('Organisations')
                 .doc(orgRef.id)
                 .collection('Items')
                 .doc(itemRef.id)
                 .collection('ItemsDonations').doc()
                 .ref;
-
-              }
-
-                )
+              })
 
 
 
@@ -123,6 +137,46 @@ export class DbSetupService {
               itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
             }
           )
+
+          orgObj.GeneralDonations.forEach((genDon) => {
+            generalDonations = {
+              IsRefundable: genDon.IsRefunded,
+              IsSubscribed: genDon.IsSubscribed,
+              amount: genDon.amount,
+              comment: genDon.comment,
+              donationDate: genDon.donationDate,
+              donorPublicName:genDon.donorPublicName
+            }
+
+            privateDonor = {
+              IsAnon: genDon.private.IsAnon,
+              agreeToContact: genDon.private.agreeToContact,
+              email: genDon.private.email,
+              howHeard: genDon.private.howHeard,
+              mailingAddress: genDon.private.mailingAddress,
+              name: genDon.private.name,
+              phoneNumber: genDon.private.phoneNumber
+            }
+
+
+            generalDonationRef.set(generalDonations)
+            donorPrivateRef.set(privateDonor)
+
+            //reset generalDonationRef
+            generalDonationRef = this.fs.collection('Organisations')
+            .doc(orgRef.id)
+            .collection('GeneralDonations')
+              .doc().ref;
+
+            //reset donorPrivateRef
+            donorPrivateRef = this.fs.collection('Organisations')
+            .doc(orgRef.id)
+            .collection('GeneralDonations')
+            .doc(generalDonationRef.id)
+            .collection('Private')
+            .doc('Private').ref
+
+          })
 
         }
       )
