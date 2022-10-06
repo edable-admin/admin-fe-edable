@@ -83,6 +83,7 @@ export class OrganisationComponent {
     //VVVrun the code below to generate mock data
     //this.db.createOrganisationsAndItems();
     this.db.calculateOrgTotals();
+    //console.log(this.db.calcItemsTotal())
 
     this.getOrgs();
     this.initSelectedOrg();

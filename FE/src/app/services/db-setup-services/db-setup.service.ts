@@ -208,13 +208,52 @@ export class DbSetupService {
 
   calcGeneralDonations(org){
     let generalDonationsValue = 0;
-    let generalDonationsCount = org?.GeneralDonations ? org.GeneralDonations.length : 0;
+    let generalDonationsCount = 0;
 
-    generalDonationsValue += org?.GeneralDonations?.map(genDon => genDon.amount)
+    generalDonationsValue += org?.GeneralDonations?.map((genDon) => {
+      if(genDon.IsRefunded){
+        generalDonationsCount += 1;
+
+        return genDon.amount;
+
+      }else{
+        return 0;
+      }
+    })
     .reduce((prev,curr) => prev + curr, 0);
 
     return {totalGeneralDonationsValue: generalDonationsValue ? generalDonationsValue : 0, totalGeneralDonationsCount: generalDonationsCount ? generalDonationsCount : 0}
 
+  }
+
+  calcItemsTotal(){
+    let itemDonCount = 0;
+
+    let itemTotals = mockData.map((org) => {
+      return org?.Items?.map(item => {
+        let itemDonValue = item?.itemDonations?.map((itemDon) => {
+
+          if(itemDon?.IsRefunded){
+            itemDonCount += 1;
+            return itemDon.amount
+          }else{
+            return 0;
+          }
+        }).reduce((prev,curr) => prev + curr, 0)
+
+         item?.itemDonations?.length;
+
+        return {
+          item:item.name,
+          amount:itemDonValue,
+          count:itemDonCount
+        }
+
+
+      })
+    })
+
+    console.log(itemTotals)
   }
 
 
@@ -237,7 +276,7 @@ export class DbSetupService {
 
       let orgTotal =  {
         org:org.name,
-        totalDonationCount:totalDonationCount,
+        totalDonationCount:totalGeneralDonationsCount + totalItemDonationsCount,
         totalDonationItems:totalDonationItems,
         totalDonationsValue: totalGeneralDonationsValue + totalItemDonationsValue,
         totalGeneralDonationsCount:totalGeneralDonationsCount,

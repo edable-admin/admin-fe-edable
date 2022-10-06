@@ -16,13 +16,13 @@ export const mockData:CreateOrgModel[] =
         "phone": "0455683457",
         "website": "https://www.treesrus.com.au",
         "img": "https://source.unsplash.com/tGTVxeOr_Rs",
-        "totalDonationCount": 45,
+        "totalDonationCount": 57,
         "totalDonationItems": 3,
-        "totalDonationsValue": 2628,
-        "totalGeneralDonationsCount": 2,
-        "totalGeneralDonationsValue": 220,
+        "totalDonationsValue": 8267,
+        "totalGeneralDonationsCount": 14,
+        "totalGeneralDonationsValue": 2428,
         "totalItemDonationsCount": 43,
-        "totalItemDonationsValue": 2408,
+        "totalItemDonationsValue": 5839,
         "Items":[
           {
             "name": "Shovel",
@@ -872,8 +872,8 @@ export const mockData:CreateOrgModel[] =
               "mailingAddress": "16 realgood st realville 3136",
               "name": "John Smith",
               "phoneNumber": "0486723474"
-          }
-        },
+            }
+          },
           {"IsRefunded":false,
             "amount":184,
             "comment":"Highly Reccomend this product",
@@ -888,8 +888,8 @@ export const mockData:CreateOrgModel[] =
                 "mailingAddress":"6512 Killdeer Trail",
                 "name":"Roseanna Yakuntsov",
                 "phoneNumber":"106-492-8055"
-            }
-          },
+              }
+            },
             {"IsRefunded":true,
             "amount":278,
             "comment":"Wow Great Paypal Experience love it",
@@ -905,7 +905,7 @@ export const mockData:CreateOrgModel[] =
                 "name":"Joletta Berr",
                 "phoneNumber":"476-335-0517"
             }
-},
+          },
             {"IsRefunded":false,
             "amount":14,
             "comment":"Wow Great Paypal Experience love it",
@@ -1367,13 +1367,13 @@ export const mockData:CreateOrgModel[] =
         "phone": "0428473288",
         "website": "https://www.barriesbakery.com.au",
         "img": "https://source.unsplash.com/m9pzwmxm2rk",
-        "totalDonationCount": 0,
+        "totalDonationCount": 20,
         "totalDonationItems": 4,
-        "totalDonationsValue": 0,
-        "totalGeneralDonationsCount": 0,
-        "totalGeneralDonationsValue": 0,
-        "totalItemDonationsCount": 0,
-        "totalItemDonationsValue": 0,
+        "totalDonationsValue": 2788,
+        "totalGeneralDonationsCount": 14,
+        "totalGeneralDonationsValue": 2428,
+        "totalItemDonationsCount": 6,
+        "totalItemDonationsValue": 360,
         "Items":[
           {
             "name": "Mix Master",
@@ -2039,11 +2039,11 @@ export const mockData:CreateOrgModel[] =
         "phone": "0455567982",
         "website": "https://www.phonezone.com",
         "img": "https://source.unsplash.com/6wdRuK7bVTE",
-        "totalDonationCount": 0,
+        "totalDonationCount": 14,
         "totalDonationItems": 3,
-        "totalDonationsValue": 0,
-        "totalGeneralDonationsCount": 0,
-        "totalGeneralDonationsValue": 0,
+        "totalDonationsValue": 2428,
+        "totalGeneralDonationsCount": 14,
+        "totalGeneralDonationsValue": 2428,
         "totalItemDonationsCount": 0,
         "totalItemDonationsValue": 0,
         "Items":[
@@ -2598,11 +2598,11 @@ export const mockData:CreateOrgModel[] =
         "phone": "0433958444",
         "website": "https://social-moments.org/",
         "img": "https://source.unsplash.com/Zyx1bK9mqmA",
-        "totalDonationCount": 0,
+        "totalDonationCount": 14,
         "totalDonationItems": 3,
-        "totalDonationsValue": 0,
-        "totalGeneralDonationsCount": 0,
-        "totalGeneralDonationsValue": 0,
+        "totalDonationsValue": 2428,
+        "totalGeneralDonationsCount": 14,
+        "totalGeneralDonationsValue": 2428,
         "totalItemDonationsCount": 0,
         "totalItemDonationsValue": 0,
         "Items":[
@@ -3145,7 +3145,6 @@ export const mockData:CreateOrgModel[] =
         ]
     },
     {
-
         "name": "EdAble Flowers",
         "description": "",
         "summary": "This organisation grows edible flowers for distribution",
@@ -3154,13 +3153,13 @@ export const mockData:CreateOrgModel[] =
         "phone": "0493959487",
         "website": "https://www.edablelfowers.com",
         "img": "https://source.unsplash.com/UvVVnUmW2mQ",
-        "totalDonationCount": 0,
+        "totalDonationCount": 17,
         "totalDonationItems": 3,
-        "totalDonationsValue": 0,
-        "totalGeneralDonationsCount": 0,
-        "totalGeneralDonationsValue": 0,
-        "totalItemDonationsCount": 0,
-        "totalItemDonationsValue": 0,
+        "totalDonationsValue": 2608,
+        "totalGeneralDonationsCount": 14,
+        "totalGeneralDonationsValue": 2428,
+        "totalItemDonationsCount": 3,
+        "totalItemDonationsValue": 180,
         "Items":[
           {
             "name": "Pansy",
