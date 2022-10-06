@@ -20,6 +20,8 @@ import { UpdateItemsComponent } from '../donation-item/update-donation-item/upda
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { ImageService } from 'src/app/services/firebase/image-service/image.service';
 import { ViewDonationItemComponent } from '../donation-item/view-donation-item/view-donation-item.component';
+import { DonationService } from 'src/app/services/firebase/donation-service/donation.service';
+import { Chart, registerables } from 'chart.js';
 
 @Component({
   selector: 'app-organisation',
@@ -45,6 +47,12 @@ export class OrganisationComponent implements OnInit {
   orgData: any = new MatTableDataSource([]);
   allOrgs:Organisation[] = []
   items: Item[] = [];
+  graphData: any;
+  cleanGraphData: any;
+  donationAmount: any;
+  // donationName: any;
+  donationDate: any;
+  chart: any = [];
   activeStatusFilter: string = 'Active';
   filterValue: string = "";
 
@@ -68,8 +76,9 @@ export class OrganisationComponent implements OnInit {
     public ofs: OrganisationService,
     public _snackBar: MatSnackBar,
     public ifs: ItemService,
-    public imgService: ImageService
-  ) { }
+    public imgService: ImageService,
+    public dfs: DonationService,
+  ) { Chart.register(...registerables) }
 
   ngOnDestroy(): void {
     // check if there is a selected org base on id value being '' when null org
@@ -82,6 +91,49 @@ export class OrganisationComponent implements OnInit {
   ngOnInit(): void {
     this.getOrgs();
     this.initSelectedOrg();
+    this.chart = new Chart('canvas', {
+      type: 'line',
+      data: {
+          labels: [0],
+          datasets: [{
+              label: 'Donation Amount',
+              backgroundColor: 'rgba(93,175,89,0.1)',
+              borderColor: '#3e95cd',
+              fill: true,
+              data: [0],
+          }]
+        },
+        options : {
+          plugins: {
+            title: {
+                display: true,
+                text: 'General Donations',
+                padding: {
+                  top: 10,
+                  bottom: 0
+              }
+            }
+        },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Donation Amount [$]'
+              }
+            },
+            x: {
+              ticks: {
+                autoSkip: false
+            },
+              title: {
+                display: true,
+                text: 'Donor [Prospects]',
+              }
+            }
+          }
+        }
+      });
   }
 
   onImgError(event) {
@@ -322,6 +374,29 @@ export class OrganisationComponent implements OnInit {
 
   }
 
+  getGraphData(orgID) {
+    this.dfs
+      .getGeneralDonations(orgID)
+      .subscribe((resp) => {
+          this.donationAmount = resp.map((donation:any) => donation.amount)
+          // this.donationName = resp.map((donation:any) => donation.donorPublicName)
+          this.donationDate = resp.map((donation:any) => new Date(donation.donationDate.seconds*1000).toLocaleDateString("en-AU"))
+          this.chart.data.labels = (this.donationDate);
+          this.chart.data.datasets[0].data = (this.donationAmount);
+          this.chart.update();
+        })
+
+      };
+
+    resetGraph() {
+      this.donationAmount= [0];
+      this.donationDate= [0];
+      this.chart.data.labels = (this.donationDate);
+      this.chart.data.datasets[0].data = (this.donationAmount);
+      this.chart.update();
+    };
+
+
   //-------------------- GET ITEMS --------------------\\
   getItems(orgID) {
     this.getItemsSubscription = this.ifs.getItems(orgID).subscribe((items) => {
@@ -332,6 +407,9 @@ export class OrganisationComponent implements OnInit {
   // change active status filter (active/inactive/all)
 
   toggleActiveStatus(activeStatusFilter: string) {
+
+    this.resetGraph();
+
 
     if(this.activeStatusFilter !== activeStatusFilter){
       this.initSelectedOrg();
@@ -380,13 +458,16 @@ export class OrganisationComponent implements OnInit {
   }
 
   // selected row of org table
+
   selectRow(orgData) {
     if (this.selectedOrg.id === orgData.id) {
       this.initSelectedOrg();
       this.getItemsSubscription.unsubscribe();
+      this.resetGraph();
 
       return;
     }
+    this.getGraphData(orgData.id);
     this.selectedOrg = orgData;
     this.activeItems = this.items.filter((item) => {
       return item.orgID === orgData.id;
@@ -406,3 +487,4 @@ export class OrganisationComponent implements OnInit {
 
   }
 }
+

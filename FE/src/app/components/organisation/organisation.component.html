@@ -61,8 +61,8 @@
         </mat-paginator>
       </section>
 
-      <div class="big-graph-placeholder"> <img src="{{selectedOrg.img}}" (error)="onImgError($event)"
-          style="width: 300px; height:auto; max-height: 400px;" alt="">
+      <div class="big-graph-placeholder">
+<canvas id="canvas">{{chart}}</canvas>
       </div>
       <div class="graph-expansion">
         <mat-accordion>
