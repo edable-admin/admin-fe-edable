@@ -149,10 +149,11 @@ export class DbSetupService {
             }
 
             privateDonor = {
+              paypalTransactionId:genDon.private.paypalTransactionId,
               IsAnon: genDon.private.IsAnon,
               agreeToContact: genDon.private.agreeToContact,
               email: genDon.private.email,
-              howHeard: genDon.private.howHeard,
+              howHeardOther: genDon.private.howHeardOther,
               mailingAddress: genDon.private.mailingAddress,
               name: genDon.private.name,
               phoneNumber: genDon.private.phoneNumber
@@ -211,7 +212,7 @@ export class DbSetupService {
     let generalDonationsCount = 0;
 
     generalDonationsValue += org?.GeneralDonations?.map((genDon) => {
-      if(genDon.IsRefunded){
+      if(!genDon.IsRefunded){
         generalDonationsCount += 1;
 
         return genDon.amount;
@@ -227,21 +228,36 @@ export class DbSetupService {
   }
 
   calcItemsTotal(){
-    let itemDonCount = 0;
 
+    //maps through all orgs
     let itemTotals = mockData.map((org) => {
+
+      //maps through each item
       return org?.Items?.map(item => {
-        let itemDonValue = item?.itemDonations?.map((itemDon) => {
 
-          if(itemDon?.IsRefunded){
-            itemDonCount += 1;
-            return itemDon.amount
+        //maps through each item donation
+        let itemDonObj = item?.itemDonations?.map((itemDon) => {
+
+          //if donation is not refunded
+          if(!itemDon?.IsRefunded){
+
+            //return the donation values and add a count
+            return { itemValue: itemDon.amount, itemCount: 1};
+
           }else{
-            return 0;
-          }
-        }).reduce((prev,curr) => prev + curr, 0)
 
-         item?.itemDonations?.length;
+            //if the donation is refunded do not add values
+            return { itemValue: 0, itemCount:0 };
+          }
+        });
+
+        //create an array and sum items together
+        let itemDonValue = itemDonObj?.map(itemVal => itemVal.itemValue)
+        .reduce((prev, curr) => prev + curr, 0);
+
+        //create an array and sum items together
+        let itemDonCount = itemDonObj?.map(itemCoun => itemCoun.itemCount)
+        .reduce((prev, curr) => prev + curr, 0);
 
         return {
           item:item.name,

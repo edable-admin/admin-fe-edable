@@ -16,11 +16,11 @@ export const mockData:CreateOrgModel[] =
         "phone": "0455683457",
         "website": "https://www.treesrus.com.au",
         "img": "https://source.unsplash.com/tGTVxeOr_Rs",
-        "totalDonationCount": 57,
+        "totalDonationCount": 60,
         "totalDonationItems": 3,
-        "totalDonationsValue": 8267,
-        "totalGeneralDonationsCount": 14,
-        "totalGeneralDonationsValue": 2428,
+        "totalDonationsValue": 7829,
+        "totalGeneralDonationsCount": 17,
+        "totalGeneralDonationsValue": 1990,
         "totalItemDonationsCount": 43,
         "totalItemDonationsValue": 5839,
         "Items":[
@@ -29,7 +29,7 @@ export const mockData:CreateOrgModel[] =
             "summary":"Great Shovel",
             "description":"Good for diggging",
             "initialPrice": 400,
-            "totalDonationCount": 11,
+            "totalDonationCount": 8,
             "totalDonationsValue":311,
             "activeStatus": true,
             "dateCompleted":null,
@@ -43,10 +43,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate": serverTimestamp(),
                 "donorPublicName": "John",
                 "private": {
+                  "paypalTransactionId":"cdfd278c-d23c-4982-84e6-342abe140e8c",
                   "IsAnon": false,
                   "agreeToContact": true,
                   "email": "example@john.com.au",
-                  "howHeard": "Facebook",
+                  "howHeardOther": "Facebook",
                   "mailingAddress": "16 realgood st realville 3136",
                   "name": "John Smith",
                   "phoneNumber": "0486723474"
@@ -60,10 +61,11 @@ export const mockData:CreateOrgModel[] =
                 "donorPublicName":"Vittoria Eccleston",
                 "donationDate":serverTimestamp(),
                 "private":{
+                  "paypalTransactionId":"0fe85d03-7586-4405-bf5b-1bb79bccb637",
                   "IsAnon":true,
                   "agreeToContact":true,
                   "email":"tolney0@arstechnica.com",
-                  "howHeard":"Facebook",
+                  "howHeardOther":"Facebook",
                   "mailingAddress":"3502 Linden Terrace",
                   "name":"Tabbatha Olney",
                   "phoneNumber":"(519) 9540817"
@@ -77,10 +79,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Kerwinn Hammerstone",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"061d3c76-20c3-48ae-baf1-99174b79c10c",
                     "IsAnon":false,
                     "agreeToContact":true,
                     "email":"fcullnean1@cyberchimps.com",
-                    "howHeard":"Google",
+                    "howHeardOther":"Google",
                     "mailingAddress":"8 Mandrake Alley",
                     "name":"Faunie Cullnean",
                     "phoneNumber":"(131) 9243948"
@@ -94,10 +97,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Matilda Oxlade",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"f077d2cf-2a48-47c5-8157-f317724d9e3e",
                     "IsAnon":false,
                     "agreeToContact":true,
                     "email":"sferneyhough2@csmonitor.com",
-                    "howHeard":"Google",
+                    "howHeardOther":"Google",
                     "mailingAddress":"83 Debs Avenue",
                     "name":"Stanislaus Ferneyhough",
                     "phoneNumber":"(150) 8981611"
@@ -111,10 +115,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Etty Trenfield",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"6e6f0c11-65c3-4ac2-840d-160603e4fd3c",
                     "IsAnon":false,
                     "agreeToContact":false,
                     "email":"swalburn3@indiatimes.com",
-                    "howHeard":"Twitter",
+                    "howHeardOther":"Twitter",
                     "mailingAddress":"643 Shelley Lane",
                     "name":"Sanderson Walburn",
                     "phoneNumber":"(536) 8462113"
@@ -128,10 +133,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Gale Stent",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"d5584315-35b3-43a1-9ffc-4358703e16f0",
                     "IsAnon":true,
                     "agreeToContact":true,
                     "email":"bveck4@ebay.co.uk",
-                    "howHeard":"Facebook",
+                    "howHeardOther":"Facebook",
                     "mailingAddress":"31916 Northland Hill",
                     "name":"Bertie Veck",
                     "phoneNumber":"(912) 4473640"
@@ -145,10 +151,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Morena Vanyushkin",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"b78ccbda-cf00-439c-8e5b-800df6c699c1",
                     "IsAnon":true,
                     "agreeToContact":true,
                     "email":"dmyring5@arstechnica.com",
-                    "howHeard":"Twitter",
+                    "howHeardOther":"Twitter",
                     "mailingAddress":"4 Jay Park",
                     "name":"Doll Myring",
                     "phoneNumber":"(165) 5882912"
@@ -162,10 +169,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Ad Rossiter",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"48db2c8e-8508-4c26-81a2-8b43528f57a8",
                     "IsAnon":true,
                     "agreeToContact":true,
                     "email":"pbrammall6@java.com",
-                    "howHeard":"Google",
+                    "howHeardOther":"Google",
                     "mailingAddress":"5465 Killdeer Pass",
                     "name":"Pearce Brammall",
                     "phoneNumber":"(110) 4189868"
@@ -179,10 +187,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Luise Suart",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"33fce129-d885-4893-852d-582076f917cd",
                     "IsAnon":false,
                     "agreeToContact":false,
                     "email":"azorzi7@stumbleupon.com",
-                    "howHeard":"Twitter",
+                    "howHeardOther":"Twitter",
                     "mailingAddress":"14 Troy Road",
                     "name":"Aluino Zorzi",
                     "phoneNumber":"(161) 6102769"
@@ -196,10 +205,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Beverlee Skoof",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"7c653e45-dc7f-4a01-b1d6-250f9a2d5245",
                     "IsAnon":true,
                     "agreeToContact":true,
                     "email":"nblaschke8@topsy.com",
-                    "howHeard":"Twitter",
+                    "howHeardOther":"Twitter",
                     "mailingAddress":"68523 Melby Pass",
                     "name":"Nev Blaschke",
                     "phoneNumber":"(106) 1633854"
@@ -213,10 +223,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Rhodia Puddin",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"8ca476d3-1625-4dbb-8c6c-8ee97a5a602f",
                     "IsAnon":false,
                     "agreeToContact":true,
                     "email":"ccorcut9@alibaba.com",
-                    "howHeard":"Twitter",
+                    "howHeardOther":"Twitter",
                     "mailingAddress":"8907 Bayside Road",
                     "name": "Corrianne Corcut",
                     "phoneNumber":"(106) 1633854"}
@@ -244,10 +255,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate": serverTimestamp(),
                 "donorPublicName": "John",
                 "private": {
+                  "paypalTransactionId":"133f97d7-7234-4e94-b90d-25148186b28c",
                   "IsAnon": false,
                   "agreeToContact": true,
                   "email": "example@john.com.au",
-                  "howHeard": "Facebook",
+                  "howHeardOther": "Facebook",
                   "mailingAddress": "16 realgood st realville 3136",
                   "name": "John Smith",
                   "phoneNumber": "0486723474"
@@ -261,10 +273,11 @@ export const mockData:CreateOrgModel[] =
                 "donorPublicName":"Vittoria Eccleston",
                 "donationDate":serverTimestamp(),
                 "private":{
+                  "paypalTransactionId":"b1e474d8-2c92-418b-a164-c978f9850d10",
                   "IsAnon":true,
                   "agreeToContact":true,
                   "email":"tolney0@arstechnica.com",
-                  "howHeard":"Facebook",
+                  "howHeardOther":"Facebook",
                   "mailingAddress":"3502 Linden Terrace",
                   "name":"Tabbatha Olney",
                   "phoneNumber":"(519) 9540817"
@@ -277,8 +290,8 @@ export const mockData:CreateOrgModel[] =
             "summary":"no matter what type of work you do - excavation, trenching, or truck loading - excavators deliver top performance.",
             "description":"Compact Size for Tight Jobs The Cat 300.9D Mini Excavator delivers power and performance in a compact size to help you work in the tightest applications. Its ability to fit through a narrow doorway makes it an excellent machine for indoor demolition work.",
             "initialPrice": 20000,
-            "totalDonationCount": 30,
-            "totalDonationsValue": 2025,
+            "totalDonationCount": 21,
+            "totalDonationsValue": 3251,
             "activeStatus": true,
             "dateCompleted":null,
             "createdAt": serverTimestamp(),
@@ -292,10 +305,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"4f61ed0f-cd47-47d3-9e9e-a53e6d6d2cac",
                   "IsAnon":false,
                   "agreeToContact":true,
                   "email":"ybalch0@census.gov",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"03254 Fisk Junction",
                   "name":"Yehudi Balch",
                   "phoneNumber":"837-738-7345",
@@ -311,10 +325,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"c87fdea9-ca45-4906-a50f-f2a49fe9db60",
                   "IsAnon":true,
                   "agreeToContact":false,
                   "email":"eodyvoie1@dion.ne.jp",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"9057 Rusk Lane",
                   "name":"Essa O'Dyvoie",
                   "phoneNumber":"916-763-0985",
@@ -330,10 +345,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"d083d4e7-b76d-40c9-b690-d9957db27beb",
                   "IsAnon":false,
                   "agreeToContact":true,
                   "email":"cmatissoff2@marketwatch.com",
-                  "howHeard":"Youtube",
+                  "howHeardOther":"Youtube",
                   "mailingAddress":"2 Hintze Parkway",
                   "name":"Clemmie Matissoff",
                   "phoneNumber":"197-239-4258",
@@ -349,10 +365,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"0f4db47e-fe01-4819-b878-ac15b87013c4",
                   "IsAnon":true,
                   "agreeToContact":false,
                   "email":"bocoskerry3@tripod.com",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"995 Dunning Road",
                   "name":"Briano O'Coskerry",
                   "phoneNumber":"518-974-4257",
@@ -368,10 +385,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"d6979aaa-4fa0-49e3-85e3-c2c0a9b4396d",
                   "IsAnon":false,
                   "agreeToContact":true,
                   "email":"jwoodthorpe4@devhub.com",
-                  "howHeard":"Facebook",
+                  "howHeardOther":"Facebook",
                   "mailingAddress":"4 Monica Point",
                   "name":"Jorrie Woodthorpe",
                   "phoneNumber":"704-634-7765",
@@ -387,10 +405,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"41b90f8d-9663-40b2-81d8-4cc89e922b44",
                   "IsAnon":false,
                   "agreeToContact":false,
                   "email":"rstrange5@deliciousdays.com",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"9309 Grasskamp Center",
                   "name":"Rabbi Strange",
                   "phoneNumber":"798-951-9029",
@@ -406,10 +425,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"834e40e0-c1ca-4f11-af47-6ec2ae914d88",
                   "IsAnon":true,
                   "agreeToContact":true,
                   "email":"vmacdunlevy6@google.com.br",
-                  "howHeard":"Facebook",
+                  "howHeardOther":"Facebook",
                   "mailingAddress":"1705 Dayton Center",
                   "name":"Violette MacDunlevy",
                   "phoneNumber":"969-233-6089",
@@ -425,10 +445,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"b8a66950-7fcb-4d82-a37f-284f455c717e",
                   "IsAnon":true,
                   "agreeToContact":false,
                   "email":"aibbs7@techcrunch.com",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"15 Hanson Avenue",
                   "name":"Araldo Ibbs",
                   "phoneNumber":"439-353-3584",
@@ -444,10 +465,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"d51f0a01-6d3f-41ef-83a1-1f8efd8efc3c",
                   "IsAnon":false,
                   "agreeToContact":true,
                   "email":"ihovy8@exblog.jp",
-                  "howHeard":"Facebook",
+                  "howHeardOther":"Facebook",
                   "mailingAddress":"46 Loeprich Crossing",
                   "name":"Ingmar Hovy",
                   "phoneNumber":"983-812-7841",
@@ -463,10 +485,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"5547a580-7425-43d9-baba-059043870575",
                   "IsAnon":true,
                   "agreeToContact":true,
                   "email":"tesposito9@google.com.au",
-                  "howHeard":"Google",
+                  "howHeardOther":"Google",
                   "mailingAddress":"74 Norway Maple Circle",
                   "name":"Tessy Esposito",
                   "phoneNumber":"502-504-5111",
@@ -482,10 +505,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"733cf768-5861-41b8-871a-53913fe8dee6",
                   "IsAnon":true,
                   "agreeToContact":true,
                   "email":"mmattesa@list-manage.com",
-                  "howHeard":"Facebook",
+                  "howHeardOther":"Facebook",
                   "mailingAddress":"6244 Monica Center",
                   "name":"Melloney Mattes",
                   "phoneNumber":"846-709-2368",
@@ -501,10 +525,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"8d90db39-02c9-4aae-8ee5-5ff81c008042",
                   "IsAnon":true,
                   "agreeToContact":true,
                   "email":"bgartinb@noaa.gov",
-                  "howHeard":"Youtube",
+                  "howHeardOther":"Youtube",
                   "mailingAddress":"770 Glacier Hill Way",
                   "name":"Boothe Gartin",
                   "phoneNumber":"383-626-8417",
@@ -520,10 +545,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"a1e32198-c599-4fc3-856e-bc463729bdd7",
                   "IsAnon":false,
                   "agreeToContact":false,
                   "email":"abissettc@vistaprint.com",
-                  "howHeard":"Facebook",
+                  "howHeardOther":"Facebook",
                   "mailingAddress":"2712 Luster Point",
                   "name":"Adrienne Bissett",
                   "phoneNumber":"956-484-2091",
@@ -539,10 +565,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"2898f716-f86e-4f99-ae5d-bd70d449d594",
                   "IsAnon":true,
                   "agreeToContact":true,
                   "email":"rbollomd@shinystat.com",
-                  "howHeard":"Google",
+                  "howHeardOther":"Google",
                   "mailingAddress":"3481 Sage Terrace",
                   "name":"Rani Bollom",
                   "phoneNumber":"668-767-4311",
@@ -558,10 +585,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"6c37249b-57f4-4ba6-acf8-d8310006846e",
                   "IsAnon":false,
                   "agreeToContact":false,
                   "email":"cgiamoe@washington.edu",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"98 Manitowish Terrace",
                   "name":"Cymbre Giamo",
                   "phoneNumber":"159-964-8113",
@@ -577,10 +605,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"1183c71a-42c1-44db-9913-214f586a6ebc",
                   "IsAnon":false,
                   "agreeToContact":false,
                   "email":"jcainsf@edublogs.org",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"1642 7th Point",
                   "name":"Joel Cains",
                   "phoneNumber":"953-271-2261",
@@ -596,10 +625,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"44fb3b4c-87a4-40de-8755-79b754107ded",
                   "IsAnon":false,
                   "agreeToContact":true,
                   "email":"emitchinerg@comcast.net",
-                  "howHeard":"Youtube",
+                  "howHeardOther":"Youtube",
                   "mailingAddress":"16 Oak Valley Avenue",
                   "name":"Ebony Mitchiner",
                   "phoneNumber":"140-945-9438",
@@ -615,10 +645,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"bea409f6-6168-4f47-a808-74a3d7bcfec8",
                   "IsAnon":false,
                   "agreeToContact":false,
                   "email":"lsnaph@howstuffworks.com",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"3086 Coolidge Parkway",
                   "name":"Laverna Snap",
                   "phoneNumber":"694-263-6585",
@@ -634,10 +665,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"1708aa4d-06e4-413a-ae78-99280c12b12a",
                   "IsAnon":false,
                   "agreeToContact":false,
                   "email":"atrunchioni@spiegel.de",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"49 Clarendon Circle",
                   "name":"Augie Trunchion",
                   "phoneNumber":"846-731-0667",
@@ -653,10 +685,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"12cfc454-b6e7-4335-8f99-6e57df08280e",
                   "IsAnon":false,
                   "agreeToContact":true,
                   "email":"tscibseyj@ucoz.ru",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"36611 Vernon Road",
                   "name":"Tallie Scibsey",
                   "phoneNumber":"787-466-0134",
@@ -672,10 +705,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"3fd2d465-6d1a-4935-96c5-cd364bf8c6b7",
                   "IsAnon":true,
                   "agreeToContact":false,
                   "email":"rhoopperk@mozilla.com",
-                  "howHeard":"Youtube",
+                  "howHeardOther":"Youtube",
                   "mailingAddress":"2749 Norway Maple Crossing",
                   "name":"Ronica Hoopper",
                   "phoneNumber":"845-432-7243",
@@ -691,10 +725,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"a37e701c-7a18-4417-9f79-19edf23f56f9",
                   "IsAnon":true,
                   "agreeToContact":false,
                   "email":"asanterl@a8.net",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"316 Washington Center",
                   "name":"Ashton Santer",
                   "phoneNumber":"820-509-5521",
@@ -710,10 +745,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"17236369-f61e-483b-86db-e167fb7a3531",
                   "IsAnon":false,
                   "agreeToContact":true,
                   "email":"sskittlem@ed.gov",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"6 Bellgrove Road",
                   "name":"Stephani Skittle",
                   "phoneNumber":"880-691-4352",
@@ -729,10 +765,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"d577caae-d0a5-4307-8c4b-9df284736c9c",
                   "IsAnon":true,
                   "agreeToContact":true,
                   "email":"kcomarn@cmu.edu",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"3 Manufacturers Avenue",
                   "name":"Kenton Comar",
                   "phoneNumber":"296-457-9841",
@@ -748,10 +785,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"20bc343c-6789-4d42-ace4-f617f5578ed8",
                   "IsAnon":false,
                   "agreeToContact":true,
                   "email":"fdato@china.com.cn",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"2681 Crest Line Parkway",
                   "name":"Feodor Dat",
                   "phoneNumber":"386-330-2428",
@@ -767,10 +805,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"2e6896b7-3374-4e7a-aa59-04dbfd2cfaa6",
                   "IsAnon":false,
                   "agreeToContact":true,
                   "email":"cgoodreadp@hc360.com",
-                  "howHeard":"Youtube",
+                  "howHeardOther":"Youtube",
                   "mailingAddress":"6 Scoville Park",
                   "name":"Claudina Goodread",
                   "phoneNumber":"639-515-1878",
@@ -786,10 +825,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"b3e4e30e-6236-4882-93e1-834527ff8d45",
                   "IsAnon":true,
                   "agreeToContact":false,
                   "email":"redgesonq@ebay.com",
-                  "howHeard":"Youtube",
+                  "howHeardOther":"Youtube",
                   "mailingAddress":"3 Tomscot Hill",
                   "name":"Rosalind Edgeson",
                   "phoneNumber":"103-677-7865",
@@ -805,10 +845,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"ccbde5fd-237c-415d-97aa-df2cbeacea17",
                   "IsAnon":false,
                   "agreeToContact":false,
                   "email":"dpinxtonr@aol.com",
-                  "howHeard":"Twitter",
+                  "howHeardOther":"Twitter",
                   "mailingAddress":"7961 Acker Park",
                   "name":"Durward Pinxton",
                   "phoneNumber":"813-980-6233",
@@ -824,10 +865,11 @@ export const mockData:CreateOrgModel[] =
                 "donationDate":serverTimestamp(),
                 "private":
                 {
+                  "paypalTransactionId":"6a12598c-ff98-454b-9ed5-7473b8359dae",
                   "IsAnon":true,
                   "agreeToContact":true,
                   "email":"lblackborows@ihg.com",
-                  "howHeard":"Youtube",
+                  "howHeardOther":"Youtube",
                   "mailingAddress":"1932 Monica Hill",
                   "name":"Lester Blackborow",
                   "phoneNumber":"881-123-4913",
@@ -842,10 +884,11 @@ export const mockData:CreateOrgModel[] =
               "donationDate":serverTimestamp(),
               "private":
               {
+                  "paypalTransactionId":"d440c0c8-aca2-480d-bb28-7e395fe32134",
                   "IsAnon":false,
                   "agreeToContact":true,
                   "email":"wguilloneaut@people.com.cn",
-                  "howHeard":"Youtube",
+                  "howHeardOther":"Youtube",
                   "mailingAddress":"8146 Drewry Hill",
                   "name":"Wyn Guilloneau",
                   "phoneNumber":"279-981-6029",
@@ -865,10 +908,11 @@ export const mockData:CreateOrgModel[] =
             "donorPublicName": "John",
             "IsSubscribed": false,
             "private": {
+              "paypalTransactionId":"d974c8d7-3c79-45e2-9ccd-dfe70793ee0a",
               "IsAnon": false,
               "agreeToContact": true,
               "email": "example@john.com.au",
-              "howHeard": "Facebook",
+              "howHeardOther": "Facebook",
               "mailingAddress": "16 realgood st realville 3136",
               "name": "John Smith",
               "phoneNumber": "0486723474"
@@ -881,10 +925,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1637267745, 0),
             "private":{
+                "paypalTransactionId":"e0ec26f1-936a-4455-9b8d-f9c1ca87b96e",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"ryakuntsov0@huffingtonpost.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6512 Killdeer Trail",
                 "name":"Roseanna Yakuntsov",
                 "phoneNumber":"106-492-8055"
@@ -897,10 +942,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1645062608, 0),
             "private":{
+                "paypalTransactionId":"713519e3-4a5f-4fee-9c8d-b53d6dd6b3da",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"jberr1@scribd.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"63955 School Alley",
                 "name":"Joletta Berr",
                 "phoneNumber":"476-335-0517"
@@ -913,10 +959,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1660846169, 0),
             "private":{
+                "paypalTransactionId":"a7a60c6e-1303-4f4e-af29-8338671844a5",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"rhobbert2@icq.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"36490 Ridgeway Plaza",
                 "name":"Rudolf Hobbert",
                 "phoneNumber":"984-118-5089"
@@ -929,10 +976,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1637791401, 0),
             "private":{
+                "paypalTransactionId":"41bf440e-641f-4a72-8704-c9d8b5295d45",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"tlissett3@craigslist.org",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"37 Debra Way",
                 "name":"Torey Lissett",
                 "phoneNumber":"471-385-5623"
@@ -946,10 +994,11 @@ export const mockData:CreateOrgModel[] =
             "donationDate":new Timestamp(1649358315, 0),
 
             "private":{
+                "paypalTransactionId":"22be5411-fdf4-456f-8b9b-113448209324",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"mshearstone4@typepad.com",
-                "howHeard":"Google",
+                "howHeardOther":"Google",
                 "mailingAddress":"858 Old Gate Drive",
                 "name":"Mitchael Shearstone",
                 "phoneNumber":"247-443-8325"
@@ -962,10 +1011,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1635942123, 0),
             "private":{
+                "paypalTransactionId":"a2efa91e-cf22-4003-82b8-59c91b103f31",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"cbrannigan5@purevolume.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"89791 Clemons Pass",
                 "name":"Cal Brannigan",
                 "phoneNumber":"502-396-2041"
@@ -978,10 +1028,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658131907, 0),
             "private":{
+                "paypalTransactionId":"fd95fff4-0ef9-4618-aa72-179634459e28",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"rde6@t-online.de",
-                "howHeard":"Google",
+                "howHeardOther":"Google",
                 "mailingAddress":"3257 Crescent Oaks Plaza",
                 "name":"Roxane De Cruze",
                 "phoneNumber":"671-527-5738"
@@ -994,10 +1045,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1652470903, 0),
             "private":{
+                "paypalTransactionId":"d4a9bcf4-eedb-4a14-af98-e66cac4144fe",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"jerangy7@latimes.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"96480 Northland Trail",
                 "name":"Janeen Erangy",
                 "phoneNumber":"856-469-6941"
@@ -1010,10 +1062,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1646113004, 0),
             "private":{
+                "paypalTransactionId":"aed26499-fb33-47ea-bc2e-d58f2affac39",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"jfasham8@blogs.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"924 High Crossing Junction",
                 "name":"Johanna Fasham",
                 "phoneNumber":"158-266-7385"
@@ -1026,10 +1079,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1643887865, 0),
             "private":{
+                "paypalTransactionId":"141c0ec5-0bac-4008-825c-f1c5e7b144d4",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"cstollberger9@loc.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"66752 Golden Leaf Place",
                 "name":"Chrysa Stollberger",
                 "phoneNumber":"587-449-9761"
@@ -1042,10 +1096,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1661510063, 0),
             "private":{
+                "paypalTransactionId":"84f2dd57-fe30-40a4-ae47-823fb321b0be",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"iperrisa@imageshack.us",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"18 Dixon Point",
                 "name":"Ignatius Perris",
                 "phoneNumber":"358-296-8577"
@@ -1058,10 +1113,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1658148094, 0),
             "private":{
+                "paypalTransactionId":"08c10d8d-837f-4001-8ebc-a8309e9f709c",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"mstockneyb@ftc.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6113 Towne Street",
                 "name":"Mateo Stockney",
                 "phoneNumber":"491-746-3413"
@@ -1074,10 +1130,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1664030463, 0),
             "private":{
+                "paypalTransactionId":"116451e8-fcdb-4ea2-9066-e348ecc8f2c8",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"dlittledykec@freewebs.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"290 Hollow Ridge Court",
                 "name":"Darline Littledyke",
                 "phoneNumber":"105-346-9535"
@@ -1090,10 +1147,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1657953406, 0),
             "private":{
+                "paypalTransactionId":"21bb37c3-0731-4d8e-ae4f-936d6a7f04d4",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"dlosanod@pinterest.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"92 Victoria Center",
                 "name":"Dniren Losano",
                 "phoneNumber":"161-792-5330"
@@ -1106,10 +1164,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1660993694, 0),
             "private":{
+                "paypalTransactionId":"04a72e28-fa5b-40af-bd3e-1e8180c355aa",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"wmccarneye@simplemachines.org",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"10076 Clove Junction",
                 "name":"Worthington McCarney",
                 "phoneNumber":"242-673-0532"
@@ -1122,10 +1181,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1653037483, 0),
             "private":{
+                "paypalTransactionId":"8bd20257-5756-4d43-ba2d-51387e9522b4",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"gslatfordf@cnbc.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"229 Independence Way",
                 "name":"Georgette Slatford",
                 "phoneNumber":"301-631-0182"
@@ -1138,10 +1198,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1642947603, 0),
             "private":{
+                "paypalTransactionId":"fbed1043-4f6b-4517-ba86-8c9371147364",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"geytelg@microsoft.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"3 Kropf Junction",
                 "name":"Garrick Eytel",
                 "phoneNumber":"401-730-0030"
@@ -1154,10 +1215,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1662906560, 0),
             "private":{
+                "paypalTransactionId":"fdbda7dd-cc48-4eac-b90e-4f0a974bf792",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"trentilllh@mayoclinic.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"1 Meadow Ridge Lane",
                 "name":"Thorvald Rentilll",
                 "phoneNumber":"857-123-2251"
@@ -1170,10 +1232,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1651059211, 0),
             "private":{
+                "paypalTransactionId":"8e585764-58e8-4843-aad4-06306288b59b",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"tloffilli@opensource.org",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"50773 Dwight Trail",
                 "name":"Tuckie Loffill",
                 "phoneNumber":"818-542-9125"
@@ -1186,10 +1249,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1650551611, 0),
             "private":{
+                "paypalTransactionId":"a38f2435-9cf5-415e-b391-6d579a449255",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"mcrossthwaitej@xing.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"24009 Sutherland Park",
                 "name":"Michal Crossthwaite",
                 "phoneNumber":"274-938-9868"
@@ -1202,10 +1266,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658014983, 0),
             "private":{
+                "paypalTransactionId":"fba90214-bd14-40b4-a42b-fc6a79d5dd85",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"espilsburiek@statcounter.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"10847 Talisman Street",
                 "name":"Emlynne Spilsburie",
                 "phoneNumber":"176-855-2778"
@@ -1218,10 +1283,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1650420277, 0),
             "private":{
+                "paypalTransactionId":"ea51755b-716b-433d-8242-a96f334eaec0",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"gantleyl@noaa.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"36 Lunder Place",
                 "name":"Guillaume Antley",
                 "phoneNumber":"348-657-0056"
@@ -1234,10 +1300,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658283384, 0),
             "private":{
+                "paypalTransactionId":"c1075f0c-4035-4638-8269-a9c322cbf0fe",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"gdilstonm@narod.ru",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"00 Dennis Road",
                 "name":"Griffin Dilston",
                 "phoneNumber":"616-803-6348"
@@ -1250,10 +1317,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1650223169, 0),
             "private":{
+                "paypalTransactionId":"3f743d44-32b4-4e9a-868d-b7be1e13587d",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"ckincaden@about.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"0272 Brentwood Circle",
                 "name":"Charyl Kincade",
                 "phoneNumber":"313-561-1994"
@@ -1266,10 +1334,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1647762205, 0),
             "private":{
+                "paypalTransactionId":"4ac5071b-b47f-42a8-be31-aff924f26eb7",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"dmarono@ucoz.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"45 Dayton Way",
                 "name":"Deane Maron",
                 "phoneNumber":"240-606-2747"
@@ -1282,10 +1351,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1654854912, 0),
             "private":{
+                "paypalTransactionId":"07a4d7c9-c9c4-4085-9e80-c3fd504492c1",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"mlonerganp@booking.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6 Milwaukee Junction",
                 "name":"Martica Lonergan",
                 "phoneNumber":"251-286-7225"
@@ -1298,10 +1368,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1647248215, 0),
             "private":{
+                "paypalTransactionId":"1ea37c50-d963-4025-b81f-1478b3339ae2",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"eescalanteq@va.gov",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"5029 Gerald Lane",
                 "name":"Errol Escalante",
                 "phoneNumber":"347-286-7238"
@@ -1314,10 +1385,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1636594714, 0),
             "private":{
+                "paypalTransactionId":"735daa85-1b5e-41bc-b784-3e8fcb2fde86",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"bjensonr@jigsy.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"0083 Parkside Alley",
                 "name":"Blanca Jenson",
                 "phoneNumber":"589-975-8928"
@@ -1330,10 +1402,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1634393719, 0),
             "private":{
+                "paypalTransactionId":"929c51f4-14e2-4c0a-b561-02d7494b2f82",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"lmcclarens@constantcontact.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"1177 Eliot Drive",
                 "name":"Lory McClaren",
                 "phoneNumber":"695-917-3964"
@@ -1346,10 +1419,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1640462811, 0),
             "private":{
+                "paypalTransactionId":"e43dbdf7-bf3d-4749-8ede-84efe9f3ff52",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"pizhakt@ucla.edu",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"511 Shasta Hill",
                 "name":"Pavel Izhak",
                 "phoneNumber":"623-605-3944"
@@ -1367,11 +1441,11 @@ export const mockData:CreateOrgModel[] =
         "phone": "0428473288",
         "website": "https://www.barriesbakery.com.au",
         "img": "https://source.unsplash.com/m9pzwmxm2rk",
-        "totalDonationCount": 20,
+        "totalDonationCount": 23,
         "totalDonationItems": 4,
-        "totalDonationsValue": 2788,
-        "totalGeneralDonationsCount": 14,
-        "totalGeneralDonationsValue": 2428,
+        "totalDonationsValue": 2350,
+        "totalGeneralDonationsCount": 17,
+        "totalGeneralDonationsValue": 1990,
         "totalItemDonationsCount": 6,
         "totalItemDonationsValue": 360,
         "Items":[
@@ -1380,8 +1454,8 @@ export const mockData:CreateOrgModel[] =
             "summary":"This stand mixer has dishwasher safe parts.",
             "description":"It has a white finish. Make a variety of foods and baked goods at home with this Sunbeam stand mixer.",
             "initialPrice": 150,
-            "totalDonationCount": 0,
-            "totalDonationsValue":0,
+            "totalDonationCount": 2,
+            "totalDonationsValue":142,
             "activeStatus": true,
             "dateCompleted":null,
             "createdAt": serverTimestamp(),
@@ -1394,10 +1468,11 @@ export const mockData:CreateOrgModel[] =
                 "donorPublicName":"Vittoria Eccleston",
                 "donationDate":serverTimestamp(),
                 "private":{
+                  "paypalTransactionId":"475730ae-4d4d-448e-b9d8-749fbc5b2fe8",
                   "IsAnon":true,
                   "agreeToContact":true,
                   "email":"tolney0@arstechnica.com",
-                  "howHeard":"Facebook",
+                  "howHeardOther":"Facebook",
                   "mailingAddress":"3502 Linden Terrace",
                   "name":"Tabbatha Olney",
                   "phoneNumber":"(519) 9540817"
@@ -1411,10 +1486,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Kerwinn Hammerstone",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"6ee85021-bdc0-4d3b-9ccb-d358dca2fb54",
                     "IsAnon":false,
                     "agreeToContact":true,
                     "email":"fcullnean1@cyberchimps.com",
-                    "howHeard":"Google",
+                    "howHeardOther":"Google",
                     "mailingAddress":"8 Mandrake Alley",
                     "name":"Faunie Cullnean",
                     "phoneNumber":"(131) 9243948"
@@ -1428,10 +1504,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Matilda Oxlade",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"c78c7818-2953-4272-a935-0f713171ec5a",
                     "IsAnon":false,
                     "agreeToContact":true,
                     "email":"sferneyhough2@csmonitor.com",
-                    "howHeard":"Google",
+                    "howHeardOther":"Google",
                     "mailingAddress":"83 Debs Avenue",
                     "name":"Stanislaus Ferneyhough",
                     "phoneNumber":"(150) 8981611"
@@ -1444,8 +1521,8 @@ export const mockData:CreateOrgModel[] =
             "summary":"The Turbofan E33D5 is a high quality digital electric convection oven with a large 5x 1/1 gastronorm capacity.",
             "description":"Suitable for use in restaurants, canteens, bakeries and others, the Turbofan includes all the features you would expect from a commercial convection oven and is ideal for cooking chicken, pastries, bread, pizza and confectionary. The oven is easily programmable and features a water injection mode when steam or moisture is required in your recipe.",
             "initialPrice": 5000,
-            "totalDonationCount": 0,
-            "totalDonationsValue":0,
+            "totalDonationCount": 2,
+            "totalDonationsValue":142,
             "activeStatus": true,
             "dateCompleted":null,
             "createdAt": serverTimestamp(),
@@ -1458,10 +1535,11 @@ export const mockData:CreateOrgModel[] =
                 "donorPublicName":"Vittoria Eccleston",
                 "donationDate":serverTimestamp(),
                 "private":{
+                  "paypalTransactionId":"bdfdeeb0-b59f-4638-8752-63bf5edf4adb",
                   "IsAnon":true,
                   "agreeToContact":true,
                   "email":"tolney0@arstechnica.com",
-                  "howHeard":"Facebook",
+                  "howHeardOther":"Facebook",
                   "mailingAddress":"3502 Linden Terrace",
                   "name":"Tabbatha Olney",
                   "phoneNumber":"(519) 9540817"
@@ -1475,10 +1553,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Kerwinn Hammerstone",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"bb372bf1-e5e5-460a-af28-40c05f96b5f6",
                     "IsAnon":false,
                     "agreeToContact":true,
                     "email":"fcullnean1@cyberchimps.com",
-                    "howHeard":"Google",
+                    "howHeardOther":"Google",
                     "mailingAddress":"8 Mandrake Alley",
                     "name":"Faunie Cullnean",
                     "phoneNumber":"(131) 9243948"
@@ -1492,10 +1571,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Matilda Oxlade",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"517b82f6-9a2c-466b-a570-ae5791c7c996",
                     "IsAnon":false,
                     "agreeToContact":true,
                     "email":"sferneyhough2@csmonitor.com",
-                    "howHeard":"Google",
+                    "howHeardOther":"Google",
                     "mailingAddress":"83 Debs Avenue",
                     "name":"Stanislaus Ferneyhough",
                     "phoneNumber":"(150) 8981611"
@@ -1537,10 +1617,11 @@ export const mockData:CreateOrgModel[] =
             "donorPublicName": "John",
             "IsSubscribed": false,
             "private": {
+              "paypalTransactionId":"451bc1d5-0608-4d39-8f06-d7e419c86ac3",
               "IsAnon": false,
               "agreeToContact": true,
               "email": "example@john.com.au",
-              "howHeard": "Facebook",
+              "howHeardOther": "Facebook",
               "mailingAddress": "16 realgood st realville 3136",
               "name": "John Smith",
               "phoneNumber": "0486723474"
@@ -1553,10 +1634,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1637267745, 0),
             "private":{
+                "paypalTransactionId":"e34d647a-ff8e-45fd-8440-f9e6f78abc20",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"ryakuntsov0@huffingtonpost.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6512 Killdeer Trail",
                 "name":"Roseanna Yakuntsov",
                 "phoneNumber":"106-492-8055"
@@ -1569,10 +1651,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1645062608, 0),
             "private":{
+                "paypalTransactionId":"26056605-dc9d-40c9-b6e9-c1be1f92f363",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"jberr1@scribd.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"63955 School Alley",
                 "name":"Joletta Berr",
                 "phoneNumber":"476-335-0517"
@@ -1585,10 +1668,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1660846169, 0),
             "private":{
+                "paypalTransactionId":"48fdb357-8468-4786-9fa2-baae9cde7186",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"rhobbert2@icq.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"36490 Ridgeway Plaza",
                 "name":"Rudolf Hobbert",
                 "phoneNumber":"984-118-5089"
@@ -1601,10 +1685,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1637791401, 0),
             "private":{
+                "paypalTransactionId":"5e1b81d8-5a94-42ac-a542-994c2c3dda25",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"tlissett3@craigslist.org",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"37 Debra Way",
                 "name":"Torey Lissett",
                 "phoneNumber":"471-385-5623"
@@ -1618,10 +1703,11 @@ export const mockData:CreateOrgModel[] =
             "donationDate":new Timestamp(1649358315, 0),
 
             "private":{
+                "paypalTransactionId":"2283d757-d385-4d4d-901d-25cdc244b77a",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"mshearstone4@typepad.com",
-                "howHeard":"Google",
+                "howHeardOther":"Google",
                 "mailingAddress":"858 Old Gate Drive",
                 "name":"Mitchael Shearstone",
                 "phoneNumber":"247-443-8325"
@@ -1634,10 +1720,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1635942123, 0),
             "private":{
+                "paypalTransactionId":"c05fbed0-b3e9-4eaa-8c0f-c6cf6bd39a6b",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"cbrannigan5@purevolume.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"89791 Clemons Pass",
                 "name":"Cal Brannigan",
                 "phoneNumber":"502-396-2041"
@@ -1650,10 +1737,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658131907, 0),
             "private":{
+                "paypalTransactionId":"3a9eb1f8-13c0-4565-8bda-94f32196524b",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"rde6@t-online.de",
-                "howHeard":"Google",
+                "howHeardOther":"Google",
                 "mailingAddress":"3257 Crescent Oaks Plaza",
                 "name":"Roxane De Cruze",
                 "phoneNumber":"671-527-5738"
@@ -1666,10 +1754,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1652470903, 0),
             "private":{
+                "paypalTransactionId":"d4b85b39-a5ae-4054-8455-d513b93a15d5",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"jerangy7@latimes.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"96480 Northland Trail",
                 "name":"Janeen Erangy",
                 "phoneNumber":"856-469-6941"
@@ -1682,10 +1771,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1646113004, 0),
             "private":{
+                "paypalTransactionId":"60b1732e-8069-4bb4-9fc5-78f0268426c6",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"jfasham8@blogs.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"924 High Crossing Junction",
                 "name":"Johanna Fasham",
                 "phoneNumber":"158-266-7385"
@@ -1698,10 +1788,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1643887865, 0),
             "private":{
+                "paypalTransactionId":"c6852715-53ba-49ef-8738-45be8035a246",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"cstollberger9@loc.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"66752 Golden Leaf Place",
                 "name":"Chrysa Stollberger",
                 "phoneNumber":"587-449-9761"
@@ -1714,10 +1805,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1661510063, 0),
             "private":{
+                "paypalTransactionId":"f28a0e2e-90bd-4dec-a0d2-4ddbc4b680ee",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"iperrisa@imageshack.us",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"18 Dixon Point",
                 "name":"Ignatius Perris",
                 "phoneNumber":"358-296-8577"
@@ -1730,10 +1822,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1658148094, 0),
             "private":{
+                "paypalTransactionId":"6c9e6715-96cf-405c-bcb8-143506fab33b",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"mstockneyb@ftc.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6113 Towne Street",
                 "name":"Mateo Stockney",
                 "phoneNumber":"491-746-3413"
@@ -1746,10 +1839,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1664030463, 0),
             "private":{
+                "paypalTransactionId":"1302ba85-9934-466b-9582-530529e1f09e",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"dlittledykec@freewebs.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"290 Hollow Ridge Court",
                 "name":"Darline Littledyke",
                 "phoneNumber":"105-346-9535"
@@ -1762,10 +1856,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1657953406, 0),
             "private":{
+                "paypalTransactionId":"2e10785c-e34c-4901-a90e-2e585462b9ca",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"dlosanod@pinterest.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"92 Victoria Center",
                 "name":"Dniren Losano",
                 "phoneNumber":"161-792-5330"
@@ -1778,10 +1873,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1660993694, 0),
             "private":{
+                "paypalTransactionId":"f303a24b-e035-4487-a1d5-f4189fed927a",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"wmccarneye@simplemachines.org",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"10076 Clove Junction",
                 "name":"Worthington McCarney",
                 "phoneNumber":"242-673-0532"
@@ -1794,10 +1890,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1653037483, 0),
             "private":{
+                "paypalTransactionId":"3dff9dc9-c6f5-4054-a220-50c2bd026a1e",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"gslatfordf@cnbc.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"229 Independence Way",
                 "name":"Georgette Slatford",
                 "phoneNumber":"301-631-0182"
@@ -1810,10 +1907,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1642947603, 0),
             "private":{
+                "paypalTransactionId":"27115c81-ac7b-4050-94ae-092505b19d9f",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"geytelg@microsoft.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"3 Kropf Junction",
                 "name":"Garrick Eytel",
                 "phoneNumber":"401-730-0030"
@@ -1826,10 +1924,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1662906560, 0),
             "private":{
+                "paypalTransactionId":"fc87ebba-88fa-4c58-bcd2-38e1785ad3d8",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"trentilllh@mayoclinic.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"1 Meadow Ridge Lane",
                 "name":"Thorvald Rentilll",
                 "phoneNumber":"857-123-2251"
@@ -1842,10 +1941,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1651059211, 0),
             "private":{
+                "paypalTransactionId":"434ab266-7f1b-46cd-ab19-287e9a426639",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"tloffilli@opensource.org",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"50773 Dwight Trail",
                 "name":"Tuckie Loffill",
                 "phoneNumber":"818-542-9125"
@@ -1858,10 +1958,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1650551611, 0),
             "private":{
+                "paypalTransactionId":"8469c2d0-9eb9-48c3-a9c7-f79d7297da27",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"mcrossthwaitej@xing.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"24009 Sutherland Park",
                 "name":"Michal Crossthwaite",
                 "phoneNumber":"274-938-9868"
@@ -1874,10 +1975,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658014983, 0),
             "private":{
+                "paypalTransactionId":"d8c24aba-aa1b-4faf-a522-47805a26b088",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"espilsburiek@statcounter.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"10847 Talisman Street",
                 "name":"Emlynne Spilsburie",
                 "phoneNumber":"176-855-2778"
@@ -1890,10 +1992,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1650420277, 0),
             "private":{
+                "paypalTransactionId":"ba822f6d-4a9e-4635-86ca-d6a7d5930eee",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"gantleyl@noaa.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"36 Lunder Place",
                 "name":"Guillaume Antley",
                 "phoneNumber":"348-657-0056"
@@ -1906,10 +2009,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658283384, 0),
             "private":{
+                "paypalTransactionId":"8c8a9a3d-b626-425d-bfc5-9a282067833f",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"gdilstonm@narod.ru",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"00 Dennis Road",
                 "name":"Griffin Dilston",
                 "phoneNumber":"616-803-6348"
@@ -1922,10 +2026,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1650223169, 0),
             "private":{
+                "paypalTransactionId":"be47d2b0-4a10-4cf3-bdfd-6c5b817fab9e",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"ckincaden@about.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"0272 Brentwood Circle",
                 "name":"Charyl Kincade",
                 "phoneNumber":"313-561-1994"
@@ -1938,10 +2043,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1647762205, 0),
             "private":{
+                "paypalTransactionId":"2c18dc35-c609-411a-8cd7-bd3a4a3f2017",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"dmarono@ucoz.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"45 Dayton Way",
                 "name":"Deane Maron",
                 "phoneNumber":"240-606-2747"
@@ -1954,10 +2060,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1654854912, 0),
             "private":{
+                "paypalTransactionId":"e44482d0-12e0-45f2-b5bc-b3827ce08073",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"mlonerganp@booking.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6 Milwaukee Junction",
                 "name":"Martica Lonergan",
                 "phoneNumber":"251-286-7225"
@@ -1970,10 +2077,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1647248215, 0),
             "private":{
+                "paypalTransactionId":"82ec3f1d-02dd-4c69-92be-55e46a068eb3",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"eescalanteq@va.gov",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"5029 Gerald Lane",
                 "name":"Errol Escalante",
                 "phoneNumber":"347-286-7238"
@@ -1986,10 +2094,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1636594714, 0),
             "private":{
+                "paypalTransactionId":"d6e27312-4019-4646-a8bb-199abc6c44f8",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"bjensonr@jigsy.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"0083 Parkside Alley",
                 "name":"Blanca Jenson",
                 "phoneNumber":"589-975-8928"
@@ -2002,10 +2111,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1634393719, 0),
             "private":{
+                "paypalTransactionId":"a7e140ea-6352-4a38-9e2f-ba5507573544",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"lmcclarens@constantcontact.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"1177 Eliot Drive",
                 "name":"Lory McClaren",
                 "phoneNumber":"695-917-3964"
@@ -2018,10 +2128,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1640462811, 0),
             "private":{
+                "paypalTransactionId":"a55a7f20-4ac0-4333-831b-ff309002bcbb",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"pizhakt@ucla.edu",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"511 Shasta Hill",
                 "name":"Pavel Izhak",
                 "phoneNumber":"623-605-3944"
@@ -2039,11 +2150,11 @@ export const mockData:CreateOrgModel[] =
         "phone": "0455567982",
         "website": "https://www.phonezone.com",
         "img": "https://source.unsplash.com/6wdRuK7bVTE",
-        "totalDonationCount": 14,
+        "totalDonationCount": 17,
         "totalDonationItems": 3,
-        "totalDonationsValue": 2428,
-        "totalGeneralDonationsCount": 14,
-        "totalGeneralDonationsValue": 2428,
+        "totalDonationsValue": 1990,
+        "totalGeneralDonationsCount": 17,
+        "totalGeneralDonationsValue": 1990,
         "totalItemDonationsCount": 0,
         "totalItemDonationsValue": 0,
         "Items":[
@@ -2095,10 +2206,11 @@ export const mockData:CreateOrgModel[] =
             "donorPublicName": "John",
             "IsSubscribed": false,
             "private": {
+              "paypalTransactionId":"18e1edac-51be-4117-bc78-9988d3a42c5b",
               "IsAnon": false,
               "agreeToContact": true,
               "email": "example@john.com.au",
-              "howHeard": "Facebook",
+              "howHeardOther": "Facebook",
               "mailingAddress": "16 realgood st realville 3136",
               "name": "John Smith",
               "phoneNumber": "0486723474"
@@ -2111,10 +2223,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1637267745, 0),
             "private":{
+                "paypalTransactionId":"d5906a8d-206c-49cb-9d94-824a4780bd31",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"ryakuntsov0@huffingtonpost.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6512 Killdeer Trail",
                 "name":"Roseanna Yakuntsov",
                 "phoneNumber":"106-492-8055"
@@ -2127,10 +2240,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1645062608, 0),
             "private":{
+                "paypalTransactionId":"e78d3acf-a8a5-4136-9ef7-df744e2fe244",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"jberr1@scribd.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"63955 School Alley",
                 "name":"Joletta Berr",
                 "phoneNumber":"476-335-0517"
@@ -2143,10 +2257,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1660846169, 0),
             "private":{
+                "paypalTransactionId":"8bc3c28c-88a7-4e51-ad63-be57fd2eaa92",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"rhobbert2@icq.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"36490 Ridgeway Plaza",
                 "name":"Rudolf Hobbert",
                 "phoneNumber":"984-118-5089"
@@ -2159,10 +2274,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1637791401, 0),
             "private":{
+                "paypalTransactionId":"749e2c85-3eb0-4e46-9745-75687eb4ff91",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"tlissett3@craigslist.org",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"37 Debra Way",
                 "name":"Torey Lissett",
                 "phoneNumber":"471-385-5623"
@@ -2176,10 +2292,11 @@ export const mockData:CreateOrgModel[] =
             "donationDate":new Timestamp(1649358315, 0),
 
             "private":{
+                "paypalTransactionId":"a000d40f-e72b-415b-b18a-de5c52bcc0ff",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"mshearstone4@typepad.com",
-                "howHeard":"Google",
+                "howHeardOther":"Google",
                 "mailingAddress":"858 Old Gate Drive",
                 "name":"Mitchael Shearstone",
                 "phoneNumber":"247-443-8325"
@@ -2192,10 +2309,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1635942123, 0),
             "private":{
+                "paypalTransactionId":"2784e533-cad8-4940-8e08-72532f8f6e11",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"cbrannigan5@purevolume.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"89791 Clemons Pass",
                 "name":"Cal Brannigan",
                 "phoneNumber":"502-396-2041"
@@ -2208,10 +2326,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658131907, 0),
             "private":{
+                "paypalTransactionId":"568b5cdc-a268-4f7d-8913-296e6ba858dd",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"rde6@t-online.de",
-                "howHeard":"Google",
+                "howHeardOther":"Google",
                 "mailingAddress":"3257 Crescent Oaks Plaza",
                 "name":"Roxane De Cruze",
                 "phoneNumber":"671-527-5738"
@@ -2224,10 +2343,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1652470903, 0),
             "private":{
+                "paypalTransactionId":"12c9cb47-5c85-40ca-8002-b1f01c67bcb4",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"jerangy7@latimes.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"96480 Northland Trail",
                 "name":"Janeen Erangy",
                 "phoneNumber":"856-469-6941"
@@ -2240,10 +2360,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1646113004, 0),
             "private":{
+                "paypalTransactionId":"459f6ae3-9267-4248-8a3f-609a5070674c",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"jfasham8@blogs.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"924 High Crossing Junction",
                 "name":"Johanna Fasham",
                 "phoneNumber":"158-266-7385"
@@ -2256,10 +2377,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1643887865, 0),
             "private":{
+                "paypalTransactionId":"54a1b211-c5c1-4af8-89d3-43f9cfc8cfb1",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"cstollberger9@loc.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"66752 Golden Leaf Place",
                 "name":"Chrysa Stollberger",
                 "phoneNumber":"587-449-9761"
@@ -2272,10 +2394,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1661510063, 0),
             "private":{
+                "paypalTransactionId":"24c934bd-9084-4980-908c-77231062279f",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"iperrisa@imageshack.us",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"18 Dixon Point",
                 "name":"Ignatius Perris",
                 "phoneNumber":"358-296-8577"
@@ -2288,10 +2411,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1658148094, 0),
             "private":{
+                "paypalTransactionId":"63b9e918-bcae-4cb7-afce-8c773e6aa77b",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"mstockneyb@ftc.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6113 Towne Street",
                 "name":"Mateo Stockney",
                 "phoneNumber":"491-746-3413"
@@ -2304,10 +2428,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1664030463, 0),
             "private":{
+                "paypalTransactionId":"5f6c8f1e-c257-4da7-bcc8-1726164dfdea",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"dlittledykec@freewebs.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"290 Hollow Ridge Court",
                 "name":"Darline Littledyke",
                 "phoneNumber":"105-346-9535"
@@ -2320,10 +2445,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1657953406, 0),
             "private":{
+                "paypalTransactionId":"be1a8be9-8811-41e9-b263-f4aea41de199",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"dlosanod@pinterest.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"92 Victoria Center",
                 "name":"Dniren Losano",
                 "phoneNumber":"161-792-5330"
@@ -2336,10 +2462,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1660993694, 0),
             "private":{
+                "paypalTransactionId":"42be5643-ecd2-4731-921b-000eb0e3c84e",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"wmccarneye@simplemachines.org",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"10076 Clove Junction",
                 "name":"Worthington McCarney",
                 "phoneNumber":"242-673-0532"
@@ -2352,10 +2479,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1653037483, 0),
             "private":{
+                "paypalTransactionId":"95881189-9f83-4279-a65e-79001d239525",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"gslatfordf@cnbc.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"229 Independence Way",
                 "name":"Georgette Slatford",
                 "phoneNumber":"301-631-0182"
@@ -2368,10 +2496,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1642947603, 0),
             "private":{
+                "paypalTransactionId":"9c59dc4d-70d9-4b68-8151-9342a65ff476",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"geytelg@microsoft.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"3 Kropf Junction",
                 "name":"Garrick Eytel",
                 "phoneNumber":"401-730-0030"
@@ -2384,10 +2513,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1662906560, 0),
             "private":{
+                "paypalTransactionId":"bc9ada9f-59bf-4e60-8726-25ff9ccc6362",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"trentilllh@mayoclinic.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"1 Meadow Ridge Lane",
                 "name":"Thorvald Rentilll",
                 "phoneNumber":"857-123-2251"
@@ -2400,10 +2530,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1651059211, 0),
             "private":{
+                "paypalTransactionId":"68a3d6c9-822e-46ed-9694-7e8ed2008707",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"tloffilli@opensource.org",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"50773 Dwight Trail",
                 "name":"Tuckie Loffill",
                 "phoneNumber":"818-542-9125"
@@ -2416,10 +2547,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1650551611, 0),
             "private":{
+                "paypalTransactionId":"5ae26a84-9f6a-475d-924b-8ec706f6fbff",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"mcrossthwaitej@xing.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"24009 Sutherland Park",
                 "name":"Michal Crossthwaite",
                 "phoneNumber":"274-938-9868"
@@ -2432,10 +2564,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658014983, 0),
             "private":{
+                "paypalTransactionId":"5a967e3c-78ce-4954-8199-bb0f6d56c533",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"espilsburiek@statcounter.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"10847 Talisman Street",
                 "name":"Emlynne Spilsburie",
                 "phoneNumber":"176-855-2778"
@@ -2448,10 +2581,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1650420277, 0),
             "private":{
+                "paypalTransactionId":"217d3aab-48fe-4bc6-a65b-987f7865aa72",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"gantleyl@noaa.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"36 Lunder Place",
                 "name":"Guillaume Antley",
                 "phoneNumber":"348-657-0056"
@@ -2464,10 +2598,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658283384, 0),
             "private":{
+                "paypalTransactionId":"279b7442-96ab-439c-abfa-67f91e2374f8",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"gdilstonm@narod.ru",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"00 Dennis Road",
                 "name":"Griffin Dilston",
                 "phoneNumber":"616-803-6348"
@@ -2480,10 +2615,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1650223169, 0),
             "private":{
+                "paypalTransactionId":"e2c54f06-1a0e-4572-b3f1-a67d2c0ca079",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"ckincaden@about.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"0272 Brentwood Circle",
                 "name":"Charyl Kincade",
                 "phoneNumber":"313-561-1994"
@@ -2496,10 +2632,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1647762205, 0),
             "private":{
+                "paypalTransactionId":"e90d19c1-861e-4515-a208-c366895145c0",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"dmarono@ucoz.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"45 Dayton Way",
                 "name":"Deane Maron",
                 "phoneNumber":"240-606-2747"
@@ -2512,10 +2649,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1654854912, 0),
             "private":{
+                "paypalTransactionId":"32b40e52-c4bf-466e-8449-2925da4fc9f1",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"mlonerganp@booking.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6 Milwaukee Junction",
                 "name":"Martica Lonergan",
                 "phoneNumber":"251-286-7225"
@@ -2528,10 +2666,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1647248215, 0),
             "private":{
+                "paypalTransactionId":"6d727a72-1bb1-4bda-a7db-7b4cde81d170",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"eescalanteq@va.gov",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"5029 Gerald Lane",
                 "name":"Errol Escalante",
                 "phoneNumber":"347-286-7238"
@@ -2544,10 +2683,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1636594714, 0),
             "private":{
+                "paypalTransactionId":"ca8b5211-2eb6-4861-bd66-4ff6015fd72d",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"bjensonr@jigsy.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"0083 Parkside Alley",
                 "name":"Blanca Jenson",
                 "phoneNumber":"589-975-8928"
@@ -2560,10 +2700,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1634393719, 0),
             "private":{
+                "paypalTransactionId":"2051041a-cece-46b4-a1c3-ebefb01340a1",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"lmcclarens@constantcontact.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"1177 Eliot Drive",
                 "name":"Lory McClaren",
                 "phoneNumber":"695-917-3964"
@@ -2576,10 +2717,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1640462811, 0),
             "private":{
+                "paypalTransactionId":"977508b5-81f7-48fe-a410-204f1ce33fa1",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"pizhakt@ucla.edu",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"511 Shasta Hill",
                 "name":"Pavel Izhak",
                 "phoneNumber":"623-605-3944"
@@ -2598,11 +2740,11 @@ export const mockData:CreateOrgModel[] =
         "phone": "0433958444",
         "website": "https://social-moments.org/",
         "img": "https://source.unsplash.com/Zyx1bK9mqmA",
-        "totalDonationCount": 14,
+        "totalDonationCount": 17,
         "totalDonationItems": 3,
-        "totalDonationsValue": 2428,
-        "totalGeneralDonationsCount": 14,
-        "totalGeneralDonationsValue": 2428,
+        "totalDonationsValue": 1990,
+        "totalGeneralDonationsCount": 17,
+        "totalGeneralDonationsValue": 1990,
         "totalItemDonationsCount": 0,
         "totalItemDonationsValue": 0,
         "Items":[
@@ -2652,10 +2794,11 @@ export const mockData:CreateOrgModel[] =
             "donorPublicName": "John",
             "IsSubscribed": false,
             "private": {
+              "paypalTransactionId":"bd974790-f339-4602-876e-eeaec86eb635",
               "IsAnon": false,
               "agreeToContact": true,
               "email": "example@john.com.au",
-              "howHeard": "Facebook",
+              "howHeardOther": "Facebook",
               "mailingAddress": "16 realgood st realville 3136",
               "name": "John Smith",
               "phoneNumber": "0486723474"
@@ -2668,10 +2811,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1637267745, 0),
             "private":{
+                "paypalTransactionId":"224850ce-8fe0-4c30-a35d-2a1e1df45af7",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"ryakuntsov0@huffingtonpost.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6512 Killdeer Trail",
                 "name":"Roseanna Yakuntsov",
                 "phoneNumber":"106-492-8055"
@@ -2684,10 +2828,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1645062608, 0),
             "private":{
+                "paypalTransactionId":"388a5316-df15-4eec-bf30-d097075e51ec",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"jberr1@scribd.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"63955 School Alley",
                 "name":"Joletta Berr",
                 "phoneNumber":"476-335-0517"
@@ -2700,10 +2845,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1660846169, 0),
             "private":{
+                "paypalTransactionId":"62c8c57c-1d22-42a9-8ebe-563f05347f1c",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"rhobbert2@icq.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"36490 Ridgeway Plaza",
                 "name":"Rudolf Hobbert",
                 "phoneNumber":"984-118-5089"
@@ -2716,10 +2862,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1637791401, 0),
             "private":{
+                "paypalTransactionId":"2027608e-541a-4112-8853-96d4b0d41996",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"tlissett3@craigslist.org",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"37 Debra Way",
                 "name":"Torey Lissett",
                 "phoneNumber":"471-385-5623"
@@ -2733,10 +2880,11 @@ export const mockData:CreateOrgModel[] =
             "donationDate":new Timestamp(1649358315, 0),
 
             "private":{
+                "paypalTransactionId":"c9691ef0-71a5-4710-a1b7-4fcb49e1d42e",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"mshearstone4@typepad.com",
-                "howHeard":"Google",
+                "howHeardOther":"Google",
                 "mailingAddress":"858 Old Gate Drive",
                 "name":"Mitchael Shearstone",
                 "phoneNumber":"247-443-8325"
@@ -2749,10 +2897,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1635942123, 0),
             "private":{
+                "paypalTransactionId":"a4cad956-882f-48ef-84f8-d6b287a3f7e6",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"cbrannigan5@purevolume.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"89791 Clemons Pass",
                 "name":"Cal Brannigan",
                 "phoneNumber":"502-396-2041"
@@ -2765,10 +2914,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658131907, 0),
             "private":{
+                "paypalTransactionId":"eb2f08b6-5811-4408-bf37-636f7d486c64",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"rde6@t-online.de",
-                "howHeard":"Google",
+                "howHeardOther":"Google",
                 "mailingAddress":"3257 Crescent Oaks Plaza",
                 "name":"Roxane De Cruze",
                 "phoneNumber":"671-527-5738"
@@ -2781,10 +2931,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1652470903, 0),
             "private":{
+                "paypalTransactionId":"b0a1f9de-63f0-4e1b-9b12-6dd022770a93",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"jerangy7@latimes.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"96480 Northland Trail",
                 "name":"Janeen Erangy",
                 "phoneNumber":"856-469-6941"
@@ -2797,10 +2948,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1646113004, 0),
             "private":{
+                "paypalTransactionId":"7f7fbefa-65f9-48c1-ac04-0120bc6ba7cd",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"jfasham8@blogs.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"924 High Crossing Junction",
                 "name":"Johanna Fasham",
                 "phoneNumber":"158-266-7385"
@@ -2813,10 +2965,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1643887865, 0),
             "private":{
+                "paypalTransactionId":"8d4694ea-d4c4-46d0-97a6-e03deb966b4b",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"cstollberger9@loc.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"66752 Golden Leaf Place",
                 "name":"Chrysa Stollberger",
                 "phoneNumber":"587-449-9761"
@@ -2829,10 +2982,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1661510063, 0),
             "private":{
+                "paypalTransactionId":"6760f45a-6f44-4c24-aea6-872ef08e1ce1",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"iperrisa@imageshack.us",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"18 Dixon Point",
                 "name":"Ignatius Perris",
                 "phoneNumber":"358-296-8577"
@@ -2845,10 +2999,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1658148094, 0),
             "private":{
+                "paypalTransactionId":"fd39c006-e97a-45dc-9749-abe9e0c12d93",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"mstockneyb@ftc.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6113 Towne Street",
                 "name":"Mateo Stockney",
                 "phoneNumber":"491-746-3413"
@@ -2861,10 +3016,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1664030463, 0),
             "private":{
+                "paypalTransactionId":"df9c3336-8946-4f6e-b686-7ad7dfb4cfa4",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"dlittledykec@freewebs.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"290 Hollow Ridge Court",
                 "name":"Darline Littledyke",
                 "phoneNumber":"105-346-9535"
@@ -2877,10 +3033,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1657953406, 0),
             "private":{
+                "paypalTransactionId":"0cca6ae5-3163-41a6-b569-010f66214aa6",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"dlosanod@pinterest.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"92 Victoria Center",
                 "name":"Dniren Losano",
                 "phoneNumber":"161-792-5330"
@@ -2893,10 +3050,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1660993694, 0),
             "private":{
+                "paypalTransactionId":"30f63211-776b-4581-b73d-898abb54237f",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"wmccarneye@simplemachines.org",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"10076 Clove Junction",
                 "name":"Worthington McCarney",
                 "phoneNumber":"242-673-0532"
@@ -2909,10 +3067,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1653037483, 0),
             "private":{
+                "paypalTransactionId":"29b01d0b-5eef-498d-956f-40db8a3d85cf",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"gslatfordf@cnbc.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"229 Independence Way",
                 "name":"Georgette Slatford",
                 "phoneNumber":"301-631-0182"
@@ -2925,10 +3084,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1642947603, 0),
             "private":{
+                "paypalTransactionId":"656c1fbb-bffb-4e59-bacf-11f6a1564fd6",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"geytelg@microsoft.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"3 Kropf Junction",
                 "name":"Garrick Eytel",
                 "phoneNumber":"401-730-0030"
@@ -2941,10 +3101,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1662906560, 0),
             "private":{
+                "paypalTransactionId":"8c0f1952-9dcb-46f0-8217-c9877b2fa8fd",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"trentilllh@mayoclinic.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"1 Meadow Ridge Lane",
                 "name":"Thorvald Rentilll",
                 "phoneNumber":"857-123-2251"
@@ -2957,10 +3118,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1651059211, 0),
             "private":{
+                "paypalTransactionId":"d6bd4e51-8c38-481b-8bd4-99bcb0feb6a6",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"tloffilli@opensource.org",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"50773 Dwight Trail",
                 "name":"Tuckie Loffill",
                 "phoneNumber":"818-542-9125"
@@ -2973,10 +3135,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1650551611, 0),
             "private":{
+                "paypalTransactionId":"03835e82-bcde-4444-b7a8-26c03a8a5509",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"mcrossthwaitej@xing.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"24009 Sutherland Park",
                 "name":"Michal Crossthwaite",
                 "phoneNumber":"274-938-9868"
@@ -2989,10 +3152,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658014983, 0),
             "private":{
+                "paypalTransactionId":"591157d8-3018-42d5-ab8e-f15cc3db1620",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"espilsburiek@statcounter.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"10847 Talisman Street",
                 "name":"Emlynne Spilsburie",
                 "phoneNumber":"176-855-2778"
@@ -3005,10 +3169,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1650420277, 0),
             "private":{
+                "paypalTransactionId":"1f46c188-7d4f-4803-bad5-0f9276edf57c",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"gantleyl@noaa.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"36 Lunder Place",
                 "name":"Guillaume Antley",
                 "phoneNumber":"348-657-0056"
@@ -3021,10 +3186,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658283384, 0),
             "private":{
+                "paypalTransactionId":"a1e34d36-8e2e-4c5c-9a8d-fe21af55f5d8",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"gdilstonm@narod.ru",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"00 Dennis Road",
                 "name":"Griffin Dilston",
                 "phoneNumber":"616-803-6348"
@@ -3037,10 +3203,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1650223169, 0),
             "private":{
+                "paypalTransactionId":"9d434590-43e1-46ee-a2c5-25276620a450",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"ckincaden@about.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"0272 Brentwood Circle",
                 "name":"Charyl Kincade",
                 "phoneNumber":"313-561-1994"
@@ -3053,10 +3220,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1647762205, 0),
             "private":{
+                "paypalTransactionId":"218467e1-ff25-4ced-a4e4-9d702307a85c",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"dmarono@ucoz.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"45 Dayton Way",
                 "name":"Deane Maron",
                 "phoneNumber":"240-606-2747"
@@ -3069,10 +3237,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1654854912, 0),
             "private":{
+                "paypalTransactionId":"4e63d041-ed87-47e7-ba36-83095c47896e",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"mlonerganp@booking.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6 Milwaukee Junction",
                 "name":"Martica Lonergan",
                 "phoneNumber":"251-286-7225"
@@ -3085,10 +3254,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1647248215, 0),
             "private":{
+                "paypalTransactionId":"94652b68-48b4-4a5d-9203-a041aea4a1a3",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"eescalanteq@va.gov",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"5029 Gerald Lane",
                 "name":"Errol Escalante",
                 "phoneNumber":"347-286-7238"
@@ -3101,10 +3271,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1636594714, 0),
             "private":{
+                "paypalTransactionId":"b6b5e1ae-01fe-446b-a800-5ba9ea995851",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"bjensonr@jigsy.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"0083 Parkside Alley",
                 "name":"Blanca Jenson",
                 "phoneNumber":"589-975-8928"
@@ -3117,10 +3288,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1634393719, 0),
             "private":{
+                "paypalTransactionId":"a4fcf2e1-060d-4bb9-8c01-2683cc8b71ab",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"lmcclarens@constantcontact.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"1177 Eliot Drive",
                 "name":"Lory McClaren",
                 "phoneNumber":"695-917-3964"
@@ -3133,10 +3305,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1640462811, 0),
             "private":{
+                "paypalTransactionId":"63b1220c-4f98-42d1-98c9-50b561b01a7c",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"pizhakt@ucla.edu",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"511 Shasta Hill",
                 "name":"Pavel Izhak",
                 "phoneNumber":"623-605-3944"
@@ -3153,11 +3326,11 @@ export const mockData:CreateOrgModel[] =
         "phone": "0493959487",
         "website": "https://www.edablelfowers.com",
         "img": "https://source.unsplash.com/UvVVnUmW2mQ",
-        "totalDonationCount": 17,
+        "totalDonationCount": 20,
         "totalDonationItems": 3,
-        "totalDonationsValue": 2608,
-        "totalGeneralDonationsCount": 14,
-        "totalGeneralDonationsValue": 2428,
+        "totalDonationsValue": 2170,
+        "totalGeneralDonationsCount": 17,
+        "totalGeneralDonationsValue": 1990,
         "totalItemDonationsCount": 3,
         "totalItemDonationsValue": 180,
         "Items":[
@@ -3166,8 +3339,8 @@ export const mockData:CreateOrgModel[] =
             "summary":"Purple colored pansies",
             "description":"Edible Pansies",
             "initialPrice": 60,
-            "totalDonationCount": 0,
-            "totalDonationsValue":0,
+            "totalDonationCount": 2,
+            "totalDonationsValue":142,
             "activeStatus": true,
             "dateCompleted":null,
             "createdAt": serverTimestamp(),
@@ -3180,10 +3353,11 @@ export const mockData:CreateOrgModel[] =
                 "donorPublicName":"Vittoria Eccleston",
                 "donationDate":serverTimestamp(),
                 "private":{
+                  "paypalTransactionId":"5a97e578-1d1c-4306-8554-5cf59223e815",
                   "IsAnon":true,
                   "agreeToContact":true,
                   "email":"tolney0@arstechnica.com",
-                  "howHeard":"Facebook",
+                  "howHeardOther":"Facebook",
                   "mailingAddress":"3502 Linden Terrace",
                   "name":"Tabbatha Olney",
                   "phoneNumber":"(519) 9540817"
@@ -3197,10 +3371,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Kerwinn Hammerstone",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"a9b0dfdc-c4d6-4b37-be46-7e20db20fc94",
                     "IsAnon":false,
                     "agreeToContact":true,
                     "email":"fcullnean1@cyberchimps.com",
-                    "howHeard":"Google",
+                    "howHeardOther":"Google",
                     "mailingAddress":"8 Mandrake Alley",
                     "name":"Faunie Cullnean",
                     "phoneNumber":"(131) 9243948"
@@ -3214,10 +3389,11 @@ export const mockData:CreateOrgModel[] =
                   "donorPublicName":"Matilda Oxlade",
                   "donationDate":serverTimestamp(),
                   "private":{
+                    "paypalTransactionId":"5762c42f-dbce-4173-a73e-062bc47533f2",
                     "IsAnon":false,
                     "agreeToContact":true,
                     "email":"sferneyhough2@csmonitor.com",
-                    "howHeard":"Google",
+                    "howHeardOther":"Google",
                     "mailingAddress":"83 Debs Avenue",
                     "name":"Stanislaus Ferneyhough",
                     "phoneNumber":"(150) 8981611"
@@ -3259,10 +3435,11 @@ export const mockData:CreateOrgModel[] =
             "donorPublicName": "John",
             "IsSubscribed": false,
             "private": {
+              "paypalTransactionId":"1522daf6-5cb9-488c-bc85-1e155e4de862",
               "IsAnon": false,
               "agreeToContact": true,
               "email": "example@john.com.au",
-              "howHeard": "Facebook",
+              "howHeardOther": "Facebook",
               "mailingAddress": "16 realgood st realville 3136",
               "name": "John Smith",
               "phoneNumber": "0486723474"
@@ -3275,10 +3452,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1637267745, 0),
             "private":{
+                "paypalTransactionId":"86fa7308-103c-453b-8277-94dfb2426472",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"ryakuntsov0@huffingtonpost.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6512 Killdeer Trail",
                 "name":"Roseanna Yakuntsov",
                 "phoneNumber":"106-492-8055"
@@ -3291,10 +3469,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1645062608, 0),
             "private":{
+                "paypalTransactionId":"84331f44-cf81-4b29-9097-79eb5149e5f4",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"jberr1@scribd.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"63955 School Alley",
                 "name":"Joletta Berr",
                 "phoneNumber":"476-335-0517"
@@ -3307,10 +3486,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1660846169, 0),
             "private":{
+                "paypalTransactionId":"6ee968b2-8028-444b-bdc2-5d561b98acdc",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"rhobbert2@icq.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"36490 Ridgeway Plaza",
                 "name":"Rudolf Hobbert",
                 "phoneNumber":"984-118-5089"
@@ -3323,10 +3503,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1637791401, 0),
             "private":{
+                "paypalTransactionId":"870cd261-439c-4fc3-a088-6dd798f4f6c8",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"tlissett3@craigslist.org",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"37 Debra Way",
                 "name":"Torey Lissett",
                 "phoneNumber":"471-385-5623"
@@ -3340,10 +3521,11 @@ export const mockData:CreateOrgModel[] =
             "donationDate":new Timestamp(1649358315, 0),
 
             "private":{
+                "paypalTransactionId":"410fc419-3246-406a-8e8a-5894727d6b5a",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"mshearstone4@typepad.com",
-                "howHeard":"Google",
+                "howHeardOther":"Google",
                 "mailingAddress":"858 Old Gate Drive",
                 "name":"Mitchael Shearstone",
                 "phoneNumber":"247-443-8325"
@@ -3356,10 +3538,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1635942123, 0),
             "private":{
+                "paypalTransactionId":"410c3380-0049-47b6-8d12-7e92b49bfcae",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"cbrannigan5@purevolume.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"89791 Clemons Pass",
                 "name":"Cal Brannigan",
                 "phoneNumber":"502-396-2041"
@@ -3372,10 +3555,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658131907, 0),
             "private":{
+                "paypalTransactionId":"d806c5a9-36c1-4899-be99-05df49d72b3a",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"rde6@t-online.de",
-                "howHeard":"Google",
+                "howHeardOther":"Google",
                 "mailingAddress":"3257 Crescent Oaks Plaza",
                 "name":"Roxane De Cruze",
                 "phoneNumber":"671-527-5738"
@@ -3388,10 +3572,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1652470903, 0),
             "private":{
+                "paypalTransactionId":"d839a7e6-561d-4069-bf49-e10179bf5963",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"jerangy7@latimes.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"96480 Northland Trail",
                 "name":"Janeen Erangy",
                 "phoneNumber":"856-469-6941"
@@ -3404,10 +3589,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1646113004, 0),
             "private":{
+                "paypalTransactionId":"520d32d1-7f44-477b-b8de-b98d2b242e0e",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"jfasham8@blogs.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"924 High Crossing Junction",
                 "name":"Johanna Fasham",
                 "phoneNumber":"158-266-7385"
@@ -3420,10 +3606,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1643887865, 0),
             "private":{
+                "paypalTransactionId":"7d8b4113-5ae5-4ade-a575-be25a9673e09",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"cstollberger9@loc.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"66752 Golden Leaf Place",
                 "name":"Chrysa Stollberger",
                 "phoneNumber":"587-449-9761"
@@ -3436,10 +3623,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1661510063, 0),
             "private":{
+                "paypalTransactionId":"4a8e1fde-ce4a-4382-9426-7cf0178c9fa8",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"iperrisa@imageshack.us",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"18 Dixon Point",
                 "name":"Ignatius Perris",
                 "phoneNumber":"358-296-8577"
@@ -3452,10 +3640,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1658148094, 0),
             "private":{
+                "paypalTransactionId":"f2a64bee-7ac6-4e02-b949-45d3c9337113",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"mstockneyb@ftc.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6113 Towne Street",
                 "name":"Mateo Stockney",
                 "phoneNumber":"491-746-3413"
@@ -3468,10 +3657,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1664030463, 0),
             "private":{
+                "paypalTransactionId":"30007602-8915-449d-97ed-2c8e34b54756",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"dlittledykec@freewebs.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"290 Hollow Ridge Court",
                 "name":"Darline Littledyke",
                 "phoneNumber":"105-346-9535"
@@ -3484,10 +3674,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1657953406, 0),
             "private":{
+                "paypalTransactionId":"8828ff34-b516-4add-91c1-ba6220cfcc6a",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"dlosanod@pinterest.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"92 Victoria Center",
                 "name":"Dniren Losano",
                 "phoneNumber":"161-792-5330"
@@ -3500,10 +3691,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1660993694, 0),
             "private":{
+                "paypalTransactionId":"983e5349-a2c5-4868-a840-4f1efee7e36f",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"wmccarneye@simplemachines.org",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"10076 Clove Junction",
                 "name":"Worthington McCarney",
                 "phoneNumber":"242-673-0532"
@@ -3516,10 +3708,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1653037483, 0),
             "private":{
+                "paypalTransactionId":"2994c8af-9f18-4e57-bfa6-d40d66585e3f",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"gslatfordf@cnbc.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"229 Independence Way",
                 "name":"Georgette Slatford",
                 "phoneNumber":"301-631-0182"
@@ -3532,10 +3725,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1642947603, 0),
             "private":{
+                "paypalTransactionId":"5b05bd3e-d78b-41cd-93d5-ea20c95f3777",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"geytelg@microsoft.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"3 Kropf Junction",
                 "name":"Garrick Eytel",
                 "phoneNumber":"401-730-0030"
@@ -3548,10 +3742,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1662906560, 0),
             "private":{
+                "paypalTransactionId":"b526cdd5-4812-436d-b9bd-ce6785a7083a",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"trentilllh@mayoclinic.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"1 Meadow Ridge Lane",
                 "name":"Thorvald Rentilll",
                 "phoneNumber":"857-123-2251"
@@ -3564,10 +3759,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1651059211, 0),
             "private":{
+                "paypalTransactionId":"124435be-8059-4d18-8a6a-6bf4142d06f4",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"tloffilli@opensource.org",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"50773 Dwight Trail",
                 "name":"Tuckie Loffill",
                 "phoneNumber":"818-542-9125"
@@ -3580,10 +3776,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1650551611, 0),
             "private":{
+                "paypalTransactionId":"2caf411e-ea0c-424d-96e2-b82b035f1161",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"mcrossthwaitej@xing.com",
-                "howHeard":"Facebook",
+                "howHeardOther":"Facebook",
                 "mailingAddress":"24009 Sutherland Park",
                 "name":"Michal Crossthwaite",
                 "phoneNumber":"274-938-9868"
@@ -3596,10 +3793,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658014983, 0),
             "private":{
+                "paypalTransactionId":"551d367f-5170-4f6c-9253-bf48d81884ff",
                 "IsAnon":false,
                 "agreeToContact":true,
                 "email":"espilsburiek@statcounter.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"10847 Talisman Street",
                 "name":"Emlynne Spilsburie",
                 "phoneNumber":"176-855-2778"
@@ -3612,10 +3810,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1650420277, 0),
             "private":{
+                "paypalTransactionId":"873909de-98b2-4bd9-8052-efad89c917a9",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"gantleyl@noaa.gov",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"36 Lunder Place",
                 "name":"Guillaume Antley",
                 "phoneNumber":"348-657-0056"
@@ -3628,10 +3827,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1658283384, 0),
             "private":{
+                "paypalTransactionId":"b8e520ed-61af-4e9b-a08b-480091784be4",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"gdilstonm@narod.ru",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"00 Dennis Road",
                 "name":"Griffin Dilston",
                 "phoneNumber":"616-803-6348"
@@ -3644,10 +3844,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":false,
             "donationDate":new Timestamp(1650223169, 0),
             "private":{
+                "paypalTransactionId":"123a4754-0dee-4c51-aa01-d7888aecf41d",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"ckincaden@about.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"0272 Brentwood Circle",
                 "name":"Charyl Kincade",
                 "phoneNumber":"313-561-1994"
@@ -3660,10 +3861,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1647762205, 0),
             "private":{
+                "paypalTransactionId":"63352777-ede8-46d4-a6c2-2385fb2befdf",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"dmarono@ucoz.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"45 Dayton Way",
                 "name":"Deane Maron",
                 "phoneNumber":"240-606-2747"
@@ -3676,10 +3878,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1654854912, 0),
             "private":{
+                "paypalTransactionId":"0b0b235b-1c34-4be3-b308-d8cf9103afb5",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"mlonerganp@booking.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"6 Milwaukee Junction",
                 "name":"Martica Lonergan",
                 "phoneNumber":"251-286-7225"
@@ -3692,10 +3895,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1647248215, 0),
             "private":{
+                "paypalTransactionId":"3e153df0-a4b6-4726-b056-784687140adf",
                 "IsAnon":true,
                 "agreeToContact":true,
                 "email":"eescalanteq@va.gov",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"5029 Gerald Lane",
                 "name":"Errol Escalante",
                 "phoneNumber":"347-286-7238"
@@ -3708,10 +3912,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1636594714, 0),
             "private":{
+                "paypalTransactionId":"2beffb3c-1291-4d46-bd9d-088b624df438",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"bjensonr@jigsy.com",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"0083 Parkside Alley",
                 "name":"Blanca Jenson",
                 "phoneNumber":"589-975-8928"
@@ -3724,10 +3929,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1634393719, 0),
             "private":{
+                "paypalTransactionId":"da1fb66d-06ee-4730-a185-c2275b1dca58",
                 "IsAnon":false,
                 "agreeToContact":false,
                 "email":"lmcclarens@constantcontact.com",
-                "howHeard":"Instagram",
+                "howHeardOther":"Instagram",
                 "mailingAddress":"1177 Eliot Drive",
                 "name":"Lory McClaren",
                 "phoneNumber":"695-917-3964"
@@ -3740,10 +3946,11 @@ export const mockData:CreateOrgModel[] =
             "IsSubscribed":true,
             "donationDate":new Timestamp(1640462811, 0),
             "private":{
+                "paypalTransactionId":"909f4ebd-ed85-445b-bbcb-62ef1c78cee0",
                 "IsAnon":true,
                 "agreeToContact":false,
                 "email":"pizhakt@ucla.edu",
-                "howHeard":"Other",
+                "howHeardOther":"Other",
                 "mailingAddress":"511 Shasta Hill",
                 "name":"Pavel Izhak",
                 "phoneNumber":"623-605-3944"

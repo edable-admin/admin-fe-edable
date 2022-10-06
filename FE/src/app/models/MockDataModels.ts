@@ -1,10 +1,11 @@
 import { FieldValue, Timestamp } from "firebase/firestore"
 
 export interface PrivateDonorDetails {
+  paypalTransactionId:string
   IsAnon:boolean,
   agreeToContact:boolean,
   email:string,
-  howHeard:string,
+  howHeardOther:string,
   mailingAddress:string,
   name:string,
   phoneNumber:string
