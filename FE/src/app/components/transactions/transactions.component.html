@@ -21,7 +21,7 @@
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let element">
-          {{ element.name }}
+          {{ element.donorPublicName }}
         </td>
       </ng-container>
 
@@ -36,6 +36,14 @@
           {{ element.orgName }}
         </td>
       </ng-container>
+
+      <ng-container matColumnDef="subscribed">
+        <th mat-header-cell *matHeaderCellDef>Subscribed</th>
+        <td mat-cell *matCellDef="let element">          
+          {{element.IsSubscribed }}
+        </td>
+      </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>

@@ -45,11 +45,17 @@ export class TransactionService {
   }
 
   //------------------------ Get All General Donations -------------------------------------------\\
-  getGeneralDonations() {
-    const orgGenDonations = this.fs.firestore
-      .collectionGroup('GeneralDonations')
-      .get();
-
+  async getGeneralDonations() {
+    const orgGenDonations = (await this.fs.firestore
+      .collectionGroup('GeneralDonations')).get()
     return orgGenDonations;
   }
+
+  //------------------------------------- Get All Orgs -------------------------------------------\\
+  getOrgs() {
+    const org = this.fs.collection('Organisations').doc();
+    const orgRef = org.ref;
+    console.log(orgRef)
+  }
+  
 }

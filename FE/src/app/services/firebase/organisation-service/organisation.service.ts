@@ -170,11 +170,13 @@ export class OrganisationService {
     let records = this.fs.collection('Organisations').doc(orgID).get();
     return records;
   }
-  getALlORgs() {
+  getAllOrgs() {
     const orgGenDonations = this.fs.firestore
       .collectionGroup('Organisations')
-      .get();
+      
 
     return orgGenDonations;
   }
+
+  
 }

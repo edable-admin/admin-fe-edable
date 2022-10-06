@@ -302,7 +302,7 @@ export class OrganisationComponent {
       .getOrgs(this.activeStatusFilter)
       .subscribe((orgs) => {
         this.orgData = new MatTableDataSource(orgs);
-        console.log(this.orgData);
+        
                 
         this.orgData.paginator = this.paginator;
         this.orgData.sort = this.sort;
