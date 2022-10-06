@@ -43,7 +43,7 @@ export class DbSetupService {
         img:orgObj.img,
         totalDonationCount:orgObj.totalDonationCount,
         totalDonationItems:orgObj.totalDonationItems,
-        totalDonations:orgObj.totalDonations,
+        //totalDonations:orgObj.totalDonations,
         totalDonationsValue:orgObj.totalDonationsValue,
         totalGeneralDonationsValue:orgObj.totalGeneralDonationsValue,
         totalGeneralDonationsCount:orgObj.totalGeneralDonationsCount,
@@ -98,7 +98,7 @@ export class DbSetupService {
                 description:itemObject.description,
                 initialPrice: itemObject.initialPrice,
                 totalDonationCount: itemObject.totalDonationCount,
-                totalDonations: itemObject.totalDonations,
+                //totalDonations: itemObject.totalDonations,
                 totalDonationsValue:itemObject.totalDonationsValue,
                 activeStatus: itemObject.activeStatus,
                 dateCompleted:itemObject.dateCompleted,
@@ -187,5 +187,71 @@ export class DbSetupService {
 
   }
 
-  
+  //calculated the total value of donations along with the item donation count
+  calcItemDonations(org){
+    let counter = 0;
+    let value = 0;
+
+
+    org?.Items?.forEach((item) => {
+      if(item?.itemDonations?.length){
+        counter += item.itemDonations.length
+
+        if(item?.itemDonations){
+          item?.itemDonations.forEach(don => value += don.amount);
+        }
+      }
+    });
+
+    return {itemCount: counter, valueCount:value};
+  }
+
+  calcGeneralDonations(org){
+    let generalDonationsValue = 0;
+    let generalDonationsCount = org?.GeneralDonations ? org.GeneralDonations.length : 0;
+
+    generalDonationsValue += org?.GeneralDonations?.map(genDon => genDon.amount)
+    .reduce((prev,curr) => prev + curr, 0);
+
+    return {totalGeneralDonationsValue: generalDonationsValue ? generalDonationsValue : 0, totalGeneralDonationsCount: generalDonationsCount ? generalDonationsCount : 0}
+
+  }
+
+
+  calculateOrgTotals(){
+    let totals = mockData.map((org) => {
+
+      let itemCount = org?.Items?.length;
+      let genDonCount = org?.GeneralDonations?.length;
+
+      let totalDonationCount = 0;
+
+      let totalDonationItems = itemCount ? itemCount : 0;
+      let totalDonationsValue = 0;
+
+      const {itemCount:totalItemDonationsCount , valueCount:totalItemDonationsValue} = this.calcItemDonations(org);
+      const {totalGeneralDonationsValue:totalGeneralDonationsValue , totalGeneralDonationsCount:totalGeneralDonationsCount} = this.calcGeneralDonations(org);
+
+      // console.log(totalGeneralDonationsValue)
+      // console.log(totalGeneralDonationsCount)
+
+      let orgTotal =  {
+        org:org.name,
+        totalDonationCount:totalDonationCount,
+        totalDonationItems:totalDonationItems,
+        totalDonationsValue: totalGeneralDonationsValue + totalItemDonationsValue,
+        totalGeneralDonationsCount:totalGeneralDonationsCount,
+        totalGeneralDonationsValue:totalGeneralDonationsValue,
+        totalItemDonationsCount:totalItemDonationsCount,
+        totalItemDonationsValue:totalItemDonationsValue
+      }
+
+      console.log(orgTotal)
+
+
+
+
+
+    })
+  }
 }

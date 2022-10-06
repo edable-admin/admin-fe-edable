@@ -82,6 +82,8 @@ export class OrganisationComponent {
   ngOnInit(): void {
     //VVVrun the code below to generate mock data
     //this.db.createOrganisationsAndItems();
+    this.db.calculateOrgTotals();
+
     this.getOrgs();
     this.initSelectedOrg();
   }
