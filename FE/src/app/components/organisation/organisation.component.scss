@@ -56,14 +56,16 @@ button {
     z-index: 10;
 }
 
-.big-graph-placeholder {
+.big-graph {
+    background: rgb(255, 255, 255);
     flex: 1;
-    background: rgb(194, 194, 194);
     min-width: 50px;
     min-height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 20px;
+    border: solid 3px rgb(42, 108, 206);
 }
 
 table {
@@ -190,7 +192,7 @@ mat-card {
         flex-direction: column;
     }
 
-    .big-graph-placeholder {
+    .big-graph {
         display: none;
     }
 
@@ -199,8 +201,8 @@ mat-card {
         margin-right: 0px;
     }
 
-    .small-graph-placeholder {
-        background: rgb(194, 194, 194);
+    .small-graph {
+        background: rgb(255, 255, 255);
         min-height: 300px;
         display: flex;
         justify-content: center;

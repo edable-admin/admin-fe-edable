@@ -53,6 +53,7 @@ export class OrganisationComponent implements OnInit {
   // donationName: any;
   donationDate: any;
   chart: any = [];
+  mobileChart: any = [];
   activeStatusFilter: string = 'Active';
   filterValue: string = "";
 
@@ -104,6 +105,8 @@ export class OrganisationComponent implements OnInit {
           }]
         },
         options : {
+          maintainAspectRatio: false,
+          responsive: true,
           plugins: {
             title: {
                 display: true,
@@ -134,6 +137,51 @@ export class OrganisationComponent implements OnInit {
           }
         }
       });
+      this.mobileChart = new Chart('mobile', {
+        type: 'line',
+        data: {
+            labels: [0],
+            datasets: [{
+                label: 'Donation Amount',
+                backgroundColor: 'rgba(93,175,89,0.1)',
+                borderColor: '#3e95cd',
+                fill: true,
+                data: [0],
+            }]
+          },
+          options : {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              title: {
+                  display: true,
+                  text: 'General Donations',
+                  padding: {
+                    top: 10,
+                    bottom: 0
+                }
+              }
+          },
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Donation Amount [$]'
+                }
+              },
+              x: {
+                ticks: {
+                  autoSkip: false
+              },
+                title: {
+                  display: true,
+                  text: 'Donor [Prospects]',
+                }
+              }
+            }
+          }
+        });
   }
 
   onImgError(event) {
@@ -374,26 +422,36 @@ export class OrganisationComponent implements OnInit {
 
   }
 
+  updateCharts(){
+    this.chart.data.labels = (this.donationDate);
+    this.chart.data.datasets[0].data = (this.donationAmount);
+    this.chart.update();
+    this.mobileChart.data.labels = (this.donationDate);
+    this.mobileChart.data.datasets[0].data = (this.donationAmount);
+    this.mobileChart.update();
+  }
+
   getGraphData(orgID) {
     this.dfs
       .getGeneralDonations(orgID)
       .subscribe((resp) => {
-          this.donationAmount = resp.map((donation:any) => donation.amount)
+          this.donationAmount = resp.map((donation:any) => donation.amount);
           // this.donationName = resp.map((donation:any) => donation.donorPublicName)
-          this.donationDate = resp.map((donation:any) => new Date(donation.donationDate.seconds*1000).toLocaleDateString("en-AU"))
-          this.chart.data.labels = (this.donationDate);
-          this.chart.data.datasets[0].data = (this.donationAmount);
-          this.chart.update();
+          this.donationDate = resp.map((donation:any) => new Date(donation.donationDate.seconds*1000).toLocaleDateString("en-AU"));
+          this.updateCharts();
         })
 
       };
 
-    resetGraph() {
+    resetGraphs() {
       this.donationAmount= [0];
       this.donationDate= [0];
       this.chart.data.labels = (this.donationDate);
       this.chart.data.datasets[0].data = (this.donationAmount);
       this.chart.update();
+      this.mobileChart.data.labels = (this.donationDate);
+      this.mobileChart.data.datasets[0].data = (this.donationAmount);
+      this.mobileChart.update();
     };
 
 
@@ -408,7 +466,7 @@ export class OrganisationComponent implements OnInit {
 
   toggleActiveStatus(activeStatusFilter: string) {
 
-    this.resetGraph();
+    this.resetGraphs();
 
 
     if(this.activeStatusFilter !== activeStatusFilter){
@@ -463,7 +521,7 @@ export class OrganisationComponent implements OnInit {
     if (this.selectedOrg.id === orgData.id) {
       this.initSelectedOrg();
       this.getItemsSubscription.unsubscribe();
-      this.resetGraph();
+      this.resetGraphs();
 
       return;
     }

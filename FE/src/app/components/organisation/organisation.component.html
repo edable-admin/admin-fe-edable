@@ -61,19 +61,19 @@
         </mat-paginator>
       </section>
 
-      <div class="big-graph-placeholder">
-<canvas id="canvas">{{chart}}</canvas>
+      <div class="big-graph">
+        <canvas id="canvas" height=140>{{chart}}</canvas>
       </div>
       <div class="graph-expansion">
         <mat-accordion>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Graph Placeholder
+                Donation Chart
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <div class="small-graph-placeholder">
-              <img src="{{selectedOrg.img}}" (error)="onImgError($event)" style="width: 200px; height:auto;" alt="">
+            <div class="small-graph" style="width:80vw;">
+              <canvas id="mobile">{{mobileChart}}</canvas>
             </div>
           </mat-expansion-panel>
         </mat-accordion>
