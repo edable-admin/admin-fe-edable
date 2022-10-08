@@ -22,6 +22,7 @@ import { ImageService } from 'src/app/services/firebase/image-service/image.serv
 import { ViewDonationItemComponent } from '../donation-item/view-donation-item/view-donation-item.component';
 import { DonationService } from 'src/app/services/firebase/donation-service/donation.service';
 import { Chart, registerables } from 'chart.js';
+import { InfographicsService } from 'src/app/services/infographics/infographics.service';
 
 @Component({
   selector: 'app-organisation',
@@ -79,6 +80,7 @@ export class OrganisationComponent implements OnInit {
     public ifs: ItemService,
     public imgService: ImageService,
     public dfs: DonationService,
+    public infoGraphSer: InfographicsService
   ) { Chart.register(...registerables) }
 
   ngOnDestroy(): void {
@@ -395,6 +397,7 @@ export class OrganisationComponent implements OnInit {
     this.getOrgsSubscription = this.ofs
       .getOrgs()
       .subscribe((orgs) => {
+        //this.infoGraphSer.calculateCombinedTotalsAllOrgs(orgs as Organisation[])
         this.allOrgs = orgs as Organisation[];
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.sort = this.sort;
