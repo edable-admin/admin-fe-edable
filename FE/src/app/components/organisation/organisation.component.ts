@@ -23,6 +23,7 @@ import { ViewDonationItemComponent } from '../donation-item/view-donation-item/v
 import { DonationService } from 'src/app/services/firebase/donation-service/donation.service';
 import { Chart, registerables } from 'chart.js';
 import { InfographicsService } from 'src/app/services/infographics/infographics.service';
+import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 
 @Component({
   selector: 'app-organisation',
@@ -438,9 +439,10 @@ export class OrganisationComponent implements OnInit {
     this.dfs
       .getGeneralDonations(orgID)
       .subscribe((resp) => {
-          this.donationAmount = resp.map((donation:any) => donation.amount);
+          let genDonData = this.infoGraphSer.generateGeneralDonations(resp as GeneralDonations[]);
+          this.donationAmount = genDonData.map((donation:any) => donation.amount);
           // this.donationName = resp.map((donation:any) => donation.donorPublicName)
-          this.donationDate = resp.map((donation:any) => new Date(donation.donationDate.seconds*1000).toLocaleDateString("en-AU"));
+          this.donationDate = genDonData.map((donation:any) => donation.monthYear);
           this.updateCharts();
         })
 
