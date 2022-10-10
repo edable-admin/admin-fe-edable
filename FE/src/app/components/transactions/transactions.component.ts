@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { Subscription } from 'rxjs';
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 export interface PeriodicElement {
   date: string;
@@ -31,6 +32,7 @@ export interface PeriodicElement {
   styleUrls: ['./transactions.component.scss'],
 })
 export class TransactionsComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   getItemDonationsSubscription: Subscription;
   itemDonations: ItemDonations[] = [];
 
@@ -118,6 +120,7 @@ export class TransactionsComponent implements OnInit {
     ))
 
     this.generalDonDataSource = new MatTableDataSource(generalDonations);
+    this.generalDonDataSource.paginator = this.paginator;
 
       console.log(this.generalDonDataSource);
       
