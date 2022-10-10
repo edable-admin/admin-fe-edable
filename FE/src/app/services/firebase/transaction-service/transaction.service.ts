@@ -44,4 +44,11 @@ export class TransactionService {
     let orgGenDonations = this.fs.firestore.collectionGroup('GeneralDonations').get();
     return orgGenDonations;
   }
+
+  getOrgGeneralDonationsPrivate(orgID: string) {
+    let privateData = this.fs.firestore.collectionGroup('Private').get();
+    console.log(privateData);
+    
+    
+  }
 }

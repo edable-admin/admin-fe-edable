@@ -182,6 +182,16 @@ export class ReportsComponent implements OnInit {
     });
   }
 
+  loadReferralData() {
+    if (this.selectedOrg.id === '') {
+      this.snackBar.open("No organisation selected");
+      return;
+    }
+
+    this.tfs.getOrgGeneralDonationsPrivate(this.selectedOrg.id);
+
+  }
+
   clearTable() {
     this.accordion.closeAll();
     this.fileName = "";
