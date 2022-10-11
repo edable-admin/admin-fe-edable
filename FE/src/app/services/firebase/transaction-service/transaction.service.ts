@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import * as firebase from 'firebase/app';
 import { Item } from 'src/app/models/Item';
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
@@ -24,18 +25,18 @@ export class TransactionService {
   //------------------------ Get Org Item Donations ----------------------------------------------\\
   getOrgItemDonations(orgID: string, itemID: string) {
     let itemDonations = this.fs.firestore.collection('Organisations')
-    .doc(orgID)
-    .collection("Items")
-    .doc(itemID)
-    .collection("ItemsDonations").get();
-     return itemDonations;
+      .doc(orgID)
+      .collection("Items")
+      .doc(itemID)
+      .collection("ItemsDonations").get();
+    return itemDonations;
   }
 
   //------------------------ Get Org General Donations -------------------------------------------\\
   getOrgGeneralDonations(orgID: string) {
     let orgGenDonations = this.fs.firestore.collection('Organisations')
-    .doc(orgID)
-    .collection("GeneralDonations").get();
+      .doc(orgID)
+      .collection("GeneralDonations").get();
     return orgGenDonations;
   }
 
@@ -46,9 +47,31 @@ export class TransactionService {
   }
 
   getOrgGeneralDonationsPrivate(orgID: string) {
-    let privateData = this.fs.firestore.collectionGroup('Private').get();
-    console.log(privateData);
-    
-    
+    this.fs.firestore.collectionGroup('Private')
+      // .where('IsAnon', '==', true)
+      .get()
+      .then((resp) => {
+        let privateData: PrivateData[] = [];
+
+        resp.docs.forEach((resp) => {
+          
+          privateData.push(resp.data() as PrivateData);
+
+        });
+        console.log(privateData);
+
+      });
+
   }
+}
+
+interface PrivateData {
+  IsAnon: boolean;
+  agreeToContact: boolean;
+  email: string;
+  howHeardOther: string;
+  mailingAddress: string;
+  name: string;
+  paypalTransactionId: string;
+  phoneNumber: string;
 }
