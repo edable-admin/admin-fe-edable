@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { Subscription } from 'rxjs';
@@ -6,6 +6,9 @@ import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { StringLike } from '@firebase/util';
+import { MatSort } from '@angular/material/sort';
+import { MatTab } from '@angular/material/tabs';
 
 export interface PeriodicElement {
   date: string;
@@ -14,6 +17,14 @@ export interface PeriodicElement {
   donationItem: string;
   donationAmount: number;
   organisation: string;
+}
+export interface GeneralDonationData {
+  donationDate: Date;
+  donorPublicName: String;
+  //orgName?: string;
+  amount: number;
+  orgName: string;
+  //IsSubscribed?: any;
 }
 
 // const ELEMENT_DATA: PeriodicElement[] = [
@@ -33,30 +44,63 @@ export interface PeriodicElement {
 })
 export class TransactionsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  getItemDonationsSubscription: Subscription;
+  @ViewChild(MatSort) sort!: MatSort;
+  
   itemDonations: ItemDonations[] = [];
-
-  orgData: any = [];
-  generalDonDataSource: any;
-  displayedColumns: string[] = ['date', 'name', 'donationAmount', 'organisation', 'subscribed'];
-  genDonData:any[]=[]
-
+  generalDonDataSource:MatTableDataSource<GeneralDonationData>;
+  displayedColumns: string[] = ['donationDate', 'donorPublicName', 'amount', 'orgName', 'IsSubscribed']; 
+  dataSource?:any[];
   constructor(
     public ts:TransactionService,
     public fs: OrganisationService
 
-    ) { }
+    ) { 
 
-  //dataSource = this.donationData;
+    }
+  
+  
+
+  
 
   ngOnInit(): void {
-   this.getAllGenDonations();
-   //this.fs.getOrgsGeneral("3m9Tkk834Wr8HaX7Can3")
 
-   //this.genDonations = {
-    //name:this.genDonations.donorPublicName,
 
-  // }
+          this.dataSource = [{
+        IsSubscribed: true,
+        donorPublicName: 'Wade',
+        donationDate: new Date("2022-10-11"),
+        amount: 30,
+        orgName: "Social Moments"
+      },
+      {
+        IsSubscribed: false,
+        donorPublicName: 'Wade',
+        donationDate: new Date("2022-09-20"),
+        amount: 50,
+        orgName: 'EdAble'
+      }
+     ]
+   //this.getAllGenDonations();
+   this.generalDonDataSource = new MatTableDataSource(this.dataSource);
+   this.generalDonDataSource.sort = this.sort;
+   this.generalDonDataSource.paginator = this.paginator; 
+   
+    
+    
+    
+    
+
+    console.log(this.generalDonDataSource)
+    this.dataSource.forEach(element => {
+      if (element.IsSubscribed) {
+        element.IsSubscribed = "check_circle_outline"
+      }
+      else if (!element.IsSubscribed) {
+        element.IsSubscribed = "highlight_off"
+      }
+
+    });
+  
   }
 
   //-------------------- Get All Orgs --------------------------\\
@@ -92,8 +136,8 @@ export class TransactionsComponent implements OnInit {
 
     let subImage: string = ""
     let orgs: any[];
-    let generalDonations: any[];
-
+    let generalDonations: any;
+    let data: GeneralDonationData;
     await this.fs.getAllOrgs()
       .get()
       .then(
@@ -109,61 +153,37 @@ export class TransactionsComponent implements OnInit {
 
         let orgID = genDon.ref.parent.parent.id
 
-        let orgName = orgs.find((org) => {
+        let org = orgs.find((org) => {
           
           
           return org.id == orgID
         })
-
-        return { orgName: orgName.name, ...genDon.data()};
+       
+        
+        return { orgName: org.name, ...genDon.data()};
       }
     ))
-
-    this.generalDonDataSource = new MatTableDataSource(generalDonations);
-    this.generalDonDataSource.paginator = this.paginator;
-
-      console.log(this.generalDonDataSource);
+    this.dataSource = generalDonations;
+    
+    
+    
+    
+    generalDonations.forEach(element => {
+      if (element.IsSubscribed) {
+        element.IsSubscribed = "check_circle_outline"
+      }
+      else if (!element.IsSubscribed) {
+        element.IsSubscribed = "highlight_off"
+      }
       
+    });
+   
+    //this.generalDonDataSource = new MatTableDataSource(generalDonations);
+    //this.generalDonDataSource.paginator = this.paginator; 
+    
+  
+     
+   
+    
   }
-
-//   async getOrgs() {
-//     await this.fs.getAllOrgs().then((snap) => {
-//       snap.docs.forEach((genDon) => {
-//         this.orgData.push({
-//           orgName: genDon.data()['name'],
-//           orgID: genDon.data()['id'],
-//         });
-//       });
-//     });
-//     this.getGeneralDonations();
-//   }
-//   async getGeneralDonations() {
-//     await this.ts.getGeneralDonations().then((snap) => {
-//       snap.docs.forEach((genDon) => {
-//         this.genData.push({
-//           name: genDon.data()['donorPublicName'],
-//           amount: genDon.data()['amount'],
-//           donationDate: genDon.data()['donationDate'],
-//           parentDoc: genDon.ref.parent.parent.id,
-//         });
-//       });
-//     });
-//     this.donation();
-//   }
-//   donation() {
-//     this.genData.map((genDon) => {
-//       this.orgData.map((org) => {
-//         if (genDon.parentDoc === org.orgID) {
-//           this.donationData.push({
-//             name: genDon.name,
-//             amount: genDon.amount,
-//             donationDate: genDon.donationDate,
-//             orgName: org.orgName,
-//           });
-//         }
-//       });
-//     });
-//     console.log(this.donationData);
-//     this.generalDonDataSource = new MatTableDataSource(this.donationData);
-//   }
 }
