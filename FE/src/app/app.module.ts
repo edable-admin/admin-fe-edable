@@ -43,6 +43,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { ViewItemDetailsComponent } from './components/donation-item/view-donation-item/view-item-details/view-item-details.component';
 import { ExportCsvComponent } from './components/donation-item/view-donation-item/donation-item-table/export-csv/export-csv.component';
 import { ReportsComponent } from './components/reports/reports.component';
+import { WebdatarocksPivotModule } from 'ng-webdatarocks';
 
 const config = environment.firebaseConfig;
 
@@ -91,6 +92,7 @@ const config = environment.firebaseConfig;
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    WebdatarocksPivotModule
   ],
   providers: [
     { provide: BUCKET, useValue: config.storageBucket }, AuthService

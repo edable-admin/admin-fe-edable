@@ -27,6 +27,7 @@
     "@angular/router": "^14.0.0",
     "angular-csv-ext": "^1.0.5",
     "firebase": "^9.9.2",
+    "ng-webdatarocks": "^1.4.6",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
