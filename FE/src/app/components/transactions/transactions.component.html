@@ -1,9 +1,20 @@
 <div class="container">
   <div class="upper">
-    <mat-form-field class="control-button" appearance="standard">
-      <mat-label>Search Organisations</mat-label>
-      <input matInput #input />
-    </mat-form-field>
+    <div class="search">
+      <mat-form-field appearance="standard">
+      
+        <mat-label>Search Organisations</mat-label>
+        <input matInput #input />
+      
+      </mat-form-field>
+    </div>
+      <div class="options">
+        
+          <mat-radio-button value="1">General</mat-radio-button>
+          <mat-radio-button value="2">Items</mat-radio-button>
+        
+      </div>
+   
   </div>
   <div class="lower">
     <section class="scroll-container mat-elevation-z8">

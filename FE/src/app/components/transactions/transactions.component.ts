@@ -43,12 +43,14 @@ export interface GeneralDonationData {
   styleUrls: ['./transactions.component.scss'],
 })
 export class TransactionsComponent implements OnInit, AfterViewInit {
+  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
   itemDonations: ItemDonations[] = [];
   generalDonDataSource:MatTableDataSource<GeneralDonationData>;
   displayedColumns: string[] = ['donationDate', 'donorPublicName', 'amount', 'orgName', 'IsSubscribed']; 
+  
   dataSource?:any[];
   constructor(
     public ts:TransactionService,
