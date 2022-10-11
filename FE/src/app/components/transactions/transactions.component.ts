@@ -42,7 +42,7 @@ export interface GeneralDonationData {
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.scss'],
 })
-export class TransactionsComponent implements OnInit {
+export class TransactionsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
@@ -57,6 +57,9 @@ export class TransactionsComponent implements OnInit {
     ) { 
 
     }
+  ngAfterViewInit(): void {
+    this.generalDonDataSource.sort = this.sort;
+  }
   
   
 
@@ -82,10 +85,10 @@ export class TransactionsComponent implements OnInit {
      ]
    //this.getAllGenDonations();
    this.generalDonDataSource = new MatTableDataSource(this.dataSource);
-   this.generalDonDataSource.sort = this.sort;
+   
    this.generalDonDataSource.paginator = this.paginator; 
    
-    
+   
     
     
     
@@ -134,7 +137,7 @@ export class TransactionsComponent implements OnInit {
 
   async getAllGenDonations() {
 
-    let subImage: string = ""
+    
     let orgs: any[];
     let generalDonations: any;
     let data: GeneralDonationData;
