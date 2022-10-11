@@ -48,7 +48,7 @@ export class DonationService {
       .valueChanges({ idField: 'id' });
     return itemDonations;
   }
-  
+
   async getAllItemsDonations() {
     let itemsDonations: ItemDonations[] = [];
     await this.fs.firestore
@@ -59,6 +59,13 @@ export class DonationService {
         });
       });
     return itemsDonations;
+  }
+
+  getAllGD() {
+    let gd = this.fs
+    .collectionGroup('Organisations')
+      .valueChanges({ idField: 'id' });
+    return gd;
   }
 
   getPrivateDetails(orgID: string, itemID: string, donationID: string) {

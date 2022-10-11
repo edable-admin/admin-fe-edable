@@ -27,6 +27,8 @@
     "@angular/router": "^14.0.0",
     "angular-csv-ext": "^1.0.5",
     "chart.js": "^3.9.1",
+    "chartjs": "^0.3.24",
+    "chartjs-plugin-datalabels": "^2.1.0",
     "firebase": "^9.9.2",
     "ng-webdatarocks": "^1.4.6",
     "rxjs": "~7.5.0",
