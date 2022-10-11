@@ -56,7 +56,7 @@ export class ReportsComponent implements OnInit {
     const tabs = toolbar.getTabs();
 
     toolbar.getTabs = () => {
-      const exportButton = tabs[3]
+      const exportButton = tabs[3];
       const exportToHTML = exportButton.menu[1];
       const exportToExcel = exportButton.menu[2];
       const exportToPDF = exportButton.menu[3];
@@ -65,31 +65,32 @@ export class ReportsComponent implements OnInit {
         this.reportTable.webDataRocks
           .exportTo('html', {
             filename: this.fileName
-          })
+          });
       };
 
       exportToExcel.handler = () => {
         this.reportTable.webDataRocks
           .exportTo('excel', {
             filename: this.fileName
-          })
+          });
       };
 
       exportToPDF.handler = () => {
         this.reportTable.webDataRocks
           .exportTo('pdf', {
             filename: this.fileName
-          })
+          });
       };
 
-      return tabs
+      return tabs;
     }
   }
 
   setTableData(dataSource: any[], reportType: string, title: string, fileName: string) {
 
+    //Display snackbar error message when no data is available
     if (dataSource.length <= 0 || dataSource === null || dataSource === undefined) {
-      let message = ""
+      let message = "";
       switch (reportType) {
         case "Items":
           message = `${this.selectedOrg.name} has no donation items`;
@@ -108,6 +109,7 @@ export class ReportsComponent implements OnInit {
 
     this.fileName = fileName;
 
+    //Set the data in the report table
     this.reportTable.webDataRocks.setReport({
       dataSource: {
         data: dataSource,
@@ -129,10 +131,12 @@ export class ReportsComponent implements OnInit {
       return;
     }
 
+    //Get the selected orgs items
     this.ifs.getItems(this.selectedOrg.id).subscribe((itemData) => {
 
       let orgItems = itemData as ItemGetModel[];
 
+      //Map item data to CSV model
       const data: ItemCSVModel[] = orgItems.map((item: ItemGetModel) => {
         const newItem: ItemCSVModel = {
           Name: item.name,
@@ -144,8 +148,10 @@ export class ReportsComponent implements OnInit {
           Date_Completed: item.dateCompleted?.toDate().toLocaleTimeString(),
           Active_Status: item.activeStatus
         }
-        return newItem
+        return newItem;
       });
+
+      //Assign data to table
       this.setTableData(data, "Items", `${this.selectedOrg.name}'s Donation Items`, `${this.selectedOrg.name} Donation Item Report`);
       this.accordion.closeAll();
     });
@@ -157,6 +163,7 @@ export class ReportsComponent implements OnInit {
       return;
     }
 
+    //Get the selectected orgs general donations
     this.tfs.getOrgGeneralDonations(this.selectedOrg.id).then((resp) => {
 
       let donations: GeneralDonations[] = [];
@@ -165,6 +172,7 @@ export class ReportsComponent implements OnInit {
         donations.push(resp.data() as GeneralDonations);
       });
 
+      //Map data to CSV model
       const data: DonationCSVModel[] = donations.map((item) => {
         const newItem: DonationCSVModel = {
           Donation_Date: item.donationDate.toDate().toLocaleDateString(),
@@ -176,7 +184,8 @@ export class ReportsComponent implements OnInit {
         }
         return newItem;
       });
-
+      
+      //Assign data to table
       this.setTableData(data, "Donations", `${this.selectedOrg.name}'s General Donations`, `${this.selectedOrg.name} General Donation Report`);
       this.accordion.closeAll();
     });
@@ -196,6 +205,7 @@ export class ReportsComponent implements OnInit {
     this.accordion.closeAll();
     this.fileName = "";
 
+    //Set table data to null
     this.reportTable.webDataRocks.setReport({
       dataSource: {
         data: null,
@@ -211,7 +221,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-  selectRow(org) {
+  selectRow(org: Organisation) {
     if (this.selectedOrg.id === org.id) {
       this.initSelectedOrg();
       return;
