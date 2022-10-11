@@ -48,7 +48,7 @@ export class TransactionService {
   async getGeneralDonations() {
     const orgGenDonations = (await this.fs.firestore
       .collectionGroup('GeneralDonations')).get()
-      console.log(orgGenDonations);
+      
       
     return orgGenDonations;
   }
