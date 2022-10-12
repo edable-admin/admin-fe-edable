@@ -11,6 +11,7 @@ import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonatio
 import { Timestamp } from 'firebase/firestore';
 import { WebdatarocksComponent } from 'ng-webdatarocks';
 import { MatAccordion } from '@angular/material/expansion';
+import { ReferralCSVModel } from 'src/app/services/firebase/transaction-service/transaction.service';
 
 @Component({
   selector: 'app-reports',
@@ -22,6 +23,7 @@ export class ReportsComponent implements OnInit {
   displayedColumns: string[] = ["name"];
   fileName: string = "";
   pivotTableData: any;
+  orgs: Organisation[];
   selectedOrg: Organisation;
   orgData: MatTableDataSource<Organisation>;
 
@@ -44,6 +46,7 @@ export class ReportsComponent implements OnInit {
 
   getOrgs() {
     this.ofs.getOrgs().subscribe(orgs => {
+      this.orgs = orgs as Organisation[];
       this.pivotTableData = orgs as Organisation[];
       this.orgData = new MatTableDataSource(orgs as Organisation[]);
       this.orgData.paginator = this.paginator;
@@ -97,6 +100,9 @@ export class ReportsComponent implements OnInit {
           break;
         case "Donations":
           message = `${this.selectedOrg.name} has no general donations`;
+          break;
+        case "Referrals":
+          message = `There are no donations`;
           break;
 
         default:
@@ -184,7 +190,7 @@ export class ReportsComponent implements OnInit {
         }
         return newItem;
       });
-      
+
       //Assign data to table
       this.setTableData(data, "Donations", `${this.selectedOrg.name}'s General Donations`, `${this.selectedOrg.name} General Donation Report`);
       this.accordion.closeAll();
@@ -192,12 +198,28 @@ export class ReportsComponent implements OnInit {
   }
 
   loadReferralData() {
-    if (this.selectedOrg.id === '') {
-      this.snackBar.open("No organisation selected");
-      return;
-    }
+    // if (this.selectedOrg.id === '') {
+    //   this.snackBar.open("No organisation selected");
+    //   return;
+    // }
+    let referralData: ReferralCSVModel[] = [];
+    console.table(this.orgs);
+    
+    this.tfs.getReferralData().then(resp => {
+      resp.forEach((resp) => {
+        
+        let org = this.orgs.find((org) => {
+          return org.id === resp.Org_Name;
+        });
+        
+        resp.Org_Name = org.name;
+        referralData.push(resp);
 
-    this.tfs.getOrgGeneralDonationsPrivate(this.selectedOrg.id);
+      });
+      this.setTableData(referralData, null, 'Referrals', 'Referral Report');
+      // console.table(referralData);
+      
+    });
 
   }
 

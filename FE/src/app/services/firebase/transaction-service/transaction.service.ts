@@ -5,6 +5,7 @@ import * as firebase from 'firebase/app';
 import { Item } from 'src/app/models/Item';
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
+import { Organisation } from 'src/app/models/Organisation/Organisation';
 
 @Injectable({
   providedIn: 'root'
@@ -46,22 +47,46 @@ export class TransactionService {
     return orgGenDonations;
   }
 
-  getOrgGeneralDonationsPrivate(orgID: string) {
-    this.fs.firestore.collectionGroup('Private')
-      // .where('IsAnon', '==', true)
+  async getReferralData(): Promise<ReferralCSVModel[]> {
+
+    let privateData: PrivateData[] = [];
+    let referralData: ReferralCSVModel[] = [];
+    let orgID: string = '';
+    let donationType: string = '';
+
+
+    await this.fs.firestore.collectionGroup('Private')
       .get()
       .then((resp) => {
-        let privateData: PrivateData[] = [];
 
         resp.docs.forEach((resp) => {
-          
-          privateData.push(resp.data() as PrivateData);
 
+          if (resp.ref.parent.parent.parent.id === 'ItemsDonations') {
+            orgID = resp.ref.parent.parent.parent.parent.parent.parent.id;
+            donationType = 'Item';
+          }
+          else {
+            orgID = resp.ref.parent.parent.parent.parent.id;
+            donationType = 'General';
+          }
+          let privateData: PrivateData = resp.data() as PrivateData;
+          let newReferral: ReferralCSVModel = {
+            Org_Name: orgID,
+            Donation_Type: donationType,
+            Is_Anon: privateData.IsAnon,
+            Agree_To_Contact: privateData.agreeToContact,
+            Email: privateData.email,
+            Referral: privateData.howHeardOther,
+            Mailing_Address: privateData.mailingAddress,
+            Name: privateData.name,
+            Phone_Number: privateData.phoneNumber
+          };
+
+          referralData.push(newReferral);
         });
-        console.log(privateData);
-
       });
 
+    return referralData;
   }
 }
 
@@ -74,4 +99,15 @@ interface PrivateData {
   name: string;
   paypalTransactionId: string;
   phoneNumber: string;
+}
+export interface ReferralCSVModel {
+  Org_Name: string;
+  Donation_Type: string;
+  Is_Anon: boolean;
+  Agree_To_Contact: boolean;
+  Email: string;
+  Referral: string;
+  Mailing_Address: string;
+  Name: string;
+  Phone_Number: string;
 }
