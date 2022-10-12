@@ -57,7 +57,6 @@ export class TransactionService {
   getOrgs() {
     const org = this.fs.collection('Organisations').doc();
     const orgRef = org.ref;
-    console.log(orgRef)
   }
   
 }

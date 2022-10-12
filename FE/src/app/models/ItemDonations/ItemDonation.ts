@@ -6,5 +6,6 @@ export interface ItemDonations {
   amount?: number,
   orgName?:string,
   comment?:string,
-  donorPublicName?:string  
+  donorPublicName?:string,
+  itemName?:string
 }

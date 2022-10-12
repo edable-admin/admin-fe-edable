@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
-import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, fromEvent, merge, Subscription, tap } from 'rxjs';
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,81 +9,61 @@ import { MatPaginator } from '@angular/material/paginator';
 import { StringLike } from '@firebase/util';
 import { MatSort } from '@angular/material/sort';
 import { MatTab } from '@angular/material/tabs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ItemService } from 'src/app/services/firebase/item-service/item.service';
+
 
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TransactionsComponent implements OnInit, AfterViewInit {
-  
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('paginatorFirst') paginatorFirst!: MatPaginator;
+  @ViewChild('paginatorSecond') paginatorSecond!: MatPaginator;
+  @ViewChild('genTableS') genTableS!: MatSort;
+  @ViewChild('itemTableS') itemTableS!: MatSort;
   
   itemDonDataSource:MatTableDataSource<ItemDonations>;
   generalDonDataSource:MatTableDataSource<GeneralDonations>;
   displayedColumns: string[] = ['donationDate', 'donorPublicName', 'amount', 'orgName', 'IsSubscribed']; 
-  itemsDisplayedColumns: string[] = ['donationDate', 'donorPublicName', 'amount', 'orgName', 'IsRefunded']; 
+  itemsDisplayedColumns: string[] = ['donationDate', 'donorPublicName','itemName', 'amount', 'orgName', 'IsRefunded']; 
   
   dataSource?:any[];
   constructor(
     public ts:TransactionService,
-    public fs: OrganisationService
+    public fs: OrganisationService,
+    public Is: ItemService
 
     ) { 
 
     }
   ngAfterViewInit(): void {
-    
   }
   
   
-
-  
+  filterItems(event: Event) {
+    const filterValueItem = (event.target as HTMLInputElement).value;
+    this.itemDonDataSource.filter = filterValueItem.trim().toLowerCase(); 
+     
+  }
+  filterGenDon(event: Event) {
+    const filterValueGeneral = (event.target as HTMLInputElement).value;
+    this.generalDonDataSource.filter = filterValueGeneral.trim().toLowerCase(); 
+  }
 
   ngOnInit(): void {
-    this.getItemDonations()
-    this.getAllGenDonations();
-  //         this.dataSource = [{
-  //       IsSubscribed: true,
-  //       donorPublicName: 'Wade',
-  //       donationDate: new Date("2022-10-11"),
-  //       amount: 30,
-  //       orgName: "Social Moments"
-  //     },
-  //     {
-  //       IsSubscribed: false,
-  //       donorPublicName: 'Wade',
-  //       donationDate: new Date("2022-09-20"),
-  //       amount: 50,
-  //       orgName: 'EdAble'
-  //     }
-  //    ]
-  //  //this.getAllGenDonations();
-  //  this.generalDonDataSource = new MatTableDataSource(this.dataSource);
-   
-  //  this.generalDonDataSource.paginator = this.paginator; 
-   
-   
-    
-    
-    
-
-    // console.log(this.generalDonDataSource)
-    // this.dataSource.forEach(element => {
-    //   if (element.IsSubscribed) {
-    //     element.IsSubscribed = "check_circle_outline"
-    //   }
-    //   else if (!element.IsSubscribed) {
-    //     element.IsSubscribed = "highlight_off"
-    //   }
-
-    // });
-  
+    this.loadTables();
   }
 
-
-
+  //-------------------- Load Tables -------------------------------------------\\
+  loadTables() {
+    this.getItemDonations();
+    this.getAllGenDonations();
+  }
+   
   //-------------------- Get all item donations ---------------------------------\\
   async getItemDonations() {
     let orgs: any[];
@@ -97,19 +77,44 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
           )
         }
     )
+
+    //Gets Items For Item Name
+    let items: any[];
+    await this.Is.getAllItems().forEach
+        (
+          (snap) => {
+            items = snap.docs.map (
+              (item) => {return { ...item.data() as object, id:item.id}}
+            )
+          }
+        )
     
     itemDonations = (await (await this.ts.getItemDonations()).docs.map(
       (itemDon) => {
         let orgID = itemDon.ref.parent.parent.parent.parent.id;
-        
+        let itemID = itemDon.ref.parent.parent.id;
         let org = orgs.find((org) => {
           return org.id == orgID;
         })
-        console.log(itemDon)
-        return { orgName: org.name, ...itemDon.data()}
+        let item = items.find((item) => {
+          return item.id == itemID;
+        })
+        return { orgName: org.name, itemName: item.name, ...itemDon.data()}
       }
     ))
-
+    
+    itemDonations.forEach(element => {
+      if (element.IsRefunded) {
+        element.IsRefunded = "check_circle_outline"
+      }
+      else if (!element.IsRefunded) {
+        element.IsRefunded = "highlight_off"
+      }
+      
+    });
+    this.itemDonDataSource = new MatTableDataSource(itemDonations);
+    this.itemDonDataSource.paginator = this.paginatorSecond;
+    this.itemDonDataSource.sort = this.itemTableS;
   }
 
   
@@ -131,20 +136,13 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
 
     generalDonations = (await (await this.ts.getGeneralDonations()).docs.map(
       (genDon) => {
-
         let orgID = genDon.ref.parent.parent.id;
-
-        let org = orgs.find((org) => {
-          
-          
+        let org = orgs.find((org) => { 
           return org.id == orgID
         })
-       
-        
         return { orgName: org.name, ...genDon.data()};
       }
     ))
-    this.dataSource = generalDonations;
     
     generalDonations.forEach(element => {
       if (element.IsSubscribed) {
@@ -155,11 +153,8 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
       }
       
     });
-   
     this.generalDonDataSource = new MatTableDataSource(generalDonations);
-    this.generalDonDataSource.paginator = this.paginator;
-    this.generalDonDataSource.sort = this.sort;
+    this.generalDonDataSource.paginator = this.paginatorFirst;
+    this.generalDonDataSource.sort = this.genTableS;
   }
-
-  
 }

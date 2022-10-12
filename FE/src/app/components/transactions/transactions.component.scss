@@ -36,7 +36,7 @@
     font-size: 15px;    
   }
   .search {
-    width: 70%;
+    width: 100%;
 
     mat-form-field {
         
@@ -62,7 +62,13 @@
            
     }
 }
+.mat-tab-label .mat-tab-label-content {
+    font-size: 20px;
+}
 
+.mat-tab-labels {
+    justify-content: space-evenly !important;
+}
 
 .table {
     
