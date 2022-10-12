@@ -63,7 +63,8 @@ export class DonationService {
 
   getAllGD() {
     let gd = this.fs
-    .collectionGroup('Organisations')
+      .collectionGroup('Organisations', query =>
+    query.where("totalGeneralDonationsValue", ">", 0))
       .valueChanges({ idField: 'id' });
     return gd;
   }

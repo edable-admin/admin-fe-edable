@@ -27,7 +27,6 @@ import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonatio
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-
 @Component({
   selector: 'app-organisation',
   templateUrl: './organisation.component.html',
@@ -166,15 +165,17 @@ export class OrganisationComponent implements OnInit {
       options: {
         maintainAspectRatio: false,
         responsive: true,
+        layout: {
+          padding: 10,
+        },
         plugins: {
           tooltips: {
             enabled: false
           },
           datalabels: {
             formatter: (value, context) => {
-              const name = context.chart.data.labels;
-              const display = [`${name}`, `$${value}`]
-              return display;
+              const name = context.chart.data.labels[context.dataIndex];
+              return [`${name}`, `$${value}`];
             },
           },
           title: {
