@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Item } from 'src/app/models/Item';
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
+import { query } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class TransactionService {
     .doc(orgID)
     .collection("Items")
     .doc(itemID)
-    .collection("ItemsDonations").get();
+    .collection("ItemsDonations").orderBy('donationDate','asc').get();
      return itemDonations;
   }
 

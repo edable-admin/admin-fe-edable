@@ -3,6 +3,7 @@ import { Item } from 'src/app/models/Item';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { InfographicsService } from 'src/app/services/infographics/infographics.service';
+import {Chart} from 'chart.js';
 
 @Component({
   selector: 'app-infograph-org-items-donations',
@@ -14,6 +15,8 @@ export class InfographItemsDonationsComponent implements OnInit {
   @Input() items:Item[] = [];
   @Input() org: Organisation;
 
+  graph: any = '';
+
 
 
   constructor(
@@ -24,9 +27,8 @@ export class InfographItemsDonationsComponent implements OnInit {
   }
 
   async itemCheck() {
-    let test = this.is.getGraphDataOrgItemsDonations(this.items, this.org);
-    //console.log(await test)
 
+    this.is.createScatterOrgItemDonations(this.items, this.org);
   }
 
 }
