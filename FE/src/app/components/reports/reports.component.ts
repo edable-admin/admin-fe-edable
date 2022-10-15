@@ -24,6 +24,7 @@ export class ReportsComponent implements OnInit {
   pivotTableData: any;
   selectedOrg: Organisation;
   orgData: MatTableDataSource<Organisation>;
+  selectedReport: any = 0;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -83,6 +84,24 @@ export class ReportsComponent implements OnInit {
       };
 
       return tabs
+    }
+  }
+
+  loadReport(){
+    let switchdata = parseInt(this.selectedReport) 
+    switch (switchdata) {
+      case 0:
+        this.snackBar.open("No Report Selected");
+        break;
+      case 1:
+        this.loadOrgItems();
+        break;
+      case 2:
+        this.loadGeneralDonations();
+        break;
+      default:
+        this.snackBar.open("No Organisation Selected");
+        break;
     }
   }
 
@@ -147,7 +166,6 @@ export class ReportsComponent implements OnInit {
         return newItem
       });
       this.setTableData(data, "Items", `${this.selectedOrg.name}'s Donation Items`, `${this.selectedOrg.name} Donation Item Report`);
-      this.accordion.closeAll();
     });
   }
 
@@ -178,12 +196,10 @@ export class ReportsComponent implements OnInit {
       });
 
       this.setTableData(data, "Donations", `${this.selectedOrg.name}'s General Donations`, `${this.selectedOrg.name} General Donation Report`);
-      this.accordion.closeAll();
     });
   }
 
   clearTable() {
-    this.accordion.closeAll();
     this.fileName = "";
 
     this.reportTable.webDataRocks.setReport({
