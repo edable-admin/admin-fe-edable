@@ -8,8 +8,8 @@ tr:hover {
 }
 
 .table-container {
-    width: 20%;
-    padding: 5px;
+    width: 210px !important;
+    margin: 15px;
 }
 
 .table-container,
@@ -22,9 +22,12 @@ table {
     align-items: flex-start;
 }
 
-.button-container,
-button {
-    margin-left: 10px;
+.button-container{
+  padding: 10px;
+}
+
+.buttons{
+  margin: 10px;
 }
 
 .container{
@@ -32,6 +35,32 @@ button {
     display: flex;
 }
 
-.mat-elevation-z8{
-    width: 80%;
+.tabs{
+  padding: 10px;
+}
+
+.specific-reports{
+  padding: 10px;
+}
+
+.tab{
+  padding: 10px;
+}
+
+.sheet{
+  width: 100%;
+}
+
+@media(max-width: 850px){
+  .container{
+    flex-wrap: wrap;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  .sheet{
+    width: 100%;
+  }
 }
