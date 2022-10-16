@@ -15,7 +15,7 @@ export class InfographItemsDonationsComponent implements OnInit {
   @Input() items:Item[] = [];
   @Input() org: Organisation;
 
-  graph: any = '';
+  graph!: Chart;
 
 
 
@@ -27,10 +27,11 @@ export class InfographItemsDonationsComponent implements OnInit {
   }
 
   async itemCheck() {
+    if (this.graph) this.graph.destroy();
 
-    //this.is.createScatterOrgItemDonations(this.items, this.org)
-    //this.is.createScatterOrgItemDonations(this.items, this.org, new Date('2022-10-15'), new Date('2022-10-15 23:59:59'));
-    this.is.createScatterOrgItemDonations(this.items, this.org);
+    if (this.org.name !== "") {
+      this.is.createScatterOrgItemDonations(this.items, this.org).then((resp) => this.graph = resp);
+    }
   }
 
 }

@@ -285,8 +285,7 @@ export class InfographicsService {
 //------------------------ Create Scatter Chart for an Organisations Item Donations --------------//
   async createScatterOrgItemDonations(items: Item[], org: Organisation, startDate?: Date, endDate?: Date) {
     const chartData = await this.getGraphDataOrgItemsDonations(items, org, startDate, endDate);
-    console.log(chartData)
-    let chart = new Chart("MyChart", {
+    let chart = new Chart("item-donations-graph", {
       type: 'line',
       data: {
         labels: chartData.labels,
@@ -310,7 +309,7 @@ export class InfographicsService {
 
     })
 
-    return Chart;
+    return chart;
   }
 
 
