@@ -15,7 +15,7 @@ export interface Donations {
   IsRefunded:boolean,
   amount:number,
   comment:string,
-  donationDate:FieldValue,
+  donationDate:FieldValue|Date,
   donorPublicName:string,
   private:PrivateDonorDetails
 }
