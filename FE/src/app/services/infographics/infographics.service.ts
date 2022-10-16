@@ -285,7 +285,6 @@ export class InfographicsService {
             callbacks: {
               label: (context) => {
                 let label = `${context.dataset.label}: $${context.parsed.y}`;
-                console.log(context);
                 return label;
               }
             }
