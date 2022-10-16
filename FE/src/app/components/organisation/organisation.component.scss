@@ -58,12 +58,12 @@ button {
 
 .big-graph {
     background: rgb(255, 255, 255);
-    flex: 1;
+    //flex: 1;
     min-width: 50px;
     min-height: 50px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    //align-items: center;
     border-radius: 20px;
     border: solid 3px rgb(42, 108, 206);
 }

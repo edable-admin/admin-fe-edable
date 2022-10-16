@@ -61,12 +61,16 @@
       </section>
 
       <div class="big-graph">
-        <!-- <canvas id="canvas" height=140>{{chart}}</canvas> -->
-        <app-infograph-org-items-donations
+        <app-infographics-section
         [items]="items"
-        [org] ="selectedOrg"
-        >
-        </app-infograph-org-items-donations>
+        [org]="selectedOrg"
+        ></app-infographics-section>
+        <!-- <canvas id="canvas" height=140>{{chart}}</canvas> -->
+        <!-- <app-infograph-org-items-donations -->
+        <!-- [items]="items" -->
+        <!-- [org] ="selectedOrg" -->
+        <!-- > -->
+        <!-- </app-infograph-org-items-donations> -->
       </div>
       <div class="graph-expansion">
         <mat-accordion>
