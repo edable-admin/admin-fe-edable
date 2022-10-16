@@ -1,9 +1,10 @@
 <html>
-<app-infograph-org-items-donations
-[items]="items"
-[org] ="selectedOrg"
-></app-infograph-org-items-donations>
 <body>
+  <app-infograph-org-items-donations
+          [items]="items"
+          [org] ="selectedOrg"
+          >
+  </app-infograph-org-items-donations>
   <div class="container">
     <div class="table-header">
       <button mat-raised-button class="control-button" (click)="addOrgDialog()" color="primary"

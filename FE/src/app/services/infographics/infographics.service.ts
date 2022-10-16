@@ -242,48 +242,19 @@ export class InfographicsService {
       }
     })
 
-    // graphDataItemsDonations.forEach((item, i) => {
-    //   if (item[0]?.itemName) {
-    //     dataset.push(
-    //       {
-    //         label: item[0].itemName,
-    //         data: item.map((don, i) =>
-    //         {
-    //           return {
-    //             y: don?.amount,
-    //             x: don?.donationDate,
-    //           }
-    //         }),
-    //         borderColor: selectColor(i),
-    //         backgroundColor: selectColor(i),
-    //         pointStyle: 'circle',
-    //         pointRadius: 7,
-    //         pointHoverRadius: 11
-    //       }
-
-    //   )
-    //   }
-    // })
-
-    //graphDataItemsDonations = graphDataItemsDonations.flat();
-
-    // let labels = graphDataItemsDonations.map(d => d.donationDate.toDate().toLocaleDateString())
-
-    // labels = labels.filter((v, i, a) => a.indexOf(v) === i);
-
     const labels = [...new Set(graphDataItemsDonations.map(item => item.donationDate))];
 
     const graphData = {
       labels: labels,
       dataset:dataset
     }
-
     return graphData;
   }
 
 
 //------------------------ Create Scatter Chart for an Organisations Item Donations --------------//
-  async createScatterOrgItemDonations(items: Item[], org: Organisation, startDate?: Date, endDate?: Date) {
+  async createScatterOrgItemDonations(items?: Item[], org?: Organisation, startDate?: Date, endDate?: Date) {
+
     const chartData = await this.getGraphDataOrgItemsDonations(items, org, startDate, endDate);
     let chart = new Chart("item-donations-graph", {
       type: 'line',
