@@ -6,6 +6,7 @@ import { Item } from 'src/app/models/Item';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { TransactionService } from '../firebase/transaction-service/transaction.service';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { group } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
@@ -143,13 +144,8 @@ export class InfographicsService {
 //------------------------- Get item Donation Data for an Organisation ---------------------//
   async getGraphDataOrgItemsDonations(items: Item[], org: Organisation, startDate?: Date, endDate?: Date) {
 
-    const selectColor = (number) => {
-      const hue = number * 137.508;
-      return `hsl(${hue},50%,75%)`;
-    }
-
+    // Get ItemDonations from the database
     let graphDataItemsDonations:any = await Promise.all(items.map(async item => {
-
       //get item donations for org
       return (await this.ts.getOrgItemDonations(org.id, item.id))
         .docs.map(doc => {
@@ -158,42 +154,141 @@ export class InfographicsService {
             itemName:item.name,
             amount: doc.data()["amount"],
             donationDate: doc.data()["donationDate"],
-            month:doc.data()["donationDate"].toDate().getMonth(),
-            year:doc.data()["donationDate"].toDate().getFullYear(),
             IsRefunded:doc.data()["IsRefunded"]
           }
         })
     }))
 
-    let dataset:any[] = []
-    graphDataItemsDonations.forEach((item, i) => {
-      if (item[0]?.itemName) {
-        dataset.push(
-          {
-            label: item[0].itemName,
-            data: item.map((don, i) =>
-            {
-              return {
-                y: don?.amount,
-                x: don?.donationDate.toDate().toLocaleDateString(),
-              }
-            }),
-            borderColor: selectColor(i),
-            backgroundColor: selectColor(i),
-            pointStyle: 'circle',
-            pointRadius: 10,
-            pointHoverRadius: 15
-          }
+    //filter date range and refunded amounts
+    let currentYear = new Date();
+    let startOfTheYear = new Date(`${currentYear.getFullYear()}-01-01`);
+    let endOfTheYear = new Date(`${currentYear.getFullYear()}-12-31`);
 
-      )
+    //check if start and end date are valid
+    if (startDate?.getTime() <= endDate?.getTime()) {
+      graphDataItemsDonations = graphDataItemsDonations.map(itemGroup => {
+        return itemGroup.filter(item => {
+          return !item.IsRefunded && item.donationDate.toDate() >= startDate && item.donationDate.toDate() <= endDate
+        })
+      })
+
+      console.log('graphDataItemsDonations', graphDataItemsDonations)
+    } else {
+
+      //if start and end date are not inputed or incorrect values get the current
+      // years donations
+      graphDataItemsDonations = graphDataItemsDonations.map((itemGroup) => {
+        return itemGroup.filter((item) =>
+          !item.IsRefunded &&
+          item.donationDate.toDate() >= startOfTheYear && item.donationDate.toDate() <= endOfTheYear
+        )
+      })
+    }
+
+    //convert to date field to local date string
+    graphDataItemsDonations = graphDataItemsDonations.map((itemGroup: any) => {
+      return itemGroup.map((item) => {
+        return {
+          ...item,
+          donationDate: item.donationDate.toDate().toLocaleDateString(),
+          dateSort: item.donationDate.toDate()
+        }
+      })
+    })
+
+    //Group each item by date
+    graphDataItemsDonations = graphDataItemsDonations.map((itemGroup) => {
+
+        return this.groupBy(itemGroup,"donationDate")
+    })
+
+    //Sum donation groups
+    graphDataItemsDonations = graphDataItemsDonations.map((itemGroup) => {
+      return Object.keys(itemGroup).map((key) => {
+        return {
+          itemName: itemGroup[key][0].itemName,
+          dateSort:itemGroup[key][0].dateSort,
+          donationDate: key,
+          amount:itemGroup[key].reduce((prev, cur) => prev + cur.amount, 0)
+        }
+      })
+    })
+
+    console.log(graphDataItemsDonations)
+    // graphDataItemsDonations = graphDataItemsDonations.flat()
+
+    // //sort based on date
+    // graphDataItemsDonations = graphDataItemsDonations.sort((a, b) => {
+    //   return a.dateSort.getTime() - b.dateSort.getTime()
+    // })
+
+    // //remove dateSort value
+    // graphDataItemsDonations = graphDataItemsDonations.map(item => {
+    //   return {
+    //     itemName: item.itemName,
+    //     amount: item.amount,
+    //     donationDate: item.donationDate
+    //   }
+    // })
+
+    //colour pallet
+    const selectColor = (number) => {
+      const hue = number * 137.508;
+      return `hsl(${hue},50%,75%)`;
+    }
+
+    // add to dataset
+    let dataset: any[] = []
+
+    graphDataItemsDonations.forEach((itemGroup, i) => {
+      if (itemGroup[0]?.itemName) {
+        dataset.push({
+          label: itemGroup[0]?.itemName,
+          data: itemGroup.map((item) => {
+            return {
+              x: item.donationDate,
+              y: item.amount
+            }
+          }),
+          borderColor: selectColor(i),
+          backgroundColor: selectColor(i),
+          pointStyle: 'circle',
+          pointRadius: 7,
+          pointHoverRadius: 11
+        })
       }
     })
 
-    graphDataItemsDonations = graphDataItemsDonations.flat();
+    // graphDataItemsDonations.forEach((item, i) => {
+    //   if (item[0]?.itemName) {
+    //     dataset.push(
+    //       {
+    //         label: item[0].itemName,
+    //         data: item.map((don, i) =>
+    //         {
+    //           return {
+    //             y: don?.amount,
+    //             x: don?.donationDate,
+    //           }
+    //         }),
+    //         borderColor: selectColor(i),
+    //         backgroundColor: selectColor(i),
+    //         pointStyle: 'circle',
+    //         pointRadius: 7,
+    //         pointHoverRadius: 11
+    //       }
 
-    let labels = graphDataItemsDonations.map(d => d.donationDate.toDate().toLocaleDateString())
+    //   )
+    //   }
+    // })
 
-    labels = labels.filter((v, i, a) => a.indexOf(v) === i);
+    //graphDataItemsDonations = graphDataItemsDonations.flat();
+
+    // let labels = graphDataItemsDonations.map(d => d.donationDate.toDate().toLocaleDateString())
+
+    // labels = labels.filter((v, i, a) => a.indexOf(v) === i);
+
+    const labels = [...new Set(graphDataItemsDonations.map(item => item.donationDate))];
 
     const graphData = {
       labels: labels,

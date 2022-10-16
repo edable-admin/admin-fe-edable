@@ -28,6 +28,8 @@ export class InfographItemsDonationsComponent implements OnInit {
 
   async itemCheck() {
 
+    //this.is.createScatterOrgItemDonations(this.items, this.org)
+    //this.is.createScatterOrgItemDonations(this.items, this.org, new Date('2022-10-15'), new Date('2022-10-15 23:59:59'));
     this.is.createScatterOrgItemDonations(this.items, this.org);
   }
 
