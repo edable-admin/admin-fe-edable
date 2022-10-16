@@ -38,7 +38,6 @@ export class InfographItemsDonationsComponent implements OnInit, OnChanges {
       this.is.createScatterOrgItemDonations(this.items, this.org)
         .then((resp) => {
           this.graph = resp;
-          this.graph.update();
         });
     }
   }

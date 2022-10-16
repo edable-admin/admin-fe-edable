@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Chart } from 'chart.js';
+import 'chartjs-adapter-date-fns';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { Item } from 'src/app/models/Item';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { TransactionService } from '../firebase/transaction-service/transaction.service';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { group } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
@@ -172,7 +171,6 @@ export class InfographicsService {
         })
       })
 
-      console.log('graphDataItemsDonations', graphDataItemsDonations)
     } else {
 
       //if start and end date are not inputed or incorrect values get the current
@@ -190,11 +188,12 @@ export class InfographicsService {
       return itemGroup.map((item) => {
         return {
           ...item,
-          donationDate: item.donationDate.toDate().toLocaleDateString(),
-          dateSort: item.donationDate.toDate()
+          donationDate: item.donationDate.toDate().toISOString().split('T')[0]
         }
       })
     })
+
+
 
     //Group each item by date
     graphDataItemsDonations = graphDataItemsDonations.map((itemGroup) => {
@@ -202,18 +201,20 @@ export class InfographicsService {
         return this.groupBy(itemGroup,"donationDate")
     })
 
+
+
     //Sum donation groups
     graphDataItemsDonations = graphDataItemsDonations.map((itemGroup) => {
       return Object.keys(itemGroup).map((key) => {
         return {
           itemName: itemGroup[key][0].itemName,
-          dateSort:itemGroup[key][0].dateSort,
           donationDate: key,
           amount:itemGroup[key].reduce((prev, cur) => prev + cur.amount, 0)
         }
       })
     })
 
+    console.log(graphDataItemsDonations)
     //colour pallet
     const selectColor = (number) => {
       const hue = number * 137.508;
@@ -235,17 +236,16 @@ export class InfographicsService {
           }),
           borderColor: selectColor(i),
           backgroundColor: selectColor(i),
-          pointStyle: 'circle',
-          pointRadius: 7,
-          pointHoverRadius: 11
+          pointStyle: 'circle'
         })
       }
     })
 
-    const labels = [...new Set(graphDataItemsDonations.map(item => item.donationDate))];
-
+    // let labels = graphDataItemsDonations.flat();
+    // labels = labels.sort((a, b) => a.donationSort - b.donationSort);
+    //labels = [...new Set(labels.map(item => item.donationDate))];
     const graphData = {
-      labels: labels,
+      //labels: labels,
       dataset:dataset
     }
     return graphData;
@@ -257,20 +257,39 @@ export class InfographicsService {
 
     const chartData = await this.getGraphDataOrgItemsDonations(items, org, startDate, endDate);
     let chart = new Chart("item-donations-graph", {
-      type: 'line',
+      type: 'bubble',
       data: {
-        labels: chartData.labels,
+        //labels: chartData.labels,
         datasets:
           chartData.dataset
       },
       options: {
+        layout: {
+          padding:10
+        },
         maintainAspectRatio: false,
         responsive: true,
-        interaction: {
-          mode: 'index'
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit:'day'
+            }
+          }
         },
-        showLine: false,
+        interaction: {
+          mode: 'point'
+        },
         plugins: {
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                let label = `${context.dataset.label}: $${context.parsed.y}`;
+                console.log(context);
+                return label;
+              }
+            }
+          },
           legend: {
             position: 'top',
             align:'start',
