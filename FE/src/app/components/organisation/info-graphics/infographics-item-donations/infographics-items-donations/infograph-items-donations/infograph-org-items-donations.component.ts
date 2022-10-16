@@ -33,7 +33,6 @@ export class InfographItemsDonationsComponent implements OnInit, OnChanges {
 
 
   async createChart() {
-    console.log(this.items)
     if (this.graph) this.graph.destroy();
     if (this.items.length > 0) {
       this.is.createScatterOrgItemDonations(this.items, this.org)
