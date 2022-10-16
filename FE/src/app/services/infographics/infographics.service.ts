@@ -271,6 +271,15 @@ export class InfographicsService {
         },
         showLine: false,
         plugins: {
+          legend: {
+            position: 'top',
+            align:'start',
+            labels: {
+              textAlign: 'left',
+              padding: 30,
+              boxWidth: 15,
+            }
+          },
           title: {
             text: `${org.name} Item Donations`,
             display:true

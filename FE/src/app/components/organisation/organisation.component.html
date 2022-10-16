@@ -1,10 +1,5 @@
 <html>
 <body>
-  <app-infograph-org-items-donations
-          [items]="items"
-          [org] ="selectedOrg"
-          >
-  </app-infograph-org-items-donations>
   <div class="container">
     <div class="table-header">
       <button mat-raised-button class="control-button" (click)="addOrgDialog()" color="primary"
@@ -66,7 +61,12 @@
       </section>
 
       <div class="big-graph">
-        <canvas id="canvas" height=140>{{chart}}</canvas>
+        <!-- <canvas id="canvas" height=140>{{chart}}</canvas> -->
+        <app-infograph-org-items-donations
+        [items]="items"
+        [org] ="selectedOrg"
+        >
+</app-infograph-org-items-donations>
       </div>
       <div class="graph-expansion">
         <mat-accordion>
