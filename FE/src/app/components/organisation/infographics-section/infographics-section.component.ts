@@ -24,7 +24,6 @@ export class InfographicsSectionComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes) {
     if (changes['org']) {
-      console.log(this.items)
 
     }
   }
