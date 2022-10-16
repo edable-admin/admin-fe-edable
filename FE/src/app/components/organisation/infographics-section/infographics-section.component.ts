@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Item } from 'src/app/models/Item';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 
@@ -14,11 +15,16 @@ export class InfographicsSectionComponent implements OnInit, OnChanges {
 
   constructor() { }
 
+
+  infoGraphicsOptions: any[] = ['Item Donations', 'General Donations'];
+  infoGraphicsControl = new FormControl(this.infoGraphicsOptions[0]);
+
   ngOnInit(): void {
   }
 
   ngOnChanges(changes) {
     if (changes['org']) {
+      console.log(this.items)
 
     }
   }

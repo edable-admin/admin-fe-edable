@@ -1,9 +1,19 @@
 <div class="container">
-  <mat-toolbar *ngIf="org.name !== ''">
-    <mat-toolbar-row class="nav-bar">
-      <button mat-flat-button>General Donations</button>
-      <button mat-flat-button>Item Donations</button>
-      <button mat-flat-button>Organisation Overview</button>
-    </mat-toolbar-row>
-  </mat-toolbar>
+
+  <mat-form-field appearance="fill" *ngIf="items.length > 0">
+    <mat-select [formControl]="infoGraphicsControl">
+        <mat-option *ngFor="let item of infoGraphicsOptions" [value]="item">
+          {{item}}
+        </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <app-infograph-org-items-donations
+  *ngIf="infoGraphicsControl.value === 'Item Donations'"
+  [items]="items"
+  [org]="org"
+  >
+
+  </app-infograph-org-items-donations>
+
 </div>

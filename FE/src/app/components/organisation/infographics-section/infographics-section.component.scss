@@ -1,13 +1,7 @@
 .container{
     width: 50vw;
 
-    .mat-toolbar{
-      display: flex;
-      flex-wrap: wrap;
-      border-radius: 20px;
-    }
-
-    .mat-toolbar-row{
+    .mat-form-field{
       display: flex;
       flex-wrap: wrap;
       column-gap: 10px;
