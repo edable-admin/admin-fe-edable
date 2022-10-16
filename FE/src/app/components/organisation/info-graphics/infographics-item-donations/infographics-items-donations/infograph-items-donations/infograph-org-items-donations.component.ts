@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Item } from 'src/app/models/Item';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
-import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { InfographicsService } from 'src/app/services/infographics/infographics.service';
 import {Chart} from 'chart.js';
 
@@ -30,7 +29,8 @@ export class InfographItemsDonationsComponent implements OnInit {
     if (this.graph) this.graph.destroy();
 
     if (this.org.name !== "") {
-      this.is.createScatterOrgItemDonations(this.items, this.org).then((resp) => this.graph = resp);
+      this.is.createScatterOrgItemDonations(this.items, this.org)
+        .then((resp) => this.graph = resp);
     }
   }
 

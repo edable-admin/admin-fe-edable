@@ -293,6 +293,7 @@ export class InfographicsService {
           chartData.dataset
       },
       options: {
+        maintainAspectRatio: false,
         responsive: true,
         interaction: {
           mode: 'index'
