@@ -214,23 +214,6 @@ export class InfographicsService {
       })
     })
 
-    console.log(graphDataItemsDonations)
-    // graphDataItemsDonations = graphDataItemsDonations.flat()
-
-    // //sort based on date
-    // graphDataItemsDonations = graphDataItemsDonations.sort((a, b) => {
-    //   return a.dateSort.getTime() - b.dateSort.getTime()
-    // })
-
-    // //remove dateSort value
-    // graphDataItemsDonations = graphDataItemsDonations.map(item => {
-    //   return {
-    //     itemName: item.itemName,
-    //     amount: item.amount,
-    //     donationDate: item.donationDate
-    //   }
-    // })
-
     //colour pallet
     const selectColor = (number) => {
       const hue = number * 137.508;
