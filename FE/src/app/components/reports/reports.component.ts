@@ -6,11 +6,11 @@ import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItemService } from 'src/app/services/firebase/item-service/item.service';
-import { ReferralCSVModel, TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
+import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
-import { Timestamp } from 'firebase/firestore';
 import { WebdatarocksComponent } from 'ng-webdatarocks';
 import { MatAccordion } from '@angular/material/expansion';
+import { DonationCSVModel, ItemCSVModel, ItemGetModel, ReferralCSVModel } from 'src/app/models/Reports';
 
 @Component({
   selector: 'app-reports',
@@ -300,35 +300,4 @@ export class ReportsComponent implements OnInit {
   onPivotReady(pivot: WebDataRocks.Pivot): void {
     console.log('[ready] WebdatarocksPivotModule', this.reportTable);
   }
-}
-interface ItemCSVModel {
-  Name: string;
-  Initial_Price: number;
-  Total_Donations_Value: number;
-  Amount_Remaining: number;
-  Is_Funded: boolean;
-  Active_Status: boolean;
-  Created_At?: string;
-  Date_Completed?: string;
-}
-interface ItemGetModel {
-  summary: string;
-  description: string;
-  id?: string;
-  name: string;
-  initialPrice: number;
-  totalDonationsValue: number;
-  activeStatus: boolean;
-  orgID: string;
-  img: string;
-  createdAt?: Timestamp;
-  dateCompleted?: Timestamp;
-}
-interface DonationCSVModel {
-  Donation_Date: string,
-  Amount: number,
-  Donor_Public_Name: string,
-  Comment: string,
-  Is_Subscribed: boolean,
-  Is_Refunded: boolean
 }
