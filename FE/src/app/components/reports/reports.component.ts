@@ -6,12 +6,11 @@ import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItemService } from 'src/app/services/firebase/item-service/item.service';
-import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
+import { ReferralCSVModel, TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { Timestamp } from 'firebase/firestore';
 import { WebdatarocksComponent } from 'ng-webdatarocks';
 import { MatAccordion } from '@angular/material/expansion';
-import { ReferralCSVModel } from 'src/app/services/firebase/transaction-service/transaction.service';
 
 @Component({
   selector: 'app-reports',
@@ -102,7 +101,7 @@ export class ReportsComponent implements OnInit {
           message = `${this.selectedOrg.name} has no general donations`;
           break;
         case "Referrals":
-          message = `There are no donations`;
+          message = `No donations`;
           break;
 
         default:
@@ -198,27 +197,47 @@ export class ReportsComponent implements OnInit {
   }
 
   loadReferralData() {
-    // if (this.selectedOrg.id === '') {
-    //   this.snackBar.open("No organisation selected");
-    //   return;
-    // }
-    let referralData: ReferralCSVModel[] = [];
-    console.table(this.orgs);
-    
-    this.tfs.getReferralData().then(resp => {
-      resp.forEach((resp) => {
-        
-        let org = this.orgs.find((org) => {
-          return org.id === resp.Org_Name;
-        });
-        
-        resp.Org_Name = org.name;
-        referralData.push(resp);
 
+    let referralCSVData: ReferralCSVModel[] = [];
+    let reportTitle: string = '';
+    let fileName: string = '';
+
+    this.tfs.getReferralData().then(resp => {
+
+      resp.forEach((resp) => {
+
+        if (this.selectedOrg.id !== '') {
+          //Referrals for the selected org
+          let org = this.orgs.find((org) => {
+            return resp.Org_Name === org.id && this.selectedOrg.id === org.id;
+          });
+          console.log(org);
+          
+          if (org) {
+            resp.Org_Name = org.name;
+            referralCSVData.push(resp);
+          }
+
+          reportTitle = `${this.selectedOrg.name}'s Referrals`;
+          fileName = `${this.selectedOrg.name}'s Referral Report`;
+
+        } else {
+          //Get all referrals
+          let org = this.orgs.find((org) => {
+            return resp.Org_Name === org.id;
+          });
+
+          if (org !== null) {
+            resp.Org_Name = org.name;
+            referralCSVData.push(resp);
+          }
+
+          reportTitle = 'General Referral Report';
+          fileName = 'General Referral Report';
+        }
       });
-      this.setTableData(referralData, null, 'Referrals', 'Referral Report');
-      // console.table(referralData);
-      
+      this.setTableData(referralCSVData, "Referrals", reportTitle, fileName);
+      this.accordion.closeAll();
     });
 
   }

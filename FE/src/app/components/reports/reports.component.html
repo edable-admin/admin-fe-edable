@@ -38,7 +38,8 @@
             <div class="button-container">
                 <button mat-raised-button color="primary" (click)="loadOrgItems()">Load Donation Items</button>
                 <button mat-raised-button color="primary" (click)="loadGeneralDonations()">Load General Donations</button>
-                <button mat-raised-button color="primary" (click)="loadReferralData()">Load Referral Data</button>
+                <button mat-raised-button color="primary" *ngIf="selectedOrg.id === ''" (click)="loadReferralData()">Load All Referral Data</button>
+                <button mat-raised-button color="primary" *ngIf="selectedOrg.id !== ''" (click)="loadReferralData()">Load Referral Data</button>
                 <button mat-raised-button color="primary" (click)="clearTable()">Clear Table</button>
             </div>
 

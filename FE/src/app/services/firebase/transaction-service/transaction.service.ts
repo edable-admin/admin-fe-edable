@@ -6,6 +6,7 @@ import { Item } from 'src/app/models/Item';
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
+import { Timestamp } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -99,6 +100,21 @@ interface PrivateData {
   name: string;
   paypalTransactionId: string;
   phoneNumber: string;
+}
+export interface Referral {
+  orgId: string;
+  donationType: string;
+  isAnon: boolean;
+  agreeToContact: boolean;
+  email: string;
+  howHeard: string;
+  howHeardOther: string;
+  mailingAddress: string; 
+  name: string;
+  phoneNumber: string;
+  amount: number;
+  comment: string;
+  donationDate: string;
 }
 export interface ReferralCSVModel {
   Org_Name: string;
