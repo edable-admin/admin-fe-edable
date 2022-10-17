@@ -13,7 +13,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ItemService } from 'src/app/services/firebase/item-service/item.service';
 
-
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
@@ -53,6 +52,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
     const filterValueGeneral = (event.target as HTMLInputElement).value;
     this.generalDonDataSource.filter = filterValueGeneral.trim().toLowerCase(); 
   }
+
 
   ngOnInit(): void {
     this.loadTables();

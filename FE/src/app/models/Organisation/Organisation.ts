@@ -7,8 +7,14 @@ export interface Organisation {
   name: string,
   phone: string,
   summary: string,
+  website: string,
+  file?: FileList,
+  totalDonationCount?: number,
   totalDonationItems?: number,
   totalDonations?: number,
-  website: string,
-  file?:FileList
+  totalDonationsValue?: number,
+  totalGeneralDonationsCount?: number,
+  totalGeneralDonationsValue?:number,
+  totalItemDonationsCount?:number,
+  totalItemDonationsValue?:number
 }

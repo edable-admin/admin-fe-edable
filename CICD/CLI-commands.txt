@@ -1,7 +1,6 @@
-cd Diploma-Challenge-Sem1\CICD
+cd CICD
 
-The command below will create a sql server and database
-
-Main Site Branch Resources
+Front End azure resources
 
 az deployment group create --name fe-deploy --resource-group admin-edable --template-file admin-edable-fe-deploy.json
+az deployment group create --name fe-deploy-staging --resource-group admin-edable --template-file admin-edable-staging-fe-deploy.json
