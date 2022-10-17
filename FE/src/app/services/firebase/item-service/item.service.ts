@@ -21,7 +21,6 @@ export class ItemService {
       .doc(orgID)
       .collection('Items')
       .valueChanges({ idField: 'id' });
-      console.log(items);
     return items;
   }
 
@@ -29,7 +28,6 @@ export class ItemService {
   getAllItems() {
     let items = this.fs
       .collectionGroup('Items').get()
-      console.log(items);
     return items;
   }
   //------------------------ Add donation items ---------------------//

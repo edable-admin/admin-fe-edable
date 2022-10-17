@@ -13,6 +13,8 @@ export class TransactionService {
     public storage: AngularFireStorage,
     public fs: AngularFirestore
   ) {}
+  
+  
 
   //------------------------ Gets a list of donation items for an organisation -------------------\\
   getItemDonations() {
