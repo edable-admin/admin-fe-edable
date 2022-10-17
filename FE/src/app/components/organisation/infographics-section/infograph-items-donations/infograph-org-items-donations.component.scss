@@ -1,2 +1,11 @@
 .chart-container{
+  display: flex;
+  width:40vw;
+  height: 340px;
+
+  #item-donations-graph{
+    width:100%;
+    height: 100%;
+  }
 }
+
