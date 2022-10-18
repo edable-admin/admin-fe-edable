@@ -27,6 +27,8 @@ export class InfographicsOrgGeneralDonationsComponent implements OnChanges {
 
   ngOnChanges(changes) {
 
+    if (this.chart) this.chart.destroy();
+
     if (changes['orgGeneralDonationGraphData']) {
 
       if (this.orgGeneralDonationGraphData) {
