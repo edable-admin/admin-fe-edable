@@ -167,12 +167,12 @@ export class ReportsComponent implements OnInit {
 
       const data: DonationCSVModel[] = donations.map((item) => {
         const newItem: DonationCSVModel = {
-          Donation_Date: item.donationDate.toDate().toLocaleDateString(),
+          Donation_Date: item.donationDate,
           Donor_Public_Name: item.donorPublicName,
           Comment: item.comment,
           Is_Subscribed: item.IsSubscribed,
           Is_Refunded: item.IsRefunded,
-          Amount: parseInt(item.amount)
+          Amount: item.amount
         }
         return newItem;
       });
@@ -264,9 +264,9 @@ interface ItemGetModel {
   dateCompleted?: Timestamp;
 }
 interface DonationCSVModel {
-  Donation_Date: string,
+  Donation_Date: Date,
   Amount: number,
-  Donor_Public_Name: string,
+  Donor_Public_Name: String,
   Comment: string,
   Is_Subscribed: boolean,
   Is_Refunded: boolean
