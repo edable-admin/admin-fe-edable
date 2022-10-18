@@ -2,13 +2,13 @@
     <mat-toolbar color="primary">
         <h2>EdAble Admin System</h2>
     </mat-toolbar>
-    <a mat-list-item routerLink="dashboard" (click)="onSidenavClose()">
+    <a mat-list-item routerLink="/main" (click)="onSidenavClose()">
         <mat-icon>dashboard</mat-icon> <span class="nav-caption">Dashboard</span>
     </a>
     <a mat-list-item routerLink="transaction" (click)="onSidenavClose()">
         <mat-icon> attach_money</mat-icon> <span class="nav-caption">Transactions</span>   
     </a>
-    <a mat-list-item routerLink="/report" (click)="onSidenavClose()">
+    <a mat-list-item routerLink="report" (click)="onSidenavClose()">
         <mat-icon>account_balance</mat-icon><span class="nav-caption">Reports</span>
     </a>
     <a mat-list-item (click)="onSidenavClose()">

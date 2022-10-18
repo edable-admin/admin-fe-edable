@@ -13,7 +13,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ItemService } from 'src/app/services/firebase/item-service/item.service';
 
-
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
@@ -28,9 +27,10 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
 
   itemDonDataSource:MatTableDataSource<ItemDonations>;
   generalDonDataSource:MatTableDataSource<GeneralDonations>;
-  displayedColumns: string[] = ['donationDate', 'donorPublicName', 'amount', 'orgName', 'IsSubscribed'];
+  displayedColumns: string[] = ['donationDate', 'donorPublicName', 'amount', 'orgName', 'IsSubscribed', 'IsRefunded'];
   itemsDisplayedColumns: string[] = ['donationDate', 'donorPublicName','itemName', 'amount', 'orgName', 'IsRefunded'];
   editStatus: boolean = false;
+
 
   dataSource?:any[];
   constructor(
@@ -54,6 +54,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
     const filterValueGeneral = (event.target as HTMLInputElement).value;
     this.generalDonDataSource.filter = filterValueGeneral.trim().toLowerCase();
   }
+
 
   ngOnInit(): void {
     this.loadTables();
@@ -156,6 +157,15 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
         return { orgID:org.id, donationID: donationID, orgName: org.name, ...genDon.data()};
       }
     ))
+
+    generalDonations.forEach(element => {
+      if (element.IsSubscribed) {
+        element.IsSubscribed = "check_circle_outline"
+      }
+      else if (!element.IsSubscribed) {
+        element.IsSubscribed = "highlight_off"
+      }
+    });
     this.generalDonDataSource = new MatTableDataSource(generalDonations);
     this.generalDonDataSource.paginator = this.paginatorFirst;
     this.generalDonDataSource.sort = this.genTableS;
