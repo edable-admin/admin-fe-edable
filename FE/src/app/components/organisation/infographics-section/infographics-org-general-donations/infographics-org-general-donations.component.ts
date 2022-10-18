@@ -37,7 +37,6 @@ export class InfographicsOrgGeneralDonationsComponent implements OnChanges {
         });
 
         this.chartLabel = this.orgGeneralDonationGraphData.map((don) => {
-          console.log(don)
           return don.chartLabel
         });
 
