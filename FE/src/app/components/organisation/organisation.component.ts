@@ -304,22 +304,21 @@ export class OrganisationComponent implements OnInit {
           return (
             data.activeStatus === this.activeStatus &&
             data.name.trim().toLowerCase().includes(filter) ||
-              data.totalDonations
-                .toString()
-                .trim()
-                .toLowerCase()
-                .includes(filter) ||
-              data.totalDonationItems
-                .toString()
-                .trim()
-                .toLowerCase()
-                .includes(filter)
+
+            data.totalDonations
+              .toString()
+              .trim()
+              .toLowerCase()
+              .includes(filter) ||
+            data.totalDonationItems
+              .toString()
+              .trim()
+              .toLowerCase()
+              .includes(filter) 
           );
           };
           this.toggleActiveStatus(this.activeStatusFilter)
       });
-
-
   }
 
   //-------------------- GET ITEMS --------------------\\

@@ -10,45 +10,67 @@ import { Timestamp } from 'firebase/firestore';
 import { PrivateData, ReferralCSVModel } from 'src/app/models/Reports';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TransactionService {
-
   constructor(
     public storage: AngularFireStorage,
     public fs: AngularFirestore
   ) { }
 
+
+
   //------------------------ Gets a list of donation items for an organisation -------------------\\
   getItemDonations() {
-    let itemDonations = this.fs.firestore.collectionGroup("ItemsDonations").get();
+    const itemDonations = this.fs.firestore
+      .collectionGroup('ItemsDonations')
+      .get();
     return itemDonations;
   }
 
   //------------------------ Get Org Item Donations ----------------------------------------------\\
   getOrgItemDonations(orgID: string, itemID: string) {
-    let itemDonations = this.fs.firestore.collection('Organisations')
+    const itemDonations = this.fs.firestore
+      .collection('Organisations')
       .doc(orgID)
-      .collection("Items")
+      .collection('Items')
       .doc(itemID)
-      .collection("ItemsDonations").get();
+      .collection('ItemsDonations')
+      .get();
     return itemDonations;
   }
 
   //------------------------ Get Org General Donations -------------------------------------------\\
   getOrgGeneralDonations(orgID: string) {
-    let orgGenDonations = this.fs.firestore.collection('Organisations')
+    const orgGenDonations = this.fs.firestore
+      .collection('Organisations')
       .doc(orgID)
-      .collection("GeneralDonations").get();
+      .collection('GeneralDonations')
+      .get();
     return orgGenDonations;
   }
 
   //------------------------ Get All General Donations -------------------------------------------\\
-  getGeneralDonations() {
-    let orgGenDonations = this.fs.firestore.collectionGroup('GeneralDonations').get();
+  async getGeneralDonations() {
+    const orgGenDonations = (await this.fs.firestore
+      .collectionGroup('GeneralDonations')).get()
+
+
     return orgGenDonations;
   }
 
+  //------------------------ Edit the "IsRefunded" for General Donation -------------------------------\\
+  async editGenDonation(orgID: string, donationID: string, transactionReq: GeneralDonations["IsRefunded"]) {
+    this.fs.collection("Organisations").doc(orgID).collection('GeneralDonations').doc(donationID).update({ IsRefunded: transactionReq });
+
+  }
+
+  //------------------------ Edit the "IsRefunded" for Item Donation ----------------------------------\\
+  async editItemDonation(orgID: string, itemID: string, donationID: string, transactionReq: ItemDonations["IsRefunded"]) {
+    this.fs.collection("Organisations").doc(orgID).collection("Items").doc(itemID).collection('ItemsDonations').doc(donationID).update({ IsRefunded: transactionReq });
+    return transactionReq;
+  }
+  
   async getReferralData(): Promise<ReferralCSVModel[]> {
 
     let privateData: PrivateData[] = [];

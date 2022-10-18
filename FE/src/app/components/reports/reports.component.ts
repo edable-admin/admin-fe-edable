@@ -7,10 +7,12 @@ import { OrganisationService } from 'src/app/services/firebase/organisation-serv
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItemService } from 'src/app/services/firebase/item-service/item.service';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
-import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
+import { Donation, GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { WebdatarocksComponent } from 'ng-webdatarocks';
 import { MatAccordion } from '@angular/material/expansion';
 import { DonationCSVModel, ItemCSVModel, ItemGetModel, ReferralCSVModel } from 'src/app/models/Reports';
+import { DatePipe } from '@angular/common';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-reports',
@@ -173,21 +175,25 @@ export class ReportsComponent implements OnInit {
     //Get the selectected orgs general donations
     this.tfs.getOrgGeneralDonations(this.selectedOrg.id).then((resp) => {
 
-      let donations: GeneralDonations[] = [];
+      let donations: Donation[] = [];
 
       resp.forEach((resp) => {
-        donations.push(resp.data() as GeneralDonations);
+        donations.push(resp.data() as Donation);
       });
-
+      console.log("donations");
+      
+      console.table(donations);
+      
       //Map data to CSV model
       const data: DonationCSVModel[] = donations.map((item) => {
+        
         const newItem: DonationCSVModel = {
           Donation_Date: item.donationDate.toDate().toLocaleDateString(),
-          Donor_Public_Name: item.donorPublicName,
+          Donor_Public_Name: item.donorPublicName.toString(),
           Comment: item.comment,
           Is_Subscribed: item.IsSubscribed,
           Is_Refunded: item.IsRefunded,
-          Amount: parseInt(item.amount)
+          Amount: item.amount
         }
         return newItem;
       });
