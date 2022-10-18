@@ -236,7 +236,8 @@ export class InfographicsService {
           }),
           borderColor: selectColor(i),
           backgroundColor: selectColor(i),
-          pointStyle: 'circle'
+          pointStyle: 'circle',
+          pointRadius:6
         })
       }
     })
