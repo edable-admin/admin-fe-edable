@@ -41,6 +41,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
     public Is: ItemService
     ) {
 
+
     }
   ngAfterViewInit(): void {
   }
@@ -55,7 +56,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
     const filterValueGeneral = (event.target as HTMLInputElement).value;
     this.generalDonDataSource.filter = filterValueGeneral.trim().toLowerCase();
   }
-
+  
   ngOnInit(): void {
     this.loadTables();
   }
