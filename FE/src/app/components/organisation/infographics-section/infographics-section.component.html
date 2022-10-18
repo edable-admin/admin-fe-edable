@@ -1,12 +1,8 @@
 <div class="container">
 
-  <mat-form-field appearance="fill" *ngIf="items.length > 0">
-    <mat-select [formControl]="infoGraphicsControl">
-        <mat-option *ngFor="let item of infoGraphicsOptions" [value]="item">
-          {{item}}
-        </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <mat-radio-group aria-label="Select an option" *ngIf="items.length > 0" [formControl]="infoGraphicsControl">
+    <mat-radio-button *ngFor="let item of infoGraphicsOptions" [value]="item">{{item}}</mat-radio-button>
+  </mat-radio-group>
 
   <app-infograph-org-items-donations
   *ngIf="infoGraphicsControl.value === 'Item Donations'"
@@ -14,5 +10,6 @@
   [org]="org"
   >
   </app-infograph-org-items-donations>
+
 
 </div>
