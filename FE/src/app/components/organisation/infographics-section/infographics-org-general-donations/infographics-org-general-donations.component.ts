@@ -44,7 +44,7 @@ export class InfographicsOrgGeneralDonationsComponent implements OnChanges {
 
         if (this.orgGeneralDonationGraphData) {
           this.setUpGenConfig();
-          this.chart = new Chart('canvas', this.configLine);
+          this.chart = new Chart('gen-don-org', this.configLine);
         }
       }
 

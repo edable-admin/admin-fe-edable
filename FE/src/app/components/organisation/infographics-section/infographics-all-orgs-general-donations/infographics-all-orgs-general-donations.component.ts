@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart } from 'chart.js';
@@ -9,10 +9,11 @@ import { Organisation } from 'src/app/models/Organisation/Organisation';
   templateUrl: './infographics-all-orgs-general-donations.component.html',
   styleUrls: ['./infographics-all-orgs-general-donations.component.scss']
 })
-export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   @Input() allOrgsGeneralDonationData:GeneralDonations[];
   @Input() org:Organisation;
+  @Input() chartType:string;
 
   chartData:any[];
   chartLabel:any[];
@@ -27,20 +28,11 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
   constructor() { }
 
   ngOnInit(): void {
-
-  };
-
-  ngOnDestroy(): void {
-    if(this.chart) this.chart.destroy();
-  }
-
-  ngAfterViewInit(): void {
     if(this.chart) this.chart.destroy();
 
     this.chartData = this.allOrgsGeneralDonationData.map((donation: any) => donation.totalGeneralDonationsValue);
     this.chartLabel = this.allOrgsGeneralDonationData.map((donation: any) => donation.name);
     this.updateColors();
-    //this.updateCharts();
 
     this.configLine = {
       type: 'line',
@@ -200,20 +192,77 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
       }
     };
 
-    this.chart = new Chart('canvas', this.configPie);
+
+    switch (this.chartType) {
+      case 'pie':
+        this.chart = new Chart('all-orgs-gen-don', this.configPie);
+
+        break;
+
+      case 'line':
+        this.chart = new Chart('all-orgs-gen-don', this.configLine);
+
+        break;
+
+      case 'bar':
+
+        this.chart = new Chart('all-orgs-gen-don', this.configBar);
+        break;
+
+      case 'polar':
+        this.chart = new Chart('all-orgs-gen-don', this.configPolar);
+        break;
+
+      default:
+        break;
+    }
+
+  };
+
+  ngOnDestroy(): void {
+    if(this.chart) this.chart.destroy();
+  }
+
+  ngAfterViewInit(): void {
   }
 
 
-
-
   ngOnChanges(changes) {
-    if(this.chart) this.chart.destroy();
-    if (changes['org']) {
-      console.log(this.org)
+
+    if (this.chart) this.chart.destroy();
+
+    if (changes['org'] || changes['chartType']) {
+
+      switch (this.chartType) {
+        case 'pie':
+          this.chart = new Chart('all-orgs-gen-don', this.configPie);
+
+          break;
+
+        case 'line':
+          this.chart = new Chart('all-orgs-gen-don', this.configLine);
+
+          break;
+
+        case 'bar':
+
+          this.chart = new Chart('all-orgs-gen-don', this.configBar);
+          break;
+
+        case 'polar':
+          this.chart = new Chart('all-orgs-gen-don', this.configPolar);
+          break;
+
+        default:
+          break;
+      }
+
+
       if (this.org.id !== '') {
         if(this.chart) this.chart.destroy();
       }
     }
+
   }
 
   updateCharts() {

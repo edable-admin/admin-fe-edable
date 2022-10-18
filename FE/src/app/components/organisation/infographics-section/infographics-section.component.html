@@ -4,6 +4,18 @@
     <mat-radio-button *ngFor="let item of infoGraphicsOptions" [value]="item">{{item}}</mat-radio-button>
   </mat-radio-group>
 
+  <mat-radio-group [formControl]="chartTypeControl"  *ngIf="org.id === ''">
+    <mat-radio-button *ngFor="let item of chartType" [value]="item">{{item}}</mat-radio-button>
+  </mat-radio-group>
+
+  <app-infographics-all-orgs-general-donations
+    *ngIf="org.id === '' && allOrgsGeneralDonationData"
+    [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
+    [chartType]="chartTypeControl.value"
+    [org]="org"
+  >
+  </app-infographics-all-orgs-general-donations>
+
   <app-infograph-org-items-donations
     *ngIf="infoGraphicsControl.value === 'Item Donations'"
     [items]="items"
@@ -12,18 +24,9 @@
   </app-infograph-org-items-donations>
 
   <app-infographics-org-general-donations
-    *ngIf="infoGraphicsControl.value === 'General Donations'"
+    *ngIf="org.id !== '' && infoGraphicsControl.value === 'General Donations'"
     [org]="org"
     [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
   >
   </app-infographics-org-general-donations>
-
-  <app-infographics-all-orgs-general-donations
-    *ngIf="org.id === '' && allOrgsGeneralDonationData"
-    [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
-    [org]="org"
-  >
-  </app-infographics-all-orgs-general-donations>
-
-
 </div>

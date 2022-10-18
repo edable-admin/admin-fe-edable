@@ -14,13 +14,18 @@ export class InfographicsSectionComponent implements OnInit, OnChanges {
   @Input() items: Item[];
   @Input() org: Organisation;
   @Input() allOrgsGeneralDonationData: GeneralDonations[];
-  @Input() orgGeneralDonationGraphData:any;
+  @Input() orgGeneralDonationGraphData: any;
+
+
+
 
   constructor(
   ) { }
 
   infoGraphicsOptions: any[] = ['General Donations', 'Item Donations'];
   infoGraphicsControl = new FormControl(this.infoGraphicsOptions[0]);
+  chartType = ['pie','line','bar','polar'];
+  chartTypeControl = new FormControl(this.chartType[0])
 
   ngOnInit(): void {
 
