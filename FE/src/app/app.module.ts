@@ -46,7 +46,8 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { WebdatarocksPivotModule } from 'ng-webdatarocks';
 import { InfographItemsDonationsComponent } from './components/organisation/infographics-section/infograph-items-donations/infograph-org-items-donations.component';
 import { InfographicsSectionComponent } from './components/organisation/infographics-section/infographics-section.component';
-import { InfographicsGeneralDonationsComponent } from './components/organisation/infographics-section/infographics-general-donations/infographics-general-donations.component';
+import { InfographicsAllOrgsGeneralDonationsComponent } from './components/organisation/infographics-section/infographics-all-orgs-general-donations/infographics-all-orgs-general-donations.component';
+import { InfographicsOrgGeneralDonationsComponent } from './components/organisation/infographics-section/infographics-org-general-donations/infographics-org-general-donations.component';
 
 const config = environment.firebaseConfig;
 
@@ -77,7 +78,8 @@ const config = environment.firebaseConfig;
     ReportsComponent,
     InfographItemsDonationsComponent,
     InfographicsSectionComponent,
-    InfographicsGeneralDonationsComponent
+    InfographicsAllOrgsGeneralDonationsComponent,
+    InfographicsOrgGeneralDonationsComponent
   ],
   imports: [
     BrowserModule,

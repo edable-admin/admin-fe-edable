@@ -2,11 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 
 @Component({
-  selector: 'app-infographics-general-donations',
-  templateUrl: './infographics-general-donations.component.html',
-  styleUrls: ['./infographics-general-donations.component.scss']
+  selector: 'app-infographics-all-orgs-general-donations',
+  templateUrl: './infographics-all-orgs-general-donations.component.html',
+  styleUrls: ['./infographics-all-orgs-general-donations.component.scss']
 })
-export class InfographicsGeneralDonationsComponent implements OnInit {
+export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit {
 
   @Input() allOrgsGeneralDonationData:GeneralDonations[];
 

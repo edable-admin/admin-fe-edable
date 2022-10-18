@@ -13,26 +13,19 @@ export class InfographicsSectionComponent implements OnInit, OnChanges {
 
   @Input() items: Item[];
   @Input() org: Organisation;
-  @Input() allOrgsGeneralDonationData:GeneralDonations[];
+  @Input() allOrgsGeneralDonationData: GeneralDonations[];
 
   constructor(
   ) { }
 
-  infoGraphicsOptions: any[] = ['Item Donations', 'General Donations'];
+  infoGraphicsOptions: any[] = ['General Donations', 'Item Donations'];
   infoGraphicsControl = new FormControl(this.infoGraphicsOptions[0]);
 
   ngOnInit(): void {
 
   }
 
-  ngOnChanges(changes) {
-    if(changes['items']){
-      console.log(this.items)
-    }
-
-    if(changes['allOrgsGeneralDonationData']){
-      console.log(this.allOrgsGeneralDonationData)
-    }
+  ngOnChanges() {
   }
 
 }
