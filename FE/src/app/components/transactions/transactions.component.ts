@@ -27,7 +27,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
   
   itemDonDataSource:MatTableDataSource<ItemDonations>;
   generalDonDataSource:MatTableDataSource<GeneralDonations>;
-  displayedColumns: string[] = ['donationDate', 'donorPublicName', 'amount', 'orgName', 'IsSubscribed']; 
+  displayedColumns: string[] = ['donationDate', 'donorPublicName', 'amount', 'orgName', 'IsSubscribed', 'IsRefunded']; 
   itemsDisplayedColumns: string[] = ['donationDate', 'donorPublicName','itemName', 'amount', 'orgName', 'IsRefunded']; 
   
   dataSource?:any[];
@@ -150,6 +150,13 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
       }
       else if (!element.IsSubscribed) {
         element.IsSubscribed = "highlight_off"
+      }
+
+      if (element.IsRefunded) {
+        element.IsRefunded = "check_circle_outline"
+      }
+      else if (!element.IsRefunded) {
+        element.IsRefunded = "highlight_off"
       }
       
     });
