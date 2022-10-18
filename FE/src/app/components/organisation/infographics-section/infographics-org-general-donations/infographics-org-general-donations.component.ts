@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { DonationService } from 'src/app/services/firebase/donation-service/donation.service';
 import { InfographicsService } from 'src/app/services/infographics/infographics.service';
@@ -11,11 +11,11 @@ import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonatio
   styleUrls: ['./infographics-org-general-donations.component.scss']
 })
 export class InfographicsOrgGeneralDonationsComponent implements OnChanges {
-
   @Input() org: Organisation;
+  @Input() orgGeneralDonationGraphData:any;
 
-  chartData: any = [0];
-  chartLabel: any = [0];
+  chartData: any;
+  chartLabel: any;
   colors: any;
   chart: Chart;
   configLine: any;
@@ -26,31 +26,30 @@ export class InfographicsOrgGeneralDonationsComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes) {
-    if (changes['org']) {
 
+    if (changes['orgGeneralDonationGraphData']) {
 
-      if (this.chart) this.chart.destroy();
+      if (this.orgGeneralDonationGraphData) {
+        if (this.chart) this.chart.destroy();
 
+        this.chartData = this.orgGeneralDonationGraphData.map((don) => {
+          return don.chartData
+        });
 
-      if (this.org.id !== '') {
-        this.getGraphData(this.org.id);
+        this.chartLabel = this.orgGeneralDonationGraphData.map((don) => {
+          console.log(don)
+          return don.chartLabel
+        });
+
+        if (this.orgGeneralDonationGraphData) {
+          this.setUpGenConfig();
+          this.chart = new Chart('canvas', this.configLine);
+        }
       }
 
 
     }
   }
-
-  getGraphData(orgID) {
-    this.dfs
-      .getGeneralDonations(orgID)
-      .subscribe((resp) => {
-        let genDonData = this.infoGraphSer.generateGeneralDonations(resp as GeneralDonations[]);
-        this.chartData = genDonData.map((donation: any) => donation.amount);
-        this.chartLabel = genDonData.map((donation: any) => donation.monthYear);
-        this.setUpGenConfig();
-        this.chart = new Chart('canvas', this.configLine);
-      })
-  };
 
   setUpGenConfig() {
     this.colors = this.chartData.map((item, i) => this.selectColor(i));

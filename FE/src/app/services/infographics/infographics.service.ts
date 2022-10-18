@@ -47,7 +47,6 @@ export class InfographicsService {
         totalGeneralDonationsValue: totals.totalGeneralDonationsValue += org.totalGeneralDonationsValue,
         totalItemDonationsCount: totals.totalItemDonationsCount += org.totalItemDonationsCount,
         totalItemDonationsValue: totals.totalItemDonationsValue += org.totalItemDonationsValue
-
       }
     })
 

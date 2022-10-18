@@ -77,7 +77,9 @@ export class OrganisationComponent implements OnInit {
   //snackbar variables
   message: string;
 
-  allOrgsGeneralDonationData:GeneralDonations[];
+  allOrgsGeneralDonationData: GeneralDonations[];
+
+  orgGeneralDonationGraphData: any;
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -612,6 +614,20 @@ export class OrganisationComponent implements OnInit {
     }
   }
 
+  getOrgGenGraphData(orgID:string) {
+    this.dfs
+      .getGeneralDonations(orgID)
+      .subscribe((resp) => {
+        let genDonData = this.infoGraphSer.generateGeneralDonations(resp as GeneralDonations[]);
+        this.orgGeneralDonationGraphData = genDonData.map((donation: any) => {
+            return {
+              chartData: donation.amount,
+              chartLabel: donation.monthYear,
+            }
+          })
+      })
+  };
+
   // selected row of org table
 
   selectRow(orgData) {
@@ -622,6 +638,7 @@ export class OrganisationComponent implements OnInit {
       this.getItemsSubscription.unsubscribe();
       return;
     }
+    this.getOrgGenGraphData(orgData.id)
     //this.getGraphData(orgData.id);
     this.selectedOrg = orgData;
     this.activeItems = this.items.filter((item) => {

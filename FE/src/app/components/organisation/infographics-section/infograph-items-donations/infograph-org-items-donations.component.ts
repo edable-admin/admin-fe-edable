@@ -12,6 +12,7 @@ import { FormBuilder } from '@angular/forms';
 })
 
 export class InfographItemsDonationsComponent implements OnInit, OnChanges {
+
   @Input() items:Item[] = [];
   @Input() org: Organisation;
 
