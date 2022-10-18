@@ -100,6 +100,13 @@
             <!-- </mat-form-field> -->
             <div class="small-graph" style="width:80vw;">
               <!-- <canvas id="mobile">{{mobileChart}}</canvas> -->
+              <app-infographics-section
+                [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
+                [items]="items"
+                [org]="selectedOrg"
+                [IsMobile]="true"
+                [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
+              ></app-infographics-section>
             </div>
           </mat-expansion-panel>
         </mat-accordion>

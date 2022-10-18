@@ -15,6 +15,7 @@ export class InfographicsSectionComponent implements OnInit, OnChanges {
   @Input() org: Organisation;
   @Input() allOrgsGeneralDonationData: GeneralDonations[];
   @Input() orgGeneralDonationGraphData: any;
+  @Input() IsMobile: any;
 
 
 

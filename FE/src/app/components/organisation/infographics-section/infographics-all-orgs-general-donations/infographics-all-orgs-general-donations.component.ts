@@ -14,6 +14,7 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
   @Input() allOrgsGeneralDonationData:GeneralDonations[];
   @Input() org:Organisation;
   @Input() chartType:string;
+  @Input() IsMobile:Boolean;
 
   chartData:any[];
   chartLabel:any[];
@@ -192,25 +193,26 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
       }
     };
 
+    const chartId = this.IsMobile ? 'all-orgs-gen-don-mobile':'all-orgs-gen-don'
 
     switch (this.chartType) {
       case 'pie':
-        this.chart = new Chart('all-orgs-gen-don', this.configPie);
+        this.chart = new Chart(chartId, this.configPie);
 
         break;
 
       case 'line':
-        this.chart = new Chart('all-orgs-gen-don', this.configLine);
+        this.chart = new Chart(chartId, this.configLine);
 
         break;
 
       case 'bar':
 
-        this.chart = new Chart('all-orgs-gen-don', this.configBar);
+        this.chart = new Chart(chartId, this.configBar);
         break;
 
       case 'polar':
-        this.chart = new Chart('all-orgs-gen-don', this.configPolar);
+        this.chart = new Chart(chartId, this.configPolar);
         break;
 
       default:
@@ -229,28 +231,32 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
 
   ngOnChanges(changes) {
 
+
+
     if (this.chart) this.chart.destroy();
 
     if (changes['org'] || changes['chartType']) {
 
+      const chartId = this.IsMobile ? 'all-orgs-gen-don-mobile':'all-orgs-gen-don'
+
       switch (this.chartType) {
         case 'pie':
-          this.chart = new Chart('all-orgs-gen-don', this.configPie);
+          this.chart = new Chart(chartId, this.configPie);
 
           break;
 
         case 'line':
-          this.chart = new Chart('all-orgs-gen-don', this.configLine);
+          this.chart = new Chart(chartId, this.configLine);
 
           break;
 
         case 'bar':
 
-          this.chart = new Chart('all-orgs-gen-don', this.configBar);
+          this.chart = new Chart(chartId, this.configBar);
           break;
 
         case 'polar':
-          this.chart = new Chart('all-orgs-gen-don', this.configPolar);
+          this.chart = new Chart(chartId, this.configPolar);
           break;
 
         default:

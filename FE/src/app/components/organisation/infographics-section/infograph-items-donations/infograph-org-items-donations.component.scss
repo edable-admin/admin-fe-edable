@@ -1,9 +1,11 @@
 .chart-container{
   display: flex;
   width:40vw;
-  height: 360px;
+  max-height: 360px;
   justify-content: center;
   align-items: center;
+
+  padding-top: 50px;
 
   div{
 
