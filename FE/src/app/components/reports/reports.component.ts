@@ -25,6 +25,7 @@ export class ReportsComponent implements OnInit {
   orgs: Organisation[];
   selectedOrg: Organisation;
   orgData: MatTableDataSource<Organisation>;
+  referralCSVData: ReferralCSVModel[] = [];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -39,6 +40,7 @@ export class ReportsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.referralCSVData = [];
     this.initSelectedOrg();
     this.getOrgs();
   }
@@ -196,50 +198,47 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-  loadReferralData() {
+  async loadReferralData() {
+    
+    if (this.referralCSVData.length === 0) {
+      await this.getAllReferralData();
+    }
+    
+    if (this.selectedOrg.id === '') {
+      this.setTableData(this.referralCSVData, "Referrals", "General Referral Report", "General Referral Report");
+      this.accordion.closeAll();
+    } else  {
+      this.setTableData(this.filterReferralData(), "Referrals", `${this.selectedOrg.name} Referral Report`, `${this.selectedOrg.name} Referral Report`);
+      this.accordion.closeAll();
+    }
+  }
 
-    let referralCSVData: ReferralCSVModel[] = [];
-    let reportTitle: string = '';
-    let fileName: string = '';
+  async getAllReferralData() {
 
-    this.tfs.getReferralData().then(resp => {
+    await this.tfs.getReferralData().then(resp => {
 
       resp.forEach((resp) => {
 
-        if (this.selectedOrg.id !== '') {
-          //Referrals for the selected org
-          let org = this.orgs.find((org) => {
-            return resp.Org_Name === org.id && this.selectedOrg.id === org.id;
-          });
-          console.log(org);
-          
-          if (org) {
-            resp.Org_Name = org.name;
-            referralCSVData.push(resp);
-          }
+        let org = this.orgs.find((org) => {
+          return resp.Org_Name === org.id;
+        });
 
-          reportTitle = `${this.selectedOrg.name}'s Referrals`;
-          fileName = `${this.selectedOrg.name}'s Referral Report`;
-
-        } else {
-          //Get all referrals
-          let org = this.orgs.find((org) => {
-            return resp.Org_Name === org.id;
-          });
-
-          if (org !== null) {
-            resp.Org_Name = org.name;
-            referralCSVData.push(resp);
-          }
-
-          reportTitle = 'General Referral Report';
-          fileName = 'General Referral Report';
+        if (org !== null) {
+          resp.Org_Name = org.name;
+          this.referralCSVData.push(resp);
         }
-      });
-      this.setTableData(referralCSVData, "Referrals", reportTitle, fileName);
-      this.accordion.closeAll();
-    });
 
+      });
+    });
+  }
+
+  filterReferralData(): ReferralCSVModel[] {
+    
+    const orgReferrals = this.referralCSVData.filter(org => {
+      return org.Org_Name === this.selectedOrg.name;
+    });
+    
+    return orgReferrals;
   }
 
   clearTable() {
