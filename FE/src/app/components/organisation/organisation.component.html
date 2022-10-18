@@ -74,6 +74,7 @@
       <div class="big-graph">
 
         <app-infographics-section
+                *ngIf="!IsMobile"
                 [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
                 [items]="items"
                 [org]="selectedOrg"
@@ -101,10 +102,10 @@
             <div class="small-graph" style="width:80vw;">
               <!-- <canvas id="mobile">{{mobileChart}}</canvas> -->
               <app-infographics-section
+                *ngIf="IsMobile"
                 [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
                 [items]="items"
                 [org]="selectedOrg"
-                [IsMobile]="true"
                 [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
               ></app-infographics-section>
             </div>

@@ -26,6 +26,7 @@ import { InfographicsService } from 'src/app/services/infographics/infographics.
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-organisation',
@@ -81,6 +82,8 @@ export class OrganisationComponent implements OnInit {
 
   orgGeneralDonationGraphData: any;
 
+  IsMobile:Boolean = false;
+
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -95,8 +98,27 @@ export class OrganisationComponent implements OnInit {
     public imgService: ImageService,
     public dfs: DonationService,
     public infoGraphSer: InfographicsService,
-    public ts: TransactionService
-  ) { Chart.register(...registerables) }
+    public ts: TransactionService,
+    private breakpointObserver: BreakpointObserver
+  ) {
+    Chart.register(...registerables);
+
+    this.breakpointObserver.observe([
+      "(max-width: 1024px)"
+    ]).subscribe(
+      {
+        next:(result:BreakpointState) => {
+          if (result.matches) {
+           console.log("woo")
+           this.IsMobile = true;
+        } else {
+          console.log('woo', 'woo')
+          this.IsMobile = false;
+        }
+      }
+    })
+  }
+
 
   ngOnDestroy(): void {
     // check if there is a selected org base on id value being '' when null org
