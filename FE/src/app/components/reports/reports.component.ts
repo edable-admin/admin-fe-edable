@@ -15,15 +15,15 @@ import { MatAccordion } from '@angular/material/expansion';
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.scss'],
+  styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
-  displayedColumns: string[] = ['name'];
-  fileName: string = '';
+
+  displayedColumns: string[] = ["name"];
+  fileName: string = "";
   pivotTableData: any;
   selectedOrg: Organisation;
   orgData: MatTableDataSource<Organisation>;
-  selectedReport: any = 0;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -35,7 +35,7 @@ export class ReportsComponent implements OnInit {
     private ifs: ItemService,
     private tfs: TransactionService,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initSelectedOrg();
@@ -43,7 +43,7 @@ export class ReportsComponent implements OnInit {
   }
 
   getOrgs() {
-    this.ofs.getOrgs().subscribe((orgs) => {
+    this.ofs.getOrgs().subscribe(orgs => {
       this.pivotTableData = orgs as Organisation[];
       this.orgData = new MatTableDataSource(orgs as Organisation[]);
       this.orgData.paginator = this.paginator;
@@ -54,72 +54,47 @@ export class ReportsComponent implements OnInit {
   //Customise the toolbar to change the filename when exporting reports
   customiseToolbar(toolbar) {
     const tabs = toolbar.getTabs();
-    delete tabs[0];
-    delete tabs[1];
-    delete tabs[2];
+
     toolbar.getTabs = () => {
-      const exportButton = tabs[3];
+      const exportButton = tabs[3]
       const exportToHTML = exportButton.menu[1];
       const exportToExcel = exportButton.menu[2];
       const exportToPDF = exportButton.menu[3];
 
       exportToHTML.handler = () => {
-        this.reportTable.webDataRocks.exportTo('html', {
-          filename: this.fileName,
-        });
+        this.reportTable.webDataRocks
+          .exportTo('html', {
+            filename: this.fileName
+          })
       };
 
       exportToExcel.handler = () => {
-        this.reportTable.webDataRocks.exportTo('excel', {
-          filename: this.fileName,
-        });
+        this.reportTable.webDataRocks
+          .exportTo('excel', {
+            filename: this.fileName
+          })
       };
 
       exportToPDF.handler = () => {
-        this.reportTable.webDataRocks.exportTo('pdf', {
-          filename: this.fileName,
-        });
+        this.reportTable.webDataRocks
+          .exportTo('pdf', {
+            filename: this.fileName
+          })
       };
 
-      return tabs;
-    };
-  }
-
-  loadReport() {
-    let switchdata = parseInt(this.selectedReport);
-    switch (switchdata) {
-      case 0:
-        this.snackBar.open('No Report Selected');
-        break;
-      case 1:
-        this.loadOrgItems();
-        break;
-      case 2:
-        this.loadGeneralDonations();
-        break;
-      default:
-        this.snackBar.open('No Organisation Selected');
-        break;
+      return tabs
     }
   }
 
-  setTableData(
-    dataSource: any[],
-    reportType: string,
-    title: string,
-    fileName: string
-  ) {
-    if (
-      dataSource.length <= 0 ||
-      dataSource === null ||
-      dataSource === undefined
-    ) {
-      let message = '';
+  setTableData(dataSource: any[], reportType: string, title: string, fileName: string) {
+
+    if (dataSource.length <= 0 || dataSource === null || dataSource === undefined) {
+      let message = ""
       switch (reportType) {
-        case 'Items':
+        case "Items":
           message = `${this.selectedOrg.name} has no donation items`;
           break;
-        case 'Donations':
+        case "Donations":
           message = `${this.selectedOrg.name} has no general donations`;
           break;
 
@@ -140,21 +115,22 @@ export class ReportsComponent implements OnInit {
       options: {
         grid: {
           title: title,
-          type: 'flat',
-          showTotals: 'on',
-          showGrandTotals: 'on',
-        },
-      },
+          type: "flat",
+          showTotals: "on",
+          showGrandTotals: "on"
+        }
+      }
     });
   }
 
   loadOrgItems() {
     if (this.selectedOrg.id === '') {
-      this.snackBar.open('No organisation selected');
+      this.snackBar.open("No organisation selected");
       return;
     }
 
     this.ifs.getItems(this.selectedOrg.id).subscribe((itemData) => {
+
       let orgItems = itemData as ItemGetModel[];
 
       const data: ItemCSVModel[] = orgItems.map((item: ItemGetModel) => {
@@ -163,32 +139,26 @@ export class ReportsComponent implements OnInit {
           Created_At: item.createdAt.toDate().toLocaleDateString(),
           Initial_Price: item.initialPrice,
           Total_Donations_Value: item.totalDonationsValue,
-          Amount_Remaining: Math.max(
-            0,
-            item.initialPrice - item.totalDonationsValue
-          ),
+          Amount_Remaining: Math.max(0, (item.initialPrice - item.totalDonationsValue)),
           Is_Funded: item.totalDonationsValue >= item.initialPrice,
           Date_Completed: item.dateCompleted?.toDate().toLocaleTimeString(),
-          Active_Status: item.activeStatus,
-        };
-        return newItem;
+          Active_Status: item.activeStatus
+        }
+        return newItem
       });
-      this.setTableData(
-        data,
-        'Items',
-        `${this.selectedOrg.name}'s Donation Items`,
-        `${this.selectedOrg.name} Donation Item Report`
-      );
+      this.setTableData(data, "Items", `${this.selectedOrg.name}'s Donation Items`, `${this.selectedOrg.name} Donation Item Report`);
+      this.accordion.closeAll();
     });
   }
 
   loadGeneralDonations() {
     if (this.selectedOrg.id === '') {
-      this.snackBar.open('No organisation selected');
+      this.snackBar.open("No organisation selected");
       return;
     }
 
     this.tfs.getOrgGeneralDonations(this.selectedOrg.id).then((resp) => {
+
       let donations: GeneralDonations[] = [];
 
       resp.forEach((resp) => {
@@ -202,22 +172,19 @@ export class ReportsComponent implements OnInit {
           Comment: item.comment,
           Is_Subscribed: item.IsSubscribed,
           Is_Refunded: item.IsRefunded,
-          Amount: parseInt(item.amount),
-        };
+          Amount: parseInt(item.amount)
+        }
         return newItem;
       });
 
-      this.setTableData(
-        data,
-        'Donations',
-        `${this.selectedOrg.name}'s General Donations`,
-        `${this.selectedOrg.name} General Donation Report`
-      );
+      this.setTableData(data, "Donations", `${this.selectedOrg.name}'s General Donations`, `${this.selectedOrg.name} General Donation Report`);
+      this.accordion.closeAll();
     });
   }
 
   clearTable() {
-    this.fileName = '';
+    this.accordion.closeAll();
+    this.fileName = "";
 
     this.reportTable.webDataRocks.setReport({
       dataSource: {
@@ -225,12 +192,12 @@ export class ReportsComponent implements OnInit {
       },
       options: {
         grid: {
-          title: '',
-          type: 'flat',
-          showTotals: 'on',
-          showGrandTotals: 'on',
-        },
-      },
+          title: "",
+          type: "flat",
+          showTotals: "on",
+          showGrandTotals: "on"
+        }
+      }
     });
   }
 
@@ -269,7 +236,9 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-  onPivotReady(pivot: WebDataRocks.Pivot): void {}
+  onPivotReady(pivot: WebDataRocks.Pivot): void {
+    console.log('[ready] WebdatarocksPivotModule', this.reportTable);
+  }
 }
 interface ItemCSVModel {
   Name: string;
@@ -295,10 +264,10 @@ interface ItemGetModel {
   dateCompleted?: Timestamp;
 }
 interface DonationCSVModel {
-  Donation_Date: string;
-  Amount: number;
-  Donor_Public_Name: string;
-  Comment: string;
-  Is_Subscribed: boolean;
-  Is_Refunded: boolean;
+  Donation_Date: string,
+  Amount: number,
+  Donor_Public_Name: string,
+  Comment: string,
+  Is_Subscribed: boolean,
+  Is_Refunded: boolean
 }
