@@ -51,7 +51,7 @@ table {
   width: 100%;
 }
 
-@media(max-width: 850px){
+@media(max-width: 1000px){
   .container{
     flex-wrap: wrap;
   }
@@ -61,6 +61,7 @@ table {
   }
 
   .sheet{
-    width: 100%;
+    width: 80%;
+    min-width: 250px;
   }
 }

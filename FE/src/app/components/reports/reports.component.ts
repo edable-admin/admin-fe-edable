@@ -54,7 +54,9 @@ export class ReportsComponent implements OnInit {
   //Customise the toolbar to change the filename when exporting reports
   customiseToolbar(toolbar) {
     const tabs = toolbar.getTabs();
-
+    delete tabs[0];
+    delete tabs[1];
+    delete tabs[2];
     toolbar.getTabs = () => {
       const exportButton = tabs[3];
       const exportToHTML = exportButton.menu[1];
