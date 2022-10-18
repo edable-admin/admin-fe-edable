@@ -142,7 +142,6 @@ export class InfographicsService {
 
 //------------------------- Get item Donation Data for an Organisation ---------------------//
   async getGraphDataOrgItemsDonations(items: Item[], org: Organisation, startDate?: Date, endDate?: Date) {
-
     // Get ItemDonations from the database
     let graphDataItemsDonations:any = await Promise.all(items.map(async item => {
       //get item donations for org
@@ -188,10 +187,12 @@ export class InfographicsService {
       return itemGroup.map((item) => {
         return {
           ...item,
-          donationDate: item.donationDate.toDate().toISOString().split('T')[0]
+          donationDate: item.donationDate.toDate().toLocaleDateString().split("/").reverse().join("-")
         }
       })
     })
+
+
 
 
 
@@ -214,7 +215,6 @@ export class InfographicsService {
       })
     })
 
-    console.log(graphDataItemsDonations)
     //colour pallet
     const selectColor = (number) => {
       const hue = number * 137.508;

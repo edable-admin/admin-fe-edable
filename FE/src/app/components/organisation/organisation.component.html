@@ -1,4 +1,5 @@
 <html>
+
 <body>
   <div class="container">
     <div class="table-header">
@@ -26,17 +27,17 @@
         </mat-radio-button>
       </mat-radio-group>
     </div>
-    <div class="chartDropdown">
-      <mat-form-field style="width:107px" appearance="fill">
-        <mat-label>Chart Type</mat-label>
-        <mat-select [(value)]="chartType" (selectionChange)="changeChart()">
-          <mat-option value="pie">Pie</mat-option>
-          <mat-option value="line">Line</mat-option>
-          <mat-option value="bar">Bar</mat-option>
-          <mat-option value="polar">Polar</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+    <!-- <div class="chartDropdown"> -->
+      <!-- <mat-form-field style="width:107px" appearance="fill"> -->
+        <!-- <mat-label>Chart Type</mat-label> -->
+        <!-- <mat-select [(value)]="chartType" (selectionChange)="changeChart()"> -->
+          <!-- <mat-option value="pie">Pie</mat-option> -->
+          <!-- <mat-option value="line">Line</mat-option> -->
+          <!-- <mat-option value="bar">Bar</mat-option> -->
+          <!-- <mat-option value="polar">Polar</mat-option> -->
+        <!-- </mat-select> -->
+      <!-- </mat-form-field> -->
+    <!-- </div> -->
 
     <div class="flex-container">
       <section class="scroll-container mat-elevation-z8">
@@ -71,16 +72,13 @@
         </mat-paginator>
       </section>
       <div class="big-graph">
+
         <app-infographics-section
-          [items]="items"
-          [org]="selectedOrg"
-        ></app-infographics-section>
+                [items]="items"
+                [org]="selectedOrg"
+                [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
+              ></app-infographics-section>
         <!-- <canvas id="canvas" height=140>{{chart}}</canvas> -->
-        <!-- <app-infograph-org-items-donations -->
-        <!-- [items]="items" -->
-        <!-- [org] ="selectedOrg" -->
-        <!-- > -->
-        <!-- </app-infograph-org-items-donations> -->
       </div>
       <div class="graph-expansion">
         <mat-accordion>
@@ -90,20 +88,17 @@
                 Donation Chart
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <mat-form-field style="width:107px" appearance="fill">
+            <!-- <mat-form-field style="width:107px" appearance="fill"> -->
               <mat-label>Chart Type</mat-label>
-              <mat-select [(value)]="chartType" (selectionChange)="changeChart()">
-                <mat-option value="pie">Pie</mat-option>
-                <mat-option *ngIf="this.selectedOrg.id !== ''" value="line">Line</mat-option>
-                <mat-option value="bar">Bar</mat-option>
-                <mat-option value="polar">Polar</mat-option>
-              </mat-select>
-            </mat-form-field>
+              <!-- <mat-select [(value)]="chartType" (selectionChange)="changeChart()"> -->
+                <!-- <mat-option value="pie">Pie</mat-option> -->
+                <!-- <mat-option *ngIf="this.selectedOrg.id !== ''" value="line">Line</mat-option> -->
+                <!-- <mat-option value="bar">Bar</mat-option> -->
+                <!-- <mat-option value="polar">Polar</mat-option> -->
+              <!-- </mat-select> -->
+            <!-- </mat-form-field> -->
             <div class="small-graph" style="width:80vw;">
-              <app-infographics-section
-                [items]="items"
-                [org]="selectedOrg"
-              ></app-infographics-section>
+              <!-- <canvas id="mobile">{{mobileChart}}</canvas> -->
             </div>
           </mat-expansion-panel>
         </mat-accordion>

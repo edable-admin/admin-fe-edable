@@ -8,8 +8,15 @@
     *ngIf="infoGraphicsControl.value === 'Item Donations'"
     [items]="items"
     [org]="org"
+
   >
   </app-infograph-org-items-donations>
+
+  <app-infographics-general-donations
+    [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
+  >
+
+  </app-infographics-general-donations>
 
 
 </div>
