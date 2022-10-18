@@ -1,43 +1,236 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Chart } from 'chart.js';
+import { Organisation } from 'src/app/models/Organisation/Organisation';
 
 @Component({
   selector: 'app-infographics-all-orgs-general-donations',
   templateUrl: './infographics-all-orgs-general-donations.component.html',
   styleUrls: ['./infographics-all-orgs-general-donations.component.scss']
 })
-export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit {
+export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() allOrgsGeneralDonationData:GeneralDonations[];
+  @Input() org:Organisation;
 
   chartData:any[];
   chartLabel:any[];
-  chart: any = [];
+  chart:Chart;
   colors: any;
+  configPolar: any;
+  configLine: any;
+  configPie: any;
+  configBar: any;
 
 
   constructor() { }
 
   ngOnInit(): void {
+
+  };
+
+  ngOnDestroy(): void {
+    if(this.chart) this.chart.destroy();
   }
+
+  ngAfterViewInit(): void {
+    if(this.chart) this.chart.destroy();
+
+    this.chartData = this.allOrgsGeneralDonationData.map((donation: any) => donation.totalGeneralDonationsValue);
+    this.chartLabel = this.allOrgsGeneralDonationData.map((donation: any) => donation.name);
+    this.updateColors();
+    //this.updateCharts();
+
+    this.configLine = {
+      type: 'line',
+      data: {
+        labels: this.chartLabel,
+        datasets: [{
+          label: 'Donation Amount',
+          backgroundColor: this.colors,
+          borderColor: '#3e95cd',
+          fill: true,
+          data: this.chartData,
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'General Donations Overview',
+            padding: {
+              top: 10,
+              bottom: 0
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Donation Amount [$]'
+            }
+          },
+          x: {
+            ticks: {
+              autoSkip: false
+            },
+            title: {
+              display: true,
+              text: 'Date [MM/YYYY]',
+            }
+          }
+        },
+      }
+    };
+
+    this.configPie = {
+      type: 'pie',
+      data: {
+        labels: this.chartLabel,
+        datasets: [{
+          label: 'Donation Amount',
+          hoverOffset: 5,
+          data: this.chartData,
+          backgroundColor: this.colors,
+        }]
+      },
+      plugins: [ChartDataLabels],
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        layout: {
+          padding: 10,
+        },
+        plugins: {
+          tooltips: {
+            enabled: false
+          },
+          datalabels: {
+            formatter: (value, context) => {
+              const name = context.chart.data.labels[context.dataIndex];
+              return [`${name}`];
+            },
+          },
+          title: {
+            display: true,
+            text: 'General Donations Overview',
+            padding: {
+              top: 10,
+              bottom: 0
+            }
+          }
+        },
+      }
+    };
+
+    this.configBar = {
+      type: 'bar',
+      data: {
+        labels: this.chartLabel,
+        datasets: [{
+          label: 'Donation Amount',
+          data: this.chartData,
+          backgroundColor: this.colors,
+        }]
+      },
+      plugins: [ChartDataLabels],
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        layout: {
+          padding: 10,
+        },
+        plugins: {
+          tooltips: {
+            enabled: false
+          },
+          datalabels: {
+            formatter: (value, context) => {
+              const name = context.chart.data.labels[context.dataIndex];
+              return [`${name}`];
+            },
+          },
+          title: {
+            display: true,
+            text: 'General Donations Overview',
+            padding: {
+              top: 10,
+              bottom: 0
+            }
+          }
+        },
+      }
+  };
+
+    this.configPolar = {
+      type: 'polarArea',
+      data: {
+        labels: this.chartLabel,
+        datasets: [{
+          label: 'Donation Amount',
+          hoverOffset: 5,
+          data: this.chartData,
+          backgroundColor: this.colors,
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        layout: {
+          padding: 10,
+        },
+        plugins: {
+          tooltips: {
+            enabled: false
+          },
+          title: {
+            display: true,
+            text: 'General Donations Overview',
+            padding: {
+              top: 10,
+              bottom: 0
+            }
+          }
+        },
+      }
+    };
+
+    this.chart = new Chart('canvas', this.configPie);
+  }
+
+
 
 
   ngOnChanges(changes) {
-    if(changes['allOrgsGeneralDonationData']){
-      console.log(this.allOrgsGeneralDonationData)
+    if(this.chart) this.chart.destroy();
+    if (changes['org']) {
+      console.log(this.org)
+      if (this.org.id !== '') {
+        if(this.chart) this.chart.destroy();
+      }
     }
   }
 
-  // updateCharts() {
-  //   this.chart.data.labels = (this.chartLabel);
-  //   this.chart.data.datasets[0].data = (this.chartData);
-  //   this.chart.data.datasets[0].backgroundColor = (this.colors);
-  //   this.chart.update();
-  // };
+  updateCharts() {
+    this.chart.data.labels = (this.chartLabel);
+    this.chart.data.datasets[0].data = (this.chartData);
+    this.chart.data.datasets[0].backgroundColor = (this.colors);
+    this.chart.update();
+  };
 
-  //   updateColors() {
-  //   this.colors = this.chartLabel.map((item, i) => this.selectColor(i));
-  // };
+    updateColors() {
+    this.colors = this.chartLabel.map((item, i) => this.selectColor(i));
+  };
+
+  selectColor(number) {
+    const hue = number * 137.508;
+    return `hsl(${hue},50%,75%)`;
+  }
 
     resetGraphData() {
     this.chartData = [0];

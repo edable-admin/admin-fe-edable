@@ -18,10 +18,12 @@
   >
   </app-infographics-org-general-donations>
 
-  <!-- <app-infographics-all-orgs-general-donations -->
-    <!-- [allOrgsGeneralDonationData]="allOrgsGeneralDonationData" -->
-  <!-- > -->
-  <!-- </app-infographics-all-orgs-general-donations> -->
+  <app-infographics-all-orgs-general-donations
+    *ngIf="org.id === '' && allOrgsGeneralDonationData"
+    [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
+    [org]="org"
+  >
+  </app-infographics-all-orgs-general-donations>
 
 
 </div>
