@@ -26,6 +26,17 @@
         </mat-radio-button>
       </mat-radio-group>
     </div>
+    <div class="chartDropdown">
+      <mat-form-field style="width:107px" appearance="fill">
+        <mat-label>Chart Type</mat-label>
+        <mat-select [(value)]="chartType" (selectionChange)="changeChart()">
+          <mat-option value="pie">Pie</mat-option>
+          <mat-option value="line">Line</mat-option>
+          <mat-option value="bar">Bar</mat-option>
+          <mat-option value="polar">Polar</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
     <div class="flex-container">
       <section class="scroll-container mat-elevation-z8">
@@ -59,7 +70,6 @@
           aria-label="Select page of users">
         </mat-paginator>
       </section>
-
       <div class="big-graph">
         <app-infographics-section
           [items]="items"
@@ -80,6 +90,15 @@
                 Donation Chart
               </mat-panel-title>
             </mat-expansion-panel-header>
+            <mat-form-field style="width:107px" appearance="fill">
+              <mat-label>Chart Type</mat-label>
+              <mat-select [(value)]="chartType" (selectionChange)="changeChart()">
+                <mat-option value="pie">Pie</mat-option>
+                <mat-option *ngIf="this.selectedOrg.id !== ''" value="line">Line</mat-option>
+                <mat-option value="bar">Bar</mat-option>
+                <mat-option value="polar">Polar</mat-option>
+              </mat-select>
+            </mat-form-field>
             <div class="small-graph" style="width:80vw;">
               <app-infographics-section
                 [items]="items"

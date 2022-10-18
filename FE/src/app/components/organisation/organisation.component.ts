@@ -63,7 +63,10 @@ export class OrganisationComponent implements OnInit {
   filterValue: string = "";
   configLine: any;
   configPie: any;
+  configBar: any;
+  configPolar: any;
   colors: any;
+  chartType = 'pie';
 
   activeStatusToggle: boolean = true;
 
@@ -104,93 +107,183 @@ export class OrganisationComponent implements OnInit {
     // this.getGeneralGraphData();
     this.initSelectedOrg();
     //TODO: INSERT GET GRAPH DATA HERE
-    // this.colors = this.chartData.map((item, i) => this.selectColor(i));
-    // this.configLine = {
-    //   type: 'line',
-    //   data: {
-    //     labels: this.chartLabel,
-    //     datasets: [{
-    //       label: 'Donation Amount',
-    //       backgroundColor: this.colors,
-    //       borderColor: '#3e95cd',
-    //       fill: true,
-    //       data: this.chartData,
-    //     }]
-    //   },
-    //   options: {
-    //     maintainAspectRatio: false,
-    //     responsive: true,
-    //     plugins: {
-    //       title: {
-    //         display: true,
-    //         text: 'General Donations Overview',
-    //         padding: {
-    //           top: 10,
-    //           bottom: 0
-    //         },
-    //       },
-    //     },
-    //     scales: {
-    //       y: {
-    //         beginAtZero: true,
-    //         title: {
-    //           display: true,
-    //           text: 'Donation Amount [$]'
-    //         }
-    //       },
-    //       x: {
-    //         ticks: {
-    //           autoSkip: false
-    //         },
-    //         title: {
-    //           display: true,
-    //           text: 'Date [MM/YYYY]',
-    //         }
-    //       }
-    //     },
-    //   }
-    // };
-    // this.configPie = {
-    //   type: 'pie',
-    //   data: {
-    //     labels: this.chartLabel,
-    //     datasets: [{
-    //       label: 'Donation Amount',
-    //       hoverOffset: 5,
-    //       data: this.chartData,
-    //       backgroundColor: this.colors,
-    //     }]
-    //   },
-    //   plugins: [ChartDataLabels],
-    //   options: {
-    //     maintainAspectRatio: false,
-    //     responsive: true,
-    //     layout: {
-    //       padding: 10,
-    //     },
-    //     plugins: {
-    //       tooltips: {
-    //         enabled: false
-    //       },
-    //       datalabels: {
-    //         formatter: (value, context) => {
-    //           const name = context.chart.data.labels[context.dataIndex];
-    //           return [`${name}`, `$${value}`];
-    //         },
-    //       },
-    //       title: {
-    //         display: true,
-    //         text: 'General Donations Overview',
-    //         padding: {
-    //           top: 10,
-    //           bottom: 0
-    //         }
-    //       }
-    //     },
-    //   }
-    // };
+    this.colors = this.chartData.map((item, i) => this.selectColor(i));
+    this.configLine = {
+      type: 'line',
+      data: {
+        labels: this.chartLabel,
+        datasets: [{
+          label: 'Donation Amount',
+          backgroundColor: this.colors,
+          borderColor: '#3e95cd',
+          fill: true,
+          data: this.chartData,
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'General Donations Overview',
+            padding: {
+              top: 10,
+              bottom: 0
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Donation Amount [$]'
+            }
+          },
+          x: {
+            ticks: {
+              autoSkip: false
+            },
+            title: {
+              display: true,
+              text: 'Date [MM/YYYY]',
+            }
+          }
+        },
+      }
+    };
+    this.configPie = {
+      type: 'pie',
+      data: {
+        labels: this.chartLabel,
+        datasets: [{
+          label: 'Donation Amount',
+          hoverOffset: 5,
+          data: this.chartData,
+          backgroundColor: this.colors,
+        }]
+      },
+      plugins: [ChartDataLabels],
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        layout: {
+          padding: 10,
+        },
+        plugins: {
+          tooltips: {
+            enabled: false
+          },
+          datalabels: {
+            formatter: (value, context) => {
+              const name = context.chart.data.labels[context.dataIndex];
+              return [`${name}`];
+            },
+          },
+          title: {
+            display: true,
+            text: 'General Donations Overview',
+            padding: {
+              top: 10,
+              bottom: 0
+            }
+          }
+        },
+      }
+    };
+    this.configBar = {
+      type: 'bar',
+      data: {
+        labels: this.chartLabel,
+        datasets: [{
+          label: 'Donation Amount',
+          data: this.chartData,
+          backgroundColor: this.colors,
+        }]
+      },
+      plugins: [ChartDataLabels],
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        layout: {
+          padding: 10,
+        },
+        plugins: {
+          tooltips: {
+            enabled: false
+          },
+          datalabels: {
+            formatter: (value, context) => {
+              const name = context.chart.data.labels[context.dataIndex];
+              return [`${name}`];
+            },
+          },
+          title: {
+            display: true,
+            text: 'General Donations Overview',
+            padding: {
+              top: 10,
+              bottom: 0
+            }
+          }
+        },
+      }
+  };
+
+    this.configPolar = {
+      type: 'polarArea',
+      data: {
+        labels: this.chartLabel,
+        datasets: [{
+          label: 'Donation Amount',
+          hoverOffset: 5,
+          data: this.chartData,
+          backgroundColor: this.colors,
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        layout: {
+          padding: 10,
+        },
+        plugins: {
+          tooltips: {
+            enabled: false
+          },
+          title: {
+            display: true,
+            text: 'General Donations Overview',
+            padding: {
+              top: 10,
+              bottom: 0
+            }
+          }
+        },
+      }
+    };
+
     this.chart = new Chart('canvas', this.configPie);
     this.mobileChart = new Chart('mobile', this.configPie);
+  }
+
+  changeChart(){
+    if(this.chartType==='pie'){
+      this.pieGraphs();
+    }
+
+    if(this.chartType==='line'){
+      this.lineGraphs();
+    }
+
+    if(this.chartType==='bar'){
+      this.barGraphs();
+    }
+
+    if(this.chartType==='polar'){
+      this.polarGraphs();
+    }
   }
 
   onImgError(event) {
@@ -462,30 +555,49 @@ export class OrganisationComponent implements OnInit {
     this.mobileChart.update();
   };
 
-  resetGraphs() {
-    // this.chart.destroy();
-    // this.mobileChart.destroy();
-    // this.chart = new Chart('canvas', this.configPie);
-    // this.mobileChart = new Chart('mobile', this.configPie);
+  pieGraphs() {
+    this.chart.destroy();
+    this.mobileChart.destroy();
+    this.chart = new Chart('canvas', this.configPie);
+    this.mobileChart = new Chart('mobile', this.configPie);
+    this.updateCharts();
   };
 
-  //TODO: GRAPH TYPE OPTIONS - MAYBE DROPDOWN BOX?
+  lineGraphs() {
+    this.chart.destroy();
+    this.mobileChart.destroy();
+    this.chart = new Chart('canvas', this.configLine);
+    this.mobileChart = new Chart('mobile', this.configLine);
+    this.updateCharts();
+  };
 
-  // getGraphData(orgID) {
-  //   this.chart.destroy();
-  //   this.mobileChart.destroy();
-  //   this.chart = new Chart('canvas', this.configLine);
-  //   this.mobileChart = new Chart('mobile', this.configLine);
-  //   this.dfs
-  //     .getGeneralDonations(orgID)
-  //     .subscribe((resp) => {
-  //       let genDonData = this.infoGraphSer.generateGeneralDonations(resp as GeneralDonations[]);
-  //       this.chartData = genDonData.map((donation: any) => donation.amount);
-  //       this.chartLabel = genDonData.map((donation: any) => donation.monthYear);
-  //       this.updateColors();
-  //       this.updateCharts();
-  //     })
-  // };
+  barGraphs() {
+    this.chart.destroy();
+    this.mobileChart.destroy();
+    this.chart = new Chart('canvas', this.configBar);
+    this.mobileChart = new Chart('mobile', this.configBar);
+    this.updateCharts();
+  };
+
+  polarGraphs() {
+    this.chart.destroy();
+    this.mobileChart.destroy();
+    this.chart = new Chart('canvas', this.configPolar);
+    this.mobileChart = new Chart('mobile', this.configPolar);
+    this.updateCharts();
+  };
+
+  getGraphData(orgID) {
+    this.dfs
+      .getGeneralDonations(orgID)
+      .subscribe((resp) => {
+        let genDonData = this.infoGraphSer.generateGeneralDonations(resp as GeneralDonations[]);
+        this.chartData = genDonData.map((donation: any) => donation.amount);
+        this.chartLabel = genDonData.map((donation: any) => donation.monthYear);
+        this.updateColors();
+        this.updateCharts();
+      })
+  };
 
   // getGeneralGraphData() {
   //   this.dfs
@@ -520,22 +632,19 @@ export class OrganisationComponent implements OnInit {
 
     switch (activeStatusFilter) {
       case "Active":
-        this.resetGraphs();
-        // this.getGeneralGraphData();
+        this.getGeneralGraphData();
         filteredOrgs =
           this.allOrgs.filter(org => org.activeStatus === true);
         this.activeStatusFilter = "Active";
         break;
       case 'Inactive':
-        this.resetGraphs();
-        // this.getGeneralGraphData();
+        this.getGeneralGraphData();
         filteredOrgs =
           this.allOrgs.filter(org => org.activeStatus === false);
         this.activeStatusFilter = "Inactive";
         break;
       case 'All':
-        this.resetGraphs();
-        // this.getGeneralGraphData();
+        this.getGeneralGraphData();
         filteredOrgs =
           this.allOrgs.filter(org => org.activeStatus === true || org.activeStatus === false);
         this.activeStatusFilter = "All";
@@ -566,8 +675,7 @@ export class OrganisationComponent implements OnInit {
 
   selectRow(orgData) {
     if (this.selectedOrg.id === orgData.id) {
-      this.resetGraphs();
-      //this.getGeneralGraphData();
+      this.getGeneralGraphData();
       this.initSelectedOrg();
       this.getItemsSubscription.unsubscribe();
       this.resetGraphData();

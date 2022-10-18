@@ -25,6 +25,10 @@ tr:hover {
     margin: 0px 20px 0px 20px;
 }
 
+.table-header{
+  display: inline-block;
+}
+
 .table-header,
 button {
     margin-right: 10px;
@@ -182,7 +186,12 @@ mat-card {
     margin: 0;
 }
 
-@media screen and (max-width:700px) {
+.chartDropdown{
+  margin-left:5px;
+  float:right;
+}
+
+@media screen and (max-width:1024px) {
     .graph-expansion {
         display: block;
         margin-top: 15px;
@@ -207,6 +216,10 @@ mat-card {
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .chartDropdown{
+      display:none;
     }
 
 }
