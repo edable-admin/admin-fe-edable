@@ -8,8 +8,7 @@ tr:hover {
 }
 
 .table-container {
-    width: 210px !important;
-    margin: 15px;
+    max-width: 500px;
 }
 
 .table-container,
@@ -19,49 +18,11 @@ table {
 
 .button-container {
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
 }
 
-.button-container{
-  padding: 10px;
-}
-
-.buttons{
-  margin: 10px;
-}
-
-.container{
-    width: 100%;
-    display: flex;
-}
-
-.tabs{
-  padding: 10px;
-}
-
-.specific-reports{
-  padding: 10px;
-}
-
-.tab{
-  padding: 10px;
-}
-
-.sheet{
-  width: 100%;
-}
-
-@media(max-width: 1000px){
-  .container{
-    flex-wrap: wrap;
-  }
-
-  .button-container {
-    flex-direction: column;
-  }
-
-  .sheet{
-    width: 80%;
-    min-width: 250px;
-  }
+.button-container,
+button {
+    margin-top: 10px;
 }
