@@ -5,7 +5,9 @@ export interface GeneralDonations {
   IsRefunded?: boolean,
   comment?:string,
   donationDate?: Date;
-  donorPublicName?: String;  
+  donorPublicName?: String;
   amount?: number;
   orgName?: string;
+  orgID?: string;
+  donationID?: string;
 }

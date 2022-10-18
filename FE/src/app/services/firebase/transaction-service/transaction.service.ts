@@ -50,26 +50,26 @@ export class TransactionService {
   async getGeneralDonations() {
     const orgGenDonations = (await this.fs.firestore
       .collectionGroup('GeneralDonations')).get()
-      
-      
+
+
     return orgGenDonations;
   }
+
+    //------------------------ Edit the "IsRefunded" for General Donation -------------------------------\\
+    async editGenDonation(orgID: string, donationID: string, transactionReq: GeneralDonations["IsRefunded"]) {
+      this.fs.collection("Organisations").doc(orgID).collection('GeneralDonations').doc(donationID).update({IsRefunded: transactionReq});
+
+    }
+
+    //------------------------ Edit the "IsRefunded" for Item Donation ----------------------------------\\
+    async editItemDonation(orgID: string, itemID:string, donationID: string, transactionReq: ItemDonations["IsRefunded"]) {
+      this.fs.collection("Organisations").doc(orgID).collection("Items").doc(itemID).collection('ItemsDonations').doc(donationID).update({IsRefunded: transactionReq});
+      return transactionReq;
+    }
 
   //------------------------------------- Get All Orgs -------------------------------------------\\
   getOrgs() {
     const org = this.fs.collection('Organisations').doc();
     const orgRef = org.ref;
-  }
-  
-  //------------------------ Edit the "IsRefunded" for General Donation -------------------------------\\
-  async editGenDonation(orgID: string, donationID: string, transactionReq: GeneralDonations["IsRefunded"]) {
-    this.fs.collection("Organisations").doc(orgID).collection('GeneralDonations').doc(donationID).update({IsRefunded: transactionReq});
-    
-  }
-
-  //------------------------ Edit the "IsRefunded" for Item Donation ----------------------------------\\
-  async editItemDonation(orgID: string, itemID:string, donationID: string, transactionReq: ItemDonations["IsRefunded"]) {
-    this.fs.collection("Organisations").doc(orgID).collection("Items").doc(itemID).collection('ItemsDonations').doc(donationID).update({IsRefunded: transactionReq});
-    return transactionReq;
   }
 }
