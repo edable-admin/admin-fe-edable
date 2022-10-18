@@ -25,33 +25,34 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
   @ViewChild('paginatorSecond') paginatorSecond!: MatPaginator;
   @ViewChild('genTableS') genTableS!: MatSort;
   @ViewChild('itemTableS') itemTableS!: MatSort;
-  
+
   itemDonDataSource:MatTableDataSource<ItemDonations>;
   generalDonDataSource:MatTableDataSource<GeneralDonations>;
-  displayedColumns: string[] = ['donationDate', 'donorPublicName', 'amount', 'orgName', 'IsSubscribed']; 
-  itemsDisplayedColumns: string[] = ['donationDate', 'donorPublicName','itemName', 'amount', 'orgName', 'IsRefunded']; 
-  
+  displayedColumns: string[] = ['donationDate', 'donorPublicName', 'amount', 'orgName', 'IsSubscribed'];
+  itemsDisplayedColumns: string[] = ['donationDate', 'donorPublicName','itemName', 'amount', 'orgName', 'IsRefunded'];
+  editStatus: boolean = false;
+
   dataSource?:any[];
   constructor(
     public ts:TransactionService,
     public fs: OrganisationService,
     public Is: ItemService
 
-    ) { 
+    ) {
 
     }
   ngAfterViewInit(): void {
   }
-  
-  
+
+
   filterItems(event: Event) {
     const filterValueItem = (event.target as HTMLInputElement).value;
-    this.itemDonDataSource.filter = filterValueItem.trim().toLowerCase(); 
-     
+    this.itemDonDataSource.filter = filterValueItem.trim().toLowerCase();
+
   }
   filterGenDon(event: Event) {
     const filterValueGeneral = (event.target as HTMLInputElement).value;
-    this.generalDonDataSource.filter = filterValueGeneral.trim().toLowerCase(); 
+    this.generalDonDataSource.filter = filterValueGeneral.trim().toLowerCase();
   }
 
   ngOnInit(): void {
@@ -63,7 +64,27 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
     this.getItemDonations();
     this.getAllGenDonations();
   }
-   
+
+  changeEditStatus() {
+    this.editStatus = !this.editStatus;
+  }
+
+  resetEditStatus() {
+    this.editStatus = false;
+  }
+
+  editGenRefundStatus(orgID, donationID, isRefunded) {
+    let newRefundedStatus = !isRefunded;
+    this.ts.editGenDonation(orgID, donationID, newRefundedStatus);
+    this.getAllGenDonations();
+  }
+
+  editItemRefundStatus(orgID, itemID, donationID, isRefunded) {
+    let newRefundedStatus = !isRefunded;
+    this.ts.editItemDonation(orgID, itemID, donationID, newRefundedStatus);
+    this.getItemDonations();
+  }
+
   //-------------------- Get all item donations ---------------------------------\\
   async getItemDonations() {
     let orgs: any[];
@@ -88,10 +109,11 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
             )
           }
         )
-    
+
     itemDonations = (await (await this.ts.getItemDonations()).docs.map(
       (itemDon) => {
         let orgID = itemDon.ref.parent.parent.parent.parent.id;
+        let donationID = itemDon.ref.id
         let itemID = itemDon.ref.parent.parent.id;
         let org = orgs.find((org) => {
           return org.id == orgID;
@@ -99,31 +121,21 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
         let item = items.find((item) => {
           return item.id == itemID;
         })
-        return { orgName: org.name, itemName: item.name, ...itemDon.data()}
+        return { itemID:item.id,  orgID:org.id, donationID: donationID, orgName: org.name, itemName: item.name, ...itemDon.data()}
       }
     ))
-    
-    itemDonations.forEach(element => {
-      if (element.IsRefunded) {
-        element.IsRefunded = "check_circle_outline"
-      }
-      else if (!element.IsRefunded) {
-        element.IsRefunded = "highlight_off"
-      }
-      
-    });
     this.itemDonDataSource = new MatTableDataSource(itemDonations);
     this.itemDonDataSource.paginator = this.paginatorSecond;
     this.itemDonDataSource.sort = this.itemTableS;
   }
 
-  
+
   //-------------------- Get All General Donations for --------------------------\\
 
   async getAllGenDonations() {
     let orgs: any[];
     let generalDonations: any;
-   
+
     await this.fs.getAllOrgs()
       .get()
       .then(
@@ -137,22 +149,13 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
     generalDonations = (await (await this.ts.getGeneralDonations()).docs.map(
       (genDon) => {
         let orgID = genDon.ref.parent.parent.id;
-        let org = orgs.find((org) => { 
-          return org.id == orgID
+        let donationID = genDon.ref.id
+        let org = orgs.find((org) => {
+          return (org.id == orgID)
         })
-        return { orgName: org.name, ...genDon.data()};
+        return { orgID:org.id, donationID: donationID, orgName: org.name, ...genDon.data()};
       }
     ))
-    
-    generalDonations.forEach(element => {
-      if (element.IsSubscribed) {
-        element.IsSubscribed = "check_circle_outline"
-      }
-      else if (!element.IsSubscribed) {
-        element.IsSubscribed = "highlight_off"
-      }
-      
-    });
     this.generalDonDataSource = new MatTableDataSource(generalDonations);
     this.generalDonDataSource.paginator = this.paginatorFirst;
     this.generalDonDataSource.sort = this.genTableS;
