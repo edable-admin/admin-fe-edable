@@ -24,6 +24,12 @@ export class ItemService {
     return items;
   }
 
+  //------------------------ Gets a list of donation items for an organisation -------------------\\
+  getAllItems() {
+    let items = this.fs
+      .collectionGroup('Items').get()
+    return items;
+  }
   //------------------------ Add donation items ---------------------//
   addItem(orgID: string, item: Item) {
     try {

@@ -44,6 +44,10 @@ import { ViewItemDetailsComponent } from './components/donation-item/view-donati
 import { ExportCsvComponent } from './components/donation-item/view-donation-item/donation-item-table/export-csv/export-csv.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { WebdatarocksPivotModule } from 'ng-webdatarocks';
+import { InfographItemsDonationsComponent } from './components/organisation/infographics-section/infograph-items-donations/infograph-org-items-donations.component';
+import { InfographicsSectionComponent } from './components/organisation/infographics-section/infographics-section.component';
+import { InfographicsAllOrgsGeneralDonationsComponent } from './components/organisation/infographics-section/infographics-all-orgs-general-donations/infographics-all-orgs-general-donations.component';
+import { InfographicsOrgGeneralDonationsComponent } from './components/organisation/infographics-section/infographics-org-general-donations/infographics-org-general-donations.component';
 
 const config = environment.firebaseConfig;
 
@@ -71,7 +75,11 @@ const config = environment.firebaseConfig;
     DonationItemTableComponent,
     ViewItemDetailsComponent,
     ExportCsvComponent,
-    ReportsComponent
+    ReportsComponent,
+    InfographItemsDonationsComponent,
+    InfographicsSectionComponent,
+    InfographicsAllOrgsGeneralDonationsComponent,
+    InfographicsOrgGeneralDonationsComponent
   ],
   imports: [
     BrowserModule,

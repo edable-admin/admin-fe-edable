@@ -26,7 +26,6 @@ export class RemoveOrganisationDialog {
         this.dialogRef.close(false);
     }
   cancelDelete() {
-        console.log(this.data)
         this.dialogRef.close(false);
     }
     confirmDelete() {
