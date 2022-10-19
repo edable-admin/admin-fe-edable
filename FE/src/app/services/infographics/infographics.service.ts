@@ -19,12 +19,12 @@ export class InfographicsService {
 
 
   groupBy = (xs, key) => {
-    return xs.reduce(function(rv, x) {
+    return xs.reduce(function (rv, x) {
       (rv[x[key]] = rv[x[key]] || []).push(x);
       return rv;
     }, {});
   };
-//------------------------ Totals -----------------------//
+  //------------------------ Totals -----------------------//
   calculateCombinedTotalsAllOrgs(orgs: Organisation[]) {
 
     let totals = {
@@ -53,7 +53,7 @@ export class InfographicsService {
     return totals;
   }
 
-//-------------------------- General Donations -------------------//
+  //-------------------------- General Donations -------------------//
   generateGeneralDonations(generalDonations: GeneralDonations[], startDate?: Date, endDate?: Date) {
 
     let genDon: GeneralDonations[] = [];
@@ -82,7 +82,7 @@ export class InfographicsService {
             don => don.donationDate.toMillis() >= startOfTheYear.getTime() &&
               don.donationDate.toMillis() <= endOfTheYear.getTime() &&
               !don.IsRefunded
-        );
+          );
 
       }
       return filteredDonations;
@@ -100,7 +100,7 @@ export class InfographicsService {
       let donYear = donationDate.getFullYear();
 
       return {
-        monthYear:`${donMonth + 1}/${donYear}`,
+        monthYear: `${donMonth + 1}/${donYear}`,
         month: donMonth + 1,
         year: donationDate.getFullYear(),
         amount: don.amount
@@ -129,8 +129,8 @@ export class InfographicsService {
     monthYear.forEach(month => {
 
       monthlyTotals.push({
-        monthYear:month,
-        amount:groupedMonthlyDonations[month].reduce((prev, curr) => prev + curr.amount, 0)
+        monthYear: month,
+        amount: groupedMonthlyDonations[month].reduce((prev, curr) => prev + curr.amount, 0)
       })
     })
 
@@ -138,19 +138,19 @@ export class InfographicsService {
 
   }
 
-//------------------------- Get item Donation Data for an Organisation ---------------------//
+  //------------------------- Get item Donation Data for an Organisation ---------------------//
   async getGraphDataOrgItemsDonations(items: Item[], org: Organisation, startDate?: Date, endDate?: Date) {
     // Get ItemDonations from the database
-    let graphDataItemsDonations:any = await Promise.all(items.map(async item => {
+    let graphDataItemsDonations: any = await Promise.all(items.map(async item => {
       //get item donations for org
       return (await this.ts.getOrgItemDonations(org.id, item.id))
         .docs.map(doc => {
           return {
-            itemId:item.id,
-            itemName:item.name,
+            itemId: item.id,
+            itemName: item.name,
             amount: doc.data()["amount"],
             donationDate: doc.data()["donationDate"],
-            IsRefunded:doc.data()["IsRefunded"]
+            IsRefunded: doc.data()["IsRefunded"]
           }
         })
     }))
@@ -197,7 +197,7 @@ export class InfographicsService {
     //Group each item by date
     graphDataItemsDonations = graphDataItemsDonations.map((itemGroup) => {
 
-        return this.groupBy(itemGroup,"donationDate")
+      return this.groupBy(itemGroup, "donationDate")
     })
 
 
@@ -208,7 +208,7 @@ export class InfographicsService {
         return {
           itemName: itemGroup[key][0].itemName,
           donationDate: key,
-          amount:itemGroup[key].reduce((prev, cur) => prev + cur.amount, 0)
+          amount: itemGroup[key].reduce((prev, cur) => prev + cur.amount, 0)
         }
       })
     })
@@ -235,7 +235,7 @@ export class InfographicsService {
           borderColor: selectColor(i),
           backgroundColor: selectColor(i),
           pointStyle: 'circle',
-          pointRadius:6
+          pointRadius: 6
         })
       }
     })
@@ -245,13 +245,13 @@ export class InfographicsService {
     //labels = [...new Set(labels.map(item => item.donationDate))];
     const graphData = {
       //labels: labels,
-      dataset:dataset
+      dataset: dataset
     }
     return graphData;
   }
 
 
-//------------------------ Create Scatter Chart for an Organisations Item Donations --------------//
+  //------------------------ Create Scatter Chart for an Organisations Item Donations --------------//
   async createScatterOrgItemDonations(items?: Item[], org?: Organisation, startDate?: Date, endDate?: Date) {
 
     const chartData = await this.getGraphDataOrgItemsDonations(items, org, startDate, endDate);
@@ -264,7 +264,7 @@ export class InfographicsService {
       },
       options: {
         layout: {
-          padding:10
+          padding: 10
         },
         maintainAspectRatio: false,
         responsive: true,
@@ -272,7 +272,7 @@ export class InfographicsService {
           x: {
             type: 'time',
             time: {
-              unit:'day'
+              unit: 'day'
             }
           }
         },
@@ -290,7 +290,7 @@ export class InfographicsService {
           },
           legend: {
             position: 'top',
-            align:'start',
+            align: 'start',
             labels: {
               textAlign: 'left',
               padding: 30,
@@ -299,7 +299,7 @@ export class InfographicsService {
           },
           title: {
             text: `${org.name} Item Donations`,
-            display:true
+            display: true
           },
 
         }
@@ -310,7 +310,53 @@ export class InfographicsService {
     return chart;
   }
 
+  async getReferralData(orgs: Organisation[]): Promise<ReferralGraphData[]> {
 
+    let referralGraphData: ReferralGraphData[] = [];
+    let orgId: string = '';
+    let howHeard: string = '';
+    let referrals: string[] = [];
+
+    await this.fs.firestore.collectionGroup('Private')
+      .get()
+      .then((resp) => {
+
+        resp.docs.forEach((resp) => {
+
+          if (resp.ref.parent.parent.parent.id === 'ItemsDonations') {
+            orgId = resp.ref.parent.parent.parent.parent.parent.parent.id;
+          }
+          else {
+            orgId = resp.ref.parent.parent.parent.parent.id;
+          }
+
+          let org = orgs.find(item => {
+            return item.id === orgId;
+          });
+
+
+          let privateData: PrivateData = resp.data() as PrivateData;
+
+          if (privateData.howHeard === '' && privateData.howHeardOther === '') {
+            howHeard = 'Unknown';
+          } else if (privateData.howHeard === '' && privateData.howHeardOther !== '') {
+            howHeard = privateData.howHeardOther;
+          } else {
+            howHeard = privateData.howHeard;
+          }
+
+          let newReferral: ReferralGraphData = {
+            orgId: orgId,
+            orgName: org.name,
+            howHeard: howHeard
+          };
+
+          referralGraphData.push(newReferral);
+        });
+      });
+    
+    return referralGraphData;
+  }
 
 
   //todo add orgID to item donation for querying on donor side better method
@@ -323,4 +369,21 @@ export class InfographicsService {
   //       query => query.where("orgId", "in", itemIDList)
   //     )
   // }
+}
+
+export interface PrivateData {
+  IsAnon: boolean;
+  agreeToContact: boolean;
+  email: string;
+  howHeard: string;
+  howHeardOther: string;
+  mailingAddress: string;
+  name: string;
+  paypalTransactionId: string;
+  phoneNumber: string;
+}
+export interface ReferralGraphData {
+  orgId: string;
+  orgName: string;
+  howHeard: string;
 }

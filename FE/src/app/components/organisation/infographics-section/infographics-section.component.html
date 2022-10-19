@@ -29,4 +29,10 @@
     [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
   >
   </app-infographics-org-general-donations>
+
+  <app-infographic-referral
+    *ngIf="org.id !== '' && infoGraphicsControl.value === 'Referrals'"
+    [org]="org"
+    [referralData]="referralData"
+  ></app-infographic-referral>
 </div>
