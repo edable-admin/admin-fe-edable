@@ -11,7 +11,7 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./infograph-org-items-donations.component.scss']
 })
 
-export class InfographItemsDonationsComponent implements OnInit, OnChanges {
+export class InfographItemsDonationsComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() items:Item[] = [];
   @Input() org: Organisation;
@@ -25,6 +25,10 @@ export class InfographItemsDonationsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    if(this.graph) this.graph.destroy();
   }
 
   ngOnChanges(changes) {
