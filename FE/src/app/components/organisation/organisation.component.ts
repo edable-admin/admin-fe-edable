@@ -109,10 +109,8 @@ export class OrganisationComponent implements OnInit {
       {
         next:(result:BreakpointState) => {
           if (result.matches) {
-           console.log("woo")
            this.IsMobile = true;
         } else {
-          console.log('woo', 'woo')
           this.IsMobile = false;
         }
       }
