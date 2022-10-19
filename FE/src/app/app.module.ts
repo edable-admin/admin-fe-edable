@@ -44,6 +44,10 @@ import { ViewItemDetailsComponent } from './components/donation-item/view-donati
 import { ExportCsvComponent } from './components/donation-item/view-donation-item/donation-item-table/export-csv/export-csv.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { WebdatarocksPivotModule } from 'ng-webdatarocks';
+import { InfographicsSectionMobileComponent } from './components/organisation/infographics-section-mobile/infographics-section-mobile.component';
+import { InfographicsAllOrgsGeneralDonationsMobileComponent } from './components/organisation/infographics-section-mobile/infographics-all-orgs-general-donations-mobile/infographics-all-orgs-general-donations-mobile.component';
+import { InfographicsOrgGeneralDonationsMobileComponent } from './components/organisation/infographics-section-mobile/infographics-org-general-donations-mobile/infographics-org-general-donations-mobile.component';
+import { InfographItemsDonationsMobileComponent } from './components/organisation/infographics-section-mobile/infograph-items-donations-mobile/infograph-org-items-donations-mobile.component';
 import { InfographItemsDonationsComponent } from './components/organisation/infographics-section/infograph-items-donations/infograph-org-items-donations.component';
 import { InfographicsSectionComponent } from './components/organisation/infographics-section/infographics-section.component';
 import { InfographicsAllOrgsGeneralDonationsComponent } from './components/organisation/infographics-section/infographics-all-orgs-general-donations/infographics-all-orgs-general-donations.component';
@@ -79,7 +83,11 @@ const config = environment.firebaseConfig;
     InfographItemsDonationsComponent,
     InfographicsSectionComponent,
     InfographicsAllOrgsGeneralDonationsComponent,
-    InfographicsOrgGeneralDonationsComponent
+    InfographicsOrgGeneralDonationsComponent,
+    InfographicsSectionMobileComponent,
+    InfographicsAllOrgsGeneralDonationsMobileComponent,
+    InfographicsOrgGeneralDonationsMobileComponent,
+    InfographItemsDonationsMobileComponent
   ],
   imports: [
     BrowserModule,

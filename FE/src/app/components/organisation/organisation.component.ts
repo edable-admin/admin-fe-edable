@@ -101,7 +101,7 @@ export class OrganisationComponent implements OnInit {
     public ts: TransactionService,
     private breakpointObserver: BreakpointObserver
   ) {
-    Chart.register(...registerables);
+
 
     this.breakpointObserver.observe([
       "(max-width: 1024px)"
@@ -117,6 +117,8 @@ export class OrganisationComponent implements OnInit {
         }
       }
     })
+
+    Chart.register(...registerables);
   }
 
 
