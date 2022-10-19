@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import * as firebase from 'firebase/app';
 import { Item } from 'src/app/models/Item';
@@ -8,13 +7,13 @@ import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonatio
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { Timestamp } from 'firebase/firestore';
 import { PrivateData, ReferralCSVModel } from 'src/app/models/Reports';
+import { query } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService {
   constructor(
-    public storage: AngularFireStorage,
     public fs: AngularFirestore
   ) { }
 
@@ -36,6 +35,7 @@ export class TransactionService {
       .collection('Items')
       .doc(itemID)
       .collection('ItemsDonations')
+      .orderBy('donationDate','asc')
       .get();
     return itemDonations;
   }
@@ -70,7 +70,7 @@ export class TransactionService {
     this.fs.collection("Organisations").doc(orgID).collection("Items").doc(itemID).collection('ItemsDonations').doc(donationID).update({ IsRefunded: transactionReq });
     return transactionReq;
   }
-  
+
   async getReferralData(): Promise<ReferralCSVModel[]> {
 
     let privateData: PrivateData[] = [];

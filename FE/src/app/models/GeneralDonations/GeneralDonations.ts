@@ -4,7 +4,7 @@ export interface GeneralDonations {
   IsSubscribed?: boolean,
   IsRefunded?: boolean,
   comment?:string,
-  donationDate?: Date;
+  donationDate?: Timestamp;
   donorPublicName?: String;
   amount?: number;
   orgName?: string;

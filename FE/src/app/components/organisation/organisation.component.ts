@@ -20,6 +20,13 @@ import { UpdateItemsComponent } from '../donation-item/update-donation-item/upda
 import { OrganisationService } from 'src/app/services/firebase/organisation-service/organisation.service';
 import { ImageService } from 'src/app/services/firebase/image-service/image.service';
 import { ViewDonationItemComponent } from '../donation-item/view-donation-item/view-donation-item.component';
+import { DonationService } from 'src/app/services/firebase/donation-service/donation.service';
+import { Chart, registerables } from 'chart.js';
+import { InfographicsService } from 'src/app/services/infographics/infographics.service';
+import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
+import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-organisation',
@@ -43,10 +50,24 @@ export class OrganisationComponent implements OnInit {
   selectedOrg: Organisation;
   activeItems: Item[];
   orgData: any = new MatTableDataSource([]);
-  allOrgs:Organisation[] = []
+  allOrgs: Organisation[] = []
   items: Item[] = [];
+  graphData: any;
+  cleanGraphData: any;
+  chartData: any = [0];
+  chartLabel: any = [0];
+  chart: any = [];
+  mobileChart: any = [];
+  testdata: any;
+  // donor: any;
   activeStatusFilter: string = 'Active';
   filterValue: string = "";
+  configLine: any;
+  configPie: any;
+  configBar: any;
+  configPolar: any;
+  colors: any;
+  chartType = 'pie';
 
   activeStatusToggle: boolean = true;
 
@@ -56,6 +77,12 @@ export class OrganisationComponent implements OnInit {
 
   //snackbar variables
   message: string;
+
+  allOrgsGeneralDonationData: GeneralDonations[];
+
+  orgGeneralDonationGraphData: any;
+
+  IsMobile:Boolean = false;
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -68,8 +95,30 @@ export class OrganisationComponent implements OnInit {
     public ofs: OrganisationService,
     public _snackBar: MatSnackBar,
     public ifs: ItemService,
-    public imgService: ImageService
-  ) { }
+    public imgService: ImageService,
+    public dfs: DonationService,
+    public infoGraphSer: InfographicsService,
+    public ts: TransactionService,
+    private breakpointObserver: BreakpointObserver
+  ) {
+    Chart.register(...registerables);
+
+    this.breakpointObserver.observe([
+      "(max-width: 1024px)"
+    ]).subscribe(
+      {
+        next:(result:BreakpointState) => {
+          if (result.matches) {
+           console.log("woo")
+           this.IsMobile = true;
+        } else {
+          console.log('woo', 'woo')
+          this.IsMobile = false;
+        }
+      }
+    })
+  }
+
 
   ngOnDestroy(): void {
     // check if there is a selected org base on id value being '' when null org
@@ -81,8 +130,188 @@ export class OrganisationComponent implements OnInit {
 
   ngOnInit(): void {
     this.getOrgs();
+    //this.getGeneralGraphData();
+    this.getOrgsGeneralDonationData();
     this.initSelectedOrg();
+    //TODO: INSERT GET GRAPH DATA HERE
+    // this.colors = this.chartData.map((item, i) => this.selectColor(i));
+    // this.configLine = {
+    //   type: 'line',
+    //   data: {
+    //     labels: this.chartLabel,
+    //     datasets: [{
+    //       label: 'Donation Amount',
+    //       backgroundColor: this.colors,
+    //       borderColor: '#3e95cd',
+    //       fill: true,
+    //       data: this.chartData,
+    //     }]
+    //   },
+    //   options: {
+    //     maintainAspectRatio: false,
+    //     responsive: true,
+    //     plugins: {
+    //       title: {
+    //         display: true,
+    //         text: 'General Donations Overview',
+    //         padding: {
+    //           top: 10,
+    //           bottom: 0
+    //         },
+    //       },
+    //     },
+    //     scales: {
+    //       y: {
+    //         beginAtZero: true,
+    //         title: {
+    //           display: true,
+    //           text: 'Donation Amount [$]'
+    //         }
+    //       },
+    //       x: {
+    //         ticks: {
+    //           autoSkip: false
+    //         },
+    //         title: {
+    //           display: true,
+    //           text: 'Date [MM/YYYY]',
+    //         }
+    //       }
+    //     },
+    //   }
+    // };
+    // this.configPie = {
+    //   type: 'pie',
+    //   data: {
+    //     labels: this.chartLabel,
+    //     datasets: [{
+    //       label: 'Donation Amount',
+    //       hoverOffset: 5,
+    //       data: this.chartData,
+    //       backgroundColor: this.colors,
+    //     }]
+    //   },
+    //   plugins: [ChartDataLabels],
+    //   options: {
+    //     maintainAspectRatio: false,
+    //     responsive: true,
+    //     layout: {
+    //       padding: 10,
+    //     },
+    //     plugins: {
+    //       tooltips: {
+    //         enabled: false
+    //       },
+    //       datalabels: {
+    //         formatter: (value, context) => {
+    //           const name = context.chart.data.labels[context.dataIndex];
+    //           return [`${name}`];
+    //         },
+    //       },
+    //       title: {
+    //         display: true,
+    //         text: 'General Donations Overview',
+    //         padding: {
+    //           top: 10,
+    //           bottom: 0
+    //         }
+    //       }
+    //     },
+    //   }
+    // };
+    // this.configBar = {
+    //   type: 'bar',
+    //   data: {
+    //     labels: this.chartLabel,
+    //     datasets: [{
+    //       label: 'Donation Amount',
+    //       data: this.chartData,
+    //       backgroundColor: this.colors,
+    //     }]
+    //   },
+    //   plugins: [ChartDataLabels],
+    //   options: {
+    //     maintainAspectRatio: false,
+    //     responsive: true,
+    //     layout: {
+    //       padding: 10,
+    //     },
+    //     plugins: {
+    //       tooltips: {
+    //         enabled: false
+    //       },
+    //       datalabels: {
+    //         formatter: (value, context) => {
+    //           const name = context.chart.data.labels[context.dataIndex];
+    //           return [`${name}`];
+    //         },
+    //       },
+    //       title: {
+    //         display: true,
+    //         text: 'General Donations Overview',
+    //         padding: {
+    //           top: 10,
+    //           bottom: 0
+    //         }
+    //       }
+    //     },
+    //   }
+    // };
+
+    // this.configPolar = {
+    //   type: 'polarArea',
+    //   data: {
+    //     labels: this.chartLabel,
+    //     datasets: [{
+    //       label: 'Donation Amount',
+    //       hoverOffset: 5,
+    //       data: this.chartData,
+    //       backgroundColor: this.colors,
+    //     }]
+    //   },
+    //   options: {
+    //     maintainAspectRatio: false,
+    //     responsive: true,
+    //     layout: {
+    //       padding: 10,
+    //     },
+    //     plugins: {
+    //       tooltips: {
+    //         enabled: false
+    //       },
+    //       title: {
+    //         display: true,
+    //         text: 'General Donations Overview',
+    //         padding: {
+    //           top: 10,
+    //           bottom: 0
+    //         }
+    //       }
+    //     },
+    //   }
+    // };
+
+    // this.chart = new Chart('canvas', this.configPie);
+    // this.mobileChart = new Chart('mobile', this.configPie);
   }
+
+  // changeChart(){
+  //   if(this.chartType==='pie'){
+  //     this.pieGraphs();
+  //   }
+
+  //   if(this.chartType==='line'){
+  //     this.lineGraphs();
+  //   }
+
+  //   if(this.chartType==='bar'){
+  //     this.barGraphs();
+  //   }
+
+  //   if(this.chartType==='polar'){
+  //     this.polarGraphs();
+  //   }
+  // }
 
   onImgError(event) {
     event.target.src =
@@ -105,6 +334,12 @@ export class OrganisationComponent implements OnInit {
       website: '',
     };
   }
+
+  selectColor(number) {
+    const hue = number * 137.508;
+    return `hsl(${hue},50%,75%)`;
+  }
+
   //add form validation
   addDonationItemDialog(): void {
     const dialogRef = this.dialog.open(AddDonationItemComponent, {
@@ -275,15 +510,15 @@ export class OrganisationComponent implements OnInit {
     });
   }
 
-  openViewItemDialog(itemObject:Item){
+  openViewItemDialog(itemObject: Item) {
     const dialogRef = this.dialog.open(ViewDonationItemComponent, {
       maxWidth: '90vw',
       maxHeight: '90vh',
       height: 'fit-content',
-      width:'max-content',
+      width: 'max-content',
       data: {
         ...itemObject,
-        orgID:this.selectedOrg.id
+        orgID: this.selectedOrg.id
       }
     });
 
@@ -295,31 +530,50 @@ export class OrganisationComponent implements OnInit {
     this.getOrgsSubscription = this.ofs
       .getOrgs()
       .subscribe((orgs) => {
+        //this.infoGraphSer.calculateCombinedTotalsAllOrgs(orgs as Organisation[])
         this.allOrgs = orgs as Organisation[];
         this.orgData = new MatTableDataSource(orgs);
         this.orgData.sort = this.sort;
         this.orgData.paginator = this.paginator;
         this.orgData.filterPredicate =
           (data, filter: string): boolean => {
-          return (
-            data.activeStatus === this.activeStatus &&
-            data.name.trim().toLowerCase().includes(filter) ||
-
-            data.totalDonations
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter) ||
-            data.totalDonationItems
-              .toString()
-              .trim()
-              .toLowerCase()
-              .includes(filter) 
-          );
+            return (
+              data.activeStatus === this.activeStatus &&
+              data.name.trim().toLowerCase().includes(filter) ||
+              data.totalDonations
+                .toString()
+                .trim()
+                .toLowerCase()
+                .includes(filter) ||
+              data.totalDonationItems
+                .toString()
+                .trim()
+                .toLowerCase()
+                .includes(filter)
+            );
           };
-          this.toggleActiveStatus(this.activeStatusFilter)
+        this.toggleActiveStatus(this.activeStatusFilter)
+      });
+  };
+
+  getOrgsGeneralDonationData(){
+    this.dfs
+      .getAllGD()
+      .subscribe((resp) => {
+        this.allOrgsGeneralDonationData = resp.map((donation: any) => donation);
       });
   }
+
+  // getGeneralGraphData() {
+  //   this.dfs
+  //     .getAllGD()
+  //     .subscribe((resp) => {
+  //       this.chartData = resp.map((donation: any) => donation.totalGeneralDonationsValue);
+  //       this.chartLabel = resp.map((donation: any) => donation.name);
+  //       this.updateColors();
+  //       this.updateCharts();
+  //     });
+  // };
 
   //-------------------- GET ITEMS --------------------\\
   getItems(orgID) {
@@ -332,7 +586,10 @@ export class OrganisationComponent implements OnInit {
 
   toggleActiveStatus(activeStatusFilter: string) {
 
-    if(this.activeStatusFilter !== activeStatusFilter){
+    // this.resetGraphData();
+
+
+    if (this.activeStatusFilter !== activeStatusFilter) {
       this.initSelectedOrg();
     }
 
@@ -340,24 +597,25 @@ export class OrganisationComponent implements OnInit {
 
     switch (activeStatusFilter) {
       case "Active":
+        // this.getGeneralGraphData();
         filteredOrgs =
           this.allOrgs.filter(org => org.activeStatus === true);
         this.activeStatusFilter = "Active";
         break;
       case 'Inactive':
+        // this.getGeneralGraphData();
         filteredOrgs =
           this.allOrgs.filter(org => org.activeStatus === false);
         this.activeStatusFilter = "Inactive";
         break;
       case 'All':
+        // this.getGeneralGraphData();
         filteredOrgs =
           this.allOrgs.filter(org => org.activeStatus === true || org.activeStatus === false);
         this.activeStatusFilter = "All";
         break;
       default:
         break;
-
-
     }
 
     this.orgData = new MatTableDataSource(filteredOrgs);
@@ -378,14 +636,32 @@ export class OrganisationComponent implements OnInit {
     }
   }
 
+  getOrgGenGraphData(orgID:string) {
+    this.dfs
+      .getGeneralDonations(orgID)
+      .subscribe((resp) => {
+        let genDonData = this.infoGraphSer.generateGeneralDonations(resp as GeneralDonations[]);
+        this.orgGeneralDonationGraphData = genDonData.map((donation: any) => {
+            return {
+              chartData: donation.amount,
+              chartLabel: donation.monthYear,
+            }
+          })
+      })
+  };
+
   // selected row of org table
+
   selectRow(orgData) {
     if (this.selectedOrg.id === orgData.id) {
+      // this.getGeneralGraphData();
+      // this.resetGraphData();
       this.initSelectedOrg();
       this.getItemsSubscription.unsubscribe();
-
       return;
     }
+    this.getOrgGenGraphData(orgData.id)
+    //this.getGraphData(orgData.id);
     this.selectedOrg = orgData;
     this.activeItems = this.items.filter((item) => {
       return item.orgID === orgData.id;
