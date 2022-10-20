@@ -12,6 +12,8 @@ import { WebdatarocksComponent } from 'ng-webdatarocks';
 import { MatAccordion } from '@angular/material/expansion';
 import { DatePipe } from '@angular/common';
 import { Timestamp } from 'firebase/firestore';
+import { VolunteerServiceService } from 'src/app/services/firebase/volunteer-service/volunteer-service.service';
+import { DonationCSVModel, GeneralDonationGetModel, ItemCSVModel, ItemGetModel, ReferralCSVModel, VolunteerCSVModel, VolunteerModel } from 'src/app/models/Reports';
 
 @Component({
   selector: 'app-reports',
@@ -38,6 +40,7 @@ export class ReportsComponent implements OnInit {
     private ofs: OrganisationService,
     private ifs: ItemService,
     private tfs: TransactionService,
+    private vfs: VolunteerServiceService,
     private snackBar: MatSnackBar
   ) { }
 
@@ -45,6 +48,7 @@ export class ReportsComponent implements OnInit {
     this.referralCSVData = [];
     this.initSelectedOrg();
     this.getOrgs();
+    
   }
 
   getOrgs() {
@@ -184,6 +188,24 @@ export class ReportsComponent implements OnInit {
     });
   }
 
+  async loadVolunteers() {
+    //Get all volunteers
+    await this.vfs.GetVolunteers().then(resp => {
+      let volunteers:VolunteerCSVModel[] = resp;
+      volunteers.forEach((resp, i) => {
+        let org = this.orgs.find((org) => {
+          return resp.orgName === org.id;
+        });
+        if (org !== null) {
+          volunteers[i].orgName = org.name;
+        }
+      });
+      this.setTableData(resp, "Volunteers", "Volunteer Report", "Volunteer Report");
+
+    })
+    
+  }
+
   loadGeneralDonations() {
     if (this.selectedOrg.id === '') {
       this.snackBar.open("No organisation selected");
@@ -216,7 +238,6 @@ export class ReportsComponent implements OnInit {
       });
 
       this.setTableData(data, "Donations", `${this.selectedOrg.name}'s General Donations`, `${this.selectedOrg.name} General Donation Report`);
-      this.accordion.closeAll();
     });
   }
 
@@ -322,57 +343,4 @@ export class ReportsComponent implements OnInit {
   onPivotReady(pivot: WebDataRocks.Pivot): void {
     console.log('[ready] WebdatarocksPivotModule', this.reportTable);
   }
-}
-interface ItemCSVModel {
-  Name: string;
-  Initial_Price: number;
-  Total_Donations_Value: number;
-  Amount_Remaining: number;
-  Is_Funded: boolean;
-  Active_Status: boolean;
-  Created_At?: string;
-  Date_Completed?: string;
-}
-interface ItemGetModel {
-  summary: string;
-  description: string;
-  id?: string;
-  name: string;
-  initialPrice: number;
-  totalDonationsValue: number;
-  activeStatus: boolean;
-  orgID: string;
-  img: string;
-  createdAt?: Timestamp;
-  dateCompleted?: Timestamp;
-}
-interface DonationCSVModel {
-  Donation_Date: string,
-  Amount: number,
-  Donor_Public_Name: string,
-  Comment: string,
-  Is_Subscribed: boolean,
-  Is_Refunded: boolean
-}
-interface GeneralDonationGetModel {
-  IsSubscribed?: boolean,
-  IsRefunded?: boolean,
-  comment?:string,
-  donationDate?: Timestamp;
-  donorPublicName?: String;
-  amount?: number;
-  orgName?: string;
-  orgID?: string;
-  donationID?: string;
-}
-interface ReferralCSVModel {
-  Org_Name: string;
-  Donation_Type: string;
-  Is_Anon: boolean;
-  Agree_To_Contact: boolean;
-  Email: string;
-  Referral: string;
-  Mailing_Address: string;
-  Name: string;
-  Phone_Number: string;
 }
