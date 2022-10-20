@@ -19,7 +19,7 @@
         </mat-form-field>
         <mat-form-field class="form-field" appearance="fill">
           <mat-label>Summary</mat-label>
-          <textarea class="text-box sum" matInput formControlName="summary"></textarea>  
+          <textarea class="text-box sum" matInput formControlName="summary"></textarea>
         </mat-form-field>
         <mat-form-field class="form-field" hintLabel="Numeric Characters Only" appearance="fill">
           <mat-label>ABN</mat-label>
@@ -45,7 +45,7 @@
         <div class="dialog-actions" mat-dialog-actions>
           <button mat-button (click)="onNoClick()">Cancel</button>
           <button mat-button [disabled]="!organisationForm.valid" (click)="onSubmit()" cdkFocusInitial
-            color="warn">Edit</button>
+            color="warn">Save</button>
         </div>
       </div>
     </div>
