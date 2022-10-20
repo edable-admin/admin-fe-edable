@@ -3,14 +3,13 @@ import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { DonationService } from 'src/app/services/firebase/donation-service/donation.service';
 import { InfographicsService } from 'src/app/services/infographics/infographics.service';
 import { Chart } from 'chart.js';
-import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 
 @Component({
-  selector: 'app-infographics-org-general-donations',
-  templateUrl: './infographics-org-general-donations.component.html',
-  styleUrls: ['./infographics-org-general-donations.component.scss']
+  selector: 'app-infographics-org-general-donations-mobile',
+  templateUrl: './infographics-org-general-donations-mobile.component.html',
+  styleUrls: ['./infographics-org-general-donations-mobile.component.scss']
 })
-export class InfographicsOrgGeneralDonationsComponent implements OnChanges, OnDestroy {
+export class InfographicsOrgGeneralDonationsMobileComponent implements OnChanges, OnDestroy {
   @Input() org: Organisation;
   @Input() orgGeneralDonationGraphData:any;
 
@@ -50,7 +49,7 @@ export class InfographicsOrgGeneralDonationsComponent implements OnChanges, OnDe
 
         if (this.orgGeneralDonationGraphData) {
           this.setUpGenConfig();
-          this.chart = new Chart('gen-don-org', this.configLine);
+          this.chart = new Chart('gen-don-org-mobile', this.configLine);
         }
       }
 

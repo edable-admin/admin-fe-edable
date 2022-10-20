@@ -5,11 +5,11 @@ import { Chart } from 'chart.js';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 
 @Component({
-  selector: 'app-infographics-all-orgs-general-donations',
-  templateUrl: './infographics-all-orgs-general-donations.component.html',
-  styleUrls: ['./infographics-all-orgs-general-donations.component.scss']
+  selector: 'app-infographics-all-orgs-general-donations-mobile',
+  templateUrl: './infographics-all-orgs-general-donations-mobile.component.html',
+  styleUrls: ['./infographics-all-orgs-general-donations-mobile.component.scss']
 })
-export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
+export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
   @Input() allOrgsGeneralDonationData:GeneralDonations[];
   @Input() org:Organisation;
@@ -28,15 +28,6 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
   constructor() { }
 
   ngOnInit(): void {
-    if(this.chart) this.chart.destroy();
-
-  };
-
-  ngOnDestroy(): void {
-    if(this.chart) this.chart.destroy();
-  }
-
-  ngAfterViewInit(): void {
 
     if(this.chart) this.chart.destroy();
 
@@ -204,27 +195,35 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
 
     switch (this.chartType) {
       case 'pie':
-        this.chart = new Chart('all-orgs-gen-don', this.configPie);
+        this.chart = new Chart('all-orgs-gen-don-mobile', this.configPie);
 
         break;
 
       case 'line':
-        this.chart = new Chart('all-orgs-gen-don', this.configLine);
+        this.chart = new Chart('all-orgs-gen-don-mobile', this.configLine);
 
         break;
 
       case 'bar':
 
-        this.chart = new Chart('all-orgs-gen-don', this.configBar);
+        this.chart = new Chart('all-orgs-gen-don-mobile', this.configBar);
         break;
 
       case 'polar':
-        this.chart = new Chart('all-orgs-gen-don', this.configPolar);
+        this.chart = new Chart('all-orgs-gen-don-mobile', this.configPolar);
         break;
 
       default:
         break;
     }
+
+  };
+
+  ngOnDestroy(): void {
+    if(this.chart) this.chart.destroy();
+  }
+
+  ngAfterViewInit(): void {
   }
 
 
@@ -234,27 +233,27 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
 
     if (this.chart) this.chart.destroy();
 
-    if (changes['org'] || changes['chartType']) {
+    if (changes['org'] || changes['chartType'] || changes['IsMobile']) {
 
 
       switch (this.chartType) {
         case 'pie':
-          this.chart = new Chart('all-orgs-gen-don', this.configPie);
+          this.chart = new Chart('all-orgs-gen-don-mobile', this.configPie);
 
           break;
 
         case 'line':
-          this.chart = new Chart('all-orgs-gen-don', this.configLine);
+          this.chart = new Chart('all-orgs-gen-don-mobile', this.configLine);
 
           break;
 
         case 'bar':
 
-          this.chart = new Chart('all-orgs-gen-don', this.configBar);
+          this.chart = new Chart('all-orgs-gen-don-mobile', this.configBar);
           break;
 
         case 'polar':
-          this.chart = new Chart('all-orgs-gen-don', this.configPolar);
+          this.chart = new Chart('all-orgs-gen-don-mobile', this.configPolar);
           break;
 
         default:
@@ -293,5 +292,48 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
     this.chart.update();
   };
 
+  // pieGraphs() {
+  //   this.chart.destroy();
+  //   this.mobileChart.destroy();
+  //   this.chart = new Chart('canvas', this.configPie);
+  //   this.mobileChart = new Chart('mobile', this.configPie);
+  //   this.updateCharts();
+  // };
+
+  // lineGraphs() {
+  //   this.chart.destroy();
+  //   this.mobileChart.destroy();
+  //   this.chart = new Chart('canvas', this.configLine);
+  //   this.mobileChart = new Chart('mobile', this.configLine);
+  //   this.updateCharts();
+  // };
+
+    // barGraphs() {
+  //   this.chart.destroy();
+  //   this.mobileChart.destroy();
+  //   this.chart = new Chart('canvas', this.configBar);
+  //   this.mobileChart = new Chart('mobile', this.configBar);
+  //   this.updateCharts();
+  // };
+
+    // polarGraphs() {
+  //   this.chart.destroy();
+  //   this.mobileChart.destroy();
+  //   this.chart = new Chart('canvas', this.configPolar);
+  //   this.mobileChart = new Chart('mobile', this.configPolar);
+  //   this.updateCharts();
+  // };
+
+  // getGraphData(orgID) {
+  //   this.dfs
+  //     .getGeneralDonations(orgID)
+  //     .subscribe((resp) => {
+  //       let genDonData = this.infoGraphSer.generateGeneralDonations(resp as GeneralDonations[]);
+  //       this.chartData = genDonData.map((donation: any) => donation.amount);
+  //       this.chartLabel = genDonData.map((donation: any) => donation.monthYear);
+  //       this.updateColors();
+  //       this.updateCharts();
+  //     })
+  // };
 
 }

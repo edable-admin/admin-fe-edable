@@ -6,12 +6,12 @@ import {Chart} from 'chart.js';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'app-infograph-org-items-donations',
-  templateUrl: './infograph-org-items-donations.component.html',
-  styleUrls: ['./infograph-org-items-donations.component.scss']
+  selector: 'app-infograph-org-items-donations-mobile',
+  templateUrl: './infograph-org-items-donations-mobile.component.html',
+  styleUrls: ['./infograph-org-items-donations-mobile.component.scss']
 })
 
-export class InfographItemsDonationsComponent implements OnInit, OnChanges, OnDestroy {
+export class InfographItemsDonationsMobileComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() items:Item[] = [];
   @Input() org: Organisation;
@@ -49,7 +49,7 @@ export class InfographItemsDonationsComponent implements OnInit, OnChanges, OnDe
     if (this.graph) this.graph.destroy();
 
     if (this.items.length > 0) {
-      this.is.createScatterOrgItemDonations(this.items, this.org)
+      this.is.createMobileScatterOrgItemDonations(this.items, this.org)
         .then((resp) => {
           this.graph = resp;
         });
