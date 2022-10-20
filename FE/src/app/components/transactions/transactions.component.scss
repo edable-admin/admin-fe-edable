@@ -5,12 +5,18 @@
     height: 50%;
 }
 
-.lower {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px; 
+.example-small-box{
+  max-width: 100vw;
+  overflow: auto;
+  margin:10px;
 }
+
+// .lower {
+//     width: 90%;
+//     margin-left: auto;
+//     margin-right: auto;
+//     padding: 10px;
+// }
 
 .upper {
     margin-left: auto;
@@ -23,7 +29,7 @@
     padding-top: 10px;
 }
 .upper > div {
-    font-size: 15px;    
+    font-size: 15px;
     width: 100%
 }
 
@@ -36,10 +42,21 @@
     padding: 0px;
 }
 
-.table {
-    width: 100%;
-}
-
 .search-bar {
    max-width:600px;
+}
+
+.lower{
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: auto;
+
+  .table{
+    width: 100%;
+  }
+
+  .mat-paginator{
+    min-width:100%;
+  }
+
 }
