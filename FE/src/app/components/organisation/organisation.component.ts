@@ -49,7 +49,7 @@ export class OrganisationComponent implements OnInit {
   displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonationsValue'];
   selectedOrg: Organisation;
   activeItems: Item[];
-  orgData: any = new MatTableDataSource([]);
+  orgData: MatTableDataSource<Organisation> = new MatTableDataSource([]);
   allOrgs: Organisation[] = []
   items: Item[] = [];
   graphData: any;
@@ -532,15 +532,14 @@ export class OrganisationComponent implements OnInit {
       .subscribe((orgs) => {
         //this.infoGraphSer.calculateCombinedTotalsAllOrgs(orgs as Organisation[])
         this.allOrgs = orgs as Organisation[];
-        this.orgData = new MatTableDataSource(orgs);
+        this.orgData.data = this.allOrgs;
         this.orgData.sort = this.sort;
-        this.orgData.paginator = this.paginator;
         this.orgData.filterPredicate =
           (data, filter: string): boolean => {
             return (
               data.activeStatus === this.activeStatus &&
               data.name.trim().toLowerCase().includes(filter) ||
-              data.totalDonations
+              data.totalDonationsValue
                 .toString()
                 .trim()
                 .toLowerCase()
@@ -552,6 +551,7 @@ export class OrganisationComponent implements OnInit {
                 .includes(filter)
             );
           };
+        this.orgData.paginator = this.paginator;
         this.toggleActiveStatus(this.activeStatusFilter)
       });
   };
@@ -618,7 +618,7 @@ export class OrganisationComponent implements OnInit {
         break;
     }
 
-    this.orgData = new MatTableDataSource(filteredOrgs);
+    this.orgData.data = filteredOrgs
     this.orgData.paginator = this.paginator;
     this.orgData.sort = this.sort;
     this.orgData.filter = this.filterValue;
@@ -630,6 +630,8 @@ export class OrganisationComponent implements OnInit {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValue = this.filterValue.trim().toLowerCase();
     this.orgData.filter = this.filterValue;
+
+    console.log(this.orgData)
 
     if (this.orgData.paginator) {
       this.orgData.paginator.firstPage();
