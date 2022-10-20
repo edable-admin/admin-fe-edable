@@ -15,8 +15,9 @@ import { AuthService } from "./shared/services/auth.service";
 import { UploadImageComponent } from './components/upload-image/upload-image.component';
 import { DragDropDirectiveDirective } from './components/upload-image/drag-drop-directive/drag-drop-directive.directive';
 //-------------------- FireBase libs ---------------------------------------//
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideFirebaseApp, initializeApp, getApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { provideAppCheck } from '@angular/fire/app-check';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
@@ -52,6 +53,7 @@ import { InfographItemsDonationsComponent } from './components/organisation/info
 import { InfographicsSectionComponent } from './components/organisation/infographics-section/infographics-section.component';
 import { InfographicsAllOrgsGeneralDonationsComponent } from './components/organisation/infographics-section/infographics-all-orgs-general-donations/infographics-all-orgs-general-donations.component';
 import { InfographicsOrgGeneralDonationsComponent } from './components/organisation/infographics-section/infographics-org-general-donations/infographics-org-general-donations.component';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
 const config = environment.firebaseConfig;
 
@@ -94,6 +96,10 @@ const config = environment.firebaseConfig;
     AngularFireModule.initializeApp(config),
     provideFirebaseApp(() => initializeApp(config)),
     provideFirestore(() => getFirestore()),
+    provideAppCheck(() => initializeAppCheck(getApp(), {
+      provider: new ReCaptchaV3Provider(environment.recaptcha3SiteKey),
+      isTokenAutoRefreshEnabled: true
+    })),
     AngularFireStorageModule,
     AngularFireAuthModule,
     AppRoutingModule,
