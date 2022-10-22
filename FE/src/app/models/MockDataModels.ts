@@ -11,6 +11,27 @@ export interface PrivateDonorDetails {
   phoneNumber:string
 }
 
+export interface VolunteerDonations{
+  Monday: boolean,
+  Tuesday: boolean,
+  Wednesday: boolean,
+  Thursday: boolean,
+  Friday: boolean,
+  Saturday: boolean,
+  Sunday: boolean,
+  howContribute: string,
+  volunteerAmount:string,
+  volunteerComment:string,
+  volunteerDOB:string,
+  volunteerEmail:string,
+  volunteerHours:string,
+  volunteerHowHeard:string,
+  volunteerName:string,
+  volunteerOrgName:string,
+  volunteerPhone:string,
+  volunteerPostcode:string,
+}
+
 export interface Donations {
   IsRefunded:boolean,
   amount:number,
