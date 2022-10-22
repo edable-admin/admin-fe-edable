@@ -85,9 +85,22 @@ table {
 }
 
 .search-bar {
-   max-width:600px;
+   max-width: 100vw;
 }
 
 .mat-paginator {
     min-width: 100%;
 }
+
+@media screen and (max-width: 460px) {
+    .upper {
+        display:contents;
+        margin: 0;
+        padding: 0;
+
+        button {
+            margin: 0;
+        }
+    }
+}
+
