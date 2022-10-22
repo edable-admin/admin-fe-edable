@@ -20,19 +20,12 @@ export class DbSetupService {
   createOrganisationsAndItems(){
 
     let orgs:CreateOrgModel[] = mockData;
-    let org:CreateOrgModel;
-
+    let org: CreateOrgModel;
 
     //Loops through every organisation
-    orgs.forEach((orgObj) => {
-
-      // create a reference for the new org
-      const orgRef = this.fs
-      .collection('Organisations')
-      .doc().ref
-
-        // from the mock data create an org object
-        org = {
+    orgs.forEach( async (orgObj) => {
+      // from the mock data create an org object
+      org = {
         name:orgObj.name,
         description:orgObj.description,
         summary:orgObj.summary,
@@ -40,106 +33,110 @@ export class DbSetupService {
         ABN:orgObj.ABN,
         phone:orgObj.phone,
         website:orgObj.website,
-        img:orgObj.img,
-        totalDonationCount:orgObj.totalDonationCount,
-        totalDonationItems:orgObj.totalDonationItems,
-        //totalDonations:orgObj.totalDonations,
-        totalDonationsValue:orgObj.totalDonationsValue,
-        totalGeneralDonationsValue:orgObj.totalGeneralDonationsValue,
-        totalGeneralDonationsCount:orgObj.totalGeneralDonationsCount,
-        totalItemDonationsCount:orgObj.totalItemDonationsCount,
-        totalItemDonationsValue:orgObj.totalItemDonationsValue
+        img:orgObj.img
       }
 
-      //todo make model
-      let item:any;
+      // create a reference for the new org
+      let orgRef = this.fs
+      .collection('Organisations')
+        .doc().ref
 
-      let itemDonation: any;
-
-      let generalDonations:any;
-      let privateDonor: PrivateDonorDetails;
-
-      //create an item reference from the Organisation
-      let itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
-
-      //create a donation reference for an item donation;
-      let itemDonationRef = this.fs.collection('Organisations')
-      .doc(orgRef.id)
-      .collection('Items')
-      .doc(itemRef.id)
-      .collection('ItemsDonations').doc()
-      .ref;
-
-      // create a general donation reference for a general donation
-      let generalDonationRef = this.fs.collection('Organisations')
-        .doc(orgRef.id)
-        .collection('GeneralDonations')
-        .doc().ref;
-
-      let donorPrivateRef = this.fs.collection('Organisations')
-        .doc(orgRef.id)
-        .collection('GeneralDonations')
-        .doc(generalDonationRef.id)
-        .collection('Private')
-        .doc('Private').ref
+      let orgTotalDonationCount:number = 0;
+      let orgTotalDonationItems:number = 0;
+      let orgTotalDonations:number = 0;
+      let orgTotalDonationsValue:number = 0;
+      let orgTotalGeneralDonationsCount:number = 0;
+      let orgTotalGeneralDonationsValue:number = 0;
+      let orgTotalItemDonationsCount:number = 0;
+      let orgTotalItemDonationsValue:number = 0;
 
       //Create organisation in the database
-      orgRef.set(org).then(
-        () => {
+      await orgRef.set(org).then( async () => {
+        // Loop over item mock data for that organisation
+        orgObj?.Items?.forEach(
+          async (itemObject) => {
 
-          // Loop over item mock data for that organisation
-          orgObj?.Items?.forEach(
-            (itemObject) => {
+            //count donation items for the org
+            orgTotalDonationItems += 1;
 
-              //create an item object from mock data
-              item = {
-                name: itemObject.name,
-                summary:itemObject.summary,
-                description:itemObject.description,
-                initialPrice: itemObject.initialPrice,
-                totalDonationCount: itemObject.totalDonationCount,
-                //totalDonations: itemObject.totalDonations,
-                totalDonationsValue:itemObject.totalDonationsValue,
-                activeStatus: itemObject.activeStatus,
-                dateCompleted:itemObject.dateCompleted,
-                createdAt: itemObject.createdAt,
-                img: itemObject.img
-              }
+            //create an item object from mock data
+            let item = {
+              name: itemObject.name,
+              summary:itemObject.summary,
+              description:itemObject.description,
+              initialPrice: itemObject.initialPrice,
+              activeStatus: itemObject.activeStatus,
+              dateCompleted:itemObject.dateCompleted,
+              createdAt: itemObject.createdAt,
+              img: itemObject.img
+          }
 
-              //create the item in the database
-              itemRef.set(item)
+            //create an item reference from the Organisation
+            let itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
+
+            //create the item in the database
+            await itemRef.set(item).then( async () => {
+
+              //varibles to calculate the totals for an item's donations
+              let totalItemDonationCount: number = 0;
+              let totalItemDonationsValue: number = 0;
 
               //loopover item donations for the item
-              itemObject?.itemDonations?.forEach(itemDon => {
-                itemDonation = {
-                  IsRefunded:itemDon.IsRefunded,
-                  amount:itemDon.amount,
-                  comment:itemDon.comment,
-                  donationDate:itemDon.donationDate,
-                  donorPublicName:itemDon.donorPublicName
+              itemObject?.itemDonations?.forEach(async itemDon => {
+
+                //update totals
+                orgTotalDonations += 1;
+                orgTotalItemDonationsCount += 1
+                orgTotalDonationCount += 1;
+                orgTotalDonationsValue += itemDon.amount;
+                totalItemDonationCount += 1;
+                totalItemDonationsValue += itemDon.amount;
+
+
+                let itemDonation = {
+                  IsRefunded: itemDon.IsRefunded,
+                  amount: itemDon.amount,
+                  comment: itemDon.comment,
+                  donationDate: itemDon.donationDate,
+                  donorPublicName: itemDon.donorPublicName
                 }
 
-                itemDonationRef.set(itemDonation)
-
-                //reset item donation referance
-                itemDonationRef = this.fs.collection('Organisations')
+                //create a donation reference for an item donation;
+                let itemDonationRef = this.fs.collection('Organisations')
                 .doc(orgRef.id)
                 .collection('Items')
                 .doc(itemRef.id)
                 .collection('ItemsDonations').doc()
                 .ref;
+
+                await itemDonationRef.set(itemDonation)
+
+                await orgRef.update({
+                  totalDonationCount:orgTotalDonationCount,
+                  totalDonationItems:orgTotalDonationItems,
+                  totalDonationsValue:orgTotalDonationsValue,
+                  totalGeneralDonationsCount:orgTotalGeneralDonationsCount,
+                  totalGeneralDonationsValue:orgTotalGeneralDonationsValue,
+                  totalItemDonationsCount:orgTotalItemDonationsCount,
+                  totalItemDonationsValue:orgTotalItemDonationsValue
+                })
+
               })
 
+              //updates the sum for the item
+            itemRef.update({ totalDonationCount: totalItemDonationCount, totalDonationsValue: totalItemDonationsValue })
+            })
+          })
+
+          orgObj?.GeneralDonations?.forEach( async (genDon) => {
+
+            orgTotalDonationCount += 1;
+            orgTotalDonationsValue += genDon.amount;
+            orgTotalGeneralDonationsCount += 1;
+            orgTotalGeneralDonationsValue += genDon.amount;
 
 
-
-              //reset the item ref to a new reference
-              itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
-            }
-          )
-
-          orgObj?.GeneralDonations?.forEach((genDon) => {
-            generalDonations = {
+            let generalDonations = {
               IsRefunded: genDon.IsRefunded,
               IsSubscribed: genDon.IsSubscribed,
               amount: genDon.amount,
@@ -148,7 +145,7 @@ export class DbSetupService {
               donorPublicName:genDon.donorPublicName
             }
 
-            privateDonor = {
+            let privateDonor = {
               paypalTransactionId:genDon.private.paypalTransactionId,
               IsAnon: genDon.private.IsAnon,
               agreeToContact: genDon.private.agreeToContact,
@@ -159,33 +156,38 @@ export class DbSetupService {
               phoneNumber: genDon.private.phoneNumber
             }
 
-
-            generalDonationRef.set(generalDonations)
-            donorPrivateRef.set(privateDonor)
-
-            //reset generalDonationRef
-            generalDonationRef = this.fs.collection('Organisations')
+            // create a general donation reference for a general donation
+            let generalDonationRef = this.fs.collection('Organisations')
             .doc(orgRef.id)
             .collection('GeneralDonations')
-              .doc().ref;
+            .doc().ref;
 
-            //reset donorPrivateRef
-            donorPrivateRef = this.fs.collection('Organisations')
+            let donorPrivateRef = this.fs.collection('Organisations')
             .doc(orgRef.id)
             .collection('GeneralDonations')
             .doc(generalDonationRef.id)
             .collection('Private')
             .doc('Private').ref
 
+            await generalDonationRef.set(generalDonations)
+            await donorPrivateRef.set(privateDonor)
           })
 
-        }
-      )
+          await orgRef.update({
+            totalDonationCount:orgTotalDonationCount,
+            totalDonationItems:orgTotalDonationItems,
+            totalDonationsValue:orgTotalDonationsValue,
+            totalGeneralDonationsCount:orgTotalGeneralDonationsCount,
+            totalGeneralDonationsValue:orgTotalGeneralDonationsValue,
+            totalItemDonationsCount:orgTotalItemDonationsCount,
+            totalItemDonationsValue:orgTotalItemDonationsValue
+          })
+
+
+      })
+
+
     })
-
-
-
-
   }
 
   //calculated the total value of donations along with the item donation count
@@ -268,8 +270,6 @@ export class DbSetupService {
 
       })
     })
-
-    console.log(itemTotals)
   }
 
 
