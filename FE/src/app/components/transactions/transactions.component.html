@@ -1,4 +1,4 @@
-<div class="container">
+
   <mat-tab-group dynamicHeight (selectedTabChange)="this.resetEditStatus()">
     <mat-tab class="mat-tab" label="General Donations">
       <div class="example-small-box mat-elevation-z4">
@@ -21,7 +21,7 @@
         </div>
 
         <div class="lower">
-          <section class="scroll-container mat-elevation-z8">
+          
               <table
                 matSort
                 #genTableS="matSort"
@@ -81,7 +81,7 @@
               [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
               </mat-paginator>
             </div>
-          </section>
+
         </div>
       </div>
     </mat-tab>
@@ -107,7 +107,7 @@
             </button>
         </div>
         <div class="lower">
-          <section class="scroll-container mat-elevation-z8">
+          
 
               <table
                 matSort
@@ -167,10 +167,9 @@
               [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
               </mat-paginator>
             </div>
-          </section>
+          
         </div>
       </div>
     </mat-tab>
 
   </mat-tab-group>
-</div>
