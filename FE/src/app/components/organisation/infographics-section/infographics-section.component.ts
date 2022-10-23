@@ -1,5 +1,6 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Form, FormBuilder, FormControl } from '@angular/forms';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { Item } from 'src/app/models/Item';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
@@ -12,14 +13,13 @@ import { ReferralGraphData } from 'src/app/services/infographics/infographics.se
 })
 export class InfographicsSectionComponent implements OnInit, OnChanges {
 
+
   @Input() items: Item[];
   @Input() org: Organisation;
   @Input() allOrgsGeneralDonationData: GeneralDonations[];
   @Input() orgGeneralDonationGraphData: any;
   @Input() referralData: ReferralGraphData[];
-
-
-
+  showGeneralReferrals: boolean = false;
 
   constructor(
   ) { }
@@ -34,6 +34,6 @@ export class InfographicsSectionComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+  
   }
-
 }

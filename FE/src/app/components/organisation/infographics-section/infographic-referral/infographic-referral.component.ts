@@ -13,6 +13,8 @@ export class InfographicReferralComponent implements OnInit {
 
   @Input() referralData: ReferralGraphData[];
   @Input() org: Organisation;
+  @Input() isGeneral: boolean;
+  @Input() showGeneralReferrals: boolean;
 
   chart!: Chart;
   orgReferrals: ReferralGraphData[];
@@ -22,14 +24,13 @@ export class InfographicReferralComponent implements OnInit {
   chartLabels: any[];
   colors: any;
 
-
   constructor(
     public is: InfographicsService
   ) { }
 
   ngOnInit(): void {
     if (this.chart) this.chart.destroy();
-    
+
     this.updateColors();
     this.createPieChart();
   }
@@ -37,44 +38,17 @@ export class InfographicReferralComponent implements OnInit {
   ngOnChanges(changes) {
     if (this.chart) this.chart.destroy();
 
-    if (changes['org']) {
-
+    if (changes['org'] || changes['showGeneralReferrals']) {
       this.createPieChart();
     }
   }
 
-  filterReferralData() {
-    this.orgReferrals = this.referralData.filter(org => {
-      return org.orgId === this.org.id;
-    });
-
-    const referrals = this.orgReferrals.map(ref => {
-      return ref.howHeard;
-    });
-
-    this.referralCounts = {};
-    this.chartLabels = [];
-    this.chartData = [];
-
-    for (let i = 0; i < referrals.length; i++) {
-      const element = referrals[i];
-
-      if (this.referralCounts[element]) {
-        this.referralCounts[element] += 1;
-      } else {
-        this.referralCounts[element] = 1;
-        this.chartLabels.push(element);
-      }
-    }
-
-    for (let i = 0; i < this.chartLabels.length; i++) {
-      this.chartData.push(this.referralCounts[this.chartLabels[i]]);
-    }
-
-  }
-
   createPieChart() {
-    this.filterReferralData();
+    if (this.isGeneral) {
+      this.getGeneralReferralData();
+    } else {
+      this.filterReferralData();
+    }
 
     this.configPie = {
       type: 'pie',
@@ -105,7 +79,7 @@ export class InfographicReferralComponent implements OnInit {
           },
           title: {
             display: true,
-            text: `${this.org.name}'s Referrals`,
+            text: this.isGeneral ? 'General Referrals Overview' : `${this.org.name}'s Referrals`,
             padding: {
               top: 10,
               bottom: 0
@@ -116,6 +90,60 @@ export class InfographicReferralComponent implements OnInit {
     };
 
     this.chart = new Chart('referral-graph', this.configPie);
+  }
+
+  getGeneralReferralData() {
+    const referrals = this.referralData.map(ref => {
+      return ref.howHeard;
+    });
+
+    this.referralCounts = {};
+    this.chartLabels = [];
+    this.chartData = [];
+
+    for (let i = 0; i < referrals.length; i++) {
+      const element = referrals[i];
+
+      if (this.referralCounts[element]) {
+        this.referralCounts[element] += 1;
+      } else {
+        this.referralCounts[element] = 1;
+        this.chartLabels.push(element);
+      }
+    }
+
+    for (let i = 0; i < this.chartLabels.length; i++) {
+      this.chartData.push(this.referralCounts[this.chartLabels[i]]);
+    }
+  }
+
+  filterReferralData() {
+    this.orgReferrals = this.referralData.filter(org => {
+      return org.orgId === this.org.id;
+    });
+
+    const referrals = this.orgReferrals.map(ref => {
+      return ref.howHeard;
+    });
+
+    this.referralCounts = {};
+    this.chartLabels = [];
+    this.chartData = [];
+
+    for (let i = 0; i < referrals.length; i++) {
+      const element = referrals[i];
+
+      if (this.referralCounts[element]) {
+        this.referralCounts[element] += 1;
+      } else {
+        this.referralCounts[element] = 1;
+        this.chartLabels.push(element);
+      }
+    }
+
+    for (let i = 0; i < this.chartLabels.length; i++) {
+      this.chartData.push(this.referralCounts[this.chartLabels[i]]);
+    }
   }
 
   updateColors() {

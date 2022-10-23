@@ -8,13 +8,26 @@
     <mat-radio-button *ngFor="let item of chartType" [value]="item">{{item}}</mat-radio-button>
   </mat-radio-group>
 
+  <mat-slide-toggle 
+    *ngIf="org.id === ''"
+    [(ngModel)]="showGeneralReferrals">
+  </mat-slide-toggle>
+
   <app-infographics-all-orgs-general-donations
-    *ngIf="org.id === '' && allOrgsGeneralDonationData"
+    *ngIf="org.id === '' && allOrgsGeneralDonationData && !showGeneralReferrals"
     [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
     [chartType]="chartTypeControl.value"
     [org]="org"
   >
   </app-infographics-all-orgs-general-donations>
+
+  <app-infographic-referral
+    *ngIf="org.id === '' && showGeneralReferrals"
+    [org]="org"
+    [referralData]="referralData"
+    [isGeneral] = "true"
+    [showGeneralReferrals]="showGeneralReferrals"
+  ></app-infographic-referral>
 
   <app-infograph-org-items-donations
     *ngIf="infoGraphicsControl.value === 'Item Donations'"
@@ -31,8 +44,10 @@
   </app-infographics-org-general-donations>
 
   <app-infographic-referral
-    *ngIf="org.id !== '' && infoGraphicsControl.value === 'Referrals'"
+    *ngIf="org.id !== '' && infoGraphicsControl.value === 'Referrals' && !showGeneralReferrals"
     [org]="org"
     [referralData]="referralData"
+    [isGeneral] = "false"
+    [showGeneralReferrals]="showGeneralReferrals"
   ></app-infographic-referral>
 </div>
