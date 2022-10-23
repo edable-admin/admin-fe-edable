@@ -309,6 +309,64 @@ export class InfographicsService {
 
     return chart;
   }
+//------------------------ Create Scatter Chart for an Organisations Item Donations --------------//
+  async createMobileScatterOrgItemDonations(items?: Item[], org?: Organisation, startDate?: Date, endDate?: Date) {
+
+    const chartData = await this.getGraphDataOrgItemsDonations(items, org, startDate, endDate);
+    let chart = new Chart("item-donations-graph-mobile", {
+      type: 'bubble',
+      data: {
+        //labels: chartData.labels,
+        datasets:
+          chartData.dataset
+      },
+      options: {
+        layout: {
+          padding:10
+        },
+        maintainAspectRatio: false,
+        responsive: true,
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit:'day'
+            }
+          }
+        },
+        interaction: {
+          mode: 'point'
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                let label = `${context.dataset.label}: $${context.parsed.y}`;
+                return label;
+              }
+            }
+          },
+          legend: {
+            position: 'top',
+            align:'start',
+            labels: {
+              textAlign: 'left',
+              padding: 30,
+              boxWidth: 15,
+            }
+          },
+          title: {
+            text: `${org.name} Item Donations`,
+            display:true
+          },
+
+        }
+      }
+
+    })
+
+    return chart;
+  }
 
   async getReferralData(orgs: Organisation[]): Promise<ReferralGraphData[]> {
 

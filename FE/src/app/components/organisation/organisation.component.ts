@@ -102,7 +102,7 @@ export class OrganisationComponent implements OnInit {
     public ts: TransactionService,
     private breakpointObserver: BreakpointObserver
   ) {
-    Chart.register(...registerables);
+
 
     this.breakpointObserver.observe([
       "(max-width: 1024px)"
@@ -110,14 +110,14 @@ export class OrganisationComponent implements OnInit {
       {
         next: (result: BreakpointState) => {
           if (result.matches) {
-            console.log("woo")
-            this.IsMobile = true;
-          } else {
-            console.log('woo', 'woo')
-            this.IsMobile = false;
-          }
+           this.IsMobile = true;
+        } else {
+          this.IsMobile = false;
         }
-      })
+      }
+    })
+
+    Chart.register(...registerables);
   }
 
 

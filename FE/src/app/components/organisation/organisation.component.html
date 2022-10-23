@@ -92,7 +92,7 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <!-- <mat-form-field style="width:107px" appearance="fill"> -->
-              <mat-label>Chart Type</mat-label>
+              <!-- <mat-label>Chart Type</mat-label> -->
               <!-- <mat-select [(value)]="chartType" (selectionChange)="changeChart()"> -->
                 <!-- <mat-option value="pie">Pie</mat-option> -->
                 <!-- <mat-option *ngIf="this.selectedOrg.id !== ''" value="line">Line</mat-option> -->
@@ -102,13 +102,14 @@
             <!-- </mat-form-field> -->
             <div class="small-graph" style="width:80vw;">
               <!-- <canvas id="mobile">{{mobileChart}}</canvas> -->
-              <app-infographics-section
+              <app-infographics-section-mobile
                 *ngIf="IsMobile"
                 [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
                 [items]="items"
                 [org]="selectedOrg"
                 [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
-              ></app-infographics-section>
+              >
+              </app-infographics-section-mobile>
             </div>
           </mat-expansion-panel>
         </mat-accordion>
