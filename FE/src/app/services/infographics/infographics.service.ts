@@ -347,7 +347,7 @@ export class InfographicsService {
             }
           },
           legend: {
-            position: 'top',
+            position: 'bottom',
             align:'start',
             labels: {
               textAlign: 'left',
