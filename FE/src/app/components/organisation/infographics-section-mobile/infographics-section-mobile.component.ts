@@ -3,6 +3,7 @@ import { Form, FormBuilder, FormControl } from '@angular/forms';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { Item } from 'src/app/models/Item';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
+import { ReferralGraphData } from 'src/app/services/infographics/infographics.service';
 
 @Component({
   selector: 'app-infographics-section-mobile',
@@ -16,6 +17,8 @@ export class InfographicsSectionMobileComponent implements OnInit, OnChanges {
   @Input() allOrgsGeneralDonationData: GeneralDonations[];
   @Input() orgGeneralDonationGraphData: any;
   @Input() IsMobile: any;
+  @Input() referralData: ReferralGraphData[];
+  showGeneralReferrals: boolean = false;
 
 
 
@@ -23,7 +26,7 @@ export class InfographicsSectionMobileComponent implements OnInit, OnChanges {
   constructor(
   ) { }
 
-  infoGraphicsOptions: any[] = ['General Donations', 'Item Donations'];
+  infoGraphicsOptions: any[] = ['General Donations', 'Item Donations', 'Referrals'];
   infoGraphicsControl = new FormControl(this.infoGraphicsOptions[0]);
   chartType = ['pie','line','bar','polar'];
   chartTypeControl = new FormControl(this.chartType[0])
