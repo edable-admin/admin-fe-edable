@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { Timestamp } from 'firebase/firestore';
 import { VolunteerServiceService } from 'src/app/services/firebase/volunteer-service/volunteer-service.service';
 import { DonationCSVModel, GeneralDonationGetModel, ItemCSVModel, ItemGetModel, ReferralCSVModel, VolunteerCSVModel, VolunteerModel } from 'src/app/models/Reports';
+import { ReportsService } from 'src/app/services/firebase/reports-service/reports.service';
 
 @Component({
   selector: 'app-reports',
@@ -41,6 +42,7 @@ export class ReportsComponent implements OnInit {
     private ifs: ItemService,
     private tfs: TransactionService,
     private vfs: VolunteerServiceService,
+    private rfs: ReportsService,
     private snackBar: MatSnackBar
   ) { }
 
@@ -48,7 +50,7 @@ export class ReportsComponent implements OnInit {
     this.referralCSVData = [];
     this.initSelectedOrg();
     this.getOrgs();
-    
+
   }
 
   getOrgs() {
@@ -191,7 +193,7 @@ export class ReportsComponent implements OnInit {
   async loadVolunteers() {
     //Get all volunteers
     await this.vfs.GetVolunteers().then(resp => {
-      let volunteers:VolunteerCSVModel[] = resp;
+      let volunteers: VolunteerCSVModel[] = resp;
       volunteers.forEach((resp, i) => {
         let org = this.orgs.find((org) => {
           return resp.orgName === org.id;
@@ -203,7 +205,7 @@ export class ReportsComponent implements OnInit {
       this.setTableData(resp, "Volunteers", "Volunteer Report", "Volunteer Report");
 
     })
-    
+
   }
 
   loadGeneralDonations() {
@@ -220,9 +222,9 @@ export class ReportsComponent implements OnInit {
         donations.push(resp.data() as GeneralDonationGetModel);
       });
       console.log("donations");
-      
+
       console.table(donations);
-      
+
       //Map data to CSV model
       const data: DonationCSVModel[] = donations.map((item) => {
         console.log(item)
@@ -242,7 +244,7 @@ export class ReportsComponent implements OnInit {
   }
 
   async loadReferralData() {
-    
+
     if (this.referralCSVData.length === 0) {
       await this.getAllReferralData();
     }
@@ -250,7 +252,7 @@ export class ReportsComponent implements OnInit {
     this.setTableData(this.filterReferralData(), "Referrals", `${this.selectedOrg.name} Referral Report`, `${this.selectedOrg.name} Referral Report`);
   }
 
-  async loadAllReferralData(){
+  async loadAllReferralData() {
     if (this.referralCSVData.length === 0) {
       await this.getAllReferralData();
     }
@@ -277,11 +279,11 @@ export class ReportsComponent implements OnInit {
   }
 
   filterReferralData(): ReferralCSVModel[] {
-    
+
     const orgReferrals = this.referralCSVData.filter(org => {
       return org.Org_Name === this.selectedOrg.name;
     });
-    
+
     return orgReferrals;
   }
 
@@ -342,5 +344,9 @@ export class ReportsComponent implements OnInit {
 
   onPivotReady(pivot: WebDataRocks.Pivot): void {
     console.log('[ready] WebdatarocksPivotModule', this.reportTable);
+  }
+
+  loadAllReport(){
+    console.log(this.rfs.getReportData())
   }
 }

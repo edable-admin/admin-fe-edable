@@ -41,6 +41,16 @@ export interface PrivateData {
     paypalTransactionId: string;
     phoneNumber: string;
 }
+
+export interface PublicData{
+    IsRefunded:boolean;
+    IsSubscribed?:boolean;
+    amount:number;
+    comment:string;
+    donationDate:Timestamp;
+    donorPublicName:string;
+}
+
 export interface Referral {
     orgId: string;
     donationType: string;
@@ -123,4 +133,24 @@ export interface GeneralDonationGetModel {
     orgID?: string;
     donationID?: string;
   }
+
+export interface ReportCSVModel {
+    orgID:string,
+    donationType:string,
+    IsRefunded:boolean,
+    IsSubscribed?:boolean,
+    amount:number,
+    comment:string,
+    donationDate:Timestamp,
+    donorPublicName:string,
+    IsAnon:boolean,
+    agreeToContact:boolean,
+    email:string,
+    howHeardOther:string,
+    mailingAddress:string,
+    name:string,
+    paypalTransactionId:string,
+    phoneNumber:string
+
+}
 
