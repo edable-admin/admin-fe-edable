@@ -1,30 +1,25 @@
 
   <mat-tab-group dynamicHeight (selectedTabChange)="this.resetEditStatus()">
     <mat-tab class="mat-tab" label="General Donations">
-      
-      <div class="upper">
-        
-          <mat-form-field appearance="standard" class="search-bar">
-            <mat-label>Search Donations</mat-label>
-            <input matInput aria-label="Search Donations" (keyup)="filterGenDon($event)" #input/>
-          </mat-form-field>
-
-        
-        <div class="buttons">
-        <button mat-raised-button color="primary" class="edit-button" [disabled]="this.editStatus" (click)="this.changeEditStatus()">
-          <mat-icon>edit</mat-icon><span class="text">Edit</span>
-        </button>
-
-        <button mat-raised-button color="warn" class="exit-button" *ngIf="this.editStatus==true" [disabled]="!this.editStatus" (click)="this.changeEditStatus()">
-          <mat-icon>cancel</mat-icon><span class="text">Exit</span>
-        </button>
-      </div>
-      </div>
-      
       <div class="example-small-box mat-elevation-z4">
+      <div class="upper">
+        <mat-form-field appearance="standard" class="search-bar">
+          <mat-label>Search Donations</mat-label>
+          <input matInput aria-label="Search Donations" (keyup)="filterGenDon($event)" #input/>
+        </mat-form-field>
 
+        <!-- <div class="buttons"> -->
+          <button mat-raised-button color="primary" class="edit-button" [disabled]="this.editStatus" (click)="this.changeEditStatus()">
+            <mat-icon>edit</mat-icon><span class="text">Edit</span>
+          </button>
+
+          <button mat-raised-button color="warn" class="exit-button" *ngIf="this.editStatus==true" [disabled]="!this.editStatus" (click)="this.changeEditStatus()">
+            <mat-icon>cancel</mat-icon><span class="text">Exit</span>
+          </button>
         
-
+      </div>
+    
+      
         <div class="lower">
           
               <table
@@ -33,8 +28,6 @@
                 mat-table
                 [dataSource]="generalDonDataSource"
                 class="mat-elevation-z8 table">
-
-
 
               <ng-container matColumnDef="donationDate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
@@ -166,14 +159,14 @@
               <tr mat-row *matRowDef="let row; columns: itemsDisplayedColumns;"></tr>
             </table>
 
-
+          </div>
             <div class="mat-elevation-z8 table-container">
               <mat-paginator #paginatorSecond [length]="itemDonDataSource?.data?.length" [pageIndex]="0"
               [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
               </mat-paginator>
             </div>
           
-        </div>
+        
       </div>
     </mat-tab>
 
