@@ -183,6 +183,16 @@ export class DbSetupService {
             totalItemDonationsValue:orgTotalItemDonationsValue
           })
 
+        orgObj?.VolunteerDonations?.forEach(async (volDon) => {
+          let volRef = this.fs.collection("Organisations")
+            .doc(orgRef.id)
+            .collection("VolunteerDonations")
+            .doc()
+            .ref
+
+          volRef.set(volDon);
+        })
+
 
       })
 

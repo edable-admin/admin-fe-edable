@@ -872,7 +872,29 @@ export const mockData:CreateOrgModel[] =
                 "phoneNumber":"359-460-0303"
             }
         },
-        ]
+      ],
+      "VolunteerDonations": [
+        {
+          "Monday":true,
+          "Tuesday":true,
+          "Wednesday":true,
+          "Thursday":false,
+          "Friday":false,
+          "Saturday":false,
+          "Sunday":false,
+          "howContribute":"true",
+          "volunteerAmount":"12",
+          "volunteerComment":"true",
+          "volunteerDOB":"true",
+          "volunteerEmail":"true",
+          "volunteerHours":"true",
+          "volunteerHowHeard":"true",
+          "volunteerName":"true",
+          "volunteerOrgName":"true",
+          "volunteerPhone":"true",
+          "volunteerPostcode":"true",
+        }
+      ]
     },
     {
 
