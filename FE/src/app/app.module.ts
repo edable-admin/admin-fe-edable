@@ -52,6 +52,7 @@ import { InfographItemsDonationsComponent } from './components/organisation/info
 import { InfographicsSectionComponent } from './components/organisation/infographics-section/infographics-section.component';
 import { InfographicsAllOrgsGeneralDonationsComponent } from './components/organisation/infographics-section/infographics-all-orgs-general-donations/infographics-all-orgs-general-donations.component';
 import { InfographicsOrgGeneralDonationsComponent } from './components/organisation/infographics-section/infographics-org-general-donations/infographics-org-general-donations.component';
+import { InfographicsAllOrgsItemDonationsComponent } from './components/organisation/infographics-section/infographics-all-orgs-item-donations/infographics-all-orgs-item-donations.component';
 
 const config = environment.firebaseConfig;
 
@@ -87,7 +88,8 @@ const config = environment.firebaseConfig;
     InfographicsSectionMobileComponent,
     InfographicsAllOrgsGeneralDonationsMobileComponent,
     InfographicsOrgGeneralDonationsMobileComponent,
-    InfographItemsDonationsMobileComponent
+    InfographItemsDonationsMobileComponent,
+    InfographicsAllOrgsItemDonationsComponent
   ],
   imports: [
     BrowserModule,

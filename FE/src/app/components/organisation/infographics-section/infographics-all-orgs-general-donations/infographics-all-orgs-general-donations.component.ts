@@ -3,6 +3,7 @@ import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonatio
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart } from 'chart.js';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
+import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 
 @Component({
   selector: 'app-infographics-all-orgs-general-donations',
@@ -11,7 +12,8 @@ import { Organisation } from 'src/app/models/Organisation/Organisation';
 })
 export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
-  @Input() allOrgsGeneralDonationData:GeneralDonations[];
+  @Input() orgGeneralDonationGraphData:GeneralDonations[];
+  @Input() orgItemDonationGraphData:ItemDonations[];
   @Input() org:Organisation;
   @Input() chartType:string;
 
@@ -40,8 +42,8 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
 
     if(this.chart) this.chart.destroy();
 
-    this.chartData = this.allOrgsGeneralDonationData.map((donation: any) => donation.totalGeneralDonationsValue);
-    this.chartLabel = this.allOrgsGeneralDonationData.map((donation: any) => donation.name);
+    this.chartData = this.orgGeneralDonationGraphData.map((donation: any) => {return donation.chartData});
+    this.chartLabel = this.orgGeneralDonationGraphData.map((donation: any) => {return donation.chartLabel});
     this.updateColors();
 
     this.configLine = {

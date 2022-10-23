@@ -13,6 +13,8 @@ import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonatio
 export class InfographicsOrgGeneralDonationsComponent implements OnChanges, OnDestroy {
   @Input() org: Organisation;
   @Input() orgGeneralDonationGraphData:any;
+  @Input() orgItemDonationGraphData:any;
+
 
   chartData: any;
   chartLabel: any;

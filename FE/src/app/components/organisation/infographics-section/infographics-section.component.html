@@ -1,6 +1,6 @@
 <div class="container">
 
-  <mat-radio-group aria-label="Select an option" *ngIf="org.id !== ''" [formControl]="infoGraphicsControl">
+  <mat-radio-group aria-label="Select an option" [formControl]="infoGraphicsControl">
     <mat-radio-button *ngFor="let item of infoGraphicsOptions" [value]="item">{{item}}</mat-radio-button>
   </mat-radio-group>
 
@@ -9,15 +9,23 @@
   </mat-radio-group>
 
   <app-infographics-all-orgs-general-donations
-    *ngIf="org.id === '' && allOrgsGeneralDonationData"
-    [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
+    *ngIf="org.id === '' && infoGraphicsControl.value === 'General Donations' && orgGeneralDonationGraphData"
+    [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
     [chartType]="chartTypeControl.value"
     [org]="org"
   >
   </app-infographics-all-orgs-general-donations>
 
+  <app-infographics-all-orgs-item-donations
+  *ngIf="org.id === '' && infoGraphicsControl.value === 'Item Donations' && orgItemDonationGraphData"
+  [orgItemDonationGraphData]="orgItemDonationGraphData"
+  [chartType]="chartTypeControl.value"
+  [org]="org"
+>
+</app-infographics-all-orgs-item-donations>
+
   <app-infograph-org-items-donations
-    *ngIf="infoGraphicsControl.value === 'Item Donations'"
+    *ngIf="org.id != '' && infoGraphicsControl.value === 'Item Donations'"
     [items]="items"
     [org]="org"
   >

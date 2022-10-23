@@ -27,17 +27,18 @@
         </mat-radio-button>
       </mat-radio-group>
     </div>
-    <!-- <div class="chartDropdown"> -->
-      <!-- <mat-form-field style="width:107px" appearance="fill"> -->
-        <!-- <mat-label>Chart Type</mat-label> -->
-        <!-- <mat-select [(value)]="chartType" (selectionChange)="changeChart()"> -->
-          <!-- <mat-option value="pie">Pie</mat-option> -->
-          <!-- <mat-option value="line">Line</mat-option> -->
-          <!-- <mat-option value="bar">Bar</mat-option> -->
-          <!-- <mat-option value="polar">Polar</mat-option> -->
-        <!-- </mat-select> -->
-      <!-- </mat-form-field> -->
-    <!-- </div> -->
+
+    <!-- <div class="chartDropdown">
+      <mat-form-field style="width:107px" appearance="fill">
+      <mat-label>Chart Type</mat-label>
+      <mat-select [(value)]="chartType" (selectionChange)="changeChart()">
+        <mat-option value="pie">Pie</mat-option>
+        <mat-option value="line">Line</mat-option>
+        <mat-option value="bar">Bar</mat-option>
+        <mat-option value="polar">Polar</mat-option>
+      </mat-select>
+      </mat-form-field>
+    </div> -->
 
     <div class="flex-container">
       <section class="scroll-container mat-elevation-z8">
@@ -78,7 +79,7 @@
                 [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
                 [items]="items"
                 [org]="selectedOrg"
-                [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
+                [orgItemDonationGraphData]="orgItemDonationGraphData"
               ></app-infographics-section>
         <!-- <canvas id="canvas" height=140>{{chart}}</canvas> -->
       </div>
@@ -106,7 +107,7 @@
                 [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
                 [items]="items"
                 [org]="selectedOrg"
-                [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
+                [orgItemDonationGraphData]="orgItemDonationGraphData"
               >
               </app-infographics-section-mobile>
             </div>

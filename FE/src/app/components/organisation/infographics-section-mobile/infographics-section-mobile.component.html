@@ -9,8 +9,8 @@
   </mat-radio-group>
 
   <app-infographics-all-orgs-general-donations-mobile
-    *ngIf="org.id === '' && allOrgsGeneralDonationData"
-    [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
+    *ngIf="org.id === '' && orgGeneralDonationGraphData"
+    [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
     [chartType]="chartTypeControl.value"
     [org]="org"
   >
