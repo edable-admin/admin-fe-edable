@@ -1,20 +1,21 @@
 <div class="container">
-
-  <mat-radio-group aria-label="Select an option" *ngIf="org.id !== ''" [formControl]="infoGraphicsControl">
-    <mat-radio-button *ngFor="let item of infoGraphicsOptions" [value]="item">{{item}}</mat-radio-button>
-  </mat-radio-group>
-
-  <mat-radio-group *ngIf="org.id === ''" [formControl]="generalInfographicsControl">
-    <mat-radio-button *ngFor="let item of generalInfographicsOptions" [value]="item">{{item}}</mat-radio-button>
-  </mat-radio-group>
-
-  <mat-form-field appearance="fill" *ngIf="org.id === ''">
-    <mat-select [formControl]="chartTypeControl">
-      <mat-option *ngFor="let item of chartType" [value]="item">
-        {{item}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <div class="options-container">
+    <mat-radio-group aria-label="Select an option" *ngIf="org.id !== ''" [formControl]="infoGraphicsControl">
+      <mat-radio-button *ngFor="let item of infoGraphicsOptions" [value]="item">{{item}}</mat-radio-button>
+    </mat-radio-group>
+    
+    <mat-radio-group *ngIf="org.id === ''" [formControl]="generalInfographicsControl">
+      <mat-radio-button *ngFor="let item of generalInfographicsOptions" [value]="item">{{item}}</mat-radio-button>
+    </mat-radio-group>
+    
+    <mat-form-field appearance="fill" *ngIf="org.id === ''">
+      <mat-select [formControl]="chartTypeControl">
+        <mat-option *ngFor="let item of chartType" [value]="item">
+          {{item}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
   <app-infographics-all-orgs-general-donations
     *ngIf="org.id === '' && allOrgsGeneralDonationData && generalInfographicsControl.value === 'General Donations'"

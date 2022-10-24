@@ -20,7 +20,6 @@ export class InfographicOrgReferralComponent implements OnInit {
   chartData: any[];
   chartLabels: any[];
 
-
   constructor() { }
 
   ngOnInit(): void {
@@ -38,13 +37,7 @@ export class InfographicOrgReferralComponent implements OnInit {
   }
 
   ngOnChanges(changes) {
-
-    if (changes['org']) {
-      if (this.org.id === '') {
-        if (this.chart) this.chart.destroy();
-      }
-      this.createChart();
-    }
+    this.createChart();
   }
 
   createChart() {
@@ -108,7 +101,7 @@ export class InfographicOrgReferralComponent implements OnInit {
           },
           title: {
             display: true,
-            text: `${this.org.name}'s Referrals`,
+            text: this.chartData.length > 0 ? `${this.org.name}'s Referrals` : 'No Referrals',
             padding: {
               top: 10,
               bottom: 0
@@ -117,7 +110,6 @@ export class InfographicOrgReferralComponent implements OnInit {
         },
       }
     };
-    if (this.chartData.length <= 0) return;
 
     this.chart = new Chart('org-referral-graph', this.configPie);
   }
@@ -126,5 +118,4 @@ export class InfographicOrgReferralComponent implements OnInit {
     const hue = number * 137.508;
     return `hsl(${hue},50%,75%)`;
   }
-
 }

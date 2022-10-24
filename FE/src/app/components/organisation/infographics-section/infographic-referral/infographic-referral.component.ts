@@ -106,7 +106,7 @@ export class InfographicReferralComponent implements OnInit {
           },
           title: {
             display: true,
-            text: 'General Referrals Overview',
+            text: this.chartData.length > 0? 'General Referrals Overview' : 'No Referrals',
             padding: {
               top: 10,
               bottom: 0
@@ -145,7 +145,7 @@ export class InfographicReferralComponent implements OnInit {
           },
           title: {
             display: true,
-            text: 'General Referrals Overview',
+            text: this.chartData.length > 0? 'General Referrals Overview' : 'No Referrals',
             padding: {
               top: 10,
               bottom: 0
