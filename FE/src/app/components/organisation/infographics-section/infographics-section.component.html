@@ -28,7 +28,6 @@
     *ngIf="org.id === '' && generalInfographicsControl.value === 'General Referrals'"
     [org]="org"
     [referralData]="referralData"
-    [isGeneral] = "true"
     [chartType]="chartTypeControl.value"
   ></app-infographic-referral>
 
@@ -46,10 +45,9 @@
   >
   </app-infographics-org-general-donations>
 
-  <app-infographic-referral
+  <app-infographic-org-referral
     *ngIf="org.id !== '' && infoGraphicsControl.value === 'Referrals'"
     [org]="org"
-    [referralData]="referralData"
-    [isGeneral] = "false"
-  ></app-infographic-referral>
+    [referralData]="referralData">
+  </app-infographic-org-referral>
 </div>

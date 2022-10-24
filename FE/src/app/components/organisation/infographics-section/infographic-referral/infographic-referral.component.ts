@@ -13,8 +13,6 @@ export class InfographicReferralComponent implements OnInit {
 
   @Input() referralData: ReferralGraphData[];
   @Input() org: Organisation;
-  @Input() isGeneral: boolean;
-  @Input() showGeneralReferrals: boolean;
   @Input() chartType: string;
 
 
@@ -51,6 +49,7 @@ export class InfographicReferralComponent implements OnInit {
     if (this.chart) this.chart.destroy();
 
     if (changes['org'] || changes['chartType']) {
+      this.createChartConfigs();
       this.createInfographics();
     }
   }
@@ -58,10 +57,10 @@ export class InfographicReferralComponent implements OnInit {
   createInfographics() {
     switch (this.chartType) {
       case 'pie':
-            this.chart = new Chart('referral-graph', this.configPie);
+        this.chart = new Chart('referral-graph', this.configPie);
         break;
       case 'bar':
-            this.chart = new Chart('referral-graph', this.configBar);
+        this.chart = new Chart('referral-graph', this.configBar);
         break;
 
       default:
@@ -69,16 +68,12 @@ export class InfographicReferralComponent implements OnInit {
     }
 
     if (this.org.id !== '') {
-      if(this.chart) this.chart.destroy();
+      if (this.chart) this.chart.destroy();
     }
   }
 
   createChartConfigs() {
-    if (this.isGeneral) {
-      this.getGeneralReferralData();
-    } else {
-      this.filterReferralData();
-    }
+    this.getGeneralReferralData();
 
     this.updateColors();
 
@@ -111,7 +106,7 @@ export class InfographicReferralComponent implements OnInit {
           },
           title: {
             display: true,
-            text: this.isGeneral ? 'General Referrals Overview' : `${this.org.name}'s Referrals`,
+            text: 'General Referrals Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -150,7 +145,7 @@ export class InfographicReferralComponent implements OnInit {
           },
           title: {
             display: true,
-            text: this.isGeneral ? 'General Referrals Overview' : `${this.org.name}'s Referrals`,
+            text: 'General Referrals Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -159,137 +154,10 @@ export class InfographicReferralComponent implements OnInit {
         },
       }
     }
-  }
-
-  createPieChart() {
-    if (this.isGeneral) {
-      this.getGeneralReferralData();
-    } else {
-      this.filterReferralData();
-    }
-
-    this.configPie = {
-      type: 'pie',
-      data: {
-        labels: this.chartLabels,
-        datasets: [{
-          hoverOffset: 5,
-          data: this.chartData,
-          backgroundColor: this.colors,
-        }]
-      },
-      plugins: [ChartDataLabels],
-      options: {
-        maintainAspectRatio: false,
-        responsive: true,
-        layout: {
-          padding: 10,
-        },
-        plugins: {
-          tooltips: {
-            enabled: false
-          },
-          datalabels: {
-            formatter: (value, context) => {
-              const name = context.chart.data.labels[context.dataIndex];
-              return [`${name}`];
-            },
-          },
-          title: {
-            display: true,
-            text: this.isGeneral ? 'General Referrals Overview' : `${this.org.name}'s Referrals`,
-            padding: {
-              top: 10,
-              bottom: 0
-            }
-          }
-        },
-      }
-    };
-
-    // this.chart = new Chart('referral-graph', this.configPie);
-  }
-
-  createBarGraph() {
-    if (this.isGeneral) {
-      this.getGeneralReferralData();
-    } else {
-      this.filterReferralData();
-    }
-
-    this.configBar = {
-      type: 'bar',
-      data: {
-        labels: this.chartLabels,
-        datasets: [{
-          label: 'Referrals',
-          data: this.chartData,
-          backgroundColor: this.colors,
-        }]
-      },
-      plugins: [ChartDataLabels],
-      options: {
-        maintainAspectRatio: false,
-        responsive: true,
-        layout: {
-          padding: 10,
-        },
-        plugins: {
-          tooltips: {
-            enabled: false
-          },
-          datalabels: {
-            formatter: (value, context) => {
-              const name = context.chart.data.labels[context.dataIndex];
-              return [`${name}`];
-            },
-          },
-          title: {
-            display: true,
-            text: this.isGeneral ? 'General Referrals Overview' : `${this.org.name}'s Referrals`,
-            padding: {
-              top: 10,
-              bottom: 0
-            }
-          }
-        },
-      }
-    }
-
-    // this.chart = new Chart('referral-graph', this.configBar);
   }
 
   getGeneralReferralData() {
     const referrals = this.referralData.map(ref => {
-      return ref.howHeard;
-    });
-
-    this.referralCounts = {};
-    this.chartLabels = [];
-    this.chartData = [];
-
-    for (let i = 0; i < referrals.length; i++) {
-      const element = referrals[i];
-
-      if (this.referralCounts[element]) {
-        this.referralCounts[element] += 1;
-      } else {
-        this.referralCounts[element] = 1;
-        this.chartLabels.push(element);
-      }
-    }
-
-    for (let i = 0; i < this.chartLabels.length; i++) {
-      this.chartData.push(this.referralCounts[this.chartLabels[i]]);
-    }
-  }
-
-  filterReferralData() {
-    this.orgReferrals = this.referralData.filter(org => {
-      return org.orgId === this.org.id;
-    });
-
-    const referrals = this.orgReferrals.map(ref => {
       return ref.howHeard;
     });
 

@@ -1,4 +1,4 @@
 <div class="chart-container">
     <h1 *ngIf="chartData.length <= 0 && org.id !== ''">No Referrals</h1>
-    <canvas id="referral-graph" height=340>{{chart}}</canvas>
+    <canvas *ngIf="chartData.length > 0" id="org-referral-graph" height=340>{{chart}}</canvas>
 </div>
