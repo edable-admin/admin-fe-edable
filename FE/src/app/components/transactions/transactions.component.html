@@ -14,8 +14,8 @@
           <mat-icon>edit</mat-icon><span class="text">Edit</span>
         </button>
 
-        <button mat-raised-button color="warn" class="exit-button" *ngIf="this.editStatus==true" [disabled]="!this.editStatus" (click)="this.changeEditStatus()">
-          <mat-icon>cancel</mat-icon><span class="text">Exit</span>
+        <button mat-raised-button class="save-button" *ngIf="this.editStatus==true" [disabled]="!this.editStatus" (click)="this.changeEditStatus()">
+          <mat-icon>check_circle</mat-icon>Save
         </button>
       </div>
 
@@ -101,8 +101,8 @@
             <mat-icon>edit</mat-icon>Edit
           </button>
 
-          <button mat-raised-button color="warn" class="exit-button" *ngIf="this.editStatus==true" [disabled]="!this.editStatus" (click)="this.changeEditStatus()">
-            <mat-icon>cancel</mat-icon>Exit
+          <button mat-raised-button class="save-button" *ngIf="this.editStatus==true" [disabled]="!this.editStatus" (click)="this.changeEditStatus()">
+            <mat-icon>check_circle</mat-icon>Save
           </button>
       </div>
       <div class="lower">
