@@ -13,13 +13,13 @@ export class InfographicReferralMobileComponent implements OnInit {
 
   @Input() referralData: ReferralGraphData[];
   @Input() org: Organisation;
-  @Input() isGeneral: boolean;
-  @Input() showGeneralReferrals: boolean;
+  @Input() chartType: string;
 
   chart!: Chart;
   orgReferrals: ReferralGraphData[];
   referralCounts: any;
   configPie: any;
+  configBar: any;
   chartData: any[];
   chartLabels: any[];
   colors: any;
@@ -30,26 +30,50 @@ export class InfographicReferralMobileComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.chart) this.chart.destroy();
+  }
 
-    this.updateColors();
-    this.createPieChart();
-    
+  ngOnDestroy(): void {
+    if (this.chart) this.chart.destroy();
+  }
+
+  ngAfterViewInit() {
+    if (this.chart) this.chart.destroy();
+
+    this.createChartConfigs();
+    this.createInfographics();
   }
 
   ngOnChanges(changes) {
     if (this.chart) this.chart.destroy();
 
-    if (changes['org'] || changes['showGeneralReferrals']) {
-      this.createPieChart();
+    if (changes['org'] || changes['chartType']) {
+      this.createChartConfigs();
+      this.createInfographics();
     }
   }
 
-  createPieChart() {
-    if (this.isGeneral) {
-      this.getGeneralReferralData();
-    } else {
-      this.filterReferralData();
+  createInfographics() {
+    switch (this.chartType) {
+      case 'pie':
+        this.chart = new Chart('referral-graph-mobile', this.configPie);
+        break;
+      case 'bar':
+        this.chart = new Chart('referral-graph-mobile', this.configBar);
+        break;
+
+      default:
+        break;
     }
+
+    if (this.org.id !== '') {
+      if (this.chart) this.chart.destroy();
+    }
+  }
+
+  createChartConfigs() {
+    this.getGeneralReferralData();
+
+    this.updateColors();
 
     this.configPie = {
       type: 'pie',
@@ -80,7 +104,7 @@ export class InfographicReferralMobileComponent implements OnInit {
           },
           title: {
             display: true,
-            text: this.isGeneral ? 'General Referrals Overview' : `${this.org.name}'s Referrals`,
+            text: this.chartData.length > 0? 'General Referrals Overview' : 'No Referrals',
             padding: {
               top: 10,
               bottom: 0
@@ -90,41 +114,48 @@ export class InfographicReferralMobileComponent implements OnInit {
       }
     };
 
-    this.chart = new Chart('referral-graph-mobile', this.configPie);
+    this.configBar = {
+      type: 'bar',
+      data: {
+        labels: this.chartLabels,
+        datasets: [{
+          label: 'Referrals',
+          data: this.chartData,
+          backgroundColor: this.colors,
+        }]
+      },
+      plugins: [ChartDataLabels],
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        layout: {
+          padding: 10,
+        },
+        plugins: {
+          tooltips: {
+            enabled: false
+          },
+          datalabels: {
+            formatter: (value, context) => {
+              const name = context.chart.data.labels[context.dataIndex];
+              return [`${name}`];
+            },
+          },
+          title: {
+            display: true,
+            text: this.chartData.length > 0? 'General Referrals Overview' : 'No Referrals',
+            padding: {
+              top: 10,
+              bottom: 0
+            }
+          }
+        },
+      }
+    }
   }
 
   getGeneralReferralData() {
-    
     const referrals = this.referralData.map(ref => {
-      return ref.howHeard;
-    });
-
-    this.referralCounts = {};
-    this.chartLabels = [];
-    this.chartData = [];
-
-    for (let i = 0; i < referrals.length; i++) {
-      const element = referrals[i];
-
-      if (this.referralCounts[element]) {
-        this.referralCounts[element] += 1;
-      } else {
-        this.referralCounts[element] = 1;
-        this.chartLabels.push(element);
-      }
-    }
-
-    for (let i = 0; i < this.chartLabels.length; i++) {
-      this.chartData.push(this.referralCounts[this.chartLabels[i]]);
-    }
-  }
-
-  filterReferralData() {
-    this.orgReferrals = this.referralData.filter(org => {
-      return org.orgId === this.org.id;
-    });
-
-    const referrals = this.orgReferrals.map(ref => {
       return ref.howHeard;
     });
 

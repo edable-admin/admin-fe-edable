@@ -1,20 +1,24 @@
 <div class="container">
-
-  <mat-radio-group aria-label="Select an option" *ngIf="org.id !== ''" [formControl]="infoGraphicsControl">
-    <mat-radio-button *ngFor="let item of infoGraphicsOptions" [value]="item">{{item}}</mat-radio-button>
-  </mat-radio-group>
-
-  <mat-radio-group [formControl]="chartTypeControl"  *ngIf="org.id === ''">
-    <mat-radio-button *ngFor="let item of chartType" [value]="item">{{item}}</mat-radio-button>
-  </mat-radio-group>
-
-  <mat-slide-toggle 
-    *ngIf="org.id === ''"
-    [(ngModel)]="showGeneralReferrals">
-  </mat-slide-toggle>
+  <div class="options-container">
+    <mat-radio-group aria-label="Select an option" *ngIf="org.id !== ''" [formControl]="infoGraphicsControl">
+      <mat-radio-button *ngFor="let item of infoGraphicsOptions" [value]="item">{{item}}</mat-radio-button>
+    </mat-radio-group>
+    
+    <mat-radio-group *ngIf="org.id === ''" [formControl]="generalInfographicsControl">
+      <mat-radio-button *ngFor="let item of generalInfographicsOptions" [value]="item">{{item}}</mat-radio-button>
+    </mat-radio-group>
+    
+    <mat-form-field appearance="fill" *ngIf="org.id === ''">
+      <mat-select [formControl]="chartTypeControl">
+        <mat-option *ngFor="let item of chartType" [value]="item">
+          {{item}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
   <app-infographics-all-orgs-general-donations-mobile
-    *ngIf="org.id === '' && allOrgsGeneralDonationData && !showGeneralReferrals"
+  *ngIf="org.id === '' && allOrgsGeneralDonationData && generalInfographicsControl.value === 'General Donations'"
     [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
     [chartType]="chartTypeControl.value"
     [org]="org"
@@ -22,11 +26,10 @@
   </app-infographics-all-orgs-general-donations-mobile>
   
   <app-infographic-referral-mobile
-    *ngIf="org.id === '' && showGeneralReferrals"
-    [org]="org"
-    [referralData]="referralData"
-    [isGeneral] = "true"
-    [showGeneralReferrals]="showGeneralReferrals">
+  *ngIf="org.id === '' && generalInfographicsControl.value === 'General Referrals'"
+  [org]="org"
+  [referralData]="referralData"
+  [chartType]="chartTypeControl.value">
   </app-infographic-referral-mobile>
 
   <app-infograph-org-items-donations-mobile
@@ -43,11 +46,9 @@
   >
   </app-infographics-org-general-donations-mobile>
 
-  <app-infographic-referral-mobile
-    *ngIf="org.id !== '' && infoGraphicsControl.value === 'Referrals' && !showGeneralReferrals"
+  <app-infographic-org-referral-mobile
+    *ngIf="org.id !== '' && infoGraphicsControl.value === 'Referrals'"
     [org]="org"
-    [referralData]="referralData"
-    [isGeneral] = "false"
-    [showGeneralReferrals]="showGeneralReferrals"
-  ></app-infographic-referral-mobile>
+    [referralData]="referralData">
+  </app-infographic-org-referral-mobile>
 </div>

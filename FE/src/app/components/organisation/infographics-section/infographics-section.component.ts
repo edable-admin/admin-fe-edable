@@ -13,22 +13,20 @@ import { ReferralGraphData } from 'src/app/services/infographics/infographics.se
 })
 export class InfographicsSectionComponent implements OnInit, OnChanges {
 
-
   @Input() items: Item[];
   @Input() org: Organisation;
   @Input() allOrgsGeneralDonationData: GeneralDonations[];
   @Input() orgGeneralDonationGraphData: any;
   @Input() referralData: ReferralGraphData[];
+  
   generalInfographicsOptions: string[] = ['General Donations', 'General Referrals'];
   generalInfographicsControl = new FormControl(this.generalInfographicsOptions[0]);
-
-  constructor(
-  ) { }
-
   infoGraphicsOptions: any[] = ['General Donations', 'Item Donations', 'Referrals'];
   infoGraphicsControl = new FormControl(this.infoGraphicsOptions[0]);
   chartType = ['pie','bar'];
   chartTypeControl = new FormControl(this.chartType[0])
+
+  constructor() { }
 
   ngOnInit(): void {
 

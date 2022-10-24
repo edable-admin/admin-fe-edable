@@ -18,18 +18,16 @@ export class InfographicsSectionMobileComponent implements OnInit, OnChanges {
   @Input() orgGeneralDonationGraphData: any;
   @Input() IsMobile: any;
   @Input() referralData: ReferralGraphData[];
+  
   showGeneralReferrals: boolean = false;
-
-
-
-
-  constructor(
-  ) { }
-
+  generalInfographicsOptions: string[] = ['General Donations', 'General Referrals'];
+  generalInfographicsControl = new FormControl(this.generalInfographicsOptions[0]);
   infoGraphicsOptions: any[] = ['General Donations', 'Item Donations', 'Referrals'];
   infoGraphicsControl = new FormControl(this.infoGraphicsOptions[0]);
-  chartType = ['pie','line','bar','polar'];
+  chartType = ['pie','bar'];
   chartTypeControl = new FormControl(this.chartType[0])
+
+  constructor() { }
 
   ngOnInit(): void {
 

@@ -57,6 +57,7 @@ import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { InfographicReferralComponent } from './components/organisation/infographics-section/infographic-referral/infographic-referral.component';
 import { InfographicReferralMobileComponent } from './components/organisation/infographics-section-mobile/infographic-referral-mobile/infographic-referral-mobile.component';
 import { InfographicOrgReferralComponent } from './components/organisation/infographics-section/infographic-org-referral/infographic-org-referral.component';
+import { InfographicOrgReferralMobileComponent } from './components/organisation/infographics-section-mobile/infographic-org-referral-mobile/infographic-org-referral-mobile.component';
 
 const config = environment.firebaseConfig;
 
@@ -95,7 +96,8 @@ const config = environment.firebaseConfig;
     InfographItemsDonationsMobileComponent,
     InfographicReferralComponent,
     InfographicReferralMobileComponent,
-    InfographicOrgReferralComponent
+    InfographicOrgReferralComponent,
+    InfographicOrgReferralMobileComponent,
   ],
   imports: [
     BrowserModule,
