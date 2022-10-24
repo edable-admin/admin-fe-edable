@@ -378,9 +378,9 @@ export class InfographicsService {
     await this.fs.firestore.collectionGroup('Private')
       .get()
       .then((resp) => {
-
+        
         resp.docs.forEach((resp) => {
-
+          
           if (resp.ref.parent.parent.parent.id === 'ItemsDonations') {
             orgId = resp.ref.parent.parent.parent.parent.parent.parent.id;
           }
@@ -395,9 +395,9 @@ export class InfographicsService {
 
           let privateData: PrivateData = resp.data() as PrivateData;
 
-          if (privateData.howHeard === '' && privateData.howHeardOther === '') {
+          if ((privateData.howHeard === '' || privateData.howHeard === undefined) && (privateData.howHeardOther === '' || privateData.howHeardOther === undefined)) {
             howHeard = 'Unknown';
-          } else if (privateData.howHeard === '' && privateData.howHeardOther !== '') {
+          } else if ((privateData.howHeard === '' || privateData.howHeard === undefined) && (privateData.howHeardOther !== '' || privateData !== undefined)) {
             howHeard = privateData.howHeardOther;
           } else {
             howHeard = privateData.howHeard;

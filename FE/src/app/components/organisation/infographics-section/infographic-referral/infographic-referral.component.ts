@@ -15,11 +15,14 @@ export class InfographicReferralComponent implements OnInit {
   @Input() org: Organisation;
   @Input() isGeneral: boolean;
   @Input() showGeneralReferrals: boolean;
+  @Input() chartType: string;
+
 
   chart!: Chart;
   orgReferrals: ReferralGraphData[];
   referralCounts: any;
   configPie: any;
+  configBar: any;
   chartData: any[];
   chartLabels: any[];
   colors: any;
@@ -30,16 +33,131 @@ export class InfographicReferralComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.chart) this.chart.destroy();
-
-    this.updateColors();
-    this.createPieChart();
   }
+
+  ngOnDestroy(): void {
+    if (this.chart) this.chart.destroy();
+  }
+
+  ngAfterViewInit() {
+    if (this.chart) this.chart.destroy();
+
+    this.createChartConfigs();
+    this.createInfographics();
+  }
+
 
   ngOnChanges(changes) {
     if (this.chart) this.chart.destroy();
 
-    if (changes['org'] || changes['showGeneralReferrals']) {
-      this.createPieChart();
+    if (changes['org'] || changes['chartType']) {
+      this.createInfographics();
+    }
+  }
+
+  createInfographics() {
+    switch (this.chartType) {
+      case 'pie':
+            this.chart = new Chart('referral-graph', this.configPie);
+        break;
+      case 'bar':
+            this.chart = new Chart('referral-graph', this.configBar);
+        break;
+
+      default:
+        break;
+    }
+
+    if (this.org.id !== '') {
+      if(this.chart) this.chart.destroy();
+    }
+  }
+
+  createChartConfigs() {
+    if (this.isGeneral) {
+      this.getGeneralReferralData();
+    } else {
+      this.filterReferralData();
+    }
+
+    this.updateColors();
+
+    this.configPie = {
+      type: 'pie',
+      data: {
+        labels: this.chartLabels,
+        datasets: [{
+          hoverOffset: 5,
+          data: this.chartData,
+          backgroundColor: this.colors,
+        }]
+      },
+      plugins: [ChartDataLabels],
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        layout: {
+          padding: 10,
+        },
+        plugins: {
+          tooltips: {
+            enabled: false
+          },
+          datalabels: {
+            formatter: (value, context) => {
+              const name = context.chart.data.labels[context.dataIndex];
+              return [`${name}`];
+            },
+          },
+          title: {
+            display: true,
+            text: this.isGeneral ? 'General Referrals Overview' : `${this.org.name}'s Referrals`,
+            padding: {
+              top: 10,
+              bottom: 0
+            }
+          }
+        },
+      }
+    };
+
+    this.configBar = {
+      type: 'bar',
+      data: {
+        labels: this.chartLabels,
+        datasets: [{
+          label: 'Referrals',
+          data: this.chartData,
+          backgroundColor: this.colors,
+        }]
+      },
+      plugins: [ChartDataLabels],
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        layout: {
+          padding: 10,
+        },
+        plugins: {
+          tooltips: {
+            enabled: false
+          },
+          datalabels: {
+            formatter: (value, context) => {
+              const name = context.chart.data.labels[context.dataIndex];
+              return [`${name}`];
+            },
+          },
+          title: {
+            display: true,
+            text: this.isGeneral ? 'General Referrals Overview' : `${this.org.name}'s Referrals`,
+            padding: {
+              top: 10,
+              bottom: 0
+            }
+          }
+        },
+      }
     }
   }
 
@@ -89,7 +207,56 @@ export class InfographicReferralComponent implements OnInit {
       }
     };
 
-    this.chart = new Chart('referral-graph', this.configPie);
+    // this.chart = new Chart('referral-graph', this.configPie);
+  }
+
+  createBarGraph() {
+    if (this.isGeneral) {
+      this.getGeneralReferralData();
+    } else {
+      this.filterReferralData();
+    }
+
+    this.configBar = {
+      type: 'bar',
+      data: {
+        labels: this.chartLabels,
+        datasets: [{
+          label: 'Referrals',
+          data: this.chartData,
+          backgroundColor: this.colors,
+        }]
+      },
+      plugins: [ChartDataLabels],
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        layout: {
+          padding: 10,
+        },
+        plugins: {
+          tooltips: {
+            enabled: false
+          },
+          datalabels: {
+            formatter: (value, context) => {
+              const name = context.chart.data.labels[context.dataIndex];
+              return [`${name}`];
+            },
+          },
+          title: {
+            display: true,
+            text: this.isGeneral ? 'General Referrals Overview' : `${this.org.name}'s Referrals`,
+            padding: {
+              top: 10,
+              bottom: 0
+            }
+          }
+        },
+      }
+    }
+
+    // this.chart = new Chart('referral-graph', this.configBar);
   }
 
   getGeneralReferralData() {
