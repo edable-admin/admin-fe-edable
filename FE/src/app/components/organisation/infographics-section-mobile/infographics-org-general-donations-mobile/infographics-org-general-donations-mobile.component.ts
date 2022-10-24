@@ -79,7 +79,7 @@ export class InfographicsOrgGeneralDonationsMobileComponent implements OnChanges
         plugins: {
           title: {
             display: true,
-            text: 'General Donations Overview',
+            text: `${this.org.name} General Donations`,
             padding: {
               top: 10,
               bottom: 0
