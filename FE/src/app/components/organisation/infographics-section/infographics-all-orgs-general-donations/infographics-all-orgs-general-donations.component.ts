@@ -63,7 +63,7 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
         plugins: {
           title: {
             display: true,
-            text: 'All General Donations Overview',
+            text: 'Monthly General Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -114,7 +114,7 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
           },
           title: {
             display: true,
-            text: 'All General Donations Overview',
+            text: 'Monthly General Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -146,7 +146,7 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
           },
           title: {
             display: true,
-            text: 'All General Donations Overview',
+            text: 'Monthly General Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -179,7 +179,7 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
           },
           title: {
             display: true,
-            text: 'All General Donations Overview',
+            text: 'Monthly General Donations Overview',
             padding: {
               top: 10,
               bottom: 0

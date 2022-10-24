@@ -64,7 +64,7 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
         plugins: {
           title: {
             display: true,
-            text: 'All General Donations Overview',
+            text: 'Monthly General Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -115,7 +115,7 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           },
           title: {
             display: true,
-            text: 'All General Donations Overview',
+            text: 'Monthly General Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -147,7 +147,7 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           },
           title: {
             display: true,
-            text: 'All General Donations Overview',
+            text: 'Monthly General Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -180,7 +180,7 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           },
           title: {
             display: true,
-            text: 'All General Donations Overview',
+            text: 'Monthly General Donations Overview',
             padding: {
               top: 10,
               bottom: 0
