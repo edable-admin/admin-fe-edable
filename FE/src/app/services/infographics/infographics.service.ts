@@ -347,13 +347,15 @@ export class InfographicsService {
             }
           },
           legend: {
-            position: 'top',
-            align:'start',
-            labels: {
-              textAlign: 'left',
-              padding: 30,
-              boxWidth: 15,
-            }
+            display:false
+            // maxHeight:400,
+            // position: 'bottom',
+            // align:'start',
+            // labels: {
+            //   textAlign: 'left',
+            //   padding: 30,
+            //   boxWidth: 15,
+            // }
           },
           title: {
             text: `${org.name} Item Donations`,

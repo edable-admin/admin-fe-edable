@@ -1,18 +1,33 @@
 //-----------------Table and Search---------------\\
 
+// .scroll-container {
+//     border: 4px solid green;
+//     max-width: 90vw;
+//     overflow: auto;
+
+// }
+
+.mat-tooltip{
+  font-size: larger;
+}
+
 .container {
     width: 100%;
     height: 50%;
+
 }
 
 .lower {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow:auto;
 
 }
-
+.example-small-box {
+    max-width: 100vw;
+    overflow: auto;
+    margin: 10px;
+}
 .upper {
     margin-left: auto;
     margin-right: auto;
@@ -28,40 +43,23 @@
 
 }
 .upper > div {
-
     padding: 15px;
-    //text-align: center;
-    //line-height: 75px;
     font-size: 15px;
   }
-  .search {
-    width: 100%;
+//   .search {
+//     width: 100%;
 
-    mat-form-field {
+//     mat-form-field {
 
-        margin-top: -2%;
-        display: flex;
-        flex-direction: column-reverse;
+//         margin-top: -2%;
+//         display: flex;
+//         flex-direction: column-reverse;
 
-        text-align: center;
+//         text-align: center;
 
-    }
-}
-.options {
-    width: 30%;
-
-    mat-radio-group {
-
-        padding: 10px;
-        display: flex;
-        flex-direction: row;
-        text-align: center;
+//     }
 
 
-
-    }
-    padding-top: 10px;
-}
 .upper > div {
     font-size: 15px;
     width: 100%
@@ -76,9 +74,8 @@
     padding: 0px;
 }
 
-.table {
-
-    width: 100%;
+table {
+   width: 100%;
 }
 
 .edit-button{
@@ -94,9 +91,27 @@
 }
 
 .search-bar {
-   max-width:600px;
+   min-width: 50vw;
 }
 
-@media (max-width: 768px) {
-  .text { display: none; }
+.mat-paginator {
+    min-width: 100%;
 }
+
+@media screen and (max-width: 460px) {
+    .upper {
+        display:contents;
+        margin: 20px;
+        padding: 15px;
+
+        button {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        .search-bar {
+            margin-left: 20px;
+        }
+
+    }
+}
+
