@@ -16,12 +16,12 @@
           <button mat-raised-button color="warn" class="exit-button" *ngIf="this.editStatus==true" [disabled]="!this.editStatus" (click)="this.changeEditStatus()">
             <mat-icon>cancel</mat-icon><span class="text">Exit</span>
           </button>
-        
+
       </div>
-    
-      
+
+
         <div class="lower">
-          
+
               <table
                 matSort
                 #genTableS="matSort"
@@ -56,8 +56,20 @@
               </ng-container>
 
               <ng-container  matColumnDef="IsSubscribed">
-                <th mat-sort-header mat-header-cell *matHeaderCellDef>Subscribed</th>
-                <td mat-cell *matCellDef="let element">
+                <th
+                  mat-sort-header mat-header-cell *matHeaderCellDef>
+                  <mat-icon style="padding-right: 3px; color: red;"
+                  matTooltip="Payment Subscriptions are not automatically updated."
+                  matTooltipPosition="below"
+                  >
+                    info
+                  </mat-icon>
+                  Subscribed
+                </th>
+                <td mat-cell *matCellDef="let element"
+                matTooltip="Payment Subscriptions are not automatically updated."
+                matTooltipPosition="below"
+                >
                   <mat-icon>{{element.IsSubscribed}}</mat-icon>
                 </td>
               </ng-container>
@@ -80,7 +92,7 @@
               </mat-paginator>
             </div>
 
-        
+
       </div>
     </mat-tab>
     <mat-tab class="tab-label" label="Item Donations">
@@ -105,7 +117,7 @@
             </button>
         </div>
         <div class="lower">
-          
+
 
               <table
                 matSort
@@ -165,8 +177,8 @@
               [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
               </mat-paginator>
             </div>
-          
-        
+
+
       </div>
     </mat-tab>
 
