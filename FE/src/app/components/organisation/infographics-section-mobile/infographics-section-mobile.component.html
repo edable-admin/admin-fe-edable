@@ -4,7 +4,7 @@
       <mat-radio-button *ngFor="let item of infoGraphicsOptions" [value]="item">{{item}}</mat-radio-button>
     </mat-radio-group>
     
-    <mat-radio-group *ngIf="org.id === ''" [formControl]="generalInfographicsControl">
+    <mat-radio-group class="general-info-radio-group" *ngIf="org.id === ''" [formControl]="generalInfographicsControl">
       <mat-radio-button *ngFor="let item of generalInfographicsOptions" [value]="item">{{item}}</mat-radio-button>
     </mat-radio-group>
     
