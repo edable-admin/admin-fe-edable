@@ -17,24 +17,20 @@
   </app-infographics-all-orgs-general-donations>
 
   <app-infographics-all-orgs-item-donations
-  *ngIf="org.id === '' && infoGraphicsControl.value === 'Item Donations' && orgItemDonationGraphData"
+    *ngIf="org.id === '' && infoGraphicsControl.value === 'Item Donations' && orgItemDonationGraphData"
   [orgItemDonationGraphData]="orgItemDonationGraphData"
   [chartType]="chartTypeControl.value"
   [org]="org"
 >
-</app-infographics-all-orgs-item-donations>
+  </app-infographics-all-orgs-item-donations>
 
   <app-infograph-org-items-donations
-    *ngIf="org.id != '' && infoGraphicsControl.value === 'Item Donations'"
-    [items]="items"
-    [org]="org"
-  >
+  *ngIf="org.id != '' && infoGraphicsControl.value === 'Item Donations'"
+    [items]="items" [org]="org">
   </app-infograph-org-items-donations>
 
   <app-infographics-org-general-donations
-    *ngIf="org.id !== '' && infoGraphicsControl.value === 'General Donations'"
-    [org]="org"
-    [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
-  >
+  *ngIf="org.id !== '' && infoGraphicsControl.value === 'General Donations'"
+    [org]="org" [orgGeneralDonationGraphData]="orgGeneralDonationGraphData">
   </app-infographics-org-general-donations>
 </div>

@@ -12,6 +12,8 @@ import { Chart } from 'chart.js';
 export class InfographicsOrgGeneralDonationsMobileComponent implements OnChanges, OnDestroy {
   @Input() org: Organisation;
   @Input() orgGeneralDonationGraphData:any;
+  @Input() orgItemDonationGraphData:any;
+
 
   chartData: any;
   chartLabel: any;

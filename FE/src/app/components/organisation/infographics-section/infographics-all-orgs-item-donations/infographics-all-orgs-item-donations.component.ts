@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart } from 'chart.js';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
@@ -68,7 +67,7 @@ export class InfographicsAllOrgsItemDonationsComponent implements OnInit, AfterV
         plugins: {
           title: {
             display: true,
-            text: 'Item Donations Overview',
+            text: 'All Item Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -107,7 +106,6 @@ export class InfographicsAllOrgsItemDonationsComponent implements OnInit, AfterV
           backgroundColor: this.colors,
         }]
       },
-      plugins: [ChartDataLabels],
       options: {
         maintainAspectRatio: false,
         responsive: true,
@@ -118,15 +116,9 @@ export class InfographicsAllOrgsItemDonationsComponent implements OnInit, AfterV
           tooltips: {
             enabled: false
           },
-          datalabels: {
-            formatter: (value, context) => {
-              const name = context.chart.data.labels[context.dataIndex];
-              return [`${name}`];
-            },
-          },
           title: {
             display: true,
-            text: 'Item Donations Overview',
+            text: 'All Item Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -146,7 +138,6 @@ export class InfographicsAllOrgsItemDonationsComponent implements OnInit, AfterV
           backgroundColor: this.colors,
         }]
       },
-      plugins: [ChartDataLabels],
       options: {
         maintainAspectRatio: false,
         responsive: true,
@@ -157,15 +148,9 @@ export class InfographicsAllOrgsItemDonationsComponent implements OnInit, AfterV
           tooltips: {
             enabled: false
           },
-          datalabels: {
-            formatter: (value, context) => {
-              const name = context.chart.data.labels[context.dataIndex];
-              return [`${name}`];
-            },
-          },
           title: {
             display: true,
-            text: 'Item Donations Overview',
+            text: 'All Item Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -198,7 +183,7 @@ export class InfographicsAllOrgsItemDonationsComponent implements OnInit, AfterV
           },
           title: {
             display: true,
-            text: 'Item Donations Overview',
+            text: 'All Item Donations Overview',
             padding: {
               top: 10,
               bottom: 0
