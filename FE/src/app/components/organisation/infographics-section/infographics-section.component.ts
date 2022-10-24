@@ -19,7 +19,6 @@ export class InfographicsSectionComponent implements OnInit, OnChanges {
   @Input() allOrgsGeneralDonationData: GeneralDonations[];
   @Input() orgGeneralDonationGraphData: any;
   @Input() referralData: ReferralGraphData[];
-  showGeneralReferrals: boolean = false;
   generalInfographicsOptions: string[] = ['General Donations', 'General Referrals'];
   generalInfographicsControl = new FormControl(this.generalInfographicsOptions[0]);
 
