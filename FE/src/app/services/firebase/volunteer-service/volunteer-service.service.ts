@@ -23,7 +23,6 @@ export class VolunteerServiceService {
         resp.docs.forEach((resp) => {
 
           orgID = resp.ref.parent.parent.id;
-          console.log(resp)
           let privateData: VolunteerModel = resp.data() as VolunteerModel;
           let newReferral: VolunteerCSVModel = {
             orgName: orgID,

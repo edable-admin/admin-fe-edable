@@ -222,8 +222,6 @@ export class ReportsComponent implements OnInit {
         donations.push(resp.data() as GeneralDonationGetModel);
       });
 
-      console.table(donations);
-
       //Map data to CSV model
       const data: DonationCSVModel[] = donations.map((item) => {
         const newItem: DonationCSVModel = {
