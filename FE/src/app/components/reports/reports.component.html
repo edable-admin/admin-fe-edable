@@ -8,8 +8,8 @@
                             <mat-label>Select Report</mat-label>
                             <mat-select name="" id="" [(ngModel)]="selectedReport">
                                 <mat-option value="0">Select a Report</mat-option>
-                                <mat-option value="1">Load Donation Items</mat-option>
                                 <mat-option value="2">Load General Donations</mat-option>
+                                <mat-option value="1">Load Donation Items</mat-option>
                                 <mat-option value="3">Load Referral Data</mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -46,10 +46,10 @@
                         </mat-paginator>
                     </div>
                 </mat-tab>
-                <mat-tab class="tab" label="General"> 
+                <mat-tab class="tab" label="General">
                     <div class="button-container">
-                        <button class="reportbutton" mat-raised-button color="primary" (click)="loadVolunteers()">Local Volunteers</button>
-                        <button class="reportbutton" mat-raised-button color="primary" (click)="loadAllReport()">Local All Report</button>
+                        <button class="reportbutton" mat-raised-button color="primary" (click)="loadVolunteers()">Load Volunteers</button>
+                        <button class="reportbutton" mat-raised-button color="primary" (click)="loadAllReport()">Load All Report</button>
                         <button class="reportbutton" mat-raised-button color="primary" (click)="loadAllReferralData()">Load All Referral Data</button>
                     </div>
                 </mat-tab>

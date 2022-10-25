@@ -18,8 +18,8 @@ export class InfographicsSectionComponent implements OnInit, OnChanges {
   @Input() orgGeneralDonationGraphData: any;
   @Input() orgItemDonationGraphData:any;
   @Input() referralData: ReferralGraphData[];
-  
-  generalInfographicsOptions: string[] = ['General Donations', 'General Referrals', 'Item Donations'];
+
+  generalInfographicsOptions: string[] = ['General Donations', 'Item Donations', 'General Referrals'];
   generalInfographicsControl = new FormControl(this.generalInfographicsOptions[0]);
   infoGraphicsOptions: any[] = ['General Donations', 'Item Donations', 'Referrals'];
   infoGraphicsControl = new FormControl(this.infoGraphicsOptions[0]);
@@ -33,6 +33,6 @@ export class InfographicsSectionComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-  
+
   }
 }
