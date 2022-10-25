@@ -68,8 +68,9 @@
                 </th>
                 <td mat-cell *matCellDef="let element"
                 matTooltip="Payment Subscriptions are not automatically updated."
-                matTooltipPosition="below"
-                >
+                matTooltipPosition="below">
+
+                
                   <mat-icon [ngStyle]="{'color':(element.IsSubscribed == 'check_circle_outline') ? 'green':'rgb(201, 35, 35)'}">{{element.IsSubscribed}}</mat-icon>
                 </td>
               </ng-container>
