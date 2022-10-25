@@ -21,13 +21,11 @@
     <ng-container matColumnDef="Refunded?">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Refunded</th>
       <td mat-cell *matCellDef="let row">
-        <mat-icon *ngIf="row.IsRefunded" style="padding-right: 3px; color: green; vertical-align: middle;"
-          matTooltip="Payment Subscriptions are not automatically updated." matTooltipPosition="below">
+        <mat-icon *ngIf="row.IsRefunded" style="padding-right: 3px; color: green; vertical-align: middle;">
           check_circle_outline
         </mat-icon>
 
-        <mat-icon *ngIf="!row.IsRefunded" style="padding-right: 3px; color: rgb(201, 35, 35); vertical-align: middle;"
-          matTooltip="Payment Subscriptions are not automatically updated." matTooltipPosition="below">
+        <mat-icon *ngIf="!row.IsRefunded" style="padding-right: 3px; color: rgb(201, 35, 35); vertical-align: middle;">
           highlight_off
         </mat-icon>
       </td>
