@@ -9,11 +9,11 @@ import { ItemService } from 'src/app/services/firebase/item-service/item.service
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { Donation, GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { WebdatarocksComponent } from 'ng-webdatarocks';
-import { MatAccordion } from '@angular/material/expansion';
 import { DatePipe } from '@angular/common';
 import { Timestamp } from 'firebase/firestore';
 import { VolunteerServiceService } from 'src/app/services/firebase/volunteer-service/volunteer-service.service';
 import { DonationCSVModel, GeneralDonationGetModel, ItemCSVModel, ItemGetModel, ReferralCSVModel, VolunteerCSVModel, VolunteerModel } from 'src/app/models/Reports';
+import { ReportsService } from 'src/app/services/firebase/reports-service/reports.service';
 
 @Component({
   selector: 'app-reports',
@@ -30,17 +30,18 @@ export class ReportsComponent implements OnInit {
   orgData: MatTableDataSource<Organisation>;
   referralCSVData: ReferralCSVModel[] = [];
   selectedReport: any = 0;
+  reportData: any = [];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('reportTable') reportTable: WebdatarocksComponent;
-  @ViewChild(MatAccordion) accordion: MatAccordion;
 
   constructor(
     private ofs: OrganisationService,
     private ifs: ItemService,
     private tfs: TransactionService,
     private vfs: VolunteerServiceService,
+    private rfs: ReportsService,
     private snackBar: MatSnackBar
   ) { }
 
@@ -48,7 +49,7 @@ export class ReportsComponent implements OnInit {
     this.referralCSVData = [];
     this.initSelectedOrg();
     this.getOrgs();
-    
+
   }
 
   getOrgs() {
@@ -64,6 +65,10 @@ export class ReportsComponent implements OnInit {
   //Customise the toolbar to change the filename when exporting reports
   customiseToolbar(toolbar) {
     const tabs = toolbar.getTabs();
+    delete tabs[0]
+    delete tabs[1]
+    delete tabs[2]
+
 
     toolbar.getTabs = () => {
       const exportButton = tabs[3]
@@ -184,14 +189,13 @@ export class ReportsComponent implements OnInit {
         return newItem
       });
       this.setTableData(data, "Items", `${this.selectedOrg.name}'s Donation Items`, `${this.selectedOrg.name} Donation Item Report`);
-      this.accordion.closeAll();
     });
   }
 
   async loadVolunteers() {
     //Get all volunteers
     await this.vfs.GetVolunteers().then(resp => {
-      let volunteers:VolunteerCSVModel[] = resp;
+      let volunteers: VolunteerCSVModel[] = resp;
       volunteers.forEach((resp, i) => {
         let org = this.orgs.find((org) => {
           return resp.orgName === org.id;
@@ -203,7 +207,7 @@ export class ReportsComponent implements OnInit {
       this.setTableData(resp, "Volunteers", "Volunteer Report", "Volunteer Report");
 
     })
-    
+
   }
 
   loadGeneralDonations() {
@@ -219,13 +223,9 @@ export class ReportsComponent implements OnInit {
       resp.forEach((resp) => {
         donations.push(resp.data() as GeneralDonationGetModel);
       });
-      console.log("donations");
-      
-      console.table(donations);
-      
+
       //Map data to CSV model
       const data: DonationCSVModel[] = donations.map((item) => {
-        console.log(item)
         const newItem: DonationCSVModel = {
           Donation_Date: item.donationDate.toDate().toLocaleDateString(),
           Donor_Public_Name: item.donorPublicName.toString(),
@@ -242,7 +242,7 @@ export class ReportsComponent implements OnInit {
   }
 
   async loadReferralData() {
-    
+
     if (this.referralCSVData.length === 0) {
       await this.getAllReferralData();
     }
@@ -250,7 +250,7 @@ export class ReportsComponent implements OnInit {
     this.setTableData(this.filterReferralData(), "Referrals", `${this.selectedOrg.name} Referral Report`, `${this.selectedOrg.name} Referral Report`);
   }
 
-  async loadAllReferralData(){
+  async loadAllReferralData() {
     if (this.referralCSVData.length === 0) {
       await this.getAllReferralData();
     }
@@ -277,16 +277,15 @@ export class ReportsComponent implements OnInit {
   }
 
   filterReferralData(): ReferralCSVModel[] {
-    
+
     const orgReferrals = this.referralCSVData.filter(org => {
       return org.Org_Name === this.selectedOrg.name;
     });
-    
+
     return orgReferrals;
   }
 
   clearTable() {
-    this.accordion.closeAll();
     this.fileName = "";
 
     //Set table data to null
@@ -341,6 +340,29 @@ export class ReportsComponent implements OnInit {
   }
 
   onPivotReady(pivot: WebDataRocks.Pivot): void {
-    console.log('[ready] WebdatarocksPivotModule', this.reportTable);
+    // console.log('[ready] WebdatarocksPivotModule', this.reportTable);
+  }
+
+  async loadAllReport() {
+    await this.loadReportData();
+    this.setTableData(this.reportData, "All Report", "General Report", "General Report");
+  }
+
+  async loadReportData() {
+    await this.rfs.getReportData().then(resp => {
+
+      resp.forEach((resp) => {
+
+        let org = this.orgs.find((org) => {
+          return resp.orgID === org.id;
+        });
+
+        if (org !== null) {
+          resp.orgID = org.name;
+          this.reportData.push(resp);
+        }
+
+      });
+    });
   }
 }

@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart } from 'chart.js';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
+import { InfographicsService } from 'src/app/services/infographics/infographics.service';
+import { DonationService } from 'src/app/services/firebase/donation-service/donation.service';
+import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 
 @Component({
   selector: 'app-infographics-all-orgs-general-donations-mobile',
@@ -11,7 +13,8 @@ import { Organisation } from 'src/app/models/Organisation/Organisation';
 })
 export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
-  @Input() allOrgsGeneralDonationData:GeneralDonations[];
+  @Input() orgGeneralDonationGraphData:any;
+  @Input() orgItemDonationGraphData:ItemDonations[];
   @Input() org:Organisation;
   @Input() chartType:string;
 
@@ -25,14 +28,22 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
   configBar: any;
 
 
-  constructor() { }
+  constructor(
+    public dfs: DonationService,
+    public infoGraphSer: InfographicsService,
+  ) { }
 
   ngOnInit(): void {
 
     if(this.chart) this.chart.destroy();
 
-    this.chartData = this.allOrgsGeneralDonationData.map((donation: any) => donation.totalGeneralDonationsValue);
-    this.chartLabel = this.allOrgsGeneralDonationData.map((donation: any) => donation.name);
+    this.chartData = this.orgGeneralDonationGraphData.map((don) => {
+      return don.chartData
+    });
+
+    this.chartLabel = this.orgGeneralDonationGraphData.map((don) => {
+      return don.chartLabel
+    });
     this.updateColors();
 
     this.configLine = {
@@ -53,7 +64,7 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
         plugins: {
           title: {
             display: true,
-            text: 'General Donations Overview',
+            text: 'Monthly General Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -92,7 +103,6 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           backgroundColor: this.colors,
         }]
       },
-      plugins: [ChartDataLabels],
       options: {
         maintainAspectRatio: false,
         responsive: true,
@@ -103,15 +113,9 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           tooltips: {
             enabled: false
           },
-          datalabels: {
-            formatter: (value, context) => {
-              const name = context.chart.data.labels[context.dataIndex];
-              return [`${name}`];
-            },
-          },
           title: {
             display: true,
-            text: 'General Donations Overview',
+            text: 'Monthly General Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -131,7 +135,6 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           backgroundColor: this.colors,
         }]
       },
-      plugins: [ChartDataLabels],
       options: {
         maintainAspectRatio: false,
         responsive: true,
@@ -142,15 +145,9 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           tooltips: {
             enabled: false
           },
-          datalabels: {
-            formatter: (value, context) => {
-              const name = context.chart.data.labels[context.dataIndex];
-              return [`${name}`];
-            },
-          },
           title: {
             display: true,
-            text: 'General Donations Overview',
+            text: 'Monthly General Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -183,7 +180,7 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           },
           title: {
             display: true,
-            text: 'General Donations Overview',
+            text: 'Monthly General Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -233,7 +230,7 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
 
     if (this.chart) this.chart.destroy();
 
-    if (changes['org'] || changes['chartType'] || changes['IsMobile']) {
+    if (changes['org'] || changes['chartType'] || changes['IsMobile'] || changes['orgGeneralDonationGraphData']) {
 
 
       switch (this.chartType) {
@@ -260,6 +257,10 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           break;
       }
 
+      this.chartData = this.orgGeneralDonationGraphData.map((donation: any) => { return donation.chartData });
+      this.chartLabel = this.orgGeneralDonationGraphData.map((donation: any) => { return donation.chartLabel });
+      this.updateColors();
+      this.updateCharts();
 
       if (this.org.id !== '') {
         if(this.chart) this.chart.destroy();

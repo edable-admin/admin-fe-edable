@@ -4,6 +4,7 @@ import { Chart } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { Item } from 'src/app/models/Item';
+import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { TransactionService } from '../firebase/transaction-service/transaction.service';
 
@@ -19,12 +20,12 @@ export class InfographicsService {
 
 
   groupBy = (xs, key) => {
-    return xs.reduce(function(rv, x) {
+    return xs.reduce(function (rv, x) {
       (rv[x[key]] = rv[x[key]] || []).push(x);
       return rv;
     }, {});
   };
-//------------------------ Totals -----------------------//
+  //------------------------ Totals -----------------------//
   calculateCombinedTotalsAllOrgs(orgs: Organisation[]) {
 
     let totals = {
@@ -53,7 +54,7 @@ export class InfographicsService {
     return totals;
   }
 
-//-------------------------- General Donations -------------------//
+  //-------------------------- General Donations -------------------//
   generateGeneralDonations(generalDonations: GeneralDonations[], startDate?: Date, endDate?: Date) {
 
     let genDon: GeneralDonations[] = [];
@@ -82,7 +83,7 @@ export class InfographicsService {
             don => don.donationDate.toMillis() >= startOfTheYear.getTime() &&
               don.donationDate.toMillis() <= endOfTheYear.getTime() &&
               !don.IsRefunded
-        );
+          );
 
       }
       return filteredDonations;
@@ -100,7 +101,7 @@ export class InfographicsService {
       let donYear = donationDate.getFullYear();
 
       return {
-        monthYear:`${donMonth + 1}/${donYear}`,
+        monthYear: `${donMonth + 1}/${donYear}`,
         month: donMonth + 1,
         year: donationDate.getFullYear(),
         amount: don.amount
@@ -129,6 +130,99 @@ export class InfographicsService {
     monthYear.forEach(month => {
 
       monthlyTotals.push({
+        monthYear: month,
+        amount: groupedMonthlyDonations[month].reduce((prev, curr) => prev + curr.amount, 0)
+      })
+    })
+
+    return monthlyTotals
+
+  }
+
+  //-------------------------- Item Donations -------------------//
+  generateItemDonations(itemDonations: ItemDonations[], startDate?: Date, endDate?: Date) {
+
+    let itemDon: ItemDonations[] = [];
+
+
+    const filterItemDonations = () => {
+      let filterItemDonations: ItemDonations[];
+      //check that the start date is less than the end date and that they both exist
+      if (startDate?.getTime() < endDate?.getTime()) {
+
+        //filters to get the Item donations for that range and Item donation was not refunded
+        filterItemDonations = itemDonations
+          .filter(don =>
+            don.donationDate.toMillis() >= startDate.getTime() &&
+            don.donationDate.toMillis() <= endDate.getTime() &&
+            !don.IsRefunded
+          );
+      } else {
+        // if date range is empty or incorrect use the current year as a range
+        let currentYear = new Date();
+        let startOfTheYear = new Date(`${currentYear.getFullYear()}-01-01`);
+        let endOfTheYear = new Date(`${currentYear.getFullYear()}-12-31`);
+
+        filterItemDonations = itemDonations
+          .filter(
+            don => don.donationDate.toMillis() >= startOfTheYear.getTime() &&
+              don.donationDate.toMillis() <= endOfTheYear.getTime() &&
+              !don.IsRefunded
+        );
+
+      }
+      return filterItemDonations;
+
+    }
+
+    itemDon = filterItemDonations();
+
+    let monthlyItemDonations = itemDon.map(don => {
+
+      let donationDate = don.donationDate.toDate();
+
+      let donMonth = donationDate.getMonth();
+      let donYear = donationDate.getFullYear();
+
+      return {
+        monthYear:`${donMonth + 1}/${donYear}`,
+        month: donMonth + 1,
+        year: donationDate.getFullYear(),
+        amount: don.amount
+      }
+    })
+
+    //sort to make sure data is in correct order
+    monthlyItemDonations = monthlyItemDonations.sort((a, b) => {
+      if (a.year !== b.year) {
+        return a.year - b.year
+      } else {
+        return a.month - b.month
+      }
+    })
+
+    monthlyItemDonations = monthlyItemDonations.sort((a, b) => {
+      if (a.year !== b.year) {
+        return a.year - b.year
+      } else {
+        return a.month - b.month
+      }
+    })
+
+    //gets all the unique month/year values and are put in an array
+    const itemMonthYear = [...new Set(monthlyItemDonations.map(item => item.monthYear))];
+
+
+    let monthlyTotals: any = [];
+
+    //group by the year
+    let groupedMonthlyDonations = this.groupBy(monthlyItemDonations, "monthYear");
+
+
+
+    itemMonthYear.forEach(month => {
+
+      monthlyTotals.push({
         monthYear:month,
         amount:groupedMonthlyDonations[month].reduce((prev, curr) => prev + curr.amount, 0)
       })
@@ -138,19 +232,20 @@ export class InfographicsService {
 
   }
 
+
 //------------------------- Get item Donation Data for an Organisation ---------------------//
   async getGraphDataOrgItemsDonations(items: Item[], org: Organisation, startDate?: Date, endDate?: Date) {
     // Get ItemDonations from the database
-    let graphDataItemsDonations:any = await Promise.all(items.map(async item => {
+    let graphDataItemsDonations: any = await Promise.all(items.map(async item => {
       //get item donations for org
       return (await this.ts.getOrgItemDonations(org.id, item.id))
         .docs.map(doc => {
           return {
-            itemId:item.id,
-            itemName:item.name,
+            itemId: item.id,
+            itemName: item.name,
             amount: doc.data()["amount"],
             donationDate: doc.data()["donationDate"],
-            IsRefunded:doc.data()["IsRefunded"]
+            IsRefunded: doc.data()["IsRefunded"]
           }
         })
     }))
@@ -197,7 +292,7 @@ export class InfographicsService {
     //Group each item by date
     graphDataItemsDonations = graphDataItemsDonations.map((itemGroup) => {
 
-        return this.groupBy(itemGroup,"donationDate")
+      return this.groupBy(itemGroup, "donationDate")
     })
 
 
@@ -208,7 +303,7 @@ export class InfographicsService {
         return {
           itemName: itemGroup[key][0].itemName,
           donationDate: key,
-          amount:itemGroup[key].reduce((prev, cur) => prev + cur.amount, 0)
+          amount: itemGroup[key].reduce((prev, cur) => prev + cur.amount, 0)
         }
       })
     })
@@ -235,7 +330,7 @@ export class InfographicsService {
           borderColor: selectColor(i),
           backgroundColor: selectColor(i),
           pointStyle: 'circle',
-          pointRadius:6
+          pointRadius: 6
         })
       }
     })
@@ -245,13 +340,13 @@ export class InfographicsService {
     //labels = [...new Set(labels.map(item => item.donationDate))];
     const graphData = {
       //labels: labels,
-      dataset:dataset
+      dataset: dataset
     }
     return graphData;
   }
 
 
-//------------------------ Create Scatter Chart for an Organisations Item Donations --------------//
+  //------------------------ Create Scatter Chart for an Organisations Item Donations --------------//
   async createScatterOrgItemDonations(items?: Item[], org?: Organisation, startDate?: Date, endDate?: Date) {
 
     const chartData = await this.getGraphDataOrgItemsDonations(items, org, startDate, endDate);
@@ -264,7 +359,7 @@ export class InfographicsService {
       },
       options: {
         layout: {
-          padding:10
+          padding: 10
         },
         maintainAspectRatio: false,
         responsive: true,
@@ -272,7 +367,7 @@ export class InfographicsService {
           x: {
             type: 'time',
             time: {
-              unit:'day'
+              unit: 'day'
             }
           }
         },
@@ -290,7 +385,7 @@ export class InfographicsService {
           },
           legend: {
             position: 'top',
-            align:'start',
+            align: 'start',
             labels: {
               textAlign: 'left',
               padding: 30,
@@ -299,7 +394,7 @@ export class InfographicsService {
           },
           title: {
             text: `${org.name} Item Donations`,
-            display:true
+            display: true
           },
 
         }
@@ -370,7 +465,53 @@ export class InfographicsService {
     return chart;
   }
 
+  async getReferralData(orgs: Organisation[]): Promise<ReferralGraphData[]> {
 
+    let referralGraphData: ReferralGraphData[] = [];
+    let orgId: string = '';
+    let howHeard: string = '';
+    let referrals: string[] = [];
+
+    await this.fs.firestore.collectionGroup('Private')
+      .get()
+      .then((resp) => {
+
+        resp.docs.forEach((resp) => {
+
+          if (resp.ref.parent.parent.parent.id === 'ItemsDonations') {
+            orgId = resp.ref.parent.parent.parent.parent.parent.parent.id;
+          }
+          else {
+            orgId = resp.ref.parent.parent.parent.parent.id;
+          }
+
+          let org = orgs.find(item => {
+            return item.id === orgId;
+          });
+
+
+          let privateData: PrivateData = resp.data() as PrivateData;
+
+          if ((privateData.howHeard === '' || privateData.howHeard === undefined) && (privateData.howHeardOther === '' || privateData.howHeardOther === undefined)) {
+            howHeard = 'Unknown';
+          } else if ((privateData.howHeard === '' || privateData.howHeard === undefined) && (privateData.howHeardOther !== '' || privateData !== undefined)) {
+            howHeard = privateData.howHeardOther;
+          } else {
+            howHeard = privateData.howHeard;
+          }
+
+          let newReferral: ReferralGraphData = {
+            orgId: orgId,
+            orgName: org.name,
+            howHeard: howHeard
+          };
+
+          referralGraphData.push(newReferral);
+        });
+      });
+
+    return referralGraphData;
+  }
 
 
   //todo add orgID to item donation for querying on donor side better method
@@ -383,4 +524,21 @@ export class InfographicsService {
   //       query => query.where("orgId", "in", itemIDList)
   //     )
   // }
+}
+
+export interface PrivateData {
+  IsAnon: boolean;
+  agreeToContact: boolean;
+  email: string;
+  howHeard: string;
+  howHeardOther: string;
+  mailingAddress: string;
+  name: string;
+  paypalTransactionId: string;
+  phoneNumber: string;
+}
+export interface ReferralGraphData {
+  orgId: string;
+  orgName: string;
+  howHeard: string;
 }
