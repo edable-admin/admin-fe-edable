@@ -468,6 +468,8 @@ export class OrganisationComponent implements OnInit {
             this.imgService
               .uploadImage(this.selectedOrg.id, result.file)
           }
+          this.getOrgsGeneralDonationData();
+          this.getReferralData();
           this.initSelectedOrg();
         });
 
@@ -491,6 +493,8 @@ export class OrganisationComponent implements OnInit {
       if (result === true) {
         this.ofs.removeOrganisation(this.selectedOrg.id).then((response) => {
           this.initSelectedOrg();
+          this.getOrgsGeneralDonationData();
+          this.getReferralData();
           this.openSnackBar(response.message);
         });
       }

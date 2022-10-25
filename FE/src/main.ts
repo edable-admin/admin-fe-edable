@@ -13,6 +13,15 @@ if (environment.production) {
     window.console.error = function () {};
   }
 }
+if (!environment.production) {
+} else {
+  if(window) {
+    window.console.log = function () {};
+    window.console.warn = function () {};
+    window.console.error = function () {};
+  }
+}
+
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
