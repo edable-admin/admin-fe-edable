@@ -13,6 +13,8 @@ import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonatio
 export class InfographicsOrgGeneralDonationsComponent implements OnChanges, OnDestroy {
   @Input() org: Organisation;
   @Input() orgGeneralDonationGraphData:any;
+  @Input() orgItemDonationGraphData:any;
+
 
   chartData: any;
   chartLabel: any;
@@ -78,7 +80,7 @@ export class InfographicsOrgGeneralDonationsComponent implements OnChanges, OnDe
         plugins: {
           title: {
             display: true,
-            text: 'General Donations Overview',
+            text: `${this.org.name} General Donations`,
             padding: {
               top: 10,
               bottom: 0

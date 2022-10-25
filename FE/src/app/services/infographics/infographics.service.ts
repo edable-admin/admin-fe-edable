@@ -4,6 +4,7 @@ import { Chart } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { Item } from 'src/app/models/Item';
+import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { TransactionService } from '../firebase/transaction-service/transaction.service';
 
@@ -138,7 +139,101 @@ export class InfographicsService {
 
   }
 
-  //------------------------- Get item Donation Data for an Organisation ---------------------//
+  //-------------------------- Item Donations -------------------//
+  generateItemDonations(itemDonations: ItemDonations[], startDate?: Date, endDate?: Date) {
+
+    let itemDon: ItemDonations[] = [];
+
+
+    const filterItemDonations = () => {
+      let filterItemDonations: ItemDonations[];
+      //check that the start date is less than the end date and that they both exist
+      if (startDate?.getTime() < endDate?.getTime()) {
+
+        //filters to get the Item donations for that range and Item donation was not refunded
+        filterItemDonations = itemDonations
+          .filter(don =>
+            don.donationDate.toMillis() >= startDate.getTime() &&
+            don.donationDate.toMillis() <= endDate.getTime() &&
+            !don.IsRefunded
+          );
+      } else {
+        // if date range is empty or incorrect use the current year as a range
+        let currentYear = new Date();
+        let startOfTheYear = new Date(`${currentYear.getFullYear()}-01-01`);
+        let endOfTheYear = new Date(`${currentYear.getFullYear()}-12-31`);
+
+        filterItemDonations = itemDonations
+          .filter(
+            don => don.donationDate.toMillis() >= startOfTheYear.getTime() &&
+              don.donationDate.toMillis() <= endOfTheYear.getTime() &&
+              !don.IsRefunded
+        );
+
+      }
+      return filterItemDonations;
+
+    }
+
+    itemDon = filterItemDonations();
+
+    let monthlyItemDonations = itemDon.map(don => {
+
+      let donationDate = don.donationDate.toDate();
+
+      let donMonth = donationDate.getMonth();
+      let donYear = donationDate.getFullYear();
+
+      return {
+        monthYear:`${donMonth + 1}/${donYear}`,
+        month: donMonth + 1,
+        year: donationDate.getFullYear(),
+        amount: don.amount
+      }
+    })
+
+    //sort to make sure data is in correct order
+    monthlyItemDonations = monthlyItemDonations.sort((a, b) => {
+      if (a.year !== b.year) {
+        return a.year - b.year
+      } else {
+        return a.month - b.month
+      }
+    })
+
+    monthlyItemDonations = monthlyItemDonations.sort((a, b) => {
+      if (a.year !== b.year) {
+        return a.year - b.year
+      } else {
+        return a.month - b.month
+      }
+    })
+
+    //gets all the unique month/year values and are put in an array
+    const itemMonthYear = [...new Set(monthlyItemDonations.map(item => item.monthYear))];
+
+
+    let monthlyTotals: any = [];
+
+    //group by the year
+    let groupedMonthlyDonations = this.groupBy(monthlyItemDonations, "monthYear");
+
+
+
+    itemMonthYear.forEach(month => {
+
+      monthlyTotals.push({
+        monthYear:month,
+        amount:groupedMonthlyDonations[month].reduce((prev, curr) => prev + curr.amount, 0)
+      })
+    })
+
+    return monthlyTotals
+
+  }
+
+
+//------------------------- Get item Donation Data for an Organisation ---------------------//
   async getGraphDataOrgItemsDonations(items: Item[], org: Organisation, startDate?: Date, endDate?: Date) {
     // Get ItemDonations from the database
     let graphDataItemsDonations: any = await Promise.all(items.map(async item => {
@@ -347,13 +442,15 @@ export class InfographicsService {
             }
           },
           legend: {
-            position: 'top',
-            align:'start',
-            labels: {
-              textAlign: 'left',
-              padding: 30,
-              boxWidth: 15,
-            }
+            display:false
+            // maxHeight:400,
+            // position: 'bottom',
+            // align:'start',
+            // labels: {
+            //   textAlign: 'left',
+            //   padding: 30,
+            //   boxWidth: 15,
+            // }
           },
           title: {
             text: `${org.name} Item Donations`,
@@ -378,9 +475,9 @@ export class InfographicsService {
     await this.fs.firestore.collectionGroup('Private')
       .get()
       .then((resp) => {
-        
+
         resp.docs.forEach((resp) => {
-          
+
           if (resp.ref.parent.parent.parent.id === 'ItemsDonations') {
             orgId = resp.ref.parent.parent.parent.parent.parent.parent.id;
           }
@@ -412,7 +509,7 @@ export class InfographicsService {
           referralGraphData.push(newReferral);
         });
       });
-    
+
     return referralGraphData;
   }
 

@@ -27,6 +27,7 @@ import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonatio
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 
 @Component({
   selector: 'app-organisation',
@@ -49,7 +50,7 @@ export class OrganisationComponent implements OnInit {
   displayedColumns: string[] = ['name', 'totalDonationItems', 'totalDonationsValue'];
   selectedOrg: Organisation;
   activeItems: Item[];
-  orgData: any = new MatTableDataSource([]);
+  orgData: MatTableDataSource<Organisation> = new MatTableDataSource([]);
   allOrgs: Organisation[] = []
   items: Item[] = [];
   graphData: any;
@@ -78,9 +79,10 @@ export class OrganisationComponent implements OnInit {
   //snackbar variables
   message: string;
 
-  allOrgsGeneralDonationData: GeneralDonations[];
+  orgGeneralDonationGraphData: GeneralDonations[];
 
-  orgGeneralDonationGraphData: any;
+  orgItemDonationGraphData: ItemDonations[];
+
   referralData: ReferralGraphData[];
 
   IsMobile: Boolean = false;
@@ -133,6 +135,7 @@ export class OrganisationComponent implements OnInit {
     this.getOrgs();
     //this.getGeneralGraphData();
     this.getOrgsGeneralDonationData();
+    this.getOrgsItemDonationData();
     this.initSelectedOrg();
     //TODO: INSERT GET GRAPH DATA HERE
     // this.colors = this.chartData.map((item, i) => this.selectColor(i));
@@ -537,15 +540,14 @@ export class OrganisationComponent implements OnInit {
         //this.infoGraphSer.calculateCombinedTotalsAllOrgs(orgs as Organisation[])
         this.allOrgs = orgs as Organisation[];
         this.getReferralData();
-        this.orgData = new MatTableDataSource(orgs);
+        this.orgData.data = this.allOrgs;
         this.orgData.sort = this.sort;
-        this.orgData.paginator = this.paginator;
         this.orgData.filterPredicate =
           (data, filter: string): boolean => {
             return (
               data.activeStatus === this.activeStatus &&
               data.name.trim().toLowerCase().includes(filter) ||
-              data.totalDonations
+              data.totalDonationsValue
                 .toString()
                 .trim()
                 .toLowerCase()
@@ -557,17 +559,38 @@ export class OrganisationComponent implements OnInit {
                 .includes(filter)
             );
           };
+        this.orgData.paginator = this.paginator;
         this.toggleActiveStatus(this.activeStatusFilter)
       });
   };
 
   getOrgsGeneralDonationData() {
     this.dfs
-      .getAllGD()
+      .getAllGDonations()
       .subscribe((resp) => {
-        this.allOrgsGeneralDonationData = resp.map((donation: any) => donation);
-      });
-  }
+        let genDonData = this.infoGraphSer.generateGeneralDonations(resp as GeneralDonations[]);
+        this.orgGeneralDonationGraphData = genDonData.map((donation: any) => {
+            return {
+              chartData: donation.amount,
+              chartLabel: donation.monthYear,
+            }
+          })
+      })
+  };
+
+  getOrgsItemDonationData(){
+    this.dfs
+      .getAllIDonations()
+      .subscribe((resp) => {
+        let itemDonData = this.infoGraphSer.generateItemDonations(resp as ItemDonations[]);
+        this.orgItemDonationGraphData = itemDonData.map((donation: any) => {
+            return {
+              chartData: donation.amount,
+              chartLabel: donation.monthYear,
+            }
+          })
+      })
+  };
 
   // getGeneralGraphData() {
   //   this.dfs
@@ -623,7 +646,7 @@ export class OrganisationComponent implements OnInit {
         break;
     }
 
-    this.orgData = new MatTableDataSource(filteredOrgs);
+    this.orgData.data = filteredOrgs
     this.orgData.paginator = this.paginator;
     this.orgData.sort = this.sort;
     this.orgData.filter = this.filterValue;
@@ -635,6 +658,8 @@ export class OrganisationComponent implements OnInit {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValue = this.filterValue.trim().toLowerCase();
     this.orgData.filter = this.filterValue;
+
+    console.log(this.orgData)
 
     if (this.orgData.paginator) {
       this.orgData.paginator.firstPage();
@@ -663,9 +688,10 @@ export class OrganisationComponent implements OnInit {
       // this.resetGraphData();
       this.initSelectedOrg();
       this.getItemsSubscription.unsubscribe();
+      this.getOrgsGeneralDonationData();
       return;
     }
-    this.getOrgGenGraphData(orgData.id)
+    this.getOrgGenGraphData(orgData.id);
     //this.getGraphData(orgData.id);
     this.selectedOrg = orgData;
     this.activeItems = this.items.filter((item) => {

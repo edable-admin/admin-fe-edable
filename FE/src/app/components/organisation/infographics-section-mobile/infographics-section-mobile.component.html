@@ -18,11 +18,10 @@
   </div>
 
   <app-infographics-all-orgs-general-donations-mobile
-  *ngIf="org.id === '' && allOrgsGeneralDonationData && generalInfographicsControl.value === 'General Donations'"
-    [allOrgsGeneralDonationData]="allOrgsGeneralDonationData"
-    [chartType]="chartTypeControl.value"
-    [org]="org"
-  >
+    *ngIf="org.id === '' && generalInfographicsControl.value === 'General Donations' && orgGeneralDonationGraphData"
+    [orgGeneralDonationGraphData]="orgGeneralDonationGraphData" 
+    [chartType]="chartTypeControl.value" 
+    [org]="org">
   </app-infographics-all-orgs-general-donations-mobile>
   
   <app-infographic-referral-mobile
@@ -32,18 +31,22 @@
   [chartType]="chartTypeControl.value">
   </app-infographic-referral-mobile>
 
-  <app-infograph-org-items-donations-mobile
-    *ngIf="infoGraphicsControl.value === 'Item Donations'"
-    [items]="items"
-    [org]="org"
-  >
+  <app-infographics-all-orgs-item-donations
+    *ngIf="org.id === '' && generalInfographicsControl.value === 'Item Donations' && orgItemDonationGraphData"
+    [orgItemDonationGraphData]="orgItemDonationGraphData" 
+    [chartType]="chartTypeControl.value" 
+    [org]="org">
+  </app-infographics-all-orgs-item-donations>
+
+  <app-infograph-org-items-donations-mobile 
+    *ngIf="org.id != '' && infoGraphicsControl.value === 'Item Donations'"
+    [items]="items" 
+    [org]="org">
   </app-infograph-org-items-donations-mobile>
 
   <app-infographics-org-general-donations-mobile
-    *ngIf="org.id !== '' && infoGraphicsControl.value === 'General Donations'"
-    [org]="org"
-    [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
-  >
+    *ngIf="org.id !== '' && infoGraphicsControl.value === 'General Donations'" [org]="org"
+    [orgGeneralDonationGraphData]="orgGeneralDonationGraphData">
   </app-infographics-org-general-donations-mobile>
 
   <app-infographic-org-referral-mobile

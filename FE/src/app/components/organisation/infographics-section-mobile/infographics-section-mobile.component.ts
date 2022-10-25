@@ -14,13 +14,13 @@ export class InfographicsSectionMobileComponent implements OnInit, OnChanges {
 
   @Input() items: Item[];
   @Input() org: Organisation;
-  @Input() allOrgsGeneralDonationData: GeneralDonations[];
   @Input() orgGeneralDonationGraphData: any;
+  @Input() orgItemDonationGraphData: any;
   @Input() IsMobile: any;
   @Input() referralData: ReferralGraphData[];
   
   showGeneralReferrals: boolean = false;
-  generalInfographicsOptions: string[] = ['General Donations', 'General Referrals'];
+  generalInfographicsOptions: string[] = ['General Donations', 'General Referrals', 'Item Donations'];
   generalInfographicsControl = new FormControl(this.generalInfographicsOptions[0]);
   infoGraphicsOptions: any[] = ['General Donations', 'Item Donations', 'Referrals'];
   infoGraphicsControl = new FormControl(this.infoGraphicsOptions[0]);

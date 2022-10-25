@@ -53,6 +53,7 @@ import { InfographItemsDonationsComponent } from './components/organisation/info
 import { InfographicsSectionComponent } from './components/organisation/infographics-section/infographics-section.component';
 import { InfographicsAllOrgsGeneralDonationsComponent } from './components/organisation/infographics-section/infographics-all-orgs-general-donations/infographics-all-orgs-general-donations.component';
 import { InfographicsOrgGeneralDonationsComponent } from './components/organisation/infographics-section/infographics-org-general-donations/infographics-org-general-donations.component';
+import { InfographicsAllOrgsItemDonationsComponent } from './components/organisation/infographics-section/infographics-all-orgs-item-donations/infographics-all-orgs-item-donations.component';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { InfographicReferralComponent } from './components/organisation/infographics-section/infographic-referral/infographic-referral.component';
 import { InfographicReferralMobileComponent } from './components/organisation/infographics-section-mobile/infographic-referral-mobile/infographic-referral-mobile.component';
@@ -94,6 +95,7 @@ const config = environment.firebaseConfig;
     InfographicsAllOrgsGeneralDonationsMobileComponent,
     InfographicsOrgGeneralDonationsMobileComponent,
     InfographItemsDonationsMobileComponent,
+    InfographicsAllOrgsItemDonationsComponent,
     InfographicReferralComponent,
     InfographicReferralMobileComponent,
     InfographicOrgReferralComponent,

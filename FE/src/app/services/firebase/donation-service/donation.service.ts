@@ -5,6 +5,9 @@ import { increment } from '@angular/fire/firestore';
 import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { retry } from 'rxjs';
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
+import { merge } from 'rxjs';
+import { concat } from 'rxjs';
+
 
 
 @Injectable({
@@ -49,16 +52,18 @@ export class DonationService {
     return itemDonations;
   }
 
-  async getAllItemsDonations() {
-    let itemsDonations: ItemDonations[] = [];
-    await this.fs.firestore
+  getAllIDonations() {
+    let id = this.fs
       .collectionGroup('ItemsDonations')
-      .get().then((resp) => {
-        resp.forEach((resp) => {
-          itemsDonations.push(resp.data() as ItemDonations);
-        });
-      });
-    return itemsDonations;
+      .valueChanges({ idField: 'id' });
+    return id;
+  }
+
+  getAllGDonations() {
+    let gd = this.fs
+      .collectionGroup('GeneralDonations')
+      .valueChanges({ idField: 'id' });
+    return gd;
   }
 
   getAllGD() {
@@ -68,6 +73,7 @@ export class DonationService {
       .valueChanges({ idField: 'id' });
     return gd;
   }
+
 
   getPrivateDetails(orgID: string, itemID: string, donationID: string) {
     let privateDetails = this.fs
