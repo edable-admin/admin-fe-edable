@@ -187,7 +187,6 @@ export class ReportsComponent implements OnInit {
         return newItem
       });
       this.setTableData(data, "Items", `${this.selectedOrg.name}'s Donation Items`, `${this.selectedOrg.name} Donation Item Report`);
-      this.accordion.closeAll();
     });
   }
 
@@ -287,7 +286,6 @@ export class ReportsComponent implements OnInit {
   }
 
   clearTable() {
-    this.accordion.closeAll();
     this.fileName = "";
 
     //Set table data to null
