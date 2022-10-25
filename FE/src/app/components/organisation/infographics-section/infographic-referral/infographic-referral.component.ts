@@ -48,7 +48,7 @@ export class InfographicReferralComponent implements OnInit {
   ngOnChanges(changes) {
     if (this.chart) this.chart.destroy();
 
-    if (changes['org'] || changes['chartType']) {
+    if (changes['org'] || changes['chartType'] || changes['referralData']) {
       this.createChartConfigs();
       this.createInfographics();
     }
