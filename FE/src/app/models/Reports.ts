@@ -141,7 +141,7 @@ export interface ReportCSVModel {
     IsSubscribed?:boolean,
     amount:number,
     comment:string,
-    donationDate:Timestamp,
+    donationDate:string,
     donorPublicName:string,
     IsAnon:boolean,
     agreeToContact:boolean,

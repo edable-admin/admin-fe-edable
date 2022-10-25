@@ -26,67 +26,67 @@ export class ReportsService {
 
   async getReportData(): Promise<ReportCSVModel[]> {
 
-    let privateData: any;
+    let privateRawData: any;
     let generalDonationData:any;
     let ItemDonationData:any;
     let reportData: ReportCSVModel[] = [];
     let orgID: string = '';
-    let donationType: string = '';
+    let donationTypeRaw: string = '';
 
-    await this.fs.firestore.collectionGroup('Private').get().then((resp) => { privateData = resp });
-    console.log(privateData)
+    // get requestss
+    await this.fs.firestore.collectionGroup('Private').get().then((resp) => { privateRawData = resp });
     await this.fs.firestore.collectionGroup('GeneralDonations').get().then((resp) => { generalDonationData = resp });
-    console.log(generalDonationData)
-    // await this.fs.firestore.collectionGroup('ItemDonations').get().then((resp) => { ItemDonationData = resp });
-    console.log(ItemDonationData)
+    await this.fs.firestore.collectionGroup('ItemsDonations').get().then((resp) => { ItemDonationData = resp });
 
-
-    privateData.docs.forEach((resp) => {
+    // iterate through private data and match with item/general
+    privateRawData.docs.forEach((resp) => {
       let privateData: PrivateData = resp.data() as PrivateData;
       let publicDataUnclean:any;
 
+      // Matching items donations to private data
       if (resp.ref.parent.parent.parent.id === 'ItemsDonations') {
         orgID = resp.ref.parent.parent.parent.parent.parent.parent.id;
-        donationType = 'Item';
         ItemDonationData.forEach(e => {
-          if (e.ref.parent.id == resp.ref.parent.parent.id) {
+          if (e.ref.id == resp.ref.parent.parent.id) {
+            donationTypeRaw = 'Item Donation';
             publicDataUnclean = e;
           }
         });
       }
-      else {
+      else { // MAtching general donation to private data
         orgID = resp.ref.parent.parent.parent.parent.id;
-        donationType = 'General';
         generalDonationData.forEach(e => {
-          if (e.ref.parent.id == resp.ref.parent.parent.id) {
+          if (e.ref.id === resp.ref.parent.parent.id) {
+            donationTypeRaw = 'General Donation'
             publicDataUnclean = e;
           }
         });
       }
+      if (publicDataUnclean != undefined) {
+        let publicData: PublicData = publicDataUnclean.data() as PublicData;
+        let newReferral: ReportCSVModel = {
+          orgID: orgID,
+          donationType:donationTypeRaw,
+          IsRefunded:publicData.IsRefunded,
+          IsSubscribed:publicData.IsSubscribed,
+          amount:publicData.amount,
+          comment:publicData.comment,
+          donationDate:publicData.donationDate.toDate().toLocaleDateString(),
+          donorPublicName:publicData.donorPublicName,
+          IsAnon:privateData.IsAnon,
+          agreeToContact:privateData.agreeToContact,
+          email:privateData.email,
+          howHeardOther:privateData.howHeardOther,
+          mailingAddress:privateData.mailingAddress,
+          name:privateData.name,
+          paypalTransactionId:privateData.paypalTransactionId,
+          phoneNumber:privateData.phoneNumber
+        };
 
-      let publicData: PublicData = publicDataUnclean.data() as PublicData;
-      let newReferral: ReportCSVModel = {
-        orgID: orgID,
-        donationType:donationType,
-        IsRefunded:publicData.IsRefunded,
-        IsSubscribed:publicData.IsSubscribed,
-        amount:publicData.amount,
-        comment:publicData.comment,
-        donationDate:publicData.donationDate,
-        donorPublicName:publicData.donorPublicName,
-        IsAnon:privateData.IsAnon,
-        agreeToContact:privateData.agreeToContact,
-        email:privateData.email,
-        howHeardOther:privateData.howHeardOther,
-        mailingAddress:privateData.mailingAddress,
-        name:privateData.name,
-        paypalTransactionId:privateData.paypalTransactionId,
-        phoneNumber:privateData.phoneNumber
-      };
-
-      reportData.push(newReferral);
+        reportData.push(newReferral);
+      }
+      
     });
-
     return reportData;
   }
 

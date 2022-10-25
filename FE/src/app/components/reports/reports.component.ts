@@ -31,6 +31,7 @@ export class ReportsComponent implements OnInit {
   orgData: MatTableDataSource<Organisation>;
   referralCSVData: ReferralCSVModel[] = [];
   selectedReport: any = 0;
+  reportData: any = [];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -221,13 +222,11 @@ export class ReportsComponent implements OnInit {
       resp.forEach((resp) => {
         donations.push(resp.data() as GeneralDonationGetModel);
       });
-      console.log("donations");
 
       console.table(donations);
 
       //Map data to CSV model
       const data: DonationCSVModel[] = donations.map((item) => {
-        console.log(item)
         const newItem: DonationCSVModel = {
           Donation_Date: item.donationDate.toDate().toLocaleDateString(),
           Donor_Public_Name: item.donorPublicName.toString(),
@@ -343,10 +342,29 @@ export class ReportsComponent implements OnInit {
   }
 
   onPivotReady(pivot: WebDataRocks.Pivot): void {
-    console.log('[ready] WebdatarocksPivotModule', this.reportTable);
+    // console.log('[ready] WebdatarocksPivotModule', this.reportTable);
   }
 
-  loadAllReport(){
-    console.log(this.rfs.getReportData())
+  async loadAllReport() {
+    await this.loadReportData();
+    this.setTableData(this.reportData, "All Report", "General Report", "General Report");
+  }
+
+  async loadReportData() {
+    await this.rfs.getReportData().then(resp => {
+
+      resp.forEach((resp) => {
+
+        let org = this.orgs.find((org) => {
+          return resp.orgID === org.id;
+        });
+
+        if (org !== null) {
+          resp.orgID = org.name;
+          this.reportData.push(resp);
+        }
+
+      });
+    });
   }
 }
