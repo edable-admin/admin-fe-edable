@@ -7,13 +7,12 @@ import { DonationService } from 'src/app/services/firebase/donation-service/dona
 import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 
 @Component({
-  selector: 'app-infographics-all-orgs-general-donations-mobile',
-  templateUrl: './infographics-all-orgs-general-donations-mobile.component.html',
-  styleUrls: ['./infographics-all-orgs-general-donations-mobile.component.scss']
+  selector: 'app-infographics-all-orgs-item-donations',
+  templateUrl: './infographics-all-orgs-item-donations.component.html',
+  styleUrls: ['./infographics-all-orgs-item-donations.component.scss']
 })
-export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
+export class InfographicsAllOrgsItemDonationsComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
-  @Input() orgGeneralDonationGraphData:any;
   @Input() orgItemDonationGraphData:ItemDonations[];
   @Input() org:Organisation;
   @Input() chartType:string;
@@ -34,16 +33,20 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
   ) { }
 
   ngOnInit(): void {
+    if(this.chart) this.chart.destroy();
+
+  };
+
+  ngOnDestroy(): void {
+    if(this.chart) this.chart.destroy();
+  }
+
+  ngAfterViewInit(): void {
 
     if(this.chart) this.chart.destroy();
 
-    this.chartData = this.orgGeneralDonationGraphData.map((don) => {
-      return don.chartData
-    });
-
-    this.chartLabel = this.orgGeneralDonationGraphData.map((don) => {
-      return don.chartLabel
-    });
+    this.chartData = this.orgItemDonationGraphData.map((donation: any) => {return donation.chartData});
+    this.chartLabel = this.orgItemDonationGraphData.map((donation: any) => {return donation.chartLabel});
     this.updateColors();
 
     this.configLine = {
@@ -64,7 +67,7 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
         plugins: {
           title: {
             display: true,
-            text: 'Monthly General Donations Overview',
+            text: 'All Item Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -115,7 +118,7 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           },
           title: {
             display: true,
-            text: 'Monthly General Donations Overview',
+            text: 'All Item Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -147,7 +150,7 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           },
           title: {
             display: true,
-            text: 'Monthly General Donations Overview',
+            text: 'All Item Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -180,7 +183,7 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           },
           title: {
             display: true,
-            text: 'Monthly General Donations Overview',
+            text: 'All Item Donations Overview',
             padding: {
               top: 10,
               bottom: 0
@@ -192,35 +195,27 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
 
     switch (this.chartType) {
       case 'pie':
-        this.chart = new Chart('all-orgs-gen-don-mobile', this.configPie);
+        this.chart = new Chart('all-orgs-item-don-mobile', this.configPie);
 
         break;
 
       case 'line':
-        this.chart = new Chart('all-orgs-gen-don-mobile', this.configLine);
+        this.chart = new Chart('all-orgs-item-don-mobile', this.configLine);
 
         break;
 
       case 'bar':
 
-        this.chart = new Chart('all-orgs-gen-don-mobile', this.configBar);
+        this.chart = new Chart('all-orgs-item-don-mobile', this.configBar);
         break;
 
       case 'polar':
-        this.chart = new Chart('all-orgs-gen-don-mobile', this.configPolar);
+        this.chart = new Chart('all-orgs-item-don-mobile', this.configPolar);
         break;
 
       default:
         break;
     }
-
-  };
-
-  ngOnDestroy(): void {
-    if(this.chart) this.chart.destroy();
-  }
-
-  ngAfterViewInit(): void {
   }
 
 
@@ -230,37 +225,33 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
 
     if (this.chart) this.chart.destroy();
 
-    if (changes['org'] || changes['chartType'] || changes['IsMobile'] || changes['orgGeneralDonationGraphData']) {
+    if (changes['org'] || changes['chartType']) {
 
 
       switch (this.chartType) {
         case 'pie':
-          this.chart = new Chart('all-orgs-gen-don-mobile', this.configPie);
+          this.chart = new Chart('all-orgs-item-don-mobile', this.configPie);
 
           break;
 
         case 'line':
-          this.chart = new Chart('all-orgs-gen-don-mobile', this.configLine);
+          this.chart = new Chart('all-orgs-item-don-mobile', this.configLine);
 
           break;
 
         case 'bar':
 
-          this.chart = new Chart('all-orgs-gen-don-mobile', this.configBar);
+          this.chart = new Chart('all-orgs-item-don-mobile', this.configBar);
           break;
 
         case 'polar':
-          this.chart = new Chart('all-orgs-gen-don-mobile', this.configPolar);
+          this.chart = new Chart('all-orgs-item-don-mobile', this.configPolar);
           break;
 
         default:
           break;
       }
 
-      this.chartData = this.orgGeneralDonationGraphData.map((donation: any) => { return donation.chartData });
-      this.chartLabel = this.orgGeneralDonationGraphData.map((donation: any) => { return donation.chartLabel });
-      this.updateColors();
-      this.updateCharts();
 
       if (this.org.id !== '') {
         if(this.chart) this.chart.destroy();
@@ -293,48 +284,5 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
     this.chart.update();
   };
 
-  // pieGraphs() {
-  //   this.chart.destroy();
-  //   this.mobileChart.destroy();
-  //   this.chart = new Chart('canvas', this.configPie);
-  //   this.mobileChart = new Chart('mobile', this.configPie);
-  //   this.updateCharts();
-  // };
-
-  // lineGraphs() {
-  //   this.chart.destroy();
-  //   this.mobileChart.destroy();
-  //   this.chart = new Chart('canvas', this.configLine);
-  //   this.mobileChart = new Chart('mobile', this.configLine);
-  //   this.updateCharts();
-  // };
-
-    // barGraphs() {
-  //   this.chart.destroy();
-  //   this.mobileChart.destroy();
-  //   this.chart = new Chart('canvas', this.configBar);
-  //   this.mobileChart = new Chart('mobile', this.configBar);
-  //   this.updateCharts();
-  // };
-
-    // polarGraphs() {
-  //   this.chart.destroy();
-  //   this.mobileChart.destroy();
-  //   this.chart = new Chart('canvas', this.configPolar);
-  //   this.mobileChart = new Chart('mobile', this.configPolar);
-  //   this.updateCharts();
-  // };
-
-  // getGraphData(orgID) {
-  //   this.dfs
-  //     .getGeneralDonations(orgID)
-  //     .subscribe((resp) => {
-  //       let genDonData = this.infoGraphSer.generateGeneralDonations(resp as GeneralDonations[]);
-  //       this.chartData = genDonData.map((donation: any) => donation.amount);
-  //       this.chartLabel = genDonData.map((donation: any) => donation.monthYear);
-  //       this.updateColors();
-  //       this.updateCharts();
-  //     })
-  // };
 
 }

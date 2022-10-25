@@ -13,8 +13,8 @@ export class InfographicsSectionMobileComponent implements OnInit, OnChanges {
 
   @Input() items: Item[];
   @Input() org: Organisation;
-  @Input() allOrgsGeneralDonationData: GeneralDonations[];
   @Input() orgGeneralDonationGraphData: any;
+  @Input() orgItemDonationGraphData: any;
   @Input() IsMobile: any;
 
 
