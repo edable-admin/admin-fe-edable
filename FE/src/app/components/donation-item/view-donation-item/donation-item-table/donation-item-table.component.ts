@@ -31,12 +31,6 @@ export class DonationItemTableComponent implements AfterViewInit {
     this.ts.getOrgItemDonations(this.itemFinancialDetails.orgID,this.itemFinancialDetails.itemID).then(snap => snap.forEach(
       (doc) => {
         this.itemDonationData.push(doc.data() as ItemDonationsData)
-
-        //TODO later possibly for more detailed reports
-        //TODO sometimes collection is ItemDonations Other times it is ItemDonations
-        //TODO Make sure that ItemDonations name is the same accross all documents
-        // doc.ref.collection("Private").doc("Private").get()
-        // .then(donor => console.log(donor.data()))
       }
     )).finally(() => {
       this.dataSource = new MatTableDataSource(this.itemDonationData);
