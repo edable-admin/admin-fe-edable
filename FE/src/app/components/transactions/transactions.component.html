@@ -58,7 +58,7 @@
                 <!--IsSubscribed Tooltip-->
                 <th
                   mat-sort-header mat-header-cell *matHeaderCellDef>
-                  <mat-icon style="padding-right: 3px; color: red;"
+                  <mat-icon style="padding-right: 3px; color: rgb(201, 35, 35);"
                   matTooltip="Payment Subscriptions are not automatically updated."
                   matTooltipPosition="below"
                   >
@@ -70,7 +70,7 @@
                 matTooltip="Payment Subscriptions are not automatically updated."
                 matTooltipPosition="below"
                 >
-                  <mat-icon [ngStyle]="{'color':(element.IsSubscribed == 'check_circle_outline') ? 'green':'red'}">{{element.IsSubscribed}}</mat-icon>
+                  <mat-icon [ngStyle]="{'color':(element.IsSubscribed == 'check_circle_outline') ? 'green':'rgb(201, 35, 35)'}">{{element.IsSubscribed}}</mat-icon>
                 </td>
               </ng-container>
 
