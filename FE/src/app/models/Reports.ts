@@ -41,6 +41,16 @@ export interface PrivateData {
     paypalTransactionId: string;
     phoneNumber: string;
 }
+
+export interface PublicData{
+    IsRefunded:boolean;
+    IsSubscribed?:boolean;
+    amount:number;
+    comment:string;
+    donationDate:Timestamp;
+    donorPublicName:string;
+}
+
 export interface Referral {
     orgId: string;
     donationType: string;
@@ -67,3 +77,80 @@ export interface ReferralCSVModel {
     Name: string;
     Phone_Number: string;
 }
+
+export interface VolunteerModel {
+    volunteerPostcode:string;
+    volunteerComment:string;
+    volunteerAmount: string;
+    volunteerPhone:string;
+    Sunday:boolean;
+    volunteerName:string;
+    volunteerEmail:string;
+    volunteerDOB:string;
+    volunteerHowHeard:string;
+    howContribute:string;
+    Saturday:boolean;
+    volunteerHours:string;
+    Thursday:boolean;
+    Monday:boolean;
+    Wednesday:boolean;
+    Friday:boolean;
+    volunteerOrgName:string;
+    Tuesday:boolean;
+}
+
+export interface VolunteerCSVModel {
+    orgName:string;
+    volunteerName:string;
+    volunteerComment:string;
+    volunteerOrgName:string;
+    volunteerAmount: number;
+    volunteerPhone:string;
+    volunteerEmail:string;
+    volunteerPostcode:number;
+    volunteerDOB:string;
+    volunteerHowHeard:string;
+    howContribute:string;
+    volunteerHours:number;
+    monday:boolean;
+    tuesday:boolean;
+    wednesday:boolean;
+    thursday:boolean;
+    friday:boolean;
+    saturday:boolean;
+    sunday:boolean;
+
+}
+
+export interface GeneralDonationGetModel {
+    IsSubscribed?: boolean,
+    IsRefunded?: boolean,
+    comment?:string,
+    donationDate?: Timestamp;
+    donorPublicName?: String;
+    amount?: number;
+    orgName?: string;
+    orgID?: string;
+    donationID?: string;
+  }
+
+export interface ReportCSVModel {
+    orgID:string,
+    donationType:string,
+    IsRefunded:boolean,
+    IsSubscribed?:boolean,
+    amount:number,
+    comment:string,
+    donationDate:string,
+    donorPublicName:string,
+    IsAnon:boolean,
+    agreeToContact:boolean,
+    email:string,
+    howHeardOther:string,
+    mailingAddress:string,
+    name:string,
+    paypalTransactionId:string,
+    phoneNumber:string
+
+}
+

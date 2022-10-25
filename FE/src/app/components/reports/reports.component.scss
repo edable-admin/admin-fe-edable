@@ -19,11 +19,13 @@ table {
 
 .button-container {
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
+    padding: 10px;
 }
 
-.button-container{
-  padding: 10px;
+.reportbutton{
+    margin: 10px;
 }
 
 .buttons{

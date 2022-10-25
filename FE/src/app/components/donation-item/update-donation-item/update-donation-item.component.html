@@ -17,7 +17,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Summary</mat-label>
           <textarea class="text-box sum" matInput placeholder="Enter Summary" formControlName="summary"></textarea>
-          <mat-hint align="end">{{editItemForm.controls.summary.value?.length || 0}}/90</mat-hint>
+          <mat-hint align="end">{{editItemForm.controls.summary.value?.length || 0}}/100</mat-hint>
         </mat-form-field>
       </div>
       <div>
@@ -39,7 +39,7 @@
     <mat-slide-toggle formControlName="activeStatus">Activate/Deactive</mat-slide-toggle>
     <mat-card-actions>
       <button mat-button (click)="onCancel()">Cancel</button>
-      <button mat-button color="warn" type="submit" (click)="onSubmit()">Edit</button>
+      <button mat-button color="warn" type="submit" (click)="onSubmit()">Save</button>
     </mat-card-actions>
   </form>
 </div>

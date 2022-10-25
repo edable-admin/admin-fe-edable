@@ -19,7 +19,7 @@ export class DonationItemTableComponent implements AfterViewInit {
   @Input() itemFinancialDetails:ViewItemFinancialDetails;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['donorPublicName', 'amount', 'donationDate'];
+  displayedColumns = ['donorPublicName', 'amount','Refunded?', 'donationDate'];
 
   constructor(public ts: TransactionService) {
   }

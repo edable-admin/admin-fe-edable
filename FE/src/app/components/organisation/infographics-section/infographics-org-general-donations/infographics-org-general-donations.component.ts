@@ -10,9 +10,11 @@ import { GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonatio
   templateUrl: './infographics-org-general-donations.component.html',
   styleUrls: ['./infographics-org-general-donations.component.scss']
 })
-export class InfographicsOrgGeneralDonationsComponent implements OnChanges {
+export class InfographicsOrgGeneralDonationsComponent implements OnChanges, OnDestroy {
   @Input() org: Organisation;
   @Input() orgGeneralDonationGraphData:any;
+  @Input() orgItemDonationGraphData:any;
+
 
   chartData: any;
   chartLabel: any;
@@ -25,11 +27,17 @@ export class InfographicsOrgGeneralDonationsComponent implements OnChanges {
     public infoGraphSer: InfographicsService,
   ) { }
 
+  ngOnDestroy(): void {
+    if (this.chart) this.chart.destroy();
+
+  }
+
+
   ngOnChanges(changes) {
 
     if (this.chart) this.chart.destroy();
 
-    if (changes['orgGeneralDonationGraphData']) {
+
 
       if (this.orgGeneralDonationGraphData) {
         if (this.chart) this.chart.destroy();
@@ -49,7 +57,7 @@ export class InfographicsOrgGeneralDonationsComponent implements OnChanges {
       }
 
 
-    }
+
   }
 
   setUpGenConfig() {
@@ -72,7 +80,7 @@ export class InfographicsOrgGeneralDonationsComponent implements OnChanges {
         plugins: {
           title: {
             display: true,
-            text: 'General Donations Overview',
+            text: `${this.org.name} General Donations`,
             padding: {
               top: 10,
               bottom: 0
