@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit } from '@
 import { Item } from 'src/app/models/Item';
 import { Organisation } from 'src/app/models/Organisation/Organisation';
 import { InfographicsService } from 'src/app/services/infographics/infographics.service';
-import {Chart} from 'chart.js';
+import { Chart } from 'chart.js';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
@@ -13,7 +13,7 @@ import { FormBuilder } from '@angular/forms';
 
 export class InfographItemsDonationsComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() items:Item[] = [];
+  @Input() items: Item[] = [];
   @Input() org: Organisation;
 
   graph!: Chart;
@@ -28,7 +28,7 @@ export class InfographItemsDonationsComponent implements OnInit, OnChanges, OnDe
   }
 
   ngOnDestroy(): void {
-    if(this.graph) this.graph.destroy();
+    if (this.graph) this.graph.destroy();
   }
 
   ngOnChanges(changes) {

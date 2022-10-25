@@ -9,7 +9,6 @@ import { ItemService } from 'src/app/services/firebase/item-service/item.service
 import { TransactionService } from 'src/app/services/firebase/transaction-service/transaction.service';
 import { Donation, GeneralDonations } from 'src/app/models/GeneralDonations/GeneralDonations';
 import { WebdatarocksComponent } from 'ng-webdatarocks';
-import { MatAccordion } from '@angular/material/expansion';
 import { DatePipe } from '@angular/common';
 import { Timestamp } from 'firebase/firestore';
 import { VolunteerServiceService } from 'src/app/services/firebase/volunteer-service/volunteer-service.service';
@@ -34,7 +33,6 @@ export class ReportsComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('reportTable') reportTable: WebdatarocksComponent;
-  @ViewChild(MatAccordion) accordion: MatAccordion;
 
   constructor(
     private ofs: OrganisationService,
@@ -184,7 +182,6 @@ export class ReportsComponent implements OnInit {
         return newItem
       });
       this.setTableData(data, "Items", `${this.selectedOrg.name}'s Donation Items`, `${this.selectedOrg.name} Donation Item Report`);
-      this.accordion.closeAll();
     });
   }
 
@@ -286,7 +283,6 @@ export class ReportsComponent implements OnInit {
   }
 
   clearTable() {
-    this.accordion.closeAll();
     this.fileName = "";
 
     //Set table data to null
