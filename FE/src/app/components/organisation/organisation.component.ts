@@ -681,9 +681,10 @@ export class OrganisationComponent implements OnInit {
       // this.resetGraphData();
       this.initSelectedOrg();
       this.getItemsSubscription.unsubscribe();
+      this.getOrgsGeneralDonationData();
       return;
     }
-    this.getOrgGenGraphData(orgData.id)
+    this.getOrgGenGraphData(orgData.id);
     //this.getGraphData(orgData.id);
     this.selectedOrg = orgData;
     this.activeItems = this.items.filter((item) => {

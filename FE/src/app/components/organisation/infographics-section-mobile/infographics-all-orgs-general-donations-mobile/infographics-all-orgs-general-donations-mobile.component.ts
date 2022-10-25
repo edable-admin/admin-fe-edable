@@ -230,7 +230,7 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
 
     if (this.chart) this.chart.destroy();
 
-    if (changes['org'] || changes['chartType'] || changes['IsMobile']) {
+    if (changes['org'] || changes['chartType'] || changes['IsMobile'] || changes['orgGeneralDonationGraphData']) {
 
 
       switch (this.chartType) {
@@ -257,6 +257,10 @@ export class InfographicsAllOrgsGeneralDonationsMobileComponent implements OnIni
           break;
       }
 
+      this.chartData = this.orgGeneralDonationGraphData.map((donation: any) => { return donation.chartData });
+      this.chartLabel = this.orgGeneralDonationGraphData.map((donation: any) => { return donation.chartLabel });
+      this.updateColors();
+      this.updateCharts();
 
       if (this.org.id !== '') {
         if(this.chart) this.chart.destroy();

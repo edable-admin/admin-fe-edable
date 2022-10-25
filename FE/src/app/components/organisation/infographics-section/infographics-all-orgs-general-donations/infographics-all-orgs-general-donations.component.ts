@@ -11,14 +11,14 @@ import { ItemDonations } from 'src/app/models/ItemDonations/ItemDonation';
 })
 export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
 
-  @Input() orgGeneralDonationGraphData:GeneralDonations[];
-  @Input() orgItemDonationGraphData:ItemDonations[];
-  @Input() org:Organisation;
-  @Input() chartType:string;
+  @Input() orgGeneralDonationGraphData: GeneralDonations[];
+  @Input() orgItemDonationGraphData: ItemDonations[];
+  @Input() org: Organisation;
+  @Input() chartType: string;
 
-  chartData:any[];
-  chartLabel:any[];
-  chart:Chart;
+  chartData: any[];
+  chartLabel: any[];
+  chart: Chart;
   colors: any;
   configPolar: any;
   configLine: any;
@@ -29,20 +29,20 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
   constructor() { }
 
   ngOnInit(): void {
-    if(this.chart) this.chart.destroy();
+    if (this.chart) this.chart.destroy();
 
   };
 
   ngOnDestroy(): void {
-    if(this.chart) this.chart.destroy();
+    if (this.chart) this.chart.destroy();
   }
 
   ngAfterViewInit(): void {
 
-    if(this.chart) this.chart.destroy();
+    if (this.chart) this.chart.destroy();
 
-    this.chartData = this.orgGeneralDonationGraphData.map((donation: any) => {return donation.chartData});
-    this.chartLabel = this.orgGeneralDonationGraphData.map((donation: any) => {return donation.chartLabel});
+    this.chartData = this.orgGeneralDonationGraphData.map((donation: any) => { return donation.chartData });
+    this.chartLabel = this.orgGeneralDonationGraphData.map((donation: any) => { return donation.chartLabel });
     this.updateColors();
 
     this.configLine = {
@@ -154,7 +154,7 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
           }
         },
       }
-  };
+    };
 
     this.configPolar = {
       type: 'polarArea',
@@ -219,9 +219,10 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
 
 
 
+
     if (this.chart) this.chart.destroy();
 
-    if (changes['org'] || changes['chartType']) {
+    if (changes['org'] || changes['chartType'] || changes['orgGeneralDonationGraphData']) {
 
 
       switch (this.chartType) {
@@ -248,9 +249,13 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
           break;
       }
 
-
+      this.chartData = this.orgGeneralDonationGraphData.map((donation: any) => { return donation.chartData });
+      this.chartLabel = this.orgGeneralDonationGraphData.map((donation: any) => { return donation.chartLabel });
+      this.updateColors();
+      this.updateCharts();
+      
       if (this.org.id !== '') {
-        if(this.chart) this.chart.destroy();
+        if (this.chart) this.chart.destroy();
       }
     }
 
@@ -263,7 +268,7 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
     this.chart.update();
   };
 
-    updateColors() {
+  updateColors() {
     this.colors = this.chartLabel.map((item, i) => this.selectColor(i));
   };
 
@@ -272,7 +277,7 @@ export class InfographicsAllOrgsGeneralDonationsComponent implements OnInit, Aft
     return `hsl(${hue},50%,75%)`;
   }
 
-    resetGraphData() {
+  resetGraphData() {
     this.chartData = [0];
     this.chartLabel = [0];
     this.chart.data.labels = (this.chartLabel);
