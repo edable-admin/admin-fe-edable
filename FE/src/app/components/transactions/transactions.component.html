@@ -70,7 +70,7 @@
                 matTooltip="Payment Subscriptions are not automatically updated."
                 matTooltipPosition="below"
                 >
-                  <mat-icon>{{element.IsSubscribed}}</mat-icon>
+                  <mat-icon [ngStyle]="{'color':(element.IsSubscribed == 'check_circle_outline') ? 'green':'red'}">{{element.IsSubscribed}}</mat-icon>
                 </td>
               </ng-container>
 
