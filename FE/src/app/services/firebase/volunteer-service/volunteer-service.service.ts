@@ -23,7 +23,6 @@ export class VolunteerServiceService {
         resp.docs.forEach((resp) => {
 
           orgID = resp.ref.parent.parent.id;
-          console.log(resp)
           let privateData: VolunteerModel = resp.data() as VolunteerModel;
           let newReferral: VolunteerCSVModel = {
             orgName: orgID,
@@ -52,45 +51,3 @@ export class VolunteerServiceService {
     return volunteers;
   }
 }
-
-// async getReferralData(): Promise<ReferralCSVModel[]> {
-
-//   let privateData: PrivateData[] = [];
-//   let referralData: ReferralCSVModel[] = [];
-//   let orgID: string = '';
-//   let donationType: string = '';
-
-
-//   await this.fs.firestore.collectionGroup('Private')
-//     .get()
-//     .then((resp) => {
-
-//       resp.docs.forEach((resp) => {
-
-//         if (resp.ref.parent.parent.parent.id === 'ItemsDonations') {
-//           orgID = resp.ref.parent.parent.parent.parent.parent.parent.id;
-//           donationType = 'Item';
-//         }
-//         else {
-//           orgID = resp.ref.parent.parent.parent.parent.id;
-//           donationType = 'General';
-//         }
-//         let privateData: PrivateData = resp.data() as PrivateData;
-//         let newReferral: ReferralCSVModel = {
-//           Org_Name: orgID,
-//           Donation_Type: donationType,
-//           Is_Anon: privateData.IsAnon,
-//           Agree_To_Contact: privateData.agreeToContact,
-//           Email: privateData.email,
-//           Referral: privateData.howHeardOther,
-//           Mailing_Address: privateData.mailingAddress,
-//           Name: privateData.name,
-//           Phone_Number: privateData.phoneNumber
-//         };
-
-//         referralData.push(newReferral);
-//       });
-//     });
-
-//   return referralData;
-// }
