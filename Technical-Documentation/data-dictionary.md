@@ -1,5 +1,13 @@
 # Data Dictionary
 
+## Contents  
+- [Organisations Collection](#organisations-collection)  
+- [Items Collection](#items-collection)
+- [General Donations Collection](#general-donations-collection)
+- [Items Donations Collection](#items-donations-collection)
+- [Private Document](#private)
+- [Volunteer Donations Collection](#volunteer-donations-collection)
+
 ## Organisations Collection
 
 | Variable                      | Variable Name              | Data Type | Constraints | Allowed Values               | Description                                                       | Example Data                                                                                            |
@@ -24,7 +32,6 @@
 | Total General Donations value | totalGeneralDonationsValue | number    |             | 0-9                          | Total monetary amount of general donations                        | 553                                                                                                     |
 
 ## Items Collection
-
 | Variable             | Variable Name      | Data Type       | Constraints | Allowed Values               | Description                                      | Example Data                                                                                                                                                                                                                                                                                                                          |
 | -------------------- | ------------------ | --------------- | ----------- | ---------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Item ID              | ID                 | string          | PK          |                              | The primary key of the item                      | "NVa5kOLSU8IuVBE5QLUz"                                                                                                                                                                                                                                                                                                                |
