@@ -15,7 +15,7 @@ export const environment = {
     appId: "1:285521431356:web:9b45c22ad0da6d342c6c39",
     measurementId: "G-BC3HR6B39F"
   },
-  recaptcha3SiteKey:"6LetWpUiAAAAALG0r3OrdNPXmVFV61zXEMHvI5Fh"
+  recaptcha3SiteKey:"6LemKuoiAAAAAHrLRVxIS7lhQWNZ-KBqMVEew2J5"
 };
 
 /*
