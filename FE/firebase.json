@@ -3,8 +3,14 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
-  "rewrites": [{
-    "source": "**",
-    "destination": "/index.html"
-  }]
+  "rewrites": [
+    {
+      "source": "**",
+      "destination": "/index.html"
+    }
+  ],
+  "hosting": {
+    "public": "admin-edable"
+    
+  }
 }
