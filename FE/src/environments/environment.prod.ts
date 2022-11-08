@@ -12,7 +12,7 @@ export const environment = {
   production: true,
   ENV_NAME: "#{PRODUCTION}#",
 
-  const firebaseConfig = {
+  firebaseConfig = {
     apiKey: "AIzaSyDa0jpr3yOri73lSbUvPg1BiB2HbRy4PPw",
     authDomain: "edable-admin.firebaseapp.com",
     projectId: "edable-admin",
