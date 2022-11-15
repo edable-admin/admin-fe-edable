@@ -6,7 +6,6 @@ import { CreateOrgModel } from "src/app/models/MockDataModels"
 export const mockData:CreateOrgModel[] =
   [
     {
-
         "name": "Barry's Bakehouse",
         "description": "",
         "summary": "Barry's bakehouse provides baked goods and fresh bread daily for local customers. Barry also provides free baked goods to the local nursing home",
@@ -883,7 +882,7 @@ export const mockData:CreateOrgModel[] =
         "Sunday":true,
         "howContribute":"Cleaning",
         "volunteerAmount":"79",
-        "volunteerComment":" What a fantastic organisation ",
+        "volunteerComment":"What a fantastic organisation ",
         "volunteerDOB":"17/02/1992",
         "volunteerEmail":"bkelcey0@bloomberg.com",
         "volunteerHours":"3",
@@ -939,7 +938,7 @@ export const mockData:CreateOrgModel[] =
 "Sunday":true,
 "howContribute":"Cleaning",
 "volunteerAmount":"34",
-"volunteerComment":" Such a nice place to volunteer",
+"volunteerComment":" Such a pleasure",
 "volunteerDOB":"12/11/1989",
 "volunteerEmail":"abampkin3@latimes.com",
 "volunteerHours":"1",
@@ -947,7 +946,8 @@ export const mockData:CreateOrgModel[] =
 "volunteerName":"Annis Bampkin",
 "volunteerOrgName":"Barry's Bake House",
 "volunteerPhone":"102-664-1851",
-"volunteerPostcode":"1560"},
+          "volunteerPostcode": "1560"
+        },
 
 {"Monday":true,
 "Tuesday":false,
