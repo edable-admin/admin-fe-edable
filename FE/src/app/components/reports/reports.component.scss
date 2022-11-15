@@ -1,0 +1,69 @@
+.row-selected {
+    background: rgb(185, 185, 185);
+}
+
+td,
+tr:hover {
+    cursor: pointer;
+}
+
+.table-container {
+    width: 210px !important;
+    margin: 15px;
+}
+
+.table-container,
+table {
+    width: 100%;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.reportbutton{
+    margin: 10px;
+}
+
+.buttons{
+  margin: 10px;
+}
+
+.container{
+    width: 100%;
+    display: flex;
+}
+
+.tabs{
+  padding: 10px;
+}
+
+.specific-reports{
+  padding: 10px;
+}
+
+.tab{
+  padding: 10px;
+}
+
+.sheet{
+  width: 100%;
+}
+
+@media(max-width: 1000px){
+  .container{
+    flex-wrap: wrap;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  .sheet{
+    width: 80%;
+    min-width: 250px;
+  }
+}

@@ -3,13 +3,16 @@
 <body>
   <div class="container">
     <div class="table-header">
-      <button mat-raised-button class="control-button" (click)="addOrgDialog()" color="primary" matTooltip="Add Organisation" aria-label="Add Organisation">
+      <button mat-raised-button class="control-button" (click)="addOrgDialog()" color="primary"
+        matTooltip="Add Organisation" aria-label="Add Organisation">
         <mat-icon>add</mat-icon>Organisation
       </button>
-      <button mat-raised-button class="control-button" *ngIf="this.selectedOrg.id" (click)="editOrgDialog()" color="primary" matTooltip="Edit Organisation" aria-label="Edit Organisation">
+      <button mat-raised-button class="control-button" *ngIf="this.selectedOrg.id" (click)="editOrgDialog()"
+        color="primary" matTooltip="Edit Organisation" aria-label="Edit Organisation">
         <mat-icon>edit</mat-icon>Edit
       </button>
-      <button mat-raised-button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()" color="warn" matTooltip="Delete Organisation" aria-label="Delete Organisation">
+      <button mat-raised-button class="control-button" *ngIf="this.selectedOrg.id" (click)="removeOrgDialog()"
+        color="warn" matTooltip="Delete Organisation" aria-label="Delete Organisation">
         <mat-icon class="remove-icon">delete_forever</mat-icon>Delete
       </button>
       <mat-form-field class="control-button" appearance="standard">
@@ -25,6 +28,7 @@
       </mat-radio-group>
     </div>
 
+
     <div class="flex-container">
       <section class="scroll-container mat-elevation-z8">
         <table mat-table [dataSource]="orgData" matSort (matSortChange)="initSelectedOrg()">
@@ -38,9 +42,9 @@
             <td mat-cell *matCellDef="let row"> {{row.totalDonationItems}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="totalDonations">
+          <ng-container matColumnDef="totalDonationsValue">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Donations </th>
-            <td mat-cell *matCellDef="let row"> ${{row.totalDonations}} </td>
+            <td mat-cell *matCellDef="let row"> ${{row.totalDonationsValue}} </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
@@ -57,20 +61,46 @@
           aria-label="Select page of users">
         </mat-paginator>
       </section>
+      <div class="big-graph">
 
-      <div class="big-graph-placeholder"> <img src="{{selectedOrg.img}}" (error)="onImgError($event)"
-          style="width: 300px; height:auto; max-height: 400px;" alt="">
+        <app-infographics-section
+                *ngIf="!IsMobile"
+                [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
+                [items]="items"
+                [org]="selectedOrg"
+                [orgItemDonationGraphData]="orgItemDonationGraphData"
+                [referralData]="referralData"
+              ></app-infographics-section>
+        <!-- <canvas id="canvas" height=140>{{chart}}</canvas> -->
       </div>
       <div class="graph-expansion">
         <mat-accordion>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>
-                Graph Placeholder
+                Donation Chart
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <div class="small-graph-placeholder">
-              <img src="{{selectedOrg.img}}" (error)="onImgError($event)" style="width: 200px; height:auto;" alt="">
+            <!-- <mat-form-field style="width:107px" appearance="fill"> -->
+              <!-- <mat-label>Chart Type</mat-label> -->
+              <!-- <mat-select [(value)]="chartType" (selectionChange)="changeChart()"> -->
+                <!-- <mat-option value="pie">Pie</mat-option> -->
+                <!-- <mat-option *ngIf="this.selectedOrg.id !== ''" value="line">Line</mat-option> -->
+                <!-- <mat-option value="bar">Bar</mat-option> -->
+                <!-- <mat-option value="polar">Polar</mat-option> -->
+              <!-- </mat-select> -->
+            <!-- </mat-form-field> -->
+            <div class="small-graph" style="width:80vw;">
+              <!-- <canvas id="mobile">{{mobileChart}}</canvas> -->
+              <app-infographics-section-mobile
+                *ngIf="IsMobile"
+                [orgGeneralDonationGraphData]="orgGeneralDonationGraphData"
+                [items]="items"
+                [org]="selectedOrg"
+                [orgItemDonationGraphData]="orgItemDonationGraphData"
+                [referralData]="referralData"
+              >
+              </app-infographics-section-mobile>
             </div>
           </mat-expansion-panel>
         </mat-accordion>
@@ -79,7 +109,8 @@
     <div class="item-container">
 
       <!--Add Item-->
-      <mat-card class="add-item-card" *ngIf="this.selectedOrg.id !== ''" (click)="addDonationItemDialog()" aria-label="Add Item">
+      <mat-card class="add-item-card" *ngIf="this.selectedOrg.id !== ''" (click)="addDonationItemDialog()"
+        aria-label="Add Item">
         <mat-card-header>
           <mat-card-title>
             <mat-icon class="add-icon-mobile">add</mat-icon> Add Item
@@ -91,23 +122,28 @@
       </mat-card>
 
       <!--All Organisation Item Cards-->
-      <mat-card class="item-card" *ngFor="let item of items">
+      <mat-card [ngClass]="{'item-card': true,'inactive-item-card':!item.activeStatus}" *ngFor="let item of items">
         <mat-card-header>
           <div class="overflow" matTooltip="{{item.name}}" [matTooltipPosition]="'below'"
             aria-label="Button that displays a tooltip in various positions">
             {{item.name}}
           </div>
+          <h2 class="goal-reached" *ngIf="item.initialPrice <= item.totalDonationsValue">Goal Reached!!</h2>
         </mat-card-header>
-        <img mat-card-image src={{item.img}} (error)="onImgError($event)">
+        <img mat-card-image class="item-img" src={{item.img}} (error)="onImgError($event)">
         <mat-card-content>
           <p>Goal: ${{item.initialPrice}}</p>
-          <p>Raised: ${{item.totalDonations}}</p>
+          <p>Raised: ${{item.totalDonationsValue}}</p>
         </mat-card-content>
         <div class="item-card-button">
-          <button class="control-button" (click)="openItemUpdateDialog(item)" mat-raised-button color="primary" matTooltip="Edit Item" aria-label="Edit Item">
+          <button mat-raised-button color="primary" (click)="openViewItemDialog(item)">
+            View
+          </button>
+          <button class="control-button" (click)="openItemUpdateDialog(item)" mat-raised-button color="primary">
             <mat-icon>edit</mat-icon>
           </button>
-          <button class=" control-button" (click)="removeDonationItemDialog(item.id, item.name)" mat-raised-button color="warn" matTooltip="Delete Item" aria-label="Delete Item">
+          <button class=" control-button" (click)="removeDonationItemDialog(item.id, item.name)" mat-raised-button
+            color="warn" matTooltip="Delete Item" aria-label="Delete Item">
             <mat-icon>delete_forever</mat-icon>
           </button>
         </div>

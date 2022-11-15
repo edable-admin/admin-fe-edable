@@ -1,0 +1,13 @@
+<div class="chart-container">
+  <h1
+  *ngIf="items.length <= 0 && org.id !== ''"
+  >No items</h1>
+
+  <div
+  *ngIf="items.length > 0 && org.id !== ''"
+  >
+    <canvas
+    id="item-donations-graph" height="340" width="400">{{graph}}</canvas>
+
+  </div>
+</div>

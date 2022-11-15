@@ -25,18 +25,18 @@ export class RemoveOrganisationDialog {
     onNoClick(): void {
         this.dialogRef.close(false);
     }
-    cancelDelete() {
+  cancelDelete() {
         this.dialogRef.close(false);
     }
-    confirmDelete(data) {
-        if ((data.totalDonationItems > 0 && data.totalDonations > 0) || data.totalDonations > 0) {
+    confirmDelete() {
+        if ((this.data.totalDonationItems > 0 && this.data.totalDonations > 0) || this.data.totalDonations > 0) {
             this.showWarning = true;
-            this.message = data.name + " has donation records and cannot be deleted"
+            this.message = this.data.name + " has donation records and cannot be deleted"
             this.isDisabled = !this.isDisabled
         }
-        else if (data.totalDonationItems > 0) {
+        else if (this.data.totalDonationItems > 0) {
             this.showWarning = true;
-            this.message = data.name + " has donation items and cannot be deleted"
+            this.message = this.data.name + " has donation items and cannot be deleted"
             this.isDisabled = !this.isDisabled;
         }
         else {
