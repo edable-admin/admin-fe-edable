@@ -893,7 +893,7 @@ export const mockData:CreateOrgModel[] =
           "volunteerOrgName":"Barry's Bake House",
           "volunteerPhone":"0412849227",
           "volunteerPostcode":"3135",
-        }
+        },
       ]
     },
     {
@@ -980,7 +980,7 @@ export const mockData:CreateOrgModel[] =
         "img": "https://source.unsplash.com/Zyx1bK9mqmA",
         "Items":[
           {
-            "name": "SoCrunchees",
+            "name": "SoCrunchees Ingredients",
             "summary":"Crunchy & Chewy",
             "description":"Anzacz with a crunchy and chewy twitst",
             "initialPrice": 30,
@@ -1155,7 +1155,7 @@ export const mockData:CreateOrgModel[] =
             ]
           },
           {
-            "name": "SoTweetees",
+            "name": "SoTweetees Ingredients",
             "summary":"Gluten Free",
             "description":"You'll be top of the pecking order with these delicious seed bars.",
             "initialPrice": 72,
@@ -1327,7 +1327,7 @@ export const mockData:CreateOrgModel[] =
             ]
           },
           {
-            "name": "SoChunky",
+            "name": "SoChunky Ingredients",
             "summary":"Seriously Chunky",
             "description":"New York hits Melbourne.  Sweet and crunchy. Choc chip, nut decadence.",
             "initialPrice": 99,

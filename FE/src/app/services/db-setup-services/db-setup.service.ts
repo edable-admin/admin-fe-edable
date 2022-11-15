@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { noSQLData } from './no-sql-data';
-import { mockData } from 'src/app/components/organisation/mock-data';
-import { FieldValue, Timestamp } from 'firebase/firestore';
+import { mockData } from 'src/app/services/db-setup-services/mock-data';
 import { CreateOrgModel, GeneralDonation, PrivateDonorDetails } from 'src/app/models/MockDataModels';
 
 
@@ -23,7 +21,8 @@ export class DbSetupService {
     let org: CreateOrgModel;
 
     //Loops through every organisation
-    orgs.forEach( async (orgObj) => {
+    orgs.forEach(async (orgObj) => {
+
       // from the mock data create an org object
       org = {
         name:orgObj.name,
