@@ -93,14 +93,25 @@ export class TransactionService {
             orgID = resp.ref.parent.parent.parent.parent.id;
             donationType = 'General';
           }
+          
           let privateData: PrivateData = resp.data() as PrivateData;
+          let howHeard:string = '';
+          
+          if ((privateData.howHeard === '' || privateData.howHeard === undefined) && (privateData.howHeardOther === '' || privateData.howHeardOther === undefined)) {
+            howHeard = 'Unknown';
+          } else if ((privateData.howHeard === '' || privateData.howHeard === undefined) && (privateData.howHeardOther !== '' || privateData !== undefined)) {
+            howHeard = privateData.howHeardOther;
+          } else {
+            howHeard = privateData.howHeard;
+          }
           let newReferral: ReferralCSVModel = {
             Org_Name: orgID,
             Donation_Type: donationType,
             Is_Anon: privateData.IsAnon,
             Agree_To_Contact: privateData.agreeToContact,
             Email: privateData.email,
-            Referral: privateData.howHeardOther,
+            Referral: howHeard,
+            ReferralOther:privateData.howHeardOther,
             Mailing_Address: privateData.mailingAddress,
             Name: privateData.name,
             Phone_Number: privateData.phoneNumber

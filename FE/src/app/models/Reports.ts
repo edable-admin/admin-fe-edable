@@ -35,6 +35,7 @@ export interface PrivateData {
     IsAnon: boolean;
     agreeToContact: boolean;
     email: string;
+    howHeard: string;
     howHeardOther: string;
     mailingAddress: string;
     name: string;
@@ -73,6 +74,7 @@ export interface ReferralCSVModel {
     Agree_To_Contact: boolean;
     Email: string;
     Referral: string;
+    ReferralOther:string;
     Mailing_Address: string;
     Name: string;
     Phone_Number: string;
@@ -146,6 +148,7 @@ export interface ReportCSVModel {
     IsAnon:boolean,
     agreeToContact:boolean,
     email:string,
+    howHeard:string,
     howHeardOther:string,
     mailingAddress:string,
     name:string,

@@ -64,6 +64,15 @@ export class ReportsService {
       }
       if (publicDataUnclean != undefined) {
         let publicData: PublicData = publicDataUnclean.data() as PublicData;
+        let howHeard:string = '';
+          
+          if ((privateData.howHeard === '' || privateData.howHeard === undefined) && (privateData.howHeardOther === '' || privateData.howHeardOther === undefined)) {
+            howHeard = 'Unknown';
+          } else if ((privateData.howHeard === '' || privateData.howHeard === undefined) && (privateData.howHeardOther !== '' || privateData !== undefined)) {
+            howHeard = privateData.howHeardOther;
+          } else {
+            howHeard = privateData.howHeard;
+          }
         let newReferral: ReportCSVModel = {
           orgID: orgID,
           donationType:donationTypeRaw,
@@ -76,6 +85,7 @@ export class ReportsService {
           IsAnon:privateData.IsAnon,
           agreeToContact:privateData.agreeToContact,
           email:privateData.email,
+          howHeard:howHeard,
           howHeardOther:privateData.howHeardOther,
           mailingAddress:privateData.mailingAddress,
           name:privateData.name,
