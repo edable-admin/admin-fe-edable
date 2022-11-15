@@ -103,7 +103,8 @@ export class OrganisationComponent implements OnInit {
     public dfs: DonationService,
     public infoGraphSer: InfographicsService,
     public ts: TransactionService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    public db:DbSetupService
   ) {
 
 

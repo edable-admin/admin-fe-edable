@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { mockData } from 'src/app/services/db-setup-services/mock-data';
 import { CreateOrgModel, GeneralDonation, PrivateDonorDetails } from 'src/app/models/MockDataModels';
+import { Item } from 'src/app/models/Item';
 
 
 @Injectable({
@@ -15,194 +16,167 @@ export class DbSetupService {
     public fs:AngularFirestore
   ) { }
 
-  createOrganisationsAndItems(){
+  createOrganisationsAndItems() {
 
-    let orgs:CreateOrgModel[] = mockData;
+    let orgs: CreateOrgModel[] = mockData;
     let org: CreateOrgModel;
 
-    console.log("orgObj")
+
     //Loops through every organisation
     orgs.forEach((orgObj) => {
-      console.log(this.calcItemDonations(orgObj));
 
-      // // from the mock data create an org object
-      // org = {
-      //   name:orgObj.name,
-      //   description:orgObj.description,
-      //   summary:orgObj.summary,
-      //   activeStatus:orgObj.activeStatus,
-      //   ABN:orgObj.ABN,
-      //   phone:orgObj.phone,
-      //   website:orgObj.website,
-      //   img:orgObj.img
-      // }
+      //destructure values form total functions
+      const { itemCount: totalItemDonationsCount, valueCount: totalItemDonationsValue } = this.calcTotalOrgItemDonations(orgObj);
+      const { totalGeneralDonationsValue, totalGeneralDonationsCount } = this.calcGeneralDonations(orgObj);
+      const totalDonationCount = totalItemDonationsCount + totalGeneralDonationsCount;
+      const totalDonationItems = orgObj?.Items?.length ? orgObj?.Items?.length : 0;
+      const totalDonationsValue = totalItemDonationsValue + totalGeneralDonationsValue;
 
-      // // create a reference for the new org
-      // let orgRef = this.fs
-      // .collection('Organisations')
-      //   .doc().ref
+      // from the mock data create an org object
+      org = {
+        name: orgObj.name,
+        description: orgObj.description,
+        summary: orgObj.summary,
+        activeStatus: orgObj.activeStatus,
+        ABN: orgObj.ABN,
+        phone: orgObj.phone,
+        website: orgObj.website,
+        img: orgObj.img,
+        totalItemDonationsCount: totalItemDonationsCount,
+        totalItemDonationsValue: totalItemDonationsValue,
+        totalGeneralDonationsValue: totalGeneralDonationsValue,
+        totalGeneralDonationsCount: totalGeneralDonationsCount,
+        totalDonationCount: totalDonationCount,
+        totalDonationItems: totalDonationItems,
+        totalDonationsValue: totalDonationsValue
+      }
 
-      // let orgTotalDonationCount:number = 0;
-      // let orgTotalDonationItems:number = 0;
-      // let orgTotalDonations:number = 0;
-      // let orgTotalDonationsValue:number = 0;
-      // let orgTotalGeneralDonationsCount:number = 0;
-      // let orgTotalGeneralDonationsValue:number = 0;
-      // let orgTotalItemDonationsCount:number = 0;
-      // let orgTotalItemDonationsValue:number = 0;
+      //create a reference for the new org
+      let orgRef = this.fs
+        .collection('Organisations')
+        .doc().ref
 
-      // //Create organisation in the database
-      // await orgRef.set(org).then( async () => {
-      //   // Loop over item mock data for that organisation
-      //   orgObj?.Items?.forEach(
-      //     async (itemObject) => {
+      //Create organisation in the database
+      orgRef.set(org).then(() => {
 
-      //       //count donation items for the org
-      //       orgTotalDonationItems += 1;
+        // Loop over item mock data for that organisation
+        orgObj?.Items?.forEach(
+          (itemObject) => {
+            const { totalDonationCount, totalDonationsValue } = this.calcItemDonations(itemObject);
 
-      //       //create an item object from mock data
-      //       let item = {
-      //         name: itemObject.name,
-      //         summary:itemObject.summary,
-      //         description:itemObject.description,
-      //         initialPrice: itemObject.initialPrice,
-      //         activeStatus: itemObject.activeStatus,
-      //         dateCompleted:itemObject.dateCompleted,
-      //         createdAt: itemObject.createdAt,
-      //         img: itemObject.img
-      //     }
+            //create an item object from mock data
+            let item = {
+              name: itemObject.name,
+              summary: itemObject.summary,
+              description: itemObject.description,
+              initialPrice: itemObject.initialPrice,
+              activeStatus: itemObject.activeStatus,
+              dateCompleted: itemObject.dateCompleted,
+              createdAt: itemObject.createdAt,
+              img: itemObject.img,
+              totalDonationCount: totalDonationCount,
+              totalDonationsValue: totalDonationsValue
+            }
+            //create an item reference from the Organisation
+            let itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
 
-      //       //create an item reference from the Organisation
-      //       let itemRef = this.fs.collection('Organisations').doc(orgRef.id).collection('Items').doc().ref;
+            //create the item in the database
+            itemRef.set(item).then(() => {
 
-      //       //create the item in the database
-      //       await itemRef.set(item).then( async () => {
+              //loopover item donations for the item
+              itemObject?.itemDonations?.forEach(itemDon => {
 
-      //         //varibles to calculate the totals for an item's donations
-      //         let totalItemDonationCount: number = 0;
-      //         let totalItemDonationsValue: number = 0;
+                let itemDonation = {
+                  IsRefunded: itemDon.IsRefunded,
+                  amount: itemDon.amount,
+                  comment: itemDon.comment,
+                  donationDate: itemDon.donationDate,
+                  donorPublicName: itemDon.donorPublicName
+                }
 
-      //         //loopover item donations for the item
-      //         itemObject?.itemDonations?.forEach(async itemDon => {
+                //create a donation reference for an item donation;
+                let itemDonationRef = this.fs.collection('Organisations')
+                  .doc(orgRef.id)
+                  .collection('Items')
+                  .doc(itemRef.id)
+                  .collection('ItemsDonations').doc()
+                  .ref;
 
-      //           //update totals
-      //           orgTotalDonations += 1;
-      //           orgTotalItemDonationsCount += 1
-      //           orgTotalDonationCount += 1;
-      //           orgTotalDonationsValue += itemDon.amount;
-      //           totalItemDonationCount += 1;
-      //           totalItemDonationsValue += itemDon.amount;
+                itemDonationRef.set(itemDonation)
+              })
+            })
 
+            orgObj?.GeneralDonations?.forEach((genDon) => {
+              let generalDonations = {
+                IsRefunded: genDon.IsRefunded,
+                IsSubscribed: genDon.IsSubscribed,
+                amount: genDon.amount,
+                comment: genDon.comment,
+                donationDate: genDon.donationDate,
+                donorPublicName: genDon.donorPublicName
+              }
 
-      //           let itemDonation = {
-      //             IsRefunded: itemDon.IsRefunded,
-      //             amount: itemDon.amount,
-      //             comment: itemDon.comment,
-      //             donationDate: itemDon.donationDate,
-      //             donorPublicName: itemDon.donorPublicName
-      //           }
+              let privateDonor = {
+                paypalTransactionId: genDon.private.paypalTransactionId,
+                IsAnon: genDon.private.IsAnon,
+                agreeToContact: genDon.private.agreeToContact,
+                email: genDon.private.email,
+                howHeardOther: genDon.private.howHeardOther,
+                mailingAddress: genDon.private.mailingAddress,
+                name: genDon.private.name,
+                phoneNumber: genDon.private.phoneNumber
+              }
 
-      //           //create a donation reference for an item donation;
-      //           let itemDonationRef = this.fs.collection('Organisations')
-      //           .doc(orgRef.id)
-      //           .collection('Items')
-      //           .doc(itemRef.id)
-      //           .collection('ItemsDonations').doc()
-      //           .ref;
+              // create a general donation reference for a general donation
+              let generalDonationRef = this.fs.collection('Organisations')
+                .doc(orgRef.id)
+                .collection('GeneralDonations')
+                .doc().ref;
 
-      //           await itemDonationRef.set(itemDonation)
+              let donorPrivateRef = this.fs.collection('Organisations')
+                .doc(orgRef.id)
+                .collection('GeneralDonations')
+                .doc(generalDonationRef.id)
+                .collection('Private')
+                .doc('Private').ref
 
-      //           await orgRef.update({
-      //             totalDonationCount:orgTotalDonationCount,
-      //             totalDonationItems:orgTotalDonationItems,
-      //             totalDonationsValue:orgTotalDonationsValue,
-      //             totalGeneralDonationsCount:orgTotalGeneralDonationsCount,
-      //             totalGeneralDonationsValue:orgTotalGeneralDonationsValue,
-      //             totalItemDonationsCount:orgTotalItemDonationsCount,
-      //             totalItemDonationsValue:orgTotalItemDonationsValue
-      //           })
+              generalDonationRef.set(generalDonations)
+              donorPrivateRef.set(privateDonor)
+            })
 
-      //         })
-
-      //         //updates the sum for the item
-      //       itemRef.update({ totalDonationCount: totalItemDonationCount, totalDonationsValue: totalItemDonationsValue })
-      //       })
-      //     })
-
-      //     orgObj?.GeneralDonations?.forEach( async (genDon) => {
-
-      //       orgTotalDonationCount += 1;
-      //       orgTotalDonationsValue += genDon.amount;
-      //       orgTotalGeneralDonationsCount += 1;
-      //       orgTotalGeneralDonationsValue += genDon.amount;
-
-
-      //       let generalDonations = {
-      //         IsRefunded: genDon.IsRefunded,
-      //         IsSubscribed: genDon.IsSubscribed,
-      //         amount: genDon.amount,
-      //         comment: genDon.comment,
-      //         donationDate: genDon.donationDate,
-      //         donorPublicName:genDon.donorPublicName
-      //       }
-
-      //       let privateDonor = {
-      //         paypalTransactionId:genDon.private.paypalTransactionId,
-      //         IsAnon: genDon.private.IsAnon,
-      //         agreeToContact: genDon.private.agreeToContact,
-      //         email: genDon.private.email,
-      //         howHeardOther: genDon.private.howHeardOther,
-      //         mailingAddress: genDon.private.mailingAddress,
-      //         name: genDon.private.name,
-      //         phoneNumber: genDon.private.phoneNumber
-      //       }
-
-      //       // create a general donation reference for a general donation
-      //       let generalDonationRef = this.fs.collection('Organisations')
-      //       .doc(orgRef.id)
-      //       .collection('GeneralDonations')
-      //       .doc().ref;
-
-      //       let donorPrivateRef = this.fs.collection('Organisations')
-      //       .doc(orgRef.id)
-      //       .collection('GeneralDonations')
-      //       .doc(generalDonationRef.id)
-      //       .collection('Private')
-      //       .doc('Private').ref
-
-      //       await generalDonationRef.set(generalDonations)
-      //       await donorPrivateRef.set(privateDonor)
-      //     })
-
-      //     await orgRef.update({
-      //       totalDonationCount:orgTotalDonationCount,
-      //       totalDonationItems:orgTotalDonationItems,
-      //       totalDonationsValue:orgTotalDonationsValue,
-      //       totalGeneralDonationsCount:orgTotalGeneralDonationsCount,
-      //       totalGeneralDonationsValue:orgTotalGeneralDonationsValue,
-      //       totalItemDonationsCount:orgTotalItemDonationsCount,
-      //       totalItemDonationsValue:orgTotalItemDonationsValue
-      //     })
-
-      //   orgObj?.VolunteerDonations?.forEach(async (volDon) => {
-      //     let volRef = this.fs.collection("Organisations")
-      //       .doc(orgRef.id)
-      //       .collection("VolunteerDonations")
-      //       .doc()
-      //       .ref
-
-      //     volRef.set(volDon);
-      //   })
+            orgObj?.VolunteerDonations?.forEach((volDon) => {
+              let volRef = this.fs.collection("Organisations")
+                .doc(orgRef.id)
+                .collection("VolunteerDonations")
+                .doc()
+                .ref
+              volRef.set(volDon);
+            })
 
 
-      // })
+          })
 
 
+      })
     })
   }
 
+  calcItemDonations(item) {
+    if (item?.itemDonations?.length) {
+      const totalDonationCount = item?.itemDonations?.length;
+      const totalDonationsValue = item.itemDonations.reduce((prev, curr) => prev + curr.amount, 0)
+
+      return {totalDonationCount:totalDonationCount, totalDonationsValue:totalDonationsValue}
+
+    } else {
+      return {totalDonationCount:0, totalDonationsValue:0}
+    }
+
+
+  }
+
   //calculated the total value of donations along with the item donation count
-  calcItemDonations(org){
+  calcTotalOrgItemDonations(org) {
     let counter = 0;
     let value = 0;
 
@@ -295,11 +269,11 @@ export class DbSetupService {
       let totalDonationItems = itemCount ? itemCount : 0;
       let totalDonationsValue = 0;
 
-      const {itemCount:totalItemDonationsCount , valueCount:totalItemDonationsValue} = this.calcItemDonations(org);
+      const {itemCount:totalItemDonationsCount , valueCount:totalItemDonationsValue} = this.calcTotalOrgItemDonations(org);
       const {totalGeneralDonationsValue:totalGeneralDonationsValue , totalGeneralDonationsCount:totalGeneralDonationsCount} = this.calcGeneralDonations(org);
 
-      // console.log(totalGeneralDonationsValue)
-      // console.log(totalGeneralDonationsCount)
+      console.log(totalGeneralDonationsValue)
+      console.log(totalGeneralDonationsCount)
 
       let orgTotal =  {
         org:org.name,
