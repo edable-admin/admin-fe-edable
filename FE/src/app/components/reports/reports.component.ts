@@ -183,7 +183,7 @@ export class ReportsComponent implements OnInit {
           Total_Donations_Value: item.totalDonationsValue,
           Amount_Remaining: Math.max(0, (item.initialPrice - item.totalDonationsValue)),
           Is_Funded: item.totalDonationsValue >= item.initialPrice,
-          Date_Completed: item.dateCompleted?.toDate().toLocaleTimeString(),
+          Date_Completed: item.dateCompleted?.toDate().toLocaleDateString(),
           Active_Status: item.activeStatus
         }
         return newItem
