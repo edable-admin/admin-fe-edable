@@ -1,8 +1,27 @@
 rules_version = '2';
 service firebase.storage {
+//todo auth permissions
   match /b/{bucket}/o {
+
+
     match /{allPaths=**} {
-      allow read, write: if request.auth!=null;
+      allow read: if true;
+
+      allow write: if (request.resource.size < 5 * 1024 * 1024
+      && request.resource.contentType.matches('image/.*')
+      && signedIn()
+      );
+
+      //update image rule
+      allow delete: if signedIn();
+
     }
+
   }
+}
+
+
+//---------------- Checks if the User is Authenticated ----------//
+function signedIn() {
+  return request.auth != null;
 }

@@ -1,9 +1,286 @@
+
+//------------------------- Transaction Data -------------------------------//
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if
-          request.time < timestamp.date(2022, 9, 16);
+
+
+       	 //match /{document=**} {
+
+       	 //allow create, read, update, delete: if true;
+      //}
+
+
+    //Allow a GeneralDonation to be Created
+    // Firebase appcheck will be used to check if the api call was made through the application
+    match /Organisations/{org}/GeneralDonations/{don} {
+      allow create: if (
+        request.resource.data.keys()
+        .hasAll(["IsRefunded","IsSubscribed","amount","comment","donationDate","donorPublicName"])
+        && signedIn()
+        )
     }
+
+    //Allow private Details to be Created
+    // Firebase appcheck will be used to check if the api call was made through the application
+    match /Organisations/{org}/GeneralDonations/{don}/Private/{document=**} {
+      allow create: if (
+        request.resource.data.keys()
+              .hasAll(["name","IsAnon","agreeToContact","email","howHeard","mailingAddress","phoneNumber"])
+              && signedIn()
+              )
+    }
+
+
+    //only allow logged-in admins to read GeneralDonations
+    match /{path=**}/GeneralDonations/{don} {
+
+      allow read: if signedIn();
+    }
+
+    //only Org collection group to be read
+    match /{path=**}/Organisations/{org} {
+
+      allow read: if signedIn();
+    }
+
+
+    //only allow logged-in admins to read GeneralDonations/Private
+    match /{path=**}/Private/{private} {
+
+      allow read: if signedIn();
+    }
+
+    //Allow Reads to General Donations
+    match /Organisations/{org}/GeneralDonations/{don} {
+
+      allow read: if true;
+    }
+
+    //Only allow logged-in admins to update
+    //Only the following fields (IsAnon, agreeToContact)
+    match /Organisations/{org}/GeneralDonations/{don}/Private/Private {
+
+      allow update:
+        if (
+          signedIn() &&
+          request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly(['IsAnon','agreeToContact']));
+    }
+
+    //Only allow logged-in admins to update
+
+    //Only the following fields (IsSubscribed, IsRefunded)
+    match /Organisations/{org}/GeneralDonations/{don} {
+
+      allow update:
+        if (
+          signedIn() &&
+          request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly(['IsSubscribed','IsRefunded']));
+    }
+
+    //Allow a Item Donations to be Created
+    // Firebase appcheck will be used to check if the api call was made through the application
+    match /Organisations/{org}/Items/{Item}/ItemsDonations/{document=**} {
+      allow create: if (
+        request.resource.data.keys()
+        .hasAll(["amount", "IsRefunded", "donationDate", "donorPublicName"])
+        && signedIn()
+        )
+    }
+
+    //Allow private Details to be Created
+    // Firebase appcheck will be used to check if the api call was made through the application
+    match /Organisations/{org}/Items/{Item}/ItemsDonations/{don}/Private/{document=**} {
+      allow create: if (
+        request.resource.data.keys().hasAll(["name","IsAnon","agreeToContact","email","howHeard","mailingAddress","phoneNumber"])
+        && signedIn()
+        )
+    }
+
+    //only allow logged-in admins to read
+    match /Organisations/{org}/Items/{item}/ItemsDonations/{don}/Private/{document=**} {
+
+      allow read: if signedIn();
+    }
+
+
+        //only allow logged-in admins to read
+    match /{path=**}/ItemsDonations/{don} {
+
+      allow read: if signedIn();
+    }
+
+
+
+    //only allow logged-in admins to read
+    match /{path=**}/Items/{item} {
+      allow read: if true;
+    }
+
+    //only allow logged-in admins to update
+    match /Organisations/{org}/Items/{item}/ItemsDonations/{don}/Private/Private {
+
+      allow update:
+        if (
+          signedIn() &&
+          request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly(['IsAnon','agreeToContact']));
+    }
+
+    //only allow logged-in admins to update
+    match /Organisations/{org}/Items/{item}/ItemsDonations/{don} {
+
+      allow update:
+        if (
+          signedIn() &&
+          request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly(['IsSubscribed','IsRefunded']));
+    }
+
+    //Allow reads to ItemsDonations
+    match /Organisations/{org}/Items/{item}/ItemsDonations/{don} {
+
+      allow read: if true;
+    }
+
+    //------------------------------Item Data---------------------------//
+
+    //only allow a logged-in admin to create
+    match /Organisations/{org}/Items/{document=**} {
+
+      allow create: if signedIn();
+    }
+
+    // Allow a Items to be read
+    match /{path=**}/ItemsDonations/{item} {
+
+      allow read: if true;
+    }
+
+    //only allow a logged-in admin to update
+    // Only the following fields
+    // (activeStatus, description, img, initialPrice, name, summary)
+    match /Organisations/{org}/Items/{item} {
+      allow update:
+      if (
+          signedIn() &&
+          request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly(
+            ["activeStatus","description","img","initialPrice","name","summary"]
+          )
+        );
+    }
+
+    //only allow a logged-in admin to delete an item that has no donations
+    match /Organisations/{org}/Items/{item} {
+      allow delete: if (signedIn() && resource.data.totalDonationsValue == 0);
+    }
+
+    //Allow access for the application to update specific fields
+    //FireBase app check will be used to add protection
+
+    match /Organisations/{org}/Items/{item} {
+      allow update:
+      if (
+          request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly(
+            ["totalDonationCount","totalDonationsValue","dateCompleted", "activeStatus"]
+          )
+          && signedIn()
+
+        );
+    }
+
+    //------------------------- Volunteer Data -------------------------------//
+		match /{path=**}/VolunteerDonations/{doc} {
+			allow create: if true;
+			allow read: if signedIn();
+		}
+
+    //-----------------------------Organisation Data --------------------//
+
+    //Allow a logged-in Admin to Create an Organisation
+    //Allow a logged-in Admin to Read an Organisation and it's subcollections
+    match /Organisations/{document=**} {
+
+      allow create, read: if signedIn();
+    }
+
+    // Allow a logged-in Admin to Delete an Organisation
+    //Rule only if Organisation has no items or general donations
+    match /Organisations/{org} {
+
+      allow delete: if (signedIn() && (resource.data.totalDonationCount == 0))
+    }
+
+
+    // Allow a logged-in Admin to Update an Organisation
+    // only the following fields
+    //(ABN, activeStatus, description, img, name, phone, summary, website)
+
+    match /Organisations/{org} {
+      allow update:
+      if (
+          signedIn() &&
+          request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly(
+            ["id", "ABN", "activeStatus", "description", "img", "name", "phone", "summary", "website"]
+          )
+        );
+    }
+
+    //Allow anyone to read organisations
+    match /Organisations/{org} {
+
+      allow read: if true;
+
+    }
+
+    //Allow access so that organisation totals can be updated
+    //App check will be used to check that application is making the request
+    // and not a bot or someone using postman
+    // /Organisations/{org}
+    // allow updates to the following fields
+    // (totalDonationCount, totalDonationItems, totalDonationsValue, totalGeneralDonationsCount,
+    // totalGeneralDonationsValue, totalItemDonationsCount, totalItemDonationsValue)
+    match /Organisations/{org} {
+
+      allow update:
+        if
+          request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly(
+            [
+              "totalDonationCount",
+              "totalDonationItems",
+              "totalDonationsValue",
+              "totalGeneralDonationsCount",
+              "totalGeneralDonationsValue",
+              "totalItemDonationsCount",
+              "totalItemDonationsValue"
+            ]
+          );
+
+    }
+
+
   }
+}
+
+//https://waelyasmina.com/firestore-security-rules-a-beginners-guide/
+
+//--------------------------- Functions ---------------------//
+
+//---------------- Checks if the User is Authenticated ----------//
+function signedIn() {
+  return request.auth != null;
 }
